@@ -3,8 +3,26 @@ import dfs_logo_fullcolor_320x132_google from './../assets/dfs_logo_fullcolor_32
 
 
 class Login extends React.Component {
-  render() {
+  
+    state  = {
+        email: "",
+        password: ""
+    }
+
+    onChange = (e) => this.setState({[e.target.name]: e.target.value});
+
+    onSubmit = (e) => {
+        e.preventDefault();
+        if (this.state.email === tempUsername && this.state.password === tempPass){
+            alert("Succesfully Logged in!")
+        }else{
+            alert("wrong email or pass!")
+        }
+    }
+  
+    render() {
     return (
+
         <div className = "mainContainer" style = {mainContainerStyle}>
             <div className="flex-container" style = {flexContainerStyle}>
                 
@@ -14,12 +32,14 @@ class Login extends React.Component {
 
                 </div>
 
-                <form style = {formStyle}>
+                <form onSubmit = {this.onSubmit} style = {formStyle}>
                     <input 
                         type = "text"
-                        name = "username"
-                        placeholder = "Username..."
+                        name = "email"
+                        placeholder = "Email..."
                         style ={usernameRow}
+                        value = {this.state.email}
+                        onChange = {this.onChange}
                     />
 
                     <input 
@@ -27,12 +47,14 @@ class Login extends React.Component {
                         name = "password"
                         placeholder = "Password..."
                         style ={passwordRow}
+                        value = {this.state.password}
+                        onChange = {this.onChange}
                     />
 
                     <input 
                         type = 'submit'
                         value = 'Submit'
-                        className = 'btn'
+                        className = 'button'
                         style ={loginBtnRow}
                     />
                 </form>
@@ -42,6 +64,9 @@ class Login extends React.Component {
     )
   }
 }
+
+const tempUsername = "temp";
+const tempPass = "123abc"
 
 const mainContainerStyle = {
     width: '100vw',
@@ -122,7 +147,7 @@ const loginBtnRow = {
     borderWidth: 0,
     backgroundColor: "#0099FF",
     color: "#FFFFFF",
-    fontSize: 12
+    fontSize: 12,
 
 }
 

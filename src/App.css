@@ -16,6 +16,24 @@ a{
   text-decoration: none;
 }
 
+/* .btn {
+  width: "30%";
+  margin-top: 10;
+  margin-bottom: 10;
+  align-items: "right";
+  margin-left: "auto";
+  padding: 8;
+  border-radius: 3;
+  border-width: 0;
+  background-color: "#0099FF";
+  color: "#FFFFFF";
+  font-size: 12
+} */
+
+.button:hover {
+  background-color: #7FC9FF;
+}
+
 /* .App {
   text-align: center;
 }
