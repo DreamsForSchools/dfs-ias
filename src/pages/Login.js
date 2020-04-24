@@ -9,8 +9,10 @@ class Login extends React.Component {
         password: ""
     }
 
+    // on change handler for email and password input fields
     onChange = (e) => this.setState({[e.target.name]: e.target.value});
 
+    // what happens when "login" button is clicked
     onSubmit = (e) => {
         e.preventDefault();
         if (this.state.email === tempUsername && this.state.password === tempPass){
@@ -43,7 +45,7 @@ class Login extends React.Component {
                     />
 
                     <input 
-                        type = "text"
+                        type = "password"
                         name = "password"
                         placeholder = "Password..."
                         style ={passwordRow}
