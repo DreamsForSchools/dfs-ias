@@ -6,6 +6,7 @@ import AppjamHomePage from './pages/AppjamHomePage';
 import SchoolHomePage from './pages/SchoolHomePage';
 import SpheroHomePage from './pages/SpheroHomePage';
 import WebjamHomePage from './pages/WebjamHomePage';
+import TemplatePage from './pages/TemplatePage';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -30,6 +31,9 @@ class App extends React.Component {
 
             {/* WebjamHomePage Component */}
             <Route path="/webjamhome" component={WebjamHomePage} />
+
+            {/* TemplatePage Component */}
+            <Route path="/template" component={TemplatePage} />
         </Switch>
       </div>
     </Router>

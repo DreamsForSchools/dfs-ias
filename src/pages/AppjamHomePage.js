@@ -1,12 +1,15 @@
 import React from 'react'
 import add from '.././assets/add.svg'
 
-import SideNavBar from '../components/sidebar/SideNavBar'
+import SideNavBar from '../components/sidebar/SideNavBar';
+import { useHistory } from "react-router-dom";
 
 export default function AppjamHomePage() {
 
+    let history = useHistory();
     const addRoster = () => {
-        alert("Add Roster button clicked!")
+        // alert("Add Roster button clicked!")
+        history.push('/template');
     }
 
     return (
