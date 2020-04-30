@@ -14,7 +14,7 @@ export default function SpheroHomePage() {
 
     return (
         <div>
-            <SideNavBar />
+            <SideNavBar chosen="sphero"/>
 
             <div className="programPageContainer">
                 <h1 className="programPageTitle">sphero</h1>

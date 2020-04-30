@@ -14,7 +14,7 @@ export default function SchoolHomePage() {
 
     return (
         <div>
-            <SideNavBar />
+            <SideNavBar chosen="school"/>
 
             <div className="programPageContainer">
                 <h1 className="programPageTitle">school</h1>

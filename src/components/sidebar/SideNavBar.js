@@ -2,7 +2,9 @@ import React from 'react'
 import dfs_logo_reverse_icon from "../.././assets/dfs_logo_reverse_icon.svg"
 import {Link} from 'react-router-dom';
 
-export default function SideNavBar() {
+export default function SideNavBar(props) {
+
+
     return (
         <div className="sideNavbarWrapper">
             <nav className="sideNavbar">
@@ -24,19 +26,19 @@ export default function SideNavBar() {
                     <ul className="sideNavbarLinks">
                         <Link to="/spherohome">
                             <li>
-                                <div className="sideNavbarLink sideNavbarLinkAppjam">sphero</div>   
+                                <div className="sideNavbarLink">sphero</div>   
                             </li>
                         </Link>
 
                         <Link to="/appjamhome">
                             <li>
-                                <div className="sideNavbarLink sideNavbarLinkAppjam">appjam</div>   
+                                <div className="sideNavbarLink">appjam</div>   
                             </li>
                         </Link>
 
                         <Link to="/webjamhome">
                             <li>
-                                <div className="sideNavbarLink sideNavbarLinkAppjam">webjam</div>   
+                                <div className="sideNavbarLink">webjam</div>   
                             </li>
                         </Link>
 
@@ -57,4 +59,5 @@ export default function SideNavBar() {
             
         </div>
     )
+
 }

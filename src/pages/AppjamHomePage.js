@@ -14,7 +14,7 @@ export default function AppjamHomePage() {
 
     return (
         <div>
-            <SideNavBar />
+            <SideNavBar chosen="appjam"/>
 
             <div className="programPageContainer">
                 <h1 className="programPageTitle">appjam+</h1>

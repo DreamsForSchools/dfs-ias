@@ -14,7 +14,7 @@ export default function WebjamHomePage() {
 
     return (
         <div>
-            <SideNavBar />
+            <SideNavBar chosen="webjam"/>
 
             <div className="programPageContainer">
                 <h1 className="programPageTitle">webjam</h1>
