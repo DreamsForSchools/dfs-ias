@@ -1,18 +1,38 @@
 import React from 'react';
 import './App.css';
 
-import Login from './pages/Login'
+import LoginPage from './pages/LoginPage';
+import AppjamHomePage from './pages/AppjamHomePage';
+import SchoolHomePage from './pages/SchoolHomePage';
+import SpheroHomePage from './pages/SpheroHomePage';
+import WebjamHomePage from './pages/WebjamHomePage';
+
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 
 class App extends React.Component {
   render() {
     return (
-      <div className="App">
+      <Router>
+        <div className="App">
+          <Switch>
+            {/* LoginPage Component */}
+            <Route path="/login" component={LoginPage} />
 
-      {/* Login Component */}
-      <Login />
+            {/* SchoolHomePage Component */}
+            <Route path="/" exact component={SchoolHomePage} />
 
-    </div>
+            {/* AppjamPage Component */}
+            <Route path="/appjamhome" component={AppjamHomePage} />
+
+            {/* SpheroHomePage Component */}
+            <Route path="/spherohome" component={SpheroHomePage} />
+
+            {/* WebjamHomePage Component */}
+            <Route path="/webjamhome" component={WebjamHomePage} />
+        </Switch>
+      </div>
+    </Router>
     )
   }
 }

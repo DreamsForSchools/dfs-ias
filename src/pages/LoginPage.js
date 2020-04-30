@@ -1,8 +1,10 @@
 import React from 'react';
-import dfs_logo_fullcolor_320x132_google from './../assets/dfs_logo_fullcolor_320x132_google.png'
+import dfs_logo_fullcolor_320x132_google from './../assets/dfs_logo_fullcolor_320x132_google.png';
+
+// import {useHistory} from 'react-router-dom';
 
 
-class Login extends React.Component {
+class LoginPage extends React.Component {
   
     state  = {
         email: "",
@@ -16,7 +18,10 @@ class Login extends React.Component {
     onSubmit = (e) => {
         e.preventDefault();
         if (this.state.email === tempUsername && this.state.password === tempPass){
-            alert("Succesfully Logged in!")
+            // alert("Succesfully Logged in!")
+            // let history = useHistory();
+            // history.push('/schoolhome');
+            this.props.history.push('/')
         }else{
             alert("wrong email or pass!")
         }
@@ -153,4 +158,4 @@ const loginBtnRow = {
 
 }
 
-export default Login;
+export default LoginPage;
