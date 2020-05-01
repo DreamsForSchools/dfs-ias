@@ -18,10 +18,12 @@ class App extends React.Component {
         <div className="App">
           <Switch>
             {/* LoginPage Component */}
-            <Route path="/login" component={LoginPage} />
+            {/* email: temp
+              pass: 123abc */}
+            <Route path="/" exact component={LoginPage} />
 
             {/* SchoolHomePage Component */}
-            <Route path="/" exact component={SchoolHomePage} />
+            <Route path="/schoolhome" component={SchoolHomePage} />
 
             {/* AppjamPage Component */}
             <Route path="/appjamhome" component={AppjamHomePage} />

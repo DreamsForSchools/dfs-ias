@@ -11,7 +11,7 @@ export default function SideNavBar(props) {
                 <h3 className="sideNavBarTitle">IAS</h3>
 
                 <ul className="sideNavbarLinks sideNavbarSchool">
-                    <Link to="/">
+                    <Link to="/schoolhome">
                         <li>
                             <div className="sideNavbarLink">school</div>   
                         </li>
@@ -47,7 +47,7 @@ export default function SideNavBar(props) {
                 
                 <ul className="sideNavbarLinks sideNavbarSignOut">
                     
-                    <Link to="/login">
+                    <Link to="/">
                         <li>
                             <div className="sideNavbarLink sideNavbarSignOutLink">sign out</div>   
                         </li>

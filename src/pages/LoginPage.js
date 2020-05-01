@@ -21,7 +21,7 @@ class LoginPage extends React.Component {
             // alert("Succesfully Logged in!")
             // let history = useHistory();
             // history.push('/schoolhome');
-            this.props.history.push('/')
+            this.props.history.push('/schoolhome')
         }else{
             alert("wrong email or pass!")
         }
