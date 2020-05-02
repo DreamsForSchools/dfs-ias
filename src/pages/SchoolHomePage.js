@@ -3,14 +3,37 @@ import add from '.././assets/add.svg'
 
 import SideNavBar from '../components/sidebar/SideNavBar';
 import { useHistory } from "react-router-dom";
+import { useState, useEffect } from 'react';
+
+import fire from '.././config/fire';
 
 export default function SchoolHomePage() {
 
+    const [user, setUser] = useState(null);
+
     let history = useHistory();
     const addRoster = () => {
-        // alert("Add Roster button clicked!")
-        history.push('/template');
+        fire.auth().onAuthStateChanged(user => {
+            if (user){
+                history.push('/template');
+            }else{
+                history.push('/');
+            }
+            
+          })
+
     }
+
+    useEffect(() => {
+        fire.auth().onAuthStateChanged(user => {
+            if (user){
+                setUser(user);
+            }else{
+                history.push('/');
+            }
+            
+          })
+      });
 
     return (
         <div>

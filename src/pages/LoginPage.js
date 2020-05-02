@@ -1,15 +1,36 @@
 import React from 'react';
 import dfs_logo_fullcolor_320x132_google from './../assets/dfs_logo_fullcolor_320x132_google.png';
+import fire from '.././config/fire';
 
 // import {useHistory} from 'react-router-dom';
 
 
 class LoginPage extends React.Component {
   
-    state  = {
-        email: "",
-        password: ""
+    
+    constructor(props){
+        super(props)
+        this.state={
+            email: "",
+            password: ""
+        }
     }
+
+    componentDidMount(){
+        fire.auth().onAuthStateChanged(user => {
+            if (user){
+                this.props.history.push('/schoolhome');
+            }else{
+                this.props.history.push('/');
+            }
+            
+          })
+    }
+    
+    // state  = {
+    //     email: "",
+    //     password: ""
+    // }
 
     // on change handler for email and password input fields
     onChange = (e) => this.setState({[e.target.name]: e.target.value});
@@ -17,14 +38,17 @@ class LoginPage extends React.Component {
     // what happens when "login" button is clicked
     onSubmit = (e) => {
         e.preventDefault();
-        if (this.state.email === tempUsername && this.state.password === tempPass){
-            // alert("Succesfully Logged in!")
-            // let history = useHistory();
-            // history.push('/schoolhome');
-            this.props.history.push('/schoolhome')
-        }else{
-            alert("wrong email or pass!")
-        }
+        // if (this.state.email === tempUsername && this.state.password === tempPass){
+        //     this.props.history.push('/schoolhome')
+        // }else{
+        //     alert("wrong email or pass!")
+        // }
+        fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+            console.log(u);
+            this.props.history.push('/schoolhome');
+        }).catch((err)=>{
+            console.log(err);
+        });
     }
   
     render() {

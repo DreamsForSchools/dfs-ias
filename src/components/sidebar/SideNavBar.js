@@ -1,9 +1,37 @@
 import React from 'react'
 import dfs_logo_reverse_icon from "../.././assets/dfs_logo_reverse_icon.svg"
-import {Link} from 'react-router-dom';
+import {Link,useHistory} from 'react-router-dom';
+import fire from '../.././config/fire';
+import { useState, useEffect } from 'react';
 
 export default function SideNavBar(props) {
 
+    const [user, setUser] = useState(null);
+    
+    let history = useHistory();
+    const logout = () => {
+        if(user){
+            setUser(null); 
+            fire.auth().signOut().then(function() {
+                console.log('Signed Out');
+              }, function(error) {
+                console.error('Sign Out Error', error);
+              });   
+        }
+        history.push('/');
+    }
+
+    useEffect(() => {
+        // Update the document title using the browser API
+        fire.auth().onAuthStateChanged(user => {
+            if (user){
+                setUser(user);
+            }else{
+                history.push('/');
+            }
+            
+          })
+      });
 
     return (
         <div className="sideNavbarWrapper">
@@ -47,11 +75,15 @@ export default function SideNavBar(props) {
                 
                 <ul className="sideNavbarLinks sideNavbarSignOut">
                     
-                    <Link to="/">
+                    {/* <Link to='/'> */}
                         <li>
-                            <div className="sideNavbarLink sideNavbarSignOutLink">sign out</div>   
+                            <div> {/* className="sideNavbarLink sideNavbarSignOutLink" */}
+                                <button onClick={logout} className="sideNavbarLink sideNavbarSignOutLink">
+                                    sign out
+                                </button>
+                            </div>   
                         </li>
-                    </Link>
+                    {/* </Link> */}
                 </ul>
 
                 <img src={dfs_logo_reverse_icon} className="sideNavbarLogo" alt="logo"/>

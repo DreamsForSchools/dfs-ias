@@ -10,8 +10,32 @@ import TemplatePage from './pages/TemplatePage';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
+import fire from './config/fire';
+
 
 class App extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      user: {}
+    }
+  }
+
+  componentDidMount(){
+    this.authListener();
+  }
+
+  authListener(){
+    fire.auth().onAuthStateChanged((user)=>{
+      if (user){
+        this.setState({user})
+      }else{
+        this.setState({})
+      }
+    })
+  }
+
   render() {
     return (
       <Router>
