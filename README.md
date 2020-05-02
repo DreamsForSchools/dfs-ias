@@ -5,7 +5,7 @@ Dreams for Schools - Instructor App Sorter
 `cd` into root folder<br /> 
 run `npm start`
 
-## Login Credentials
+## Temporary Login Credentials
 email: `temp@dfs.com`<br />
 password: `123abc`
 
