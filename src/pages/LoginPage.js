@@ -12,7 +12,17 @@ class LoginPage extends React.Component {
         super(props)
         this.state={
             email: "",
-            password: ""
+            password: "",
+            invalidCredentialstyle : {
+                invalidEmail: {
+                    color: "white",
+                    fontSize: 8
+                },
+                wrongPassword: {
+                    color: "white",
+                    fontSize: 8,
+                },
+            }
         }
     }
 
@@ -26,11 +36,6 @@ class LoginPage extends React.Component {
             
           })
     }
-    
-    // state  = {
-    //     email: "",
-    //     password: ""
-    // }
 
     // on change handler for email and password input fields
     onChange = (e) => this.setState({[e.target.name]: e.target.value});
@@ -38,16 +43,43 @@ class LoginPage extends React.Component {
     // what happens when "login" button is clicked
     onSubmit = (e) => {
         e.preventDefault();
-        // if (this.state.email === tempUsername && this.state.password === tempPass){
-        //     this.props.history.push('/schoolhome')
-        // }else{
-        //     alert("wrong email or pass!")
-        // }
+
         fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
             console.log(u);
             this.props.history.push('/schoolhome');
         }).catch((err)=>{
-            console.log(err);
+            if (err.code === "auth/invalid-email"){
+                console.log("Invalid Email. Please try again.")
+
+                this.setState({
+                    invalidCredentialstyle : {
+                        invalidEmail: {
+                            color: "red",
+                            fontSize: 8
+                        },
+                        wrongPassword: {
+                            color: "white",
+                            fontSize: 8,
+                        },
+                    }
+                  });
+
+            }else if (err.code === "auth/wrong-password"){
+                console.log("Wrong Password. Please try again.")
+
+                this.setState({
+                    invalidCredentialstyle : {
+                        invalidEmail: {
+                            color: "white",
+                            fontSize: 8
+                        },
+                        wrongPassword: {
+                            color: "red",
+                            fontSize: 8,
+                        },
+                    }
+                  });
+            }
         });
     }
   
@@ -73,6 +105,8 @@ class LoginPage extends React.Component {
                         onChange = {this.onChange}
                     />
 
+                    <h3 style={this.state.invalidCredentialstyle.invalidEmail}>Invalid Email. Please try again.</h3>
+
                     <input 
                         type = "password"
                         name = "password"
@@ -81,6 +115,7 @@ class LoginPage extends React.Component {
                         value = {this.state.password}
                         onChange = {this.onChange}
                     />
+                    <h3 style={this.state.invalidCredentialstyle.wrongPassword}>Wrong Password. Please try again.</h3>
 
                     <input 
                         type = 'submit'
