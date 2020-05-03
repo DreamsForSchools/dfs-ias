@@ -131,9 +131,6 @@ class LoginPage extends React.Component {
   }
 }
 
-const tempUsername = "temp";
-const tempPass = "123abc"
-
 const mainContainerStyle = {
     width: '100vw',
     height: '100vh',
