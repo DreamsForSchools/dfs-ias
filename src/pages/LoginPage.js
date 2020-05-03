@@ -16,11 +16,11 @@ class LoginPage extends React.Component {
             invalidCredentialstyle : {
                 invalidEmail: {
                     color: "white",
-                    fontSize: 8
+                    fontSize: 10
                 },
                 wrongPassword: {
                     color: "white",
-                    fontSize: 8,
+                    fontSize: 10,
                 },
             }
         }
@@ -55,11 +55,11 @@ class LoginPage extends React.Component {
                     invalidCredentialstyle : {
                         invalidEmail: {
                             color: "red",
-                            fontSize: 8
+                            fontSize: 10
                         },
                         wrongPassword: {
                             color: "white",
-                            fontSize: 8,
+                            fontSize: 10,
                         },
                     }
                   });
@@ -71,11 +71,11 @@ class LoginPage extends React.Component {
                     invalidCredentialstyle : {
                         invalidEmail: {
                             color: "white",
-                            fontSize: 8
+                            fontSize: 10
                         },
                         wrongPassword: {
                             color: "red",
-                            fontSize: 8,
+                            fontSize: 10,
                         },
                     }
                   });
