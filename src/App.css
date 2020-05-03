@@ -16,6 +16,12 @@ a{
   text-decoration: none;
 }
 
+.sortingPagesContainer{
+  background-color: white;
+  margin-left: 212px;
+  height: 140px;
+}
+
 /*  --------------- START PROGRAM PAGE --------------- */
 
 .programPageContainer{
@@ -141,3 +147,70 @@ a{
 }
 
 /*  --------------- END SIDE NAVIGATION BAR --------------- */
+
+
+
+/*  --------------- START SORTING PAGES NAV BAR --------------- */
+
+.sortingPagesNavbar {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 4vh;
+  background-color: white;
+  color: #5B7082;
+  border-bottom: 0.5px solid #9097A3;
+  margin-left: 75px;
+  margin-top: 1%;
+}
+
+.sortingPagesNavbarLinks{
+  width: 50%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  list-style: none;
+  /* background-color: black; */
+  height: 4vh;
+
+}
+
+.sortedRosterNavLink{
+  padding-left: 50px;
+  padding-right: 50px;
+  height: 4vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+}
+
+
+/*  --------------- END SORTING PAGES NAV BAR --------------- */
+
+
+
+/*  --------------- START SORTED ROSTER PAGE --------------- */
+
+.sortedPagePageTitle{
+  font-size: 48px;
+  margin-left: 75px;
+  margin-top: 29px;
+  font-weight: 400;
+  color: #202E47;
+}
+
+/*  --------------- END SORTED ROSTER PAGE --------------- */
+
+
+
+/*  --------------- START SortedInstructorsCard COMPONENT --------------- */
+
+.collapsedCard{
+  width: 508px;
+  height: 82px;
+  border-radius: 15px;
+  background-color: #7FC9FF;
+}
+
+/*  --------------- END SortedInstructorsCard COMPONENT --------------- */
