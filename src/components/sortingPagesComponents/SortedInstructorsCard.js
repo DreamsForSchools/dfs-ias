@@ -128,7 +128,7 @@ export default function SortedInstructorsCard(props) {
           })
       });
 
-      //save the randomized icons for uncollapsed and collapsed card
+    //save the randomized icons for uncollapsed and collapsed card once page loads
     useEffect(()=> {
         if (savedIcon.length < 4){
             for (var i=0; i < 4; i++){
@@ -137,24 +137,7 @@ export default function SortedInstructorsCard(props) {
         }
     }, [savedIcon])
 
-    const randomAnimalIcon = () => {
-        return animalIconsArray[Math.floor(Math.random()*animalIconsArray.length)];
-    }
-
-    const makeSavedIcons = () => {
-        for (var i=0; i < 4; i++){
-            setSavedIcon(savedIcon.concat(animalIconsArray[Math.floor(Math.random()*animalIconsArray.length)]))
-        }
-    }
-
-    const isCarMentor = () => {
-        var choose = [true, false];
-
-        if (choose[Math.floor(Math.random()*choose.length)]){
-            return carMentorIcons[Math.floor(Math.random()*carMentorIcons.length)];
-        }
-    }
-
+    //function when down arrow to expand card is clicked
     const toggleMoreInfo = (e) => {
         setIsOpen(!isOpen);
         setCollapsedCardStyle({
@@ -173,6 +156,7 @@ export default function SortedInstructorsCard(props) {
         })
     }
 
+    //function when use hovers over an instructor
     const hoveredOver = (e) => {
         var x = e.clientX;
         var y = e.clientY;
@@ -185,9 +169,8 @@ export default function SortedInstructorsCard(props) {
         setIsHovered(true);
 
     }
-    // console.log("Hello!")
-    // setTimeout(() => {  console.log("World!"); }, 5000);
 
+    //function when use unhovers over an instructor
     const removeHoveredOver = (e) => {
         setIsHovered(false);
         var x = e.clientX;
@@ -304,6 +287,7 @@ export default function SortedInstructorsCard(props) {
             </div>
             
             {isOpen? (
+                    // START --> ON CLICK OF DOWN BUTTON TO EXPAND CARD 
                     <div style={uncollapsedCardStyle}> {/* className="uncollapsedCard" */}
                     <div style={schoolInfo}>
                         <h3 style={schoolInfoStyle}>Lathrop Intermediate</h3>
@@ -350,6 +334,7 @@ export default function SortedInstructorsCard(props) {
                     </div>
 
                 </div>
+                // END --> ON CLICK OF DOWN BUTTON TO EXPAND CARD 
             ):null}
 
             {/* <div className="uncollapsedCard">
