@@ -13,9 +13,11 @@ import userCollection from '../../../mockDatabase/MockDatabase';
 
 export default function AppjamSortedRosterPage() {
 
+    //User auth 
     const [user, setUser] = useState(null);
-    console.log(userCollection);
+    // console.log(userCollection);
 
+    //History hook for navigation
     let history = useHistory();
 
     //checks if user is currently logged in (authenticates user)
@@ -32,14 +34,6 @@ export default function AppjamSortedRosterPage() {
 
     return (
         <div>
-            {/* <SideNavBar />
-
-            <div className="programPageContainer">
-                <h1 className="sortedPagePageTitle">appjam+ [SEASON] [YEAR]</h1>
-
-                <SortingPagesNavbar />
-
-            </div> */}
             <TitleToolbar program="appjam+" season="Spring" year="2020"/>
 
             <div className="programPageContainer">
@@ -63,8 +57,6 @@ export default function AppjamSortedRosterPage() {
 
                     </div>
                 </div>
-
-                {/* <SortedInstructorsCard /> */}
             </div> 
 
         </div>

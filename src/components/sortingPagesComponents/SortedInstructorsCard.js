@@ -112,7 +112,7 @@ export default function SortedInstructorsCard(props) {
         // top: position.y+"px",
     })
 
-    console.log(userCollection);
+    // console.log(userCollection);
 
     //History hook for navigation
     let history = useHistory();
