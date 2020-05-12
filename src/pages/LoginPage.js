@@ -13,6 +13,7 @@ class LoginPage extends React.Component {
         this.state={
             email: "",
             password: "",
+            invalidEmail: "",
             invalidCredentialstyle : {
                 invalidEmail: {
                     color: "white",
@@ -48,9 +49,13 @@ class LoginPage extends React.Component {
             console.log(u);
             this.props.history.push('/schoolhome');
         }).catch((err)=>{
-            if (err.code === "auth/invalid-email"){
+            if (err.code === "auth/invalid-email" || err.code === "auth/user-not-found"){
                 console.log("Invalid Email. Please try again.")
-
+                this.setState({invalidEmail: "Invalid Email. Please try again."});
+                if (err.code === "auth/user-not-found"){
+                    console.log("User does not exist. Please try again.")
+                    this.setState({invalidEmail: "User does not exist. Please try again."});
+                }
                 this.setState({
                     invalidCredentialstyle : {
                         invalidEmail: {
@@ -105,7 +110,7 @@ class LoginPage extends React.Component {
                         onChange = {this.onChange}
                     />
 
-                    <h3 style={this.state.invalidCredentialstyle.invalidEmail}>Invalid Email. Please try again.</h3>
+                    <h3 style={this.state.invalidCredentialstyle.invalidEmail}>{this.state.invalidEmail}</h3>  {/* Invalid Email. Please try again. */}
 
                     <input 
                         type = "password"

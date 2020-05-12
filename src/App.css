@@ -16,12 +16,6 @@ a{
   text-decoration: none;
 }
 
-.sortingPagesContainer{
-  background-color: white;
-  margin-left: 212px;
-  height: 140px;
-}
-
 /*  --------------- START PROGRAM PAGE --------------- */
 
 .programPageContainer{
@@ -190,7 +184,13 @@ a{
 
 
 
-/*  --------------- START SORTED ROSTER PAGE --------------- */
+/*  --------------- START TitleToolbar Component--------------- */
+
+.sortingPagesContainer{
+  background-color: white;
+  margin-left: 212px;
+  height: 140px;
+}
 
 .sortedPagePageTitle{
   font-size: 48px;
@@ -200,17 +200,122 @@ a{
   color: #202E47;
 }
 
-/*  --------------- END SORTED ROSTER PAGE --------------- */
+/*  --------------- END TitleToolbar Component --------------- */
 
 
 
 /*  --------------- START SortedInstructorsCard COMPONENT --------------- */
-
-.collapsedCard{
-  width: 508px;
-  height: 82px;
-  border-radius: 15px;
-  background-color: #7FC9FF;
+.sortedInstructorCardsWrapper{
+  display: flex;
+	justify-content: center;
+	align-items: center;
+  
 }
 
+.instructorCardsContainer{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 70vw;
+  justify-content: center;
+  /* display: grid;
+  width: 60vw;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(560px, 1fr)); */
+
+}
+/*  --------------- END SortedInstructorsCard COMPONENT --------------- */
+
+
+
+/*  --------------- START SortedInstructorsCard COMPONENT --------------- */
+.instructorCard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.hoverMoreInfoWrapper{
+  display: flex;
+	justify-content: center;
+  align-items: center;
+}
+
+.hoverMoreInfoContainer{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+  align-items: center;
+  height: 160px;
+  width: 280px;
+  background-color: #49479D;
+  padding: 10px;
+}
+
+.hoverMoreInfoHeaderContainer{
+  display: flex;
+  flex-direction: row;
+	justify-content: center;
+  align-items: left;
+  padding-left: 5px;
+}
+
+.hoverMoreInfoHeaderNameContainer{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+  align-items: left;
+  width: 215px;
+  margin-left: 5px;
+}
+
+.hoverMoreInfoHeaderYearGenderEthnicity{
+  display: flex;
+  flex-direction: row;
+	justify-content: left;
+	align-items: left;
+}
+
+.hoverMoreInfoDetailsContainer{
+  display: flex;
+  flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.hoverMoreInfoDetailsRegionSchoolSchedContainer, .hoverMoreInfoDetailsOtherContainer{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+	align-items: left;
+}
+
+.hoverMoreInfoDetailsRegionSchoolGrid{
+  display: "grid";
+  grid-template-columns: 140px;
+  grid-template-rows: 15px;
+}
+
+.hoverMoreInfoDetailsSchedGrid{
+  display: grid;
+  grid-template-columns: 13px 127px;
+  grid-template-rows: 15px 15px 15px 15px 15px;
+  margin-top: 3px;
+}
+
+.hoverMoreInfoDetailsOtherGrid{
+  display: "grid";
+  grid-template-columns: 150px;
+  grid-template-rows: 18px;
+}
+
+.hoverMoreInfoDetailsOtherItem{
+  display: flex;
+  flex-direction: row;
+	justify-content: left;
+  align-items: left;
+  margin-top: 5px;
+}
 /*  --------------- END SortedInstructorsCard COMPONENT --------------- */

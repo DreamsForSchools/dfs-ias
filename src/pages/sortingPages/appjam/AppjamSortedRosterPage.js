@@ -18,7 +18,7 @@ export default function AppjamSortedRosterPage() {
 
     let history = useHistory();
 
-    //checks if user is currently logged in
+    //checks if user is currently logged in (authenticates user)
     useEffect(() => {
         fire.auth().onAuthStateChanged(user => {
             if (user){
@@ -44,12 +44,27 @@ export default function AppjamSortedRosterPage() {
 
             <div className="programPageContainer">
                 <h1>Sorted Roster Page</h1> 
-                {
+                {/* {
                     userCollection.map(user => 
                         <h3>{user.name}</h3>
                     )
-                }
-                <SortedInstructorsCard />
+                } */}
+                
+                <div className="sortedInstructorCardsWrapper">
+                    <div className="instructorCardsContainer">
+                        <SortedInstructorsCard bgColor="#7FC9FF" borderColor="#0099FF"/>
+                        <SortedInstructorsCard bgColor="#7FC9FF" borderColor="#0099FF"/>
+                        <SortedInstructorsCard bgColor="#A4A3CE" borderColor="#49479D"/>
+                        <SortedInstructorsCard bgColor="#A4A3CE" borderColor="#49479D"/>
+                        <SortedInstructorsCard bgColor="#9AE4E3" borderColor="#40CCC8"/>
+                        <SortedInstructorsCard bgColor="#9AE4E3" borderColor="#40CCC8"/>
+                        <SortedInstructorsCard bgColor="#F9DEA6" borderColor="#F3BF4D"/>
+                        <SortedInstructorsCard bgColor="#F9DEA6" borderColor="#F3BF4D"/>
+
+                    </div>
+                </div>
+
+                {/* <SortedInstructorsCard /> */}
             </div> 
 
         </div>
