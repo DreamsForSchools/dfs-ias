@@ -42,17 +42,31 @@ import userCollection from '../../mockDatabase/MockDatabase';
 
 export default function SortedInstructorsCard(props) {
 
+    //User auth 
     const [user, setUser] = useState(null);
+
+    //Animal Icons
     const [animalIconsArray, setAnimalIconsArray] = useState([
         birb, bull, crab, fish, fish1, fish2, fox, hedgehog, hippopotamus, koala, lemur,
         moray, octopus, pig, prawn, seaweed, tiger, turtle, whale, whale1, zebra
     ]);
+
+    //Returning Mentor, car, and both returning mentor and car icons
     const [carMentorIcons, setCarMentorIcons] = useState([
         car, carMentor, mentor
     ]);
+
+    //state to save the 4 icons used in the collapsed card so it carries
+    //over to the uncollapsed card
     const [savedIcon, setSavedIcon] = useState([]);
+
+    //Expand card button (down arrow) toggle
     const [isOpen, setIsOpen] = useState(false);
+
+    //toggle when hovering over an instructor
     const [isHovered, setIsHovered] = useState(false);
+
+    //collapsed card style (border color is based on props.borderColor property)
     const [collapsedCardStyle, setCollapsedCardStyle] = useState({
         display: "flex",
         flexDirection: "row",
@@ -68,6 +82,7 @@ export default function SortedInstructorsCard(props) {
         // borderColor: props.borderColor,
     });
 
+    //uncollapsed (expanded) card style (border color is based on props.borderColor property)
     const [uncollapsedCardStyle, setUncollapsedCardStyle] = useState({
         display: "flex",
         flexDirection: "row",
@@ -83,23 +98,23 @@ export default function SortedInstructorsCard(props) {
         borderBottom: "solid 3px " + props.borderColor,
     }); 
 
+    //uncollapsed (expanded) school info style (color is based on props.borderColor property)
     const [schoolInfoStyle, setSchoolInfoStyle] = useState({
         fontSize: "14px",
         fontWeight: "500",
         color: props.borderColor
     });
-    const position = useMousePosition();
-    const [mouseX, setMouseX] = useState(0);
-    const [mouseY, setMouseY] = useState(0);
 
+    //style to determine where to render instructor info when hovering over them
     const[hoverPosition, setHoverPosition] = useState({
         position: "fixed",
-        left: position.x+"px",
-        top: position.y+"px",
+        // left: position.x+"px",
+        // top: position.y+"px",
     })
 
     console.log(userCollection);
 
+    //History hook for navigation
     let history = useHistory();
 
     //checks if user is currently logged in
@@ -159,26 +174,24 @@ export default function SortedInstructorsCard(props) {
     }
 
     const hoveredOver = (e) => {
-        setIsHovered(true);
-        // var rect = e.target.getBoundingClientRect();
         var x = e.clientX;
         var y = e.clientY;
-        setMouseX(x);
-        setMouseY(y);
-
+        
         setHoverPosition({
             position: "fixed",
-            left: mouseX+"px",
-            top: mouseY+"px",
-        })
+            left: x+"px",
+            top: y+"px",
+        });
+        setIsHovered(true);
 
     }
+    // console.log("Hello!")
+    // setTimeout(() => {  console.log("World!"); }, 5000);
+
     const removeHoveredOver = (e) => {
         setIsHovered(false);
         var x = e.clientX;
         var y = e.clientY;
-        setMouseX(x);
-        setMouseY(y);
     }
 
     return ( 
