@@ -5,22 +5,71 @@ import SortingPagesNavbar from '../../../components/sortingPagesComponents/Sorti
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import SortedInstructorsCard from '../../../components/sortingPagesComponents/SortedInstructorsCard';
 import { useHistory } from "react-router-dom";
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 import firebase from 'firebase';
 
 import userCollection from '../../../mockDatabase/MockDatabase';
 
-const sortedRosterCollection = fire.database().ref().child('sortedroster');
+// const sortedRosterCollection = fire.database().ref().child('sortedroster');
 export default function AppjamSortedRosterPage() {
 
     //User auth 
     const [user, setUser] = useState(null);
     // console.log(userCollection);
 
-    const [carr, setCarr] = useState({})
-    
+    const [carr, setCarr] = useState(
+        {
+            "school": "Carr Intermediate",
+            "mentors": [
+                {
+                    "name":"Hannah Fragante",
+                    "firstName": "Hannah",
+                    "car": "Yes",
+                    "languages": "Tagalog",
+                    "multipleDays": "Yes",
+                    "prevMentor": "Yes",
+                    "region": "Orange County",
+                    "schoolName": "Carr",
+                },
+                {
+                    "name":"Dylan Fragante",
+                    "firstName": "Dylan",
+                    "car": "Yes",
+                    "languages": "Tagalog",
+                    "multipleDays": "Yes",
+                    "prevMentor": "No",
+                    "region": "Orange County",
+                    "schoolName": "Carr",
+                },
+                {
+                    "name":"Annie Fragante",
+                    "firstName": "Annie",
+                    "car": "Yes",
+                    "languages": "Tagalog",
+                    "multipleDays": "Yes",
+                    "prevMentor": "Yes",
+                    "region": "Orange County",
+                    "schoolName": "Carr",
+                },
+                {
+                    "name":"Deodato Fragante",
+                    "firstName": "Deodato",
+                    "car": "Yes",
+                    "languages": "Tagalog",
+                    "multipleDays": "Yes",
+                    "prevMentor": "Yes",
+                    "region": "Orange County",
+                    "schoolName": "Carr",
+                },
+
+            ]
+            
+        }
+    );
+    const [schools, setSchools] = useState([]);    
+    const sortedRosterCollection = useRef(fire.database().ref().child('sortedroster'))
 
     //History hook for navigation
     let history = useHistory();
@@ -37,51 +86,66 @@ export default function AppjamSortedRosterPage() {
           })
       },[]);
 
+      
+    useEffect(() => {
+        sortedRosterCollection.current.once('value', (snap) => {
+            const roster = []
+            snap.forEach((doc) =>{
+                const school = doc.key;
+                const mentorList = doc.val();
+                const mentorArray = [];
+                for (var k in mentorList){
+                    mentorArray.push(
+                        {
+                            "name":k,
+                            "firstName": k.split(" ")[0],
+                            "car": mentorList[k]["Car"],
+                            "languages": mentorList[k]["Languages"],
+                            "multipleDays": mentorList[k]["MultipleDays"],
+                            "prevMentor": mentorList[k]["PreviousMentor"],
+                            "region": mentorList[k]["Region"],
+                            "schoolName": mentorList[k]["SchoolName"],
+                        }
+                    )
+                }
+                // console.log(mentorArray)
+                const schoolMentor = {school:school, mentors: mentorArray};
+                roster.push(schoolMentor);
 
-    // useEffect(() => {
-    // sortedRosterCollection.once('value', (snap) => {
-    //     const roster = []
-    //     snap.forEach((doc) =>{
-    //         // console.log(doc.key);
-    //         // var mentors = doc.val();
-    //         // for (var k in mentors){
-    //         //     console.log(doc.key, k, mentors[k])
-    //         // }
-    //         if (doc.key==="Carr Intermediate"){
-    //             var school = doc.key;
-    //             var mentorList = doc.val();
-    //             var schoolMentor = {school:school, mentors: mentorList};
-    //             // roster.push(schoolMentor);
-    //             // console.log(roster.length);
-    //             setCarr(schoolMentor)
-    //             // console.log(roster[0])
-    //         }
-    //     });
-    //     // console.log(roster)
-    // });
-    // },[carr]);
+                // if (doc.key==="Carr Intermediate"){
+                //     const school = doc.key;
+                //     const mentorList = doc.val();
+                //     const mentorArray = [];
+                //     for (var k in mentorList){
+                //         mentorArray.push(
+                //             {
+                //                 "name":k,
+                //                 "firstName": k.split(" ")[0],
+                //                 "car": mentorList[k]["Car"],
+                //                 "languages": mentorList[k]["Languages"],
+                //                 "multipleDays": mentorList[k]["MultipleDays"],
+                //                 "prevMentor": mentorList[k]["PreviousMentor"],
+                //                 "region": mentorList[k]["Region"],
+                //                 "schoolName": mentorList[k]["SchoolName"],
+                //             }
+                //         )
+                //     }
+                //     console.log(mentorArray)
+                //     const schoolMentor = {school:school, mentors: mentorArray};
+                //     setCarr(schoolMentor)
+                // }
+            });
+            setSchools(roster);
+        });
+    },[]);
+
+    console.log(carr)
+    console.log(schools)
 
     const test = () => {
         return {"school":"carr"}
     }
 
-    const getCarr = () => {
-        var schoolMentor = {}
-        sortedRosterCollection.once('value', (snap) => {
-            snap.forEach((doc) =>{
-                if (doc.key==="Carr Intermediate"){
-                    var school = doc.key;
-                    var mentorList = doc.val();
-                    schoolMentor = {school:school, mentors: mentorList};
-                    // roster.push(schoolMentor);
-                    // console.log(roster.length);
-                    // console.log(schoolMentor);
-                    return schoolMentor;
-                    
-                }
-            });
-        });
-    }
 
 
     return (
@@ -89,7 +153,7 @@ export default function AppjamSortedRosterPage() {
             <TitleToolbar program="appjam+" season="Spring" year="2020"/>
 
             <div className="programPageContainer">
-                <h1>Sorted Roster Page</h1> 
+
                 {/* {
                     userCollection.map(user => 
                         <h3>{user.name}</h3>
@@ -98,14 +162,17 @@ export default function AppjamSortedRosterPage() {
                 
                 <div className="sortedInstructorCardsWrapper">
                     <div className="instructorCardsContainer">
-                        <SortedInstructorsCard instructors={getCarr()} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
-                        <SortedInstructorsCard SbgColor="#7FC9FF" SborderColor="#0099FF"/>
+                        {schools.map((schoolMentors,i) => (
+                            <SortedInstructorsCard instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
+                        ))}
+                        {/* <SortedInstructorsCard instructors={carr} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
+                        <SortedInstructorsCard instructors={carr} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
                         <SortedInstructorsCard SbgColor="#A4A3CE" SborderColor="#49479D"/>
                         <SortedInstructorsCard SbgColor="#A4A3CE" SborderColor="#49479D"/>
                         <SortedInstructorsCard SbgColor="#9AE4E3" SborderColor="#40CCC8"/>
                         <SortedInstructorsCard SbgColor="#9AE4E3" SborderColor="#40CCC8"/>
                         <SortedInstructorsCard SbgColor="#F9DEA6" SborderColor="#F3BF4D"/>
-                        <SortedInstructorsCard SbgColor="#F9DEA6" SborderColor="#F3BF4D"/>
+                        <SortedInstructorsCard SbgColor="#F9DEA6" SborderColor="#F3BF4D"/> */}
 
                     </div>
                 </div>

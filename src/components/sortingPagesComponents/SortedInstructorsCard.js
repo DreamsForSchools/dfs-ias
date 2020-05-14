@@ -113,8 +113,12 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
         // top: position.y+"px",
     })
 
+    const[instructorsCount, setInstructorsCount] = useState(0);
+    const[mentorsFromProps, setMentorsFromProps] = useState([]);
+    // console.log(mentorsFromProps)
+    // const[instructorsFromProps, setInstructorsFromProps] = useState([]);
     // console.log(typeof instructors !== 'undefined'?instructors["school"]:":')")
-    console.log(typeof instructors !== 'undefined'?instructors:":')")
+    // console.log(typeof instructors !== 'undefined'?instructors:":')")
     // console.log(instructors);
 
     // console.log(userCollection);
@@ -133,14 +137,52 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
           })
       });
 
+    // useEffect(() => {
+    //     var mentors = [];
+    //     if (typeof instructors !== 'undefined'){
+    //         for(var k in instructors["mentors"]){
+    //             console.log(k + ": " + instructors["mentors"][k])
+    //             mentors.push(k)
+    //         }
+    //         setInstructorsFromProps(mentors);
+    //     }
+    // });
+    // console.log(instructorsFromProps);
+
+
     // save the randomized icons for uncollapsed and collapsed card once page loads
-    useEffect(()=> {
-        if (savedIcon.length < 4){
-            for (var i=0; i < 4; i++){
+    useEffect(() => {
+        var count = 0;
+        if (typeof instructors !== 'undefined'){
+            for(var k in instructors["mentors"]){
+                // console.log(k + ": " + instructors["mentors"][k])
+                console.log(instructors["mentors"][k]);
+                count++
+                // setInstructorsCount(instructorsCount+1)
+                // console.log(instructorsCount)
+            }
+            // console.log(count)
+            setInstructorsCount(count);
+            setMentorsFromProps(instructors["mentors"]);
+            console.log(instructorsCount);
+        }
+
+        if (savedIcon.length < instructorsCount){
+            for (var i=0; i < instructorsCount; i++){
                 setSavedIcon(savedIcon.concat(animalIconsArray[Math.floor(Math.random()*animalIconsArray.length)]))
             }
         }
-    }, [savedIcon]);
+    });
+    console.log("mentors from props "+mentorsFromProps)
+
+    // save the randomized icons for uncollapsed and collapsed card once page loads
+    // useEffect(()=> {
+    //     if (savedIcon.length < 4){
+    //         for (var i=0; i < 4; i++){
+    //             setSavedIcon(savedIcon.concat(animalIconsArray[Math.floor(Math.random()*animalIconsArray.length)]))
+    //         }
+    //     }
+    // }, [savedIcon]);
 
     //function when down arrow to expand card is clicked
     const toggleMoreInfo = (e) => {
@@ -188,13 +230,92 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
 
             <div style={collapsedCardStyle}> {/* className="collapsedCard" */}
                 <div className="schoolStyle" style={schoolStyle}>
-                    <h3 style={schoolNameStyle}>Lathrop Intermediate</h3>
+                    <h3 style={schoolNameStyle}>{typeof instructors !== 'undefined'?instructors["school"]:"undefined :')"}</h3>
                     {/* Lathrop Intermediate */}
                 </div>
 
                 <div className="instructorsStyle" style={instructorsStyle}>
+                    {typeof mentorsFromProps !== 'undefined'?
+                        mentorsFromProps.map((person, i) =>(
+                            <div style={nameIconPairStyle} onMouseEnter={hoveredOver} onMouseLeave={removeHoveredOver}>
+                                {isHovered? (
+                                    // START --> ON HOVER MORE INFORMATION PER INSTRUCTOR 
+                                    <div className="hoverPosition" style={hoverPosition}>
+                                        <div className="hoverMoreInfoWrapper">
+                                            <div className="hoverMoreInfoContainer">
+                                                <div className="hoverMoreInfoHeaderContainer">
+                                                    <div className="hoverMoreInfoHeaderIcon">
+                                                        <img src={savedIcon[i]} style={hoverIcon}/>
+                                                    </div>
+                                                    <div className="hoverMoreInfoHeaderNameContainer">
+                                                        <div className="hoverMoreInfoHeaderName">
+                                                            <h3 style={hoverName}>{person.name}</h3>
+                                                        </div>
+                                                        <div className="hoverMoreInfoHeaderYearGenderEthnicity">
+                                                            <h3 style={hoverYearGenderEthnicityText}>4th+</h3>
+                                                            <h3 style={hoverYearGenderEthnicityText}>Male</h3>
+                                                            <h3 style={hoverYearGenderEthnicityText}>Caucasian</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
         
-                    <div style={nameIconPairStyle} onMouseEnter={hoveredOver} onMouseLeave={removeHoveredOver}>
+                                                <div className="hoverMoreInfoDetailsContainer"> 
+                                                    <div className="hoverMoreInfoDetailsRegionSchoolSchedContainer">
+                                                        <div className="hoverMoreInfoDetailsRegionSchoolGrid">
+                                                            <h3 style={hoverRegionSchoolText}>{person.region}</h3>
+                                                            <h3 style={hoverRegionSchoolText}>University of California Irvine</h3>
+                                                        </div>
+                                                        <div className="hoverMoreInfoDetailsSchedGrid">
+                                                            <h6 style={hoverSchedDays}>M</h6>
+                                                            <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                                            <h6 style={hoverSchedDays}>T</h6>
+                                                            <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                                            <h6 style={hoverSchedDays}>W</h6>
+                                                            <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                                            <h6 style={hoverSchedDays}>T</h6>
+                                                            <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                                            <h6 style={hoverSchedDays}>F</h6>
+                                                            <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div className="hoverMoreInfoDetailsOtherContainer">
+                                                        <div className="hoverMoreInfoDetailsOtherGrid">
+                                                            <div className="hoverMoreInfoDetailsOtherItem">
+                                                                <img src={person.prevMentor === "Yes" ? mentor : null} style={hoverDetailIcon}/>
+                                                                <h3 style={hoverDetailText}>{person.prevMentor === "Yes" ? "Returning Mentor" : null}</h3>
+                                                            </div>
+                                                            <div className="hoverMoreInfoDetailsOtherItem">
+                                                                <img src={person.car === "Yes" ? car : null} style={hoverDetailIcon}/>
+                                                                <h3 style={hoverDetailText}>{person.car === "Yes" ? "Has car" : null}</h3>
+                                                            </div>
+                                                            <div className="hoverMoreInfoDetailsOtherItem">
+                                                                <img src={shirt} style={hoverDetailIcon}/>
+                                                                <h3 style={hoverDetailText}>XS</h3>
+                                                            </div>
+                                                            <div className="hoverMoreInfoDetailsOtherItem">
+                                                                <img src={language} style={hoverDetailIcon}/>
+                                                                <h3 style={hoverDetailText}>{person.languages}</h3>
+                                                            </div>
+                                                            <div className="hoverMoreInfoDetailsOtherItem">
+                                                                <h3 style={hoverDetailTextTeach}>{person.multipleDays === "Yes" ? "CAN teach multiple days" : "CANNOT teach multiple days"}</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    // END --> ON HOVER MORE INFORMATION PER INSTRUCTOR 
+                                ):null}
+                                <img src={savedIcon[i]} style={animalIcon}/>
+                                <h3 style={person.prevMentor === "Yes"?instructorNameStyleMentor: instructorNameStyle}>{person.firstName}</h3>
+                            </div>
+
+                        ))
+
+                    :null}
+                    
+                    {/* <div style={nameIconPairStyle} onMouseEnter={hoveredOver} onMouseLeave={removeHoveredOver}>
                         {isHovered? (
                             // START --> ON HOVER MORE INFORMATION PER INSTRUCTOR 
                             <div className="hoverPosition" style={hoverPosition}>
@@ -266,9 +387,11 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
                         ):null}
                         <img src={savedIcon[0]} style={animalIcon}/>
                         <h3 style={instructorNameStyle}>Phineas</h3>
-                    </div>
+                    </div> */}
 
-                    <div style={nameIconPairStyle} >                        
+
+
+                    {/* <div style={nameIconPairStyle} >                        
                         <img src={savedIcon[1]} style={animalIcon}/>
                         <h3 style={instructorNameStyle}>Ferb</h3>
                     </div>
@@ -281,7 +404,7 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
                     <div style={nameIconPairStyle}>
                         <img src={savedIcon[3]} style={animalIcon}/>
                         <h3 style={instructorNameStyle}>Perry</h3>
-                    </div>
+                    </div> */}
                 
                 </div>
 
@@ -296,13 +419,28 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
                     // START --> ON CLICK OF DOWN BUTTON TO EXPAND CARD 
                     <div style={uncollapsedCardStyle}> {/* className="uncollapsedCard" */}
                     <div style={schoolInfo}>
-                        <h3 style={schoolInfoStyle}>Lathrop Intermediate</h3>
+                        <h3 style={schoolInfoStyle}>{typeof instructors !== 'undefined'?instructors["school"]:"undefined :')"}</h3> {/*Lathrop Intermediate */}
                         <h3 style={schoolInfoStyle}>Mon/Wed</h3>
                         <h3 style={schoolInfoStyle}>3:50-5:30</h3>
                     </div>
                     
                     <div style={instructorsInfoContainer}>
-                        <div style={instructorsInfo}>
+
+                        {typeof instructors !== 'undefined'?
+                            instructors["mentors"].map((person, i) =>(
+                                <div style={instructorsInfo} key={person.name}>
+                                    <img src={person.car === "Yes" && person.prevMentor === "Yes" ? carMentor : person.car === "Yes" && person.prevMentor !== "Yes"? car : person.car !== "Yes" && person.prevMentor === "Yes" ? mentor : null} style={carMentorIcon}/>
+                                    <img src={savedIcon[i]} style={animalIcon}/>
+                                    <h3 style={instructorInfoNameStyle}>{person.name}</h3>
+                                    <button style={editBtn}>
+                                        <img src={options} style={optionsIcon}/>
+                                    </button>
+                                </div>
+                            ))
+
+                        :null}
+
+                        {/* <div style={instructorsInfo}>
                             <img src={car} style={carMentorIcon}/>
                             <img src={savedIcon[0]} style={animalIcon}/>
                             <h3 style={instructorInfoNameStyle}>Phineas Flynn</h3>
@@ -336,7 +474,8 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
                             <button style={editBtn}>
                                 <img src={options} style={optionsIcon}/>
                             </button>
-                        </div>
+                        </div> */}
+
                     </div>
 
                 </div>
@@ -491,6 +630,13 @@ const instructorNameStyle = {
     fontWeight: "400",
     color: "white"
 }
+
+const instructorNameStyleMentor = {
+    fontSize: "12px",
+    fontWeight: "400",
+    color: "#202E47"
+}
+
 
 const nameIconPairStyle = {
     display: "flex",
