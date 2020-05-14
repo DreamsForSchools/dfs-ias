@@ -3,6 +3,7 @@ import React from 'react'
 import { useHistory } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { useMousePosition } from "../../customHooks/useMousePosition";
+import props from 'prop-types';
 
 import birb from '../.././assets/animalIcons/birb.png';
 import bull from '../.././assets/animalIcons/bull.png';
@@ -40,7 +41,7 @@ import fire from '../../config/fire';
 
 import userCollection from '../../mockDatabase/MockDatabase';
 
-export default function SortedInstructorsCard(props) {
+export default function SortedInstructorsCard({SbgColor, SborderColor, instructors}) {
 
     //User auth 
     const [user, setUser] = useState(null);
@@ -78,7 +79,7 @@ export default function SortedInstructorsCard(props) {
         marginLeft: "2%",
         marginRight: "2%",
         // border: "solid 3px",
-        backgroundColor: props.bgColor,
+        backgroundColor: SbgColor,
         // borderColor: props.borderColor,
     });
 
@@ -92,17 +93,17 @@ export default function SortedInstructorsCard(props) {
         height: "260px",
         borderBottomLeftRadius: "15px",
         borderBottomRightRadius: "15px",
-        backgroundColor: props.bgColor,
-        borderLeft: "solid 3px " + props.borderColor,
-        borderRight: "solid 3px " + props.borderColor,
-        borderBottom: "solid 3px " + props.borderColor,
+        backgroundColor: SbgColor,
+        borderLeft: "solid 3px " + SborderColor,
+        borderRight: "solid 3px " + SborderColor,
+        borderBottom: "solid 3px " + SborderColor,
     }); 
 
     //uncollapsed (expanded) school info style (color is based on props.borderColor property)
     const [schoolInfoStyle, setSchoolInfoStyle] = useState({
         fontSize: "14px",
         fontWeight: "500",
-        color: props.borderColor
+        color: SborderColor
     });
 
     //style to determine where to render instructor info when hovering over them
@@ -111,6 +112,8 @@ export default function SortedInstructorsCard(props) {
         // left: position.x+"px",
         // top: position.y+"px",
     })
+
+    console.log(typeof instructors !== 'undefined'?instructors["school"]:":')")
 
     // console.log(userCollection);
 
@@ -128,14 +131,14 @@ export default function SortedInstructorsCard(props) {
           })
       });
 
-    //save the randomized icons for uncollapsed and collapsed card once page loads
+    // save the randomized icons for uncollapsed and collapsed card once page loads
     useEffect(()=> {
         if (savedIcon.length < 4){
             for (var i=0; i < 4; i++){
                 setSavedIcon(savedIcon.concat(animalIconsArray[Math.floor(Math.random()*animalIconsArray.length)]))
             }
         }
-    }, [savedIcon])
+    }, [savedIcon]);
 
     //function when down arrow to expand card is clicked
     const toggleMoreInfo = (e) => {
@@ -151,8 +154,8 @@ export default function SortedInstructorsCard(props) {
             marginLeft: "2%",
             marginRight: "2%",
             border: !isOpen ? "solid 3px" : null,
-            backgroundColor: props.bgColor,
-            borderColor: !isOpen ? props.borderColor : null,
+            backgroundColor: SbgColor,
+            borderColor: !isOpen ? SborderColor : null,
         })
     }
 
@@ -184,6 +187,7 @@ export default function SortedInstructorsCard(props) {
             <div style={collapsedCardStyle}> {/* className="collapsedCard" */}
                 <div className="schoolStyle" style={schoolStyle}>
                     <h3 style={schoolNameStyle}>Lathrop Intermediate</h3>
+                    {/* Lathrop Intermediate */}
                 </div>
 
                 <div className="instructorsStyle" style={instructorsStyle}>
