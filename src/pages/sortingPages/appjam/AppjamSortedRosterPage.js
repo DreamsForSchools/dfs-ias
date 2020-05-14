@@ -19,8 +19,8 @@ export default function AppjamSortedRosterPage() {
     const [user, setUser] = useState(null);
     // console.log(userCollection);
 
-    const [carr, setCarr] = useState({"school":"carr"});
-    // console.log(carr)
+    const [carr, setCarr] = useState({})
+    
 
     //History hook for navigation
     let history = useHistory();
@@ -37,51 +37,49 @@ export default function AppjamSortedRosterPage() {
           })
       },[]);
 
-    //   useEffect(() => {
-    //     sortedRosterCollection.once('value', (snap) => {
-    //         const roster = []
-    //         snap.forEach((doc) =>{
-    //             // console.log(doc.key);
-    //             // var mentors = doc.val();
-    //             // for (var k in mentors){
-    //             //     console.log(doc.key, k, mentors[k])
-    //             // }
-    //             if (doc.key==="Carr Intermediate"){
-    //                 var school = doc.key;
-    //                 var mentorList = doc.val();
-    //                 var schoolMentor = {school:school, mentors: mentorList};
-    //                 // roster.push(schoolMentor);
-    //                 // console.log(roster.length);
-    //                 setCarr(schoolMentor)
-    //                 // console.log(carr)
-    //             }
-    //         });
-    //         // console.log(roster)
-    //     });
-    //   }, [carr]);
 
-    
-    const carrSchool = () => {
+    // useEffect(() => {
+    // sortedRosterCollection.once('value', (snap) => {
+    //     const roster = []
+    //     snap.forEach((doc) =>{
+    //         // console.log(doc.key);
+    //         // var mentors = doc.val();
+    //         // for (var k in mentors){
+    //         //     console.log(doc.key, k, mentors[k])
+    //         // }
+    //         if (doc.key==="Carr Intermediate"){
+    //             var school = doc.key;
+    //             var mentorList = doc.val();
+    //             var schoolMentor = {school:school, mentors: mentorList};
+    //             // roster.push(schoolMentor);
+    //             // console.log(roster.length);
+    //             setCarr(schoolMentor)
+    //             // console.log(roster[0])
+    //         }
+    //     });
+    //     // console.log(roster)
+    // });
+    // },[carr]);
+
+    const test = () => {
+        return {"school":"carr"}
+    }
+
+    const getCarr = () => {
+        var schoolMentor = {}
         sortedRosterCollection.once('value', (snap) => {
-            const roster = []
             snap.forEach((doc) =>{
-                // console.log(doc.key);
-                // var mentors = doc.val();
-                // for (var k in mentors){
-                //     console.log(doc.key, k, mentors[k])
-                // }
                 if (doc.key==="Carr Intermediate"){
                     var school = doc.key;
                     var mentorList = doc.val();
-                    var schoolMentor = {school:school, mentors: mentorList};
+                    schoolMentor = {school:school, mentors: mentorList};
                     // roster.push(schoolMentor);
                     // console.log(roster.length);
-                    return schoolMentor
-                    console.log(schoolMentor)
-                    // console.log(carr)
+                    // console.log(schoolMentor);
+                    return schoolMentor;
+                    
                 }
             });
-            // console.log(roster)
         });
     }
 
@@ -100,7 +98,7 @@ export default function AppjamSortedRosterPage() {
                 
                 <div className="sortedInstructorCardsWrapper">
                     <div className="instructorCardsContainer">
-                        <SortedInstructorsCard instructors={carr} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
+                        <SortedInstructorsCard instructors={getCarr()} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
                         <SortedInstructorsCard SbgColor="#7FC9FF" SborderColor="#0099FF"/>
                         <SortedInstructorsCard SbgColor="#A4A3CE" SborderColor="#49479D"/>
                         <SortedInstructorsCard SbgColor="#A4A3CE" SborderColor="#49479D"/>

@@ -113,7 +113,9 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
         // top: position.y+"px",
     })
 
-    console.log(typeof instructors !== 'undefined'?instructors["school"]:":')")
+    // console.log(typeof instructors !== 'undefined'?instructors["school"]:":')")
+    console.log(typeof instructors !== 'undefined'?instructors:":')")
+    // console.log(instructors);
 
     // console.log(userCollection);
 
