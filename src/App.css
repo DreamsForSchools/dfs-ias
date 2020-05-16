@@ -318,4 +318,49 @@ a{
   align-items: left;
   margin-top: 5px;
 }
+
+.optionsMenu{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+  align-items: center;
+  height: 70px;
+  width: 68px;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  /* padding: 2px; */
+
+}
+
+.optionBtn{
+  width: 68px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: white;
+  border: 0.5px solid #9097A3;
+
+}
+
+.optionBtn:hover{
+  background-color: #D9D9D9;
+}
+
+.moveBtn{
+  color: #0099FF;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-bottom: -1px;
+}
+
+.lockBtn{
+ color: #0099FF;
+}
+
+.deleteBtn{
+  color: #ED0101;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-top: -1px;
+}
 /*  --------------- END SortedInstructorsCard COMPONENT --------------- */

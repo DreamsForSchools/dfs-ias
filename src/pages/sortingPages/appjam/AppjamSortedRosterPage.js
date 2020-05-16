@@ -163,7 +163,7 @@ export default function AppjamSortedRosterPage() {
                 <div className="sortedInstructorCardsWrapper">
                     <div className="instructorCardsContainer">
                         {schools.map((schoolMentors,i) => (
-                            <SortedInstructorsCard instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
+                            <SortedInstructorsCard instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF" key={schoolMentors.school}/>
                         ))}
                         {/* <SortedInstructorsCard instructors={carr} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
                         <SortedInstructorsCard instructors={carr} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
