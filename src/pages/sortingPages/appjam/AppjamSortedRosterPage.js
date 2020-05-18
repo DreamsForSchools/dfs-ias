@@ -7,6 +7,13 @@ import SortedInstructorsCard from '../../../components/sortingPagesComponents/So
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 
+import car from '../../.././assets/car.png';
+import carMentor from '../../.././assets/carMentor.png';
+import mentor from '../../.././assets/mentor.png';
+import birb from '../../.././assets/animalIcons/birb.png';
+
+
+
 import fire from '../../.././config/fire';
 import firebase from 'firebase';
 
@@ -154,30 +161,103 @@ export default function AppjamSortedRosterPage() {
 
             <div className="programPageContainer">
 
-                {/* {
-                    userCollection.map(user => 
-                        <h3>{user.name}</h3>
-                    )
-                } */}
+                <div style={iconGuideWrapper}>
+                    <div style={box}>
+                        <div style={iconGuideContainer}>
+                            <div style={iconGuideNamePair}>
+                                <div style={iconGuideNamePairAnimal}>
+                                    <img src={birb} style={iconGuideIconStyle}/>
+                                    <h6 style={iconGuideTextAnimalStyle}>name</h6>
+                                </div>
+                                <h6 style={iconGuideTextStyle}>previous mentor</h6>
+                            </div>
+
+                            <div style={iconGuideNamePair}>
+                                <img src={car} style={iconGuideIconStyle}/>
+                                <h6 style={iconGuideTextStyle}>has a car</h6>
+                            </div>
+
+                            <div style={iconGuideNamePair}>
+                                <img src={mentor} style={iconGuideIconStyle} />
+                                <h6 style={iconGuideTextStyle}>previous mentor</h6>
+                            </div>
+
+                            <div style={iconGuideNamePair}>
+                                <img src={carMentor} style={iconGuideIconStyle} />
+                                <h6 style={iconGuideTextStyle}>has a car AND previous mentor</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div className="sortedInstructorCardsWrapper">
                     <div className="instructorCardsContainer">
                         {schools.map((schoolMentors,i) => (
                             <SortedInstructorsCard instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF" key={schoolMentors.school}/>
                         ))}
-                        {/* <SortedInstructorsCard instructors={carr} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
-                        <SortedInstructorsCard instructors={carr} SbgColor="#7FC9FF" SborderColor="#0099FF"/>
-                        <SortedInstructorsCard SbgColor="#A4A3CE" SborderColor="#49479D"/>
-                        <SortedInstructorsCard SbgColor="#A4A3CE" SborderColor="#49479D"/>
-                        <SortedInstructorsCard SbgColor="#9AE4E3" SborderColor="#40CCC8"/>
-                        <SortedInstructorsCard SbgColor="#9AE4E3" SborderColor="#40CCC8"/>
-                        <SortedInstructorsCard SbgColor="#F9DEA6" SborderColor="#F3BF4D"/>
-                        <SortedInstructorsCard SbgColor="#F9DEA6" SborderColor="#F3BF4D"/> */}
-
                     </div>
                 </div>
             </div> 
 
         </div>
     )
+}
+
+const iconGuideWrapper = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "2%",
+    marginBottom: "2%"
+}
+
+const box = {
+    width: "670px",
+    height: "70px",
+    backgroundColor: "#D2D5DA",
+    borderRadius: "10px"
+}
+
+const iconGuideContainer = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "7px"
+}
+
+const iconGuideNamePairAnimal = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+}
+
+const iconGuideTextAnimalStyle = {
+    fontSize: "12px",
+    fontWeight: "400",
+    marginLeft: "3px",
+    color: "#202E47",
+}
+
+const iconGuideNamePair = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginleft: "15px",
+    marginRight: "15px"
+}
+
+const iconGuideIconStyle = {
+    width: "35px",
+}
+
+const iconGuideTextStyle = {
+    fontSize: "12px",
+    fontWeight: "400",
+    marginLeft: "3px",
+    color: "#202E47",
+    color: "#49479D"
 }
