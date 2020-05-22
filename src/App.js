@@ -12,6 +12,14 @@ import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRost
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
 import AppjamShirtPage from './pages/sortingPages/appjam/AppjamShirtPage';
 
+import SpheroSortedRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
+import SpheroRosterPage from './pages/sortingPages/sphero/SpheroRosterPage';
+import SpheroShirtPage from './pages/sortingPages/sphero/SpheroShirtPage';
+
+import WebjamSortedRosterPage from './pages/sortingPages/webjam/WebjamSortedRosterPage';
+import WebjamRosterPage from './pages/sortingPages/webjam/WebjamRosterPage';
+import WebjamShirtPage from './pages/sortingPages/webjam/WebjamShirtPage';
+
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import fire from './config/fire';
@@ -64,12 +72,33 @@ class App extends React.Component {
 
             {/* AppjamShirtPage Component */}
             <Route path="/appjamhome/shirtsummary" exact component={AppjamShirtPage} />
+
             
             {/* SpheroHomePage Component */}
-            <Route path="/spherohome" component={SpheroHomePage} />
+            <Route path="/spherohome" exact component={SpheroHomePage} />
 
+            {/* SpheroSortedRosterPage Component */}
+            <Route path="/spherohome/sortedroster" exact component={SpheroSortedRosterPage} />
+
+            {/* SpheroRosterPage Component */}
+            <Route path="/spherohome/roster" exact component={SpheroRosterPage} />
+
+            {/* SpheroShirtPage Component */}
+            <Route path="/spherohome/shirtsummary" exact component={SpheroShirtPage} />
+
+            
             {/* WebjamHomePage Component */}
-            <Route path="/webjamhome" component={WebjamHomePage} />
+            <Route path="/webjamhome" exact component={WebjamHomePage} />
+
+            {/* SpheroSortedRosterPage Component */}
+            <Route path="/webjamhome/sortedroster" exact component={WebjamSortedRosterPage} />
+
+            {/* SpheroRosterPage Component */}
+            <Route path="/webjamhome/roster" exact component={WebjamRosterPage} />
+
+            {/* SpheroShirtPage Component */}
+            <Route path="/webjamhome/shirtsummary" exact component={WebjamShirtPage} />
+            
 
             {/* TemplatePage Component */}
             <Route path="/template" component={TemplatePage} />

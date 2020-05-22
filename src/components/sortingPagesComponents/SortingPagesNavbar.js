@@ -4,7 +4,7 @@ import {Link,useHistory, useLocation} from 'react-router-dom';
 import fire from '../.././config/fire';
 import { useState, useEffect } from 'react';
 
-export default function SortingPagesNavbar() {
+export default function SortingPagesNavbar({urlPath}) {
 
     const [user, setUser] = useState(null);
     const [rosterLinkStyle, setRosterLinkStyle] = useState({
@@ -32,7 +32,7 @@ export default function SortingPagesNavbar() {
         alignTtems: "center",
     })
 
-
+    console.log(urlPath)
     let history = useHistory();
     let location = useLocation();
     
@@ -47,17 +47,17 @@ export default function SortingPagesNavbar() {
           });
 
           console.log(location.pathname)
-          if (location.pathname === "/appjamhome/sortedroster"){
+          if (location.pathname === "/"+urlPath+"home/sortedroster"){
             setSortedRosterLinkStyle({
                 backgroundColor: "#9097A3",
                 color: "white", 
             });
-        }else if (location.pathname === "/appjamhome/roster"){
+        }else if (location.pathname === "/"+urlPath+"home/roster"){
             setRosterLinkStyle({
                 backgroundColor: "#9097A3",
                 color: "white", 
             });
-        }else if(location.pathname === "/appjamhome/shirtsummary"){
+        }else if(location.pathname === "/"+urlPath+"home/shirtsummary"){
             setShirtLinkStyle({
                 backgroundColor: "#9097A3",
                 color: "white", 
@@ -67,7 +67,7 @@ export default function SortingPagesNavbar() {
 
 
     const rosterEnter = () => {
-        if (!(location.pathname === "/appjamhome/roster")){
+        if (!(location.pathname === "/"+urlPath+"home/roster")){
             setRosterLinkStyle({
                 backgroundColor: "#D2D5DA",
                 color: "white",
@@ -77,7 +77,7 @@ export default function SortingPagesNavbar() {
     }
 
     const rosterLeave = () => {
-        if (!(location.pathname === "/appjamhome/roster")){
+        if (!(location.pathname === "/"+urlPath+"home/roster")){
             setRosterLinkStyle({
                 backgroundColor: "white",
                 color: "#5B7082",
@@ -86,7 +86,7 @@ export default function SortingPagesNavbar() {
     }
 
     const SortedRosterEnter = () => {
-        if (!(location.pathname === "/appjamhome/sortedroster")){
+        if (!(location.pathname === "/"+urlPath+"home/sortedroster")){
             setSortedRosterLinkStyle({
                 backgroundColor: "#D2D5DA",
                 color: "white",
@@ -95,7 +95,7 @@ export default function SortingPagesNavbar() {
     }
 
     const SortedRosterLeave = () => {
-        if (!(location.pathname === "/appjamhome/sortedroster")){
+        if (!(location.pathname === "/"+urlPath+"home/sortedroster")){
             setSortedRosterLinkStyle({
                 backgroundColor: "white",
                 color: "#5B7082",
@@ -104,7 +104,7 @@ export default function SortingPagesNavbar() {
     }
 
     const shirtEnter = () => {
-        if (!(location.pathname === "/appjamhome/shirtsummary")){
+        if (!(location.pathname === "/"+urlPath+"home/shirtsummary")){
             setShirtLinkStyle({
                 backgroundColor: "#D2D5DA",
                 color: "white",
@@ -113,7 +113,7 @@ export default function SortingPagesNavbar() {
     }
 
     const shirtLeave = () => {
-        if (!(location.pathname === "/appjamhome/shirtsummary")){
+        if (!(location.pathname === "/"+urlPath+"home/shirtsummary")){
             setShirtLinkStyle({
                 backgroundColor: "white",
                 color: "#5B7082",
@@ -130,15 +130,15 @@ export default function SortingPagesNavbar() {
         <div className="sortingPagesNavbarWrapper">
             <nav className="sortingPagesNavbar">
                 <ul className="sortingPagesNavbarLinks">
-                    <Link to="/appjamhome/roster">
+                    <Link to={"/"+urlPath+"home/roster"}>
                         <li onMouseEnter={rosterEnter} onMouseLeave={rosterLeave} style={rosterLinkStyle} className="sortedRosterNavLink" >roster</li>
                     </Link>
 
-                    <Link to="/appjamhome/sortedroster">
+                    <Link to={"/"+urlPath+"home/sortedroster"}>
                         <li onMouseEnter={SortedRosterEnter} onMouseLeave={SortedRosterLeave} style={sortedRosterLinkStyle} className="sortedRosterNavLink">sorted roster</li>
                     </Link>
 
-                    <Link to="/appjamhome/shirtsummary">
+                    <Link to={"/"+urlPath+"home/shirtsummary"}>
                         <li onMouseEnter={shirtEnter} onMouseLeave={shirtLeave} style={shirtLinkStyle} className="sortedRosterNavLink">shirt sizes</li>
                     </Link>
                 </ul>

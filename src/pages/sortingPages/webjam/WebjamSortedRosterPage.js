@@ -4,11 +4,11 @@ import SideNavBar from '../../../components/sidebar/SideNavBar';
 import SortingPagesNavbar from '../../../components/sortingPagesComponents/SortingPagesNavbar'
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import { useHistory } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
-export default function AppjamRosterPage() {
+export default function WebjamSortedRosterPage() {
 
     const [user, setUser] = useState(null);
 
@@ -26,19 +26,13 @@ export default function AppjamRosterPage() {
           })
       });
 
+
     return (
         <div>
-            {/* <SideNavBar />
+            <TitleToolbar program="webjam" season="Spring" year="2020" urlPath="webjam"/>
             <div className="programPageContainer">
-                <h1 className="sortedPagePageTitle">appjam+ [SEASON] [YEAR]</h1>
-                <SortingPagesNavbar />
-            </div> */}
-
-            <TitleToolbar program="appjam+" season="Spring" year="2020" urlPath="appjam"/>
-
-            <div className="programPageContainer">
-                <h1>Roster Page</h1>
-            </div> 
+                <h1>Webjam SORTED ROSTER Page</h1>
+            </div>
 
         </div>
     )

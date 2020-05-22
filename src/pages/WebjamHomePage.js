@@ -15,7 +15,7 @@ export default function WebjamHomePage() {
     const addRoster = () => {
         fire.auth().onAuthStateChanged(user => {
             if (user){
-                history.push('/template');
+                history.push('/webjamhome/roster');
             }else{
                 history.push('/');
             }

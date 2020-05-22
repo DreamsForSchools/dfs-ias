@@ -134,7 +134,7 @@ export default function AppjamSortedRosterPage() {
 
     return (
         <div>
-            <TitleToolbar program="appjam+" season="Spring" year="2020"/>
+            <TitleToolbar program="appjam+" season="Spring" year="2020" urlPath="appjam"/>
 
             <div className="programPageContainer">
 
@@ -198,7 +198,7 @@ const saveResort = {
 const saveBtn = {
     fontSize: "14px",
     color: "white",
-    backgroundColor: "#202E47",
+    backgroundColor: "#49479D",
     borderRadius: "28px",
     height: "46px",
     paddingLeft: "15px",
@@ -209,9 +209,9 @@ const saveBtn = {
 
 const resortBtn = {
     fontSize: "14px",
-    color: "#202E47",
+    color: "#49479D",
     backgroundColor: "white",
-    border: "0.5px solid #202E47",
+    border: "0.5px solid #49479D",
     borderRadius: "28px",
     height: "46px",
     paddingLeft: "15px",

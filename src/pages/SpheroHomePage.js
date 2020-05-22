@@ -15,7 +15,7 @@ export default function SpheroHomePage() {
     const addRoster = () => {
         fire.auth().onAuthStateChanged(user => {
             if (user){
-                history.push('/template');
+                history.push('/spherohome/roster');
             }else{
                 history.push('/');
             }

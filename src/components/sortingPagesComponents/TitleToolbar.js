@@ -40,7 +40,7 @@ export default function TitleToolbar(props) {
                     </div>
                 </div>
 
-                <SortingPagesNavbar />
+                <SortingPagesNavbar urlPath={props.urlPath}/>
 
             </div>
 
