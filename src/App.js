@@ -7,6 +7,14 @@ import SchoolHomePage from './pages/SchoolHomePage';
 import SpheroHomePage from './pages/SpheroHomePage';
 import WebjamHomePage from './pages/WebjamHomePage';
 import TemplatePage from './pages/TemplatePage';
+import RosterAppjam from './pages/RosterAppjam';
+import RosterSphero from './pages/RosterSphero';
+import RosterWebjam from './pages/RosterWebjam';
+import RosterSchool from './pages/RosterSchool';
+
+
+
+
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -60,6 +68,19 @@ class App extends React.Component {
 
             {/* TemplatePage Component */}
             <Route path="/template" component={TemplatePage} />
+
+            {/* RosterAppjam Component */}
+            <Route path="/appjamroster" component={RosterAppjam} />
+
+            {/* RosterSphero Component */}
+            <Route path="/spheroroster" component={RosterSphero} />
+
+            {/* RosterWebjam Component */}
+            <Route path="/webjamroster" component={RosterWebjam} />
+
+            {/* RosterSchool Component */}
+            <Route path="/schoolroster" component={RosterSchool} />
+
         </Switch>
       </div>
     </Router>
