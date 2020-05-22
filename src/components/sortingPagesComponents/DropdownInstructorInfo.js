@@ -7,6 +7,7 @@ import options from '../.././assets/options.png';
 import car from '../.././assets/car.png';
 import carMentor from '../.././assets/carMentor.png';
 import mentor from '../.././assets/mentor.png';
+import lock from '../.././assets/lock.png';
 
 // import fire from '../../.././config/fire';
 // import firebase from 'firebase';
@@ -58,7 +59,7 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
         <div style={instructorsInfo} key={person.name}>
             <img src={person.car === "Yes" && person.prevMentor === "Yes" ? carMentor : person.car === "Yes" && person.prevMentor !== "Yes"? car : person.car !== "Yes" && person.prevMentor === "Yes" ? mentor : null} style={carMentorIcon}/>
             <img src={savedIcon[parseInt(savedIconIndex, 10)]} style={animalIcon}/>
-            <h3 style={instructorInfoNameStyle}>{person.name}</h3>
+            <h3 style={instructorInfoNameStyle}>{person.name} <img src={lock}/></h3>
             <button style={editBtn} onClick={(e) => { toggleOptionsMenu(e, person.name) }}>
                 <img src={options} style={optionsIcon}/>
                 <div style={optionsMenuPosition}>

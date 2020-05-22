@@ -24,8 +24,8 @@ export default function AppjamSortedRosterPage() {
 
     //User auth 
     const [user, setUser] = useState(null);
-    // console.log(userCollection);
 
+    //dummy data
     const [carr, setCarr] = useState(
         {
             "school": "Carr Intermediate",
@@ -118,29 +118,6 @@ export default function AppjamSortedRosterPage() {
                 // console.log(mentorArray)
                 const schoolMentor = {school:school, mentors: mentorArray};
                 roster.push(schoolMentor);
-
-                // if (doc.key==="Carr Intermediate"){
-                //     const school = doc.key;
-                //     const mentorList = doc.val();
-                //     const mentorArray = [];
-                //     for (var k in mentorList){
-                //         mentorArray.push(
-                //             {
-                //                 "name":k,
-                //                 "firstName": k.split(" ")[0],
-                //                 "car": mentorList[k]["Car"],
-                //                 "languages": mentorList[k]["Languages"],
-                //                 "multipleDays": mentorList[k]["MultipleDays"],
-                //                 "prevMentor": mentorList[k]["PreviousMentor"],
-                //                 "region": mentorList[k]["Region"],
-                //                 "schoolName": mentorList[k]["SchoolName"],
-                //             }
-                //         )
-                //     }
-                //     console.log(mentorArray)
-                //     const schoolMentor = {school:school, mentors: mentorArray};
-                //     setCarr(schoolMentor)
-                // }
             });
             setSchools(roster);
         });
@@ -188,6 +165,11 @@ export default function AppjamSortedRosterPage() {
                             </div>
                         </div>
                     </div>
+
+                    <div style={saveResort}>
+                        <button style={resortBtn}>Re-sort!</button>
+                        <button style={saveBtn}>SAVE!</button>
+                    </div>
                 </div>
                 
                 <div className="sortedInstructorCardsWrapper">
@@ -199,8 +181,42 @@ export default function AppjamSortedRosterPage() {
                 </div>
             </div> 
 
+
+
         </div>
     )
+}
+
+const saveResort = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "20px"
+}
+
+const saveBtn = {
+    fontSize: "14px",
+    color: "white",
+    backgroundColor: "#202E47",
+    borderRadius: "28px",
+    height: "46px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    marginLeft: "10px"
+
+}
+
+const resortBtn = {
+    fontSize: "14px",
+    color: "#202E47",
+    backgroundColor: "white",
+    border: "0.5px solid #202E47",
+    borderRadius: "28px",
+    height: "46px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+
 }
 
 const iconGuideWrapper = {
