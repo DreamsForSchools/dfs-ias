@@ -27,7 +27,7 @@ export default function AppjamRosterPage() {
       });
 
     const [roster, setRoster] = useState([])
-    const sortedRosterCollection = useRef(fire.database().ref().child('instructors'))
+    const sortedRosterCollection = useRef(fire.database().ref().child('Instructors'))
 
     useEffect(() => {
         sortedRosterCollection.current.once('value', (snap) => {
