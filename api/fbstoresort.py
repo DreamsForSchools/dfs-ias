@@ -38,6 +38,7 @@ def match_to_dict(match : Match) -> dict:
 		"Car" : match.car,
 		"Languages" : match.languages, 
 		"MultipleDays" : match.multiple_days, 
-		"Schedule" : match.schedule
+		"Schedule" : match.schedule, 
+		"Locked" : match.locked
 	}
 	return match_dict
