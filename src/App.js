@@ -11,14 +11,20 @@ import TemplatePage from './pages/TemplatePage';
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
 import AppjamShirtPage from './pages/sortingPages/appjam/AppjamShirtPage';
+import AppjamUploadInstitutionsPage from './pages/sortingPages/appjam/AppjamUploadInstitution';
+import AppjamUploadRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 
 import SpheroSortedRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
 import SpheroRosterPage from './pages/sortingPages/sphero/SpheroRosterPage';
 import SpheroShirtPage from './pages/sortingPages/sphero/SpheroShirtPage';
+import SpheroUploadInstitutionsPage from './pages/sortingPages/sphero/SpheroUploadInstitution';
+import SpheroUploadRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
 
 import WebjamSortedRosterPage from './pages/sortingPages/webjam/WebjamSortedRosterPage';
 import WebjamRosterPage from './pages/sortingPages/webjam/WebjamRosterPage';
 import WebjamShirtPage from './pages/sortingPages/webjam/WebjamShirtPage';
+import WebjamUploadInstitutionsPage from './pages/sortingPages/webjam/WebjamUploadInstitution';
+import WebjamUploadRosterPage from './pages/sortingPages/webjam/WebjamUploadRoster';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -61,6 +67,7 @@ class App extends React.Component {
             {/* SchoolHomePage Component */}
             <Route path="/schoolhome" component={SchoolHomePage} />
 
+
             {/* AppjamPage Component */}
             <Route path="/appjamhome" exact component={AppjamHomePage} />
 
@@ -72,6 +79,12 @@ class App extends React.Component {
 
             {/* AppjamShirtPage Component */}
             <Route path="/appjamhome/shirtsummary" exact component={AppjamShirtPage} />
+
+            {/* AppjamUploadInstitutionsPage Component */}
+            <Route path="/appjamhome/uploadinstitution" exact component={AppjamUploadInstitutionsPage} />
+
+            {/* AppjamUploadRosterPage Component */}
+            <Route path="/appjamhome/uploadroster" exact component={AppjamUploadRosterPage} />
 
             
             {/* SpheroHomePage Component */}
@@ -86,6 +99,12 @@ class App extends React.Component {
             {/* SpheroShirtPage Component */}
             <Route path="/spherohome/shirtsummary" exact component={SpheroShirtPage} />
 
+            {/* SpheroUploadInstitutionsPage Component */}
+            <Route path="/spherohome/uploadinstitution" exact component={SpheroUploadInstitutionsPage} />
+
+            {/* SpheroUploadRosterPage Component */}
+            <Route path="/spherohome/uploadroster" exact component={SpheroUploadRosterPage} />
+
             
             {/* WebjamHomePage Component */}
             <Route path="/webjamhome" exact component={WebjamHomePage} />
@@ -98,6 +117,12 @@ class App extends React.Component {
 
             {/* SpheroShirtPage Component */}
             <Route path="/webjamhome/shirtsummary" exact component={WebjamShirtPage} />
+
+            {/* WebjamUploadInstitutionsPage Component */}
+            <Route path="/webjamhome/uploadinstitution" exact component={WebjamUploadInstitutionsPage} />
+
+            {/* WebjamUploadRosterPage Component */}
+            <Route path="/webjamhome/uploadroster" exact component={WebjamUploadRosterPage} />
             
 
             {/* TemplatePage Component */}
