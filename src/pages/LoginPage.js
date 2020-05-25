@@ -88,6 +88,11 @@ class LoginPage extends React.Component {
         });
     }
   
+    clickedForgotPassword = (e) => {
+        console.log("clicked forgot password");
+        this.props.history.push('/resetpassword');
+    }
+
     render() {
     return (
 
@@ -121,6 +126,8 @@ class LoginPage extends React.Component {
                         onChange = {this.onChange}
                     />
                     <h3 style={this.state.invalidCredentialstyle.wrongPassword}>Wrong Password. Please try again.</h3>
+
+                    <h3 onClick={this.clickedForgotPassword} style={forgotPassword}>Forgot Password?</h3>
 
                     <input 
                         type = 'submit'
@@ -220,6 +227,14 @@ const loginBtnRow = {
     color: "#FFFFFF",
     fontSize: 12,
 
+}
+
+const forgotPassword = {
+    fontSize: "12px",
+    fontWeight: "400",
+    color: "#0099FF",
+    cursor: "pointer",
+    marginTop: "10px"
 }
 
 export default LoginPage;

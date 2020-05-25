@@ -7,6 +7,7 @@ import SchoolHomePage from './pages/SchoolHomePage';
 import SpheroHomePage from './pages/SpheroHomePage';
 import WebjamHomePage from './pages/WebjamHomePage';
 import TemplatePage from './pages/TemplatePage';
+import ResetPassword from './pages/ResetPassword'
 
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
@@ -54,9 +55,11 @@ class App extends React.Component {
         <div className="App">
           <Switch>
             {/* LoginPage Component */}
-            {/* email: temp
-              pass: 123abc */}
             <Route path="/" exact component={LoginPage} />
+
+            {/* ResetPassword Component */}
+            <Route path="/resetpassword" exact component={ResetPassword} />
+            
 
             {/* SchoolHomePage Component */}
             <Route path="/schoolhome" component={SchoolHomePage} />
