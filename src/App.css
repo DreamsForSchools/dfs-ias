@@ -22,7 +22,16 @@ a{
   background-color: white;
   margin-left: 212px;
   height: 100vh;
-  margin-top: 20px;
+  margin-top: 3%;
+}
+
+@media only screen and (max-width: 1600px) {
+  .programPageContainer{
+    background-color: white;
+    margin-left: 212px;
+    height: 100vh;
+    margin-top: 7%;
+  }
 }
 
 .programPageTitle{
@@ -365,3 +374,8 @@ a{
   margin-top: -1px;
 }
 /*  --------------- END SortedInstructorsCard COMPONENT --------------- */
+
+
+/*  --------------- START AppjamSortedRosterPage COMPONENT --------------- */
+
+/*  --------------- END AppjamSortedRosterPage COMPONENT --------------- */

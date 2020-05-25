@@ -224,7 +224,7 @@ const iconGuideWrapper = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "2%",
+    // marginTop: "5%",
     marginBottom: "2%"
 }
 

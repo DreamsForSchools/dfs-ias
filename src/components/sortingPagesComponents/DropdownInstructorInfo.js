@@ -26,6 +26,8 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
     //toggle condition for the options for instructors
     const[isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
 
+    const[isLocked, setIsLocked] = useState(false)
+
     //function that shows the options menu when edit button is clicked
     const toggleOptionsMenu = (e,name) => {
         console.log("Hello " + name);
@@ -48,6 +50,7 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
     //function that triggers when lock button is clicked
     const lockBtnClicked = (e, name) => {
         console.log("LOCK " + name);
+        setIsLocked(!isLocked);
     }
 
     //function that triggers when delete button is clicked
@@ -59,14 +62,14 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
         <div style={instructorsInfo} key={person.name}>
             <img src={person.car === "Yes" && person.prevMentor === "Yes" ? carMentor : person.car === "Yes" && person.prevMentor !== "Yes"? car : person.car !== "Yes" && person.prevMentor === "Yes" ? mentor : null} style={carMentorIcon}/>
             <img src={savedIcon[parseInt(savedIconIndex, 10)]} style={animalIcon}/>
-            <h3 style={instructorInfoNameStyle}>{person.name} <img src={lock}/></h3>
+            <h3 style={instructorInfoNameStyle}>{person.name} {isLocked?(<img src={lock}/>):null}</h3>
             <button style={editBtn} onClick={(e) => { toggleOptionsMenu(e, person.name) }}>
                 <img src={options} style={optionsIcon}/>
                 <div style={optionsMenuPosition}>
                     {isOptionsMenuOpen?(
                         <div className="optionsMenu">
                             <button onClick={(e) => { moveBtnClicked(e, person.name) }} className="optionBtn moveBtn">MOVE</button>
-                            <button onClick={(e) => { lockBtnClicked(e, person.name) }} className="optionBtn lockBtn">Lock</button>
+                            <button onClick={(e) => { lockBtnClicked(e, person.name) }} className="optionBtn lockBtn">{isLocked?"Unlock":"Lock"}</button>
                             <button onClick={(e) => { deleteBtnClicked(e, person.name) }} className="optionBtn deleteBtn">Delete</button>
                         </div>
                     ):null}
