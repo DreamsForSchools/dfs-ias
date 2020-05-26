@@ -15,7 +15,8 @@ export default function AppjamHomePage() {
     const addRoster = () => {
         fire.auth().onAuthStateChanged(user => {
             if (user){
-                history.push('/appjamhome/roster');
+                history.push('/appjamhome/addrosterform');
+                // history.push('/appjamhome/roster');
             }else{
                 history.push('/');
             }

@@ -12,14 +12,17 @@ import ResetPassword from './pages/ResetPassword'
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
 import AppjamShirtPage from './pages/sortingPages/appjam/AppjamShirtPage';
+import AppjamAddRosterForm from './pages/sortingPages/appjam/AppjamAddRosterForm';
 
 import SpheroSortedRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
 import SpheroRosterPage from './pages/sortingPages/sphero/SpheroRosterPage';
 import SpheroShirtPage from './pages/sortingPages/sphero/SpheroShirtPage';
+import SpheroAddRosterForm from './pages/sortingPages/sphero/SpheroAddRosterForm';
 
 import WebjamSortedRosterPage from './pages/sortingPages/webjam/WebjamSortedRosterPage';
 import WebjamRosterPage from './pages/sortingPages/webjam/WebjamRosterPage';
 import WebjamShirtPage from './pages/sortingPages/webjam/WebjamShirtPage';
+import WebjamAddRosterForm from './pages/sortingPages/webjam/WebjamAddRosterForm';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -76,6 +79,9 @@ class App extends React.Component {
             {/* AppjamShirtPage Component */}
             <Route path="/appjamhome/shirtsummary" exact component={AppjamShirtPage} />
 
+            {/* AppjamAddRosterForm Component */}
+            <Route path="/appjamhome/addrosterform" exact component={AppjamAddRosterForm} />
+
             
             {/* SpheroHomePage Component */}
             <Route path="/spherohome" exact component={SpheroHomePage} />
@@ -89,6 +95,9 @@ class App extends React.Component {
             {/* SpheroShirtPage Component */}
             <Route path="/spherohome/shirtsummary" exact component={SpheroShirtPage} />
 
+            {/* SpheroAddRosterForm Component */}
+            <Route path="/spherohome/addrosterform" exact component={SpheroAddRosterForm} />
+
             
             {/* WebjamHomePage Component */}
             <Route path="/webjamhome" exact component={WebjamHomePage} />
@@ -101,6 +110,9 @@ class App extends React.Component {
 
             {/* SpheroShirtPage Component */}
             <Route path="/webjamhome/shirtsummary" exact component={WebjamShirtPage} />
+
+            {/* WebjamAddRosterForm Component */}
+            <Route path="/webjamhome/addrosterform" exact component={WebjamAddRosterForm} />
             
 
             {/* TemplatePage Component */}
