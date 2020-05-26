@@ -7,25 +7,26 @@ import SchoolHomePage from './pages/SchoolHomePage';
 import SpheroHomePage from './pages/SpheroHomePage';
 import WebjamHomePage from './pages/WebjamHomePage';
 import TemplatePage from './pages/TemplatePage';
-import ResetPassword from './pages/ResetPassword'
+import ResetPassword from './pages/ResetPaswword';
+import UploadInstitutionsPage from './pages/UploadInstitutionPage';
 
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
 import AppjamShirtPage from './pages/sortingPages/appjam/AppjamShirtPage';
-import AppjamUploadInstitutionsPage from './pages/sortingPages/appjam/AppjamUploadInstitution';
 import AppjamUploadRosterPage from './pages/sortingPages/appjam/AppjamUploadRoster';
+import AppjamUploadInstitutionPage from './pages/sortingPages/appjam/AppjamUploadInstitution';
 
 import SpheroSortedRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
 import SpheroRosterPage from './pages/sortingPages/sphero/SpheroRosterPage';
 import SpheroShirtPage from './pages/sortingPages/sphero/SpheroShirtPage';
-import SpheroUploadInstitutionsPage from './pages/sortingPages/sphero/SpheroUploadInstitution';
 import SpheroUploadRosterPage from './pages/sortingPages/sphero/SpheroUploadRoster';
+import SpheroUploadInstitutionPage from './pages/sortingPages/sphero/SpheroUploadInstitution';
 
 import WebjamSortedRosterPage from './pages/sortingPages/webjam/WebjamSortedRosterPage';
 import WebjamRosterPage from './pages/sortingPages/webjam/WebjamRosterPage';
 import WebjamShirtPage from './pages/sortingPages/webjam/WebjamShirtPage';
-import WebjamUploadInstitutionsPage from './pages/sortingPages/webjam/WebjamUploadInstitution';
 import WebjamUploadRosterPage from './pages/sortingPages/webjam/WebjamUploadRoster';
+import WebjamUploadInstitutionPage from './pages/sortingPages/webjam/WebjamUploadInstitution';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -61,15 +62,19 @@ class App extends React.Component {
         <div className="App">
           <Switch>
             {/* LoginPage Component */}
+            {/* email: temp
+              pass: 123abc */}
             <Route path="/" exact component={LoginPage} />
 
             {/* ResetPassword Component */}
             <Route path="/resetpassword" exact component={ResetPassword} />
-            
+
 
             {/* SchoolHomePage Component */}
             <Route path="/schoolhome" component={SchoolHomePage} />
 
+            {/*UploadInstitutionsPage Component */}
+            <Route path="/uploadinstitution" exact component={UploadInstitutionsPage} />
 
             {/* AppjamPage Component */}
             <Route path="/appjamhome" exact component={AppjamHomePage} />
@@ -83,11 +88,11 @@ class App extends React.Component {
             {/* AppjamShirtPage Component */}
             <Route path="/appjamhome/shirtsummary" exact component={AppjamShirtPage} />
 
-            {/* AppjamUploadInstitutionsPage Component */}
-            <Route path="/appjamhome/uploadinstitution" exact component={AppjamUploadInstitutionsPage} />
-
             {/* AppjamUploadRosterPage Component */}
             <Route path="/appjamhome/uploadroster" exact component={AppjamUploadRosterPage} />
+
+            {/* AppjamUploadInstitutionPage Component */}
+            <Route path="/appjamhome/uploadinstitution" exact component={AppjamUploadInstitutionPage} />
 
             
             {/* SpheroHomePage Component */}
@@ -102,30 +107,30 @@ class App extends React.Component {
             {/* SpheroShirtPage Component */}
             <Route path="/spherohome/shirtsummary" exact component={SpheroShirtPage} />
 
-            {/* SpheroUploadInstitutionsPage Component */}
-            <Route path="/spherohome/uploadinstitution" exact component={SpheroUploadInstitutionsPage} />
-
             {/* SpheroUploadRosterPage Component */}
             <Route path="/spherohome/uploadroster" exact component={SpheroUploadRosterPage} />
+
+            {/* SpheroUploadInstitutionPage Component */}
+            <Route path="/spherohome/uploadinstitution" exact component={SpheroUploadInstitutionPage} />
 
             
             {/* WebjamHomePage Component */}
             <Route path="/webjamhome" exact component={WebjamHomePage} />
 
-            {/* SpheroSortedRosterPage Component */}
+            {/* WebjamSortedRosterPage Component */}
             <Route path="/webjamhome/sortedroster" exact component={WebjamSortedRosterPage} />
 
-            {/* SpheroRosterPage Component */}
+            {/* WebjamRosterPage Component */}
             <Route path="/webjamhome/roster" exact component={WebjamRosterPage} />
 
-            {/* SpheroShirtPage Component */}
+            {/* WebjamShirtPage Component */}
             <Route path="/webjamhome/shirtsummary" exact component={WebjamShirtPage} />
-
-            {/* WebjamUploadInstitutionsPage Component */}
-            <Route path="/webjamhome/uploadinstitution" exact component={WebjamUploadInstitutionsPage} />
 
             {/* WebjamUploadRosterPage Component */}
             <Route path="/webjamhome/uploadroster" exact component={WebjamUploadRosterPage} />
+
+            {/* WebjamUploadInstitutionPage Component */}
+            <Route path="/webjamhome/uploadinstitution" exact component={WebjamUploadInstitutionPage} />
             
 
             {/* TemplatePage Component */}
