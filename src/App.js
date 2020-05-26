@@ -13,13 +13,13 @@ import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRost
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
 import AppjamShirtPage from './pages/sortingPages/appjam/AppjamShirtPage';
 import AppjamUploadInstitutionsPage from './pages/sortingPages/appjam/AppjamUploadInstitution';
-import AppjamUploadRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
+import AppjamUploadRosterPage from './pages/sortingPages/appjam/AppjamUploadRoster';
 
 import SpheroSortedRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
 import SpheroRosterPage from './pages/sortingPages/sphero/SpheroRosterPage';
 import SpheroShirtPage from './pages/sortingPages/sphero/SpheroShirtPage';
 import SpheroUploadInstitutionsPage from './pages/sortingPages/sphero/SpheroUploadInstitution';
-import SpheroUploadRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
+import SpheroUploadRosterPage from './pages/sortingPages/sphero/SpheroUploadRoster';
 
 import WebjamSortedRosterPage from './pages/sortingPages/webjam/WebjamSortedRosterPage';
 import WebjamRosterPage from './pages/sortingPages/webjam/WebjamRosterPage';

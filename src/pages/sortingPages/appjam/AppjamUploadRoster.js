@@ -5,7 +5,7 @@ import csv from 'csv';
 
 class AppjamUploadRosterPage extends Component {
     
-    onDrop(files) {
+    onDrop (files) {
         this.setState({ files });
 
         var file = files[0];
@@ -71,6 +71,7 @@ class AppjamUploadRosterPage extends Component {
                     <button onClick={this.goNext} style={nextButtonStyle}>Next</button>
                 </div>
             </div>
+            // <h1>HELLO WORLD</h1>
         )
     }
 }
