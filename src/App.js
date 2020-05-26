@@ -9,6 +9,8 @@ import WebjamHomePage from './pages/WebjamHomePage';
 import TemplatePage from './pages/TemplatePage';
 import ResetPassword from './pages/ResetPassword'
 
+import SchoolAddRosterForm from './pages/schoolPages/SchoolAddRosterForm'
+
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
 import AppjamShirtPage from './pages/sortingPages/appjam/AppjamShirtPage';
@@ -65,7 +67,11 @@ class App extends React.Component {
             
 
             {/* SchoolHomePage Component */}
-            <Route path="/schoolhome" component={SchoolHomePage} />
+            <Route path="/schoolhome" exact component={SchoolHomePage} />
+
+            {/* SchoolAddRosterForm Component */}
+            <Route path="/schoolhome/addrosterform" exact component={SchoolAddRosterForm} />
+
 
             {/* AppjamPage Component */}
             <Route path="/appjamhome" exact component={AppjamHomePage} />
