@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 import csv from 'csv';
 import fire from '../config/fire';
 
-class UploadInstitutionsPage extends Component {
+class UploadInstitutionPage extends Component {
     
     onDrop(files) {
         this.setState({ files });
@@ -48,7 +48,7 @@ class UploadInstitutionsPage extends Component {
                 <br /><br /><br />
                 <div style={dropZoneStyle} className = "dropzone">
                     <h2 style={h2Style}>Please upload your <font size={fontSize} color="#0099FF">CSV </font>institution roster...</h2>
-                    <Dropzone accept=".csv" onDropAccepted={this.onDrop.bind(this)} style={dropBoxStyle}>upload new..</Dropzone>
+                    <Dropzone accept=".csv" onDropAccepted={this.onDrop.bind(this)} style={dropBoxStyle}>upload new...</Dropzone>
                     <br /><br /><br />
                     <button onClick={this.goNext} style={nextButtonStyle}>Next</button>
                 </div>
@@ -114,4 +114,4 @@ const nextButtonStyle = {
     cursor: "pointer"
 }
 
-export default UploadInstitutionsPage;
+export default UploadInstitutionPage;

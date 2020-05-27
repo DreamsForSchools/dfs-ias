@@ -35,7 +35,8 @@ export default function SchoolAddRosterForm() {
 
     const nextClicked = () => {
         console.log("submit");
-        history.push('/appjamhome');
+        // history.push('/appjamhome');
+        history.push('/schoolhome/uploadinstitution');
 
     }
 

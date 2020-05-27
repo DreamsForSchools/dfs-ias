@@ -8,7 +8,7 @@ import SpheroHomePage from './pages/SpheroHomePage';
 import WebjamHomePage from './pages/WebjamHomePage';
 import TemplatePage from './pages/TemplatePage';
 import ResetPassword from './pages/ResetPassword';
-import UploadInstitutionsPage from './pages/UploadInstitutionPage';
+import UploadInstitutionPage from './pages/UploadInstitutionPage';
 
 import SchoolAddRosterForm from './pages/schoolPages/SchoolAddRosterForm'
 
@@ -81,9 +81,9 @@ class App extends React.Component {
             {/* SchoolAddRosterForm Component */}
             <Route path="/schoolhome/addrosterform" exact component={SchoolAddRosterForm} />
 
+            {/*UploadInstitutionPage Component */}
+            <Route path="/schoolhome/uploadinstitution" exact component={UploadInstitutionPage} />
 
-            {/*UploadInstitutionsPage Component */}
-            <Route path="/uploadinstitution" exact component={UploadInstitutionsPage} />
 
             {/* AppjamPage Component */}
             <Route path="/appjamhome" exact component={AppjamHomePage} />
@@ -146,7 +146,7 @@ class App extends React.Component {
 
             {/* WebjamUploadInstitutionPage Component */}
             <Route path="/webjamhome/uploadinstitution" exact component={WebjamUploadInstitutionPage} />
-            
+
             {/* WebjamAddRosterForm Component */}
             <Route path="/webjamhome/addrosterform" exact component={WebjamAddRosterForm} />
             
