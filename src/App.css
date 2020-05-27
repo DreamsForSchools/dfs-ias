@@ -49,9 +49,20 @@ a{
   margin-top: 15px;
 }
 
+.programPageAddRosterBtn1{
+  margin-top: 49px;
+  margin-left: 50px;
+  width: 242px;
+  height: 253px;
+  border-radius: 15px;
+  border-width: 0px;
+  background-color: #5B7082;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
+}
+
 .programPageAddRosterBtn{
   margin-top: 49px;
-  margin-left: 101px;
+  margin-left: 50px;
   width: 242px;
   height: 253px;
   border-radius: 15px;
@@ -64,8 +75,18 @@ a{
   box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
 }
 
+.addLogo1{
+  width: 50px;
+}
+
 .addLogo{
   width: 76px;
+}
+
+.addRosterLaber1{
+  font-size: 18px;
+  font-weight: 400;
+  color: white;
 }
 
 .addRosterLaber{
