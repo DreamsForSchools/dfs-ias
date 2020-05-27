@@ -10,23 +10,28 @@ import TemplatePage from './pages/TemplatePage';
 import ResetPassword from './pages/ResetPassword';
 import UploadInstitutionsPage from './pages/UploadInstitutionPage';
 
+import SchoolAddRosterForm from './pages/schoolPages/SchoolAddRosterForm'
+
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
 import AppjamShirtPage from './pages/sortingPages/appjam/AppjamShirtPage';
 import AppjamUploadRosterPage from './pages/sortingPages/appjam/AppjamUploadRoster';
 import AppjamUploadInstitutionPage from './pages/sortingPages/appjam/AppjamUploadInstitution';
+import AppjamAddRosterForm from './pages/sortingPages/appjam/AppjamAddRosterForm';
 
 import SpheroSortedRosterPage from './pages/sortingPages/sphero/SpheroSortedRosterPage';
 import SpheroRosterPage from './pages/sortingPages/sphero/SpheroRosterPage';
 import SpheroShirtPage from './pages/sortingPages/sphero/SpheroShirtPage';
 import SpheroUploadRosterPage from './pages/sortingPages/sphero/SpheroUploadRoster';
 import SpheroUploadInstitutionPage from './pages/sortingPages/sphero/SpheroUploadInstitution';
+import SpheroAddRosterForm from './pages/sortingPages/sphero/SpheroAddRosterForm';
 
 import WebjamSortedRosterPage from './pages/sortingPages/webjam/WebjamSortedRosterPage';
 import WebjamRosterPage from './pages/sortingPages/webjam/WebjamRosterPage';
 import WebjamShirtPage from './pages/sortingPages/webjam/WebjamShirtPage';
 import WebjamUploadRosterPage from './pages/sortingPages/webjam/WebjamUploadRoster';
 import WebjamUploadInstitutionPage from './pages/sortingPages/webjam/WebjamUploadInstitution';
+import WebjamAddRosterForm from './pages/sortingPages/webjam/WebjamAddRosterForm';
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -71,7 +76,11 @@ class App extends React.Component {
 
 
             {/* SchoolHomePage Component */}
-            <Route path="/schoolhome" component={SchoolHomePage} />
+            <Route path="/schoolhome" exact component={SchoolHomePage} />
+
+            {/* SchoolAddRosterForm Component */}
+            <Route path="/schoolhome/addrosterform" exact component={SchoolAddRosterForm} />
+
 
             {/*UploadInstitutionsPage Component */}
             <Route path="/uploadinstitution" exact component={UploadInstitutionsPage} />
@@ -94,6 +103,9 @@ class App extends React.Component {
             {/* AppjamUploadInstitutionPage Component */}
             <Route path="/appjamhome/uploadinstitution" exact component={AppjamUploadInstitutionPage} />
 
+            {/* AppjamAddRosterForm Component */}
+            <Route path="/appjamhome/addrosterform" exact component={AppjamAddRosterForm} />
+
             
             {/* SpheroHomePage Component */}
             <Route path="/spherohome" exact component={SpheroHomePage} />
@@ -113,6 +125,9 @@ class App extends React.Component {
             {/* SpheroUploadInstitutionPage Component */}
             <Route path="/spherohome/uploadinstitution" exact component={SpheroUploadInstitutionPage} />
 
+            {/* SpheroAddRosterForm Component */}
+            <Route path="/spherohome/addrosterform" exact component={SpheroAddRosterForm} />
+
             
             {/* WebjamHomePage Component */}
             <Route path="/webjamhome" exact component={WebjamHomePage} />
@@ -131,6 +146,9 @@ class App extends React.Component {
 
             {/* WebjamUploadInstitutionPage Component */}
             <Route path="/webjamhome/uploadinstitution" exact component={WebjamUploadInstitutionPage} />
+            
+            {/* WebjamAddRosterForm Component */}
+            <Route path="/webjamhome/addrosterform" exact component={WebjamAddRosterForm} />
             
 
             {/* TemplatePage Component */}

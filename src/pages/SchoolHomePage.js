@@ -15,7 +15,7 @@ export default function SchoolHomePage() {
     const addRoster = () => {
         fire.auth().onAuthStateChanged(user => {
             if (user){
-                history.push('/template');
+                history.push('/schoolhome/addrosterform');
             }else{
                 history.push('/');
             }
