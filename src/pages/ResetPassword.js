@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import fire from '.././config/fire';
 
-export default function SpheroRosterPage() {
+export default function ResetPassword() {
 
     const [user, setUser] = useState(null);
     const [email, setEmail] = useState("");

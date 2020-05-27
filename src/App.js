@@ -7,7 +7,7 @@ import SchoolHomePage from './pages/SchoolHomePage';
 import SpheroHomePage from './pages/SpheroHomePage';
 import WebjamHomePage from './pages/WebjamHomePage';
 import TemplatePage from './pages/TemplatePage';
-import ResetPassword from './pages/ResetPaswword';
+import ResetPassword from './pages/ResetPassword';
 import UploadInstitutionsPage from './pages/UploadInstitutionPage';
 
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
