@@ -1,13 +1,13 @@
 import pyrebase
 from collections import defaultdict
-import api.dbtools
+import dbtools
 
-import api.dfsapi
-from api.instructor import Instructor
-from api.institution import Institution
+import dfsapi
+from instructor import Instructor
+from institution import Institution
 
 def read_instructors(program:str):
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 
 	instructors = list()
 
@@ -30,14 +30,14 @@ def read_instructors(program:str):
 		Languages = instructor["Languages"]
 		ShirtSize = instructor["ShirtSize"]
 		MultipleDays = instructor["MultipleDays"]
-		Mon = api.dbtools.minute_range(instructor["Monday"])
-		Tue = api.dbtools.minute_range(instructor["Tuesday"])
-		Wed = api.dbtools.minute_range(instructor["Wednesday"])
-		Thurs = api.dbtools.minute_range(instructor["Thursday"])
-		Fri = api.dbtools.minute_range(instructor["Friday"])
+		Mon = dbtools.minute_range(instructor["Monday"])
+		Tue = dbtools.minute_range(instructor["Tuesday"])
+		Wed = dbtools.minute_range(instructor["Wednesday"])
+		Thurs = dbtools.minute_range(instructor["Thursday"])
+		Fri = dbtools.minute_range(instructor["Friday"])
 
 		Schedule = defaultdict(list)
-		
+
 		if Mon != None:
 			Schedule[1].append(Mon)
 		if Tue != None:
@@ -56,7 +56,7 @@ def read_instructors(program:str):
 	return instructors
 
 def read_institutions(program:str):
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 
 	institutions = list()
 
@@ -74,14 +74,14 @@ def read_institutions(program:str):
 		Program = institution["Program"]
 		Instructors = institution["Instructors"]
 
-		Mon = api.dbtools.minute_range(institution["Monday"])
-		Tue = api.dbtools.minute_range(institution["Tuesday"])
-		Wed = api.dbtools.minute_range(institution["Wednesday"])
-		Thurs = api.dbtools.minute_range(institution["Thursday"])
-		Fri = api.dbtools.minute_range(institution["Friday"])
+		Mon = dbtools.minute_range(institution["Monday"])
+		Tue = dbtools.minute_range(institution["Tuesday"])
+		Wed = dbtools.minute_range(institution["Wednesday"])
+		Thurs = dbtools.minute_range(institution["Thursday"])
+		Fri = dbtools.minute_range(institution["Friday"])
 
 		Schedule = defaultdict(list)
-		
+
 		if Mon != None:
 			Schedule[1].append(Mon)
 		if Tue != None:
@@ -93,7 +93,7 @@ def read_institutions(program:str):
 		if Fri != None:
 			Schedule[5].append(Fri)
 
-		institutions.append(Institution(Name, Address, County, Program, 
+		institutions.append(Institution(Name, Address, County, Program,
 			Instructors, Schedule))
 
 	return institutions

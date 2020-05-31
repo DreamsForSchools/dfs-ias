@@ -1,9 +1,9 @@
 import random
 from collections import defaultdict
 
-from api.instructor import Instructor
-from api.institution import Institution
-from api.match import Match
+from instructor import Instructor
+from institution import Institution
+from match import Match
 
 def sort(instructors:list, institutions:list):
 
@@ -13,17 +13,17 @@ def sort(instructors:list, institutions:list):
         for t in instructors:
             sched_match = same_schedule_region(s, t)
             if sched_match != {}:
-                result[s.name].append(Match(t.name, s.name, t.region, 
-                    t.previousmentor, t.car, t.languages, 
+                result[s.name].append(Match(t.name, s.name, t.region,
+                    t.previousmentor, t.car, t.languages,
                     t.multipledays, sched_match, s.instructors))
 
     sortedDict = randInstructToSchool(result)
     return sortedDict
 
 '''
-Creates a new dictionary of matching schedules between the 
-institutions and the instructors if the region and time range 
-match for the corresponding day by comparing every instructor 
+Creates a new dictionary of matching schedules between the
+institutions and the instructors if the region and time range
+match for the corresponding day by comparing every instructor
 to every institution.
 '''
 def same_schedule_region(school : Institution, teacher : Instructor) -> dict:
@@ -36,19 +36,19 @@ def same_schedule_region(school : Institution, teacher : Instructor) -> dict:
                 if time_match(school_time, teacher_time) and same_region(school, teacher):
                     sched_match[day].append(school_time)
 
-    return sched_match 
+    return sched_match
 
 '''
-Matches time schedule of the school and the time schedule 
-of the teacher. If the time range of the school is within the 
-time range of the teacher then True is returned else False. 
+Matches time schedule of the school and the time schedule
+of the teacher. If the time range of the school is within the
+time range of the teacher then True is returned else False.
 '''
 def time_match(school : (int,int), teacher : (int, int)) -> bool:
     return teacher[0] <= school[0] and teacher[1] >= school[1]
 
 '''
 Matches the region of the school with the region of the teacher.
-If there is a match True is returned else False. 
+If there is a match True is returned else False.
 '''
 def same_region(school : Institution, teacher : Instructor) -> bool:
     return school.county == teacher.region
@@ -61,7 +61,7 @@ def print_result(result : dict):
             print(match.teacher_name + ",", end=' ')
         print("\n")
 
-#Helper for randInstructToSchool()      
+#Helper for randInstructToSchool()
 def myPrint(resultDict: dict):
     for key in resultDict:
         print(key, ':', end =' ')
@@ -88,15 +88,15 @@ def randInstructToSchool(regionAndSchools: dict) -> dict:
         assignedInstructorList = list() #The instructors chosen for that particular institution will be put in this list after assigning weights has been done
         #TEST#
         #print(listLength)
-        
+
         #Grab number of instrutors needed @ each school to perform rand alg & name for printing/Testing purposes.
         for match in regionAndSchools[key]:
             school_instructors_needed = match.instructors
         #print("Number of instructors required for institution: " + str(school_instructors_needed))
-        
+
         #TEST#
         #print("School " + key.name + " Needs: " + str(instructNeed) + " Instructors!")
-        
+
         #Index for while control
         teachCount = 0
         while teachCount < school_instructors_needed:
@@ -112,13 +112,13 @@ def randInstructToSchool(regionAndSchools: dict) -> dict:
                 if(assignWeights(instructChosen)):
                     newList.append(instructChosen)
                     teachCount+= 1
-                        
+
         #Populate resultDict()
         resultDict[key] = newList
-        
+
         #Cleanup
         indexChecked.clear()
-        
+
     #Helper print function here.
     #myPrint(resultDict)
 
