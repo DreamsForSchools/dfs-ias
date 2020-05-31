@@ -28,7 +28,7 @@ export default function SchoolHomePage() {
     const currentRoster = () => {
         fire.auth().onAuthStateChanged(user => {
             if (user){
-                history.push('/schoolhome/addrosterform');
+                history.push('/template');
                 // history.push('/appjamhome/roster');
             }else{
                 history.push('/');

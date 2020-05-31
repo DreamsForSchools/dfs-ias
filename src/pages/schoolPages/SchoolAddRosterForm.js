@@ -35,8 +35,18 @@ export default function SchoolAddRosterForm() {
 
     const nextClicked = () => {
         console.log("submit");
-        // history.push('/appjamhome');
-        history.push('/schoolhome/uploadinstitution');
+        // history.push('/schoolhome/uploadinstitution');
+
+        if (input === ""){
+            alert("Please select how to input your roster")
+        }
+
+        if (input === "file"){
+            history.push('/schoolhome/uploadinstitution');
+        }else if (input === "manual"){
+            alert('manual chosen (not yet implemented)')
+        } 
+
 
     }
 
