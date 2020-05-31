@@ -34,10 +34,10 @@ export default function TitleToolbar(props) {
             <div className="sortingPagesContainer">
                 <div style={titleBtn}>
                     <h1 className="sortedPagePageTitle">{props.program} {props.season} {props.year}</h1>
-                    <div style={rosterbuttons}>
+                    {/* <div style={rosterbuttons}>
                         <button style={uddateRosterBtn}>update roster</button>
                         <button style={newRosterBtn}>new roster</button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <SortingPagesNavbar urlPath={props.urlPath}/>

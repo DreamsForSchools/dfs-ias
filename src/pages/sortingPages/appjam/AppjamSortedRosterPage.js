@@ -4,8 +4,12 @@ import SideNavBar from '../../../components/sidebar/SideNavBar';
 import SortingPagesNavbar from '../../../components/sortingPagesComponents/SortingPagesNavbar'
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import SortedInstructorsCard from '../../../components/sortingPagesComponents/SortedInstructorsCard';
+
+import AreYouSure from '../../../components/modals/AreYouSure';
+
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
+
 import GeneratePDF from '../SaveAsPDF/GeneratePDF';
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
