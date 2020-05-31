@@ -6,6 +6,8 @@ import TitleToolbar from '../../.././components/sortingPagesComponents/TitleTool
 import SortedInstructorsCard from '../../../components/sortingPagesComponents/SortedInstructorsCard';
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
+import AppjamGeneratePDF from './AppjamSavePDF/AppjamGeneratePDF';
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import car from '../../.././assets/car.png';
 import carMentor from '../../.././assets/carMentor.png';
@@ -130,6 +132,9 @@ export default function AppjamSortedRosterPage() {
         return {"school":"carr"}
     }
 
+    const save = () => {
+        console.log("saved");
+    }
 
 
     return (
@@ -168,7 +173,16 @@ export default function AppjamSortedRosterPage() {
 
                     <div style={saveResort}>
                         <button style={resortBtn}>Re-sort!</button>
-                        <button style={saveBtn}>SAVE!</button>
+                        {/* <button onClick={save} style={saveBtn}>SAVE!</button> */}
+
+                        <PDFDownloadLink
+                            document = {<AppjamGeneratePDF sortedRoster={schools}/>}
+                            fileName="sortedRoster.pdf"
+                            style={saveBtn}
+                        >
+                            Save as PDF!
+                        </PDFDownloadLink>
+
                     </div>
                 </div>
                 
@@ -203,7 +217,11 @@ const saveBtn = {
     height: "46px",
     paddingLeft: "15px",
     paddingRight: "15px",
-    marginLeft: "10px"
+    paddingTop: "15px",
+    // padding: "10px",
+    marginLeft: "10px",
+    justifyContent: "center",
+    alignItems: "center"
 
 }
 
