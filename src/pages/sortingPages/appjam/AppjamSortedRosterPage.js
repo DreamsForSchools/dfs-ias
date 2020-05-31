@@ -6,7 +6,7 @@ import TitleToolbar from '../../.././components/sortingPagesComponents/TitleTool
 import SortedInstructorsCard from '../../../components/sortingPagesComponents/SortedInstructorsCard';
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
-import AppjamGeneratePDF from './AppjamSavePDF/AppjamGeneratePDF';
+import GeneratePDF from '../SaveAsPDF/GeneratePDF';
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import car from '../../.././assets/car.png';
@@ -176,7 +176,7 @@ export default function AppjamSortedRosterPage() {
                         {/* <button onClick={save} style={saveBtn}>SAVE!</button> */}
 
                         <PDFDownloadLink
-                            document = {<AppjamGeneratePDF sortedRoster={schools}/>}
+                            document = {<GeneratePDF sortedRoster={schools}/>}
                             fileName="sortedRoster.pdf"
                             style={saveBtn}
                         >

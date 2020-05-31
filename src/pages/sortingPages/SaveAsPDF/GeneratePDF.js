@@ -8,7 +8,7 @@ import {
   Image
 } from "@react-pdf/renderer";
 
-export default function AppjamGeneratePDF({sortedRoster}) {
+export default function GeneratePDF({sortedRoster}) {
 
     const styles = StyleSheet.create({
         page: {
