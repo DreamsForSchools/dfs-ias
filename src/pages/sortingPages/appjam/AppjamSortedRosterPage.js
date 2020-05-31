@@ -1,7 +1,5 @@
 import React from 'react'
 
-import SideNavBar from '../../../components/sidebar/SideNavBar';
-import SortingPagesNavbar from '../../../components/sortingPagesComponents/SortingPagesNavbar'
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import SortedInstructorsCard from '../../../components/sortingPagesComponents/SortedInstructorsCard';
 
@@ -16,14 +14,8 @@ import carMentor from '../../.././assets/carMentor.png';
 import mentor from '../../.././assets/mentor.png';
 import birb from '../../.././assets/animalIcons/birb.png';
 
-
-
 import fire from '../../.././config/fire';
-import firebase from 'firebase';
 
-import userCollection from '../../../mockDatabase/MockDatabase';
-
-// const sortedRosterCollection = fire.database().ref().child('sortedroster');
 export default function AppjamSortedRosterPage() {
 
     //User auth 
