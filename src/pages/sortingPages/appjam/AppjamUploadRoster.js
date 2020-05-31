@@ -55,6 +55,11 @@ class AppjamUploadRosterPage extends Component {
 
     goNext=()=> {
         this.props.history.push("/appjamhome/roster");
+
+        // this.props.history.push({
+        //     pathname: '/appjamhome/roster',
+        //     state: { quarter: this.props.location.state.quarter, year: this.props.location.state.year }
+        // })
     }
 
     render() {

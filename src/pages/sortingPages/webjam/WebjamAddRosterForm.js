@@ -10,8 +10,8 @@ export default function WebjamAddRosterForm() {
 
     const [user, setUser] = useState(null);
 
-    const [quarter, setQuarter] = useState("fall");
-    const [year, setYear] = useState("2015");
+    const [quarter, setQuarter] = useState("");
+    const [year, setYear] = useState("");
     const [input, setInput] = useState("");
 
     let history = useHistory();
@@ -49,7 +49,20 @@ export default function WebjamAddRosterForm() {
 
     const nextClicked = () => {
         console.log("submit");
-        history.push('/webjamhome/roster');
+        
+        if (quarter === "" || year === "" || input === ""){
+            alert("Please select an option for ALL the fields")
+        }
+
+        if (input === "file"){
+            history.push('/webjamhome/uploadroster');
+            // history.push({
+            //     pathname: '/webjamhome/uploadroster',
+            //     state: { quarter:quarter, year:year }
+            // })
+        }else if (input === "manual"){
+            alert('manual chosen (not yet implemented)')
+        } 
 
     }
 
@@ -68,6 +81,7 @@ export default function WebjamAddRosterForm() {
                         <div style={dropdowns}>
 
                             <select name="quarter" style={dropdownStyle} value={quarter} onChange={onChangeQuarter}>
+                                <option value="" disabled selected>Choose Season...</option>
                                 <option value="fall">Fall</option>
                                 <option value="winter">Winter</option>
                                 <option value="spring">Spring</option>
@@ -75,6 +89,7 @@ export default function WebjamAddRosterForm() {
                             </select>
 
                             <select name="year" style={dropdownStyle} value={year} onChange={onChangeYear}>
+                                <option value="" disabled selected>Choose Year...</option>
                                 <option value="2015">2015</option>
                                 <option value="2016">2016</option>
                                 <option value="2017">2017</option>

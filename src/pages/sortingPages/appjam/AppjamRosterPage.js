@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
-export default function AppjamRosterPage() {
+export default function AppjamRosterPage(props) {
 
     const [user, setUser] = useState(null);
 
@@ -73,13 +73,15 @@ export default function AppjamRosterPage() {
                 <SortingPagesNavbar />
             </div> */}
 
-            <TitleToolbar program="appjam+" season="Spring" year="2020" urlPath="appjam"/>
+            {/* <TitleToolbar program="appjam+" season={props.location.state.quarter} year={props.location.state.year}  urlPath="appjam"/> */}
+
+            <TitleToolbar program="appjam+" season="Spring" year="2020"  urlPath="appjam"/>
 
             <div className="programPageContainer">
 
                 <div style={sortBtnContainer}>
                     <button onClick={sortClicked} style={sortBtn}>SORT!</button>
-                </div>      
+                </div>     
 
                 <div style={firebaseRoster}>
                     {roster.map((mentor) => (
