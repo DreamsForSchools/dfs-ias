@@ -62,14 +62,14 @@ export default function GeneratePDF({sortedRoster}) {
         <Document>
             <Page size="A4" style={styles.page}>
                 {sortedRoster.map((schoolMentors,i) => (
-                    <View style={styles.section}>
+                    <View style={styles.section} key={schoolMentors.school}>
                         <View style={styles.schoolTextContainerStyle}>
                             <Text style={styles.schoolTextStyle}>{schoolMentors.school}</Text>
                         </View>
 
                         <View style={styles.mentorsContainer}>
                             {schoolMentors.mentors.map((mentors) => (
-                                <Text style={styles.mentorNameStyle}>{mentors.name}</Text>
+                                <Text key={mentors.firstName} style={styles.mentorNameStyle}>{mentors.name}</Text>
                             ))}
                         </View>
                     </View>

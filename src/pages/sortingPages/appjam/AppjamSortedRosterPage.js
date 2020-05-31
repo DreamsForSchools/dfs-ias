@@ -5,8 +5,6 @@ import SortingPagesNavbar from '../../../components/sortingPagesComponents/Sorti
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import SortedInstructorsCard from '../../../components/sortingPagesComponents/SortedInstructorsCard';
 
-import AreYouSure from '../../../components/modals/AreYouSure';
-
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 
@@ -31,57 +29,13 @@ export default function AppjamSortedRosterPage() {
     //User auth 
     const [user, setUser] = useState(null);
 
-    //dummy data
-    const [carr, setCarr] = useState(
-        {
-            "school": "Carr Intermediate",
-            "mentors": [
-                {
-                    "name":"Hannah Fragante",
-                    "firstName": "Hannah",
-                    "car": "Yes",
-                    "languages": "Tagalog",
-                    "multipleDays": "Yes",
-                    "prevMentor": "Yes",
-                    "region": "Orange County",
-                    "schoolName": "Carr",
-                },
-                {
-                    "name":"Dylan Fragante",
-                    "firstName": "Dylan",
-                    "car": "Yes",
-                    "languages": "Tagalog",
-                    "multipleDays": "Yes",
-                    "prevMentor": "No",
-                    "region": "Orange County",
-                    "schoolName": "Carr",
-                },
-                {
-                    "name":"Annie Fragante",
-                    "firstName": "Annie",
-                    "car": "Yes",
-                    "languages": "Tagalog",
-                    "multipleDays": "Yes",
-                    "prevMentor": "Yes",
-                    "region": "Orange County",
-                    "schoolName": "Carr",
-                },
-                {
-                    "name":"Deodato Fragante",
-                    "firstName": "Deodato",
-                    "car": "Yes",
-                    "languages": "Tagalog",
-                    "multipleDays": "Yes",
-                    "prevMentor": "Yes",
-                    "region": "Orange County",
-                    "schoolName": "Carr",
-                },
+    //variable for toggling the modal to ask user if they really want to re-sort
+    const [showResortModal, setShowResortModal] = useState(false)
 
-            ]
-            
-        }
-    );
+    //stores the sorted roster taken from the database
     const [schools, setSchools] = useState([]);    
+
+    //accesses firebase for the sorted roster
     const sortedRosterCollection = useRef(fire.database().ref().child('sortedroster'))
 
     //History hook for navigation
@@ -99,7 +53,7 @@ export default function AppjamSortedRosterPage() {
           })
       },[]);
 
-      
+    //accesses firebase for the sorted roster
     useEffect(() => {
         sortedRosterCollection.current.once('value', (snap) => {
             const roster = []
@@ -121,7 +75,6 @@ export default function AppjamSortedRosterPage() {
                         }
                     )
                 }
-                // console.log(mentorArray)
                 const schoolMentor = {school:school, mentors: mentorArray};
                 roster.push(schoolMentor);
             });
@@ -129,15 +82,21 @@ export default function AppjamSortedRosterPage() {
         });
     },[]);
 
-    console.log(carr)
     console.log(schools)
 
-    const test = () => {
-        return {"school":"carr"}
+    const resortClicked = () => {
+        console.log("resort");
+        setShowResortModal(!showResortModal);
     }
 
-    const save = () => {
-        console.log("saved");
+    const resortYes = () => {
+        console.log("YES RESORT!");
+        setShowResortModal(!showResortModal);
+    }
+
+    const resortNo = () => {
+        console.log("DONT RESORT!");
+        setShowResortModal(!showResortModal);
     }
 
 
@@ -176,7 +135,18 @@ export default function AppjamSortedRosterPage() {
                     </div>
 
                     <div style={saveResort}>
-                        <button style={resortBtn}>Re-sort!</button>
+                        <button onClick={resortClicked} style={resortBtn}>Re-sort!</button>
+                        {showResortModal?(
+                            <div style={modalContainer}>
+                                <div style={modal}>
+                                    <h3>Are you sure you want to re-sort?</h3>
+                                    <div style={modalOptions}>
+                                        <button onClick={resortNo} style={noBtn}>NO</button>
+                                        <button onClick={resortYes} style={yesBtn}>Yes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ):null}
                         {/* <button onClick={save} style={saveBtn}>SAVE!</button> */}
 
                         <PDFDownloadLink
@@ -203,6 +173,39 @@ export default function AppjamSortedRosterPage() {
 
         </div>
     )
+}
+
+const modalContainer = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "fixed",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgb(0, 0, 0, 0.5)",
+    bottom: 0,
+    right: 0,
+    
+}
+
+const modal = {
+    display: "flex",
+    flexDirection: "column",
+    // justifyContent: "center",
+    alignItems: "center",
+    width: "25vw",
+    height: "20vh",
+    backgroundColor: "white",
+    borderRadius: "10px",
+    padding: "45px"
+}
+
+const modalOptions = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "25px"
 }
 
 const saveResort = {
@@ -238,6 +241,36 @@ const resortBtn = {
     height: "46px",
     paddingLeft: "15px",
     paddingRight: "15px",
+
+}
+
+const yesBtn = {
+    fontSize: "14px",
+    color: "#49479D",
+    backgroundColor: "white",
+    border: "0.5px solid #49479D",
+    borderRadius: "28px",
+    height: "46px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "5vw",
+    marginLeft: "5vw"
+
+}
+
+const noBtn = {
+    fontSize: "14px",
+    color: "white",
+    backgroundColor: "#49479D",
+    // border: "0.5px solid #49479D",
+    borderRadius: "28px",
+    height: "46px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    width: "5vw",
+
 
 }
 
