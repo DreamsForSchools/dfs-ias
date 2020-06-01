@@ -62,6 +62,9 @@ export default function AppjamAddRosterForm() {
 
     }
 
+    //accesses firebase for appjam quarter and year
+    const quarterYearDatabase = useRef(fire.database().ref().child('seasonYear/-M8idEUsNN1M5VcJDv-I/appjam'));
+
     //validates user inputs
     const nextClicked = () => {
         console.log("submit");
@@ -71,12 +74,20 @@ export default function AppjamAddRosterForm() {
         }else{
             if (input === "file"){
                 history.push('/appjamhome/uploadroster');
-                // history.push({
-                //     pathname: '/appjamhome/uploadroster',
-                //     state: { quarter:quarter, year:year }
-                // })
+                quarterYearDatabase.current.once('value', (snap) => {
+                    snap.ref.set({
+                        quarter: quarter,
+                        year: year
+                    });
+                });
             }else if (input === "manual"){
                 alert('manual chosen (not yet implemented)')
+                quarterYearDatabase.current.once('value', (snap) => {
+                    snap.ref.set({
+                        quarter: quarter,
+                        year: year
+                    });
+                });
             } 
         }
     }

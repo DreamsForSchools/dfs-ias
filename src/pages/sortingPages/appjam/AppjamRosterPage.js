@@ -8,11 +8,22 @@ import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
+/* 
+    this page shows the roster for appjam
+*/
 export default function AppjamRosterPage(props) {
 
+    //auth variable
     const [user, setUser] = useState(null);
 
+    //navigation variable to naviagate to other pages
     let history = useHistory();
+
+    //stores the quarter from the database
+    const [quarter, setQuarter] = useState("");
+
+    //stores the year from the database
+    const [year, setYear] = useState("");
 
     //checks if user is currently logged in
     useEffect(() => {
@@ -26,9 +37,25 @@ export default function AppjamRosterPage(props) {
           })
       });
 
+    //accesses firebase for appjam's quarter and year
+    const quarterYearDatabase = useRef(fire.database().ref().child('seasonYear/-M8idEUsNN1M5VcJDv-I/appjam'))
+
+    //accesses firebase for quarter and the year
+    useEffect(() => {
+        quarterYearDatabase.current.once('value', (snap) => {
+            const quarterYear = snap.val();
+            console.log("CURRENT QUARTER:", quarterYear)
+            setQuarter(quarterYear.quarter);
+            setYear(quarterYear.year);
+        });
+    },[]);
+
+    //stores the roster taken from the database
     const [roster, setRoster] = useState([])
+    //accesses firebase for the appjam instructors roster
     const sortedRosterCollection = useRef(fire.database().ref().child('Instructors'))
 
+    //accesses firebase for the roster
     useEffect(() => {
         sortedRosterCollection.current.once('value', (snap) => {
             const rosterFire = []
@@ -75,7 +102,7 @@ export default function AppjamRosterPage(props) {
 
             {/* <TitleToolbar program="appjam+" season={props.location.state.quarter} year={props.location.state.year}  urlPath="appjam"/> */}
 
-            <TitleToolbar program="appjam+" season="Spring" year="2020"  urlPath="appjam"/>
+            <TitleToolbar program="appjam+" season={quarter} year={year}  urlPath="appjam"/>
 
             <div className="programPageContainer">
 

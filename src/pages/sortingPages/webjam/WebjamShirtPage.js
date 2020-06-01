@@ -14,6 +14,12 @@ export default function WebjamShirtPage() {
     //auth variable
     const [user, setUser] = useState(null);
 
+    //stores the quarter from the database
+    const [quarter, setQuarter] = useState("");
+
+    //stores the year from the database
+    const [year, setYear] = useState("");
+
     //navigation variable to naviagate to other pages
     let history = useHistory();
 
@@ -29,10 +35,23 @@ export default function WebjamShirtPage() {
           })
       });
 
+    //accesses firebase for appjam's quarter and year
+    const quarterYearDatabase = useRef(fire.database().ref().child('seasonYear/-M8idEUsNN1M5VcJDv-I/webjam'))
+
+    //accesses firebase for quarter and the year
+    useEffect(() => {
+        quarterYearDatabase.current.once('value', (snap) => {
+            const quarterYear = snap.val();
+            console.log("CURRENT QUARTER:", quarterYear)
+            setQuarter(quarterYear.quarter);
+            setYear(quarterYear.year);
+        });
+    },[]);
+
 
     return (
         <div>
-            <TitleToolbar program="webjam" season="Spring" year="2020" urlPath="webjam"/>
+            <TitleToolbar program="webjam" season={quarter} year={year} urlPath="webjam"/>
 
             <div className="programPageContainer">
                 <h1>Webjam SHIRT Page</h1>

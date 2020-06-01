@@ -30,8 +30,11 @@ export default function AppjamSortedRosterPage() {
     //stores the sorted roster taken from the database
     const [schools, setSchools] = useState([]);    
 
-    //accesses firebase for the sorted roster
-    const sortedRosterCollection = useRef(fire.database().ref().child('sortedroster'))
+    //stores the quarter from the database
+    const [quarter, setQuarter] = useState("");
+
+    //stores the year from the database
+    const [year, setYear] = useState("");
 
     //History hook for navigation
     let history = useHistory();
@@ -47,6 +50,22 @@ export default function AppjamSortedRosterPage() {
             
           })
       },[]);
+
+    //accesses firebase for appjam's quarter and year
+    const quarterYearDatabase = useRef(fire.database().ref().child('seasonYear/-M8idEUsNN1M5VcJDv-I/appjam'))
+
+    //accesses firebase for quarter and the year
+    useEffect(() => {
+        quarterYearDatabase.current.once('value', (snap) => {
+            const quarterYear = snap.val();
+            console.log("CURRENT QUARTER:", quarterYear)
+            setQuarter(quarterYear.quarter);
+            setYear(quarterYear.year);
+        });
+    },[]);
+
+    //accesses firebase for the sorted roster
+    const sortedRosterCollection = useRef(fire.database().ref().child('sortedroster'))
 
     //accesses firebase for the sorted roster
     useEffect(() => {
@@ -77,7 +96,7 @@ export default function AppjamSortedRosterPage() {
         });
     },[]);
 
-    console.log(schools)
+    // console.log(schools)
 
     //shows modal if user really wants to re-sort
     const resortClicked = () => {
@@ -100,7 +119,7 @@ export default function AppjamSortedRosterPage() {
 
     return (
         <div>
-            <TitleToolbar program="appjam+" season="Spring" year="2020" urlPath="appjam"/>
+            <TitleToolbar program="appjam+" season={quarter} year={year} urlPath="appjam"/>
 
             <div className="programPageContainer">
 

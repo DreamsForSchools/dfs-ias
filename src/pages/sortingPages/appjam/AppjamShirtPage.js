@@ -17,6 +17,12 @@ export default function AppjamSortedRosterPage() {
     //where data from firebase is stored for the shirt sizes
     const [sizes, setSizes] = useState({})
 
+    //stores the quarter from the database
+    const [quarter, setQuarter] = useState("");
+
+    //stores the year from the database
+    const [year, setYear] = useState("");
+
     //navigation variable to naviagate to other pages
     let history = useHistory();
 
@@ -31,6 +37,19 @@ export default function AppjamSortedRosterPage() {
             
           })
       });
+
+    //accesses firebase for appjam's quarter and year
+    const quarterYearDatabase = useRef(fire.database().ref().child('seasonYear/-M8idEUsNN1M5VcJDv-I/appjam'))
+
+    //accesses firebase for quarter and the year
+    useEffect(() => {
+        quarterYearDatabase.current.once('value', (snap) => {
+            const quarterYear = snap.val();
+            console.log("CURRENT QUARTER:", quarterYear)
+            setQuarter(quarterYear.quarter);
+            setYear(quarterYear.year);
+        });
+    },[]);
 
     //gets the appjam shirt size info fromt he database using firebase
     const sortedRosterCollection = useRef(fire.database().ref().child('shirts'))
@@ -50,7 +69,7 @@ export default function AppjamSortedRosterPage() {
 
     return (
         <div>
-            <TitleToolbar program="appjam+" season="Spring" year="2020" urlPath="appjam"/>
+            <TitleToolbar program="appjam+" season={quarter} year={year} urlPath="appjam"/>
 
             <div className="programPageContainer">
                 <div style={tableContainer}>

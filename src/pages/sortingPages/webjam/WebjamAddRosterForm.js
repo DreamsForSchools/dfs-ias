@@ -61,6 +61,9 @@ export default function WebjamAddRosterForm() {
 
     }
 
+    //accesses firebase for appjam quarter and year
+    const quarterYearDatabase = useRef(fire.database().ref().child('seasonYear/-M8idEUsNN1M5VcJDv-I/webjam'));
+
     //validates user inputs
     const nextClicked = () => {
         console.log("submit");
@@ -71,12 +74,20 @@ export default function WebjamAddRosterForm() {
 
         if (input === "file"){
             history.push('/webjamhome/uploadroster');
-            // history.push({
-            //     pathname: '/webjamhome/uploadroster',
-            //     state: { quarter:quarter, year:year }
-            // })
+            quarterYearDatabase.current.once('value', (snap) => {
+                snap.ref.set({
+                    quarter: quarter,
+                    year: year
+                });
+            });
         }else if (input === "manual"){
-            alert('manual chosen (not yet implemented)')
+            alert('manual chosen (not yet implemented)');
+            quarterYearDatabase.current.once('value', (snap) => {
+                snap.ref.set({
+                    quarter: quarter,
+                    year: year
+                });
+            });
         } 
 
     }
@@ -97,10 +108,10 @@ export default function WebjamAddRosterForm() {
 
                             <select name="quarter" style={dropdownStyle} value={quarter} onChange={onChangeQuarter}>
                                 <option value="" disabled selected>Choose Season...</option>
-                                <option value="fall">Fall</option>
-                                <option value="winter">Winter</option>
-                                <option value="spring">Spring</option>
-                                <option value="summer">Summer</option>
+                                <option value="Fall">Fall</option>
+                                <option value="Winter">Winter</option>
+                                <option value="Spring">Spring</option>
+                                <option value="Summer">Summer</option>
                             </select>
 
                             <select name="year" style={dropdownStyle} value={year} onChange={onChangeYear}>
