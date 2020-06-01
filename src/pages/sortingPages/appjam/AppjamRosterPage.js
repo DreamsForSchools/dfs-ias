@@ -94,13 +94,6 @@ export default function AppjamRosterPage(props) {
 
     return (
         <div>
-            {/* <SideNavBar />
-            <div className="programPageContainer">
-                <h1 className="sortedPagePageTitle">appjam+ [SEASON] [YEAR]</h1>
-                <SortingPagesNavbar />
-            </div> */}
-
-            {/* <TitleToolbar program="appjam+" season={props.location.state.quarter} year={props.location.state.year}  urlPath="appjam"/> */}
 
             <TitleToolbar program="appjam+" season={quarter} year={year}  urlPath="appjam"/>
 
