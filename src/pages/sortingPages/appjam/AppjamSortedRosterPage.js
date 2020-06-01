@@ -262,8 +262,6 @@ const noBtn = {
     paddingLeft: "15px",
     paddingRight: "15px",
     width: "5vw",
-
-
 }
 
 const iconGuideWrapper = {
