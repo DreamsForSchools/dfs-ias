@@ -8,6 +8,9 @@ import {
   Image
 } from "@react-pdf/renderer";
 
+/* 
+    formats the PDF when the user wants to save the sorted roster
+*/
 export default function GeneratePDF({sortedRoster}) {
 
     const styles = StyleSheet.create({

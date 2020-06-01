@@ -6,14 +6,25 @@ import person from '../../.././assets/person.svg'
 
 import fire from '../../.././config/fire';
 
+/* 
+    form that asks whether the user wants to upload instructors manually or through a file
+*/
 export default function AppjamAddRosterForm() {
 
+    //auth variable
     const [user, setUser] = useState(null);
 
+    //variable for capturing whether quarter/season for the program
     const [quarter, setQuarter] = useState("");
+
+    //variable for capturing whether year for the program
     const [year, setYear] = useState("");
+
+    //variable for capturing whether the user chooses
+    //manual upload of file upload
     const [input, setInput] = useState("");
 
+    //navigation variable to naviagate to other pages
     let history = useHistory();
 
     //checks if user is currently logged in
@@ -29,41 +40,45 @@ export default function AppjamAddRosterForm() {
       });
 
 
+    //handles the state change everytime the user toggles 
+    //between manual vs file upload
     const onChangeRadio = (e) => {
         setInput(e.target.value);
         console.log(e.target.value);
 
     }
 
+    //handles the state change everytime the user changes quarter
     const onChangeQuarter = (e) => {
         setQuarter(e.target.value);
         console.log(e.target.value);
 
     }
 
+    //handles the state change everytime the user changes year
     const onChangeYear = (e) => {
         setYear(e.target.value);
         console.log(e.target.value);
 
     }
 
+    //validates user inputs
     const nextClicked = () => {
         console.log("submit");
 
         if (quarter === "" || year === "" || input === ""){
             alert("Please select an option for ALL the fields")
+        }else{
+            if (input === "file"){
+                history.push('/appjamhome/uploadroster');
+                // history.push({
+                //     pathname: '/appjamhome/uploadroster',
+                //     state: { quarter:quarter, year:year }
+                // })
+            }else if (input === "manual"){
+                alert('manual chosen (not yet implemented)')
+            } 
         }
-
-        if (input === "file"){
-            history.push('/appjamhome/uploadroster');
-            // history.push({
-            //     pathname: '/appjamhome/uploadroster',
-            //     state: { quarter:quarter, year:year }
-            // })
-        }else if (input === "manual"){
-            alert('manual chosen (not yet implemented)')
-        } 
-
     }
 
 

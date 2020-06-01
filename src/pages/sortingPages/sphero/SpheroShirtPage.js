@@ -1,17 +1,20 @@
 import React from 'react'
 
-import SideNavBar from '../../../components/sidebar/SideNavBar';
-import SortingPagesNavbar from '../../../components/sortingPagesComponents/SortingPagesNavbar'
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
+/* 
+    this page shows the total shirts for each size for sphero
+*/
 export default function SpheroShirtPage() {
 
+    //auth variable
     const [user, setUser] = useState(null);
 
+    //navigation variable to naviagate to other pages
     let history = useHistory();
 
     //checks if user is currently logged in

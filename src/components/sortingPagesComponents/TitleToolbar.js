@@ -11,8 +11,10 @@ import fire from '../.././config/fire';
 // the title header and the SortingPagesNavbar component
 export default function TitleToolbar(props) {
 
+    //auth variable
     const [user, setUser] = useState(null);
 
+    //navigation variable to naviagate to other pages
     let history = useHistory();
 
     //checks if user is currently logged in

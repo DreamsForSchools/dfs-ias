@@ -1,18 +1,23 @@
 import React from 'react'
 
-import SideNavBar from '../../../components/sidebar/SideNavBar';
-import SortingPagesNavbar from '../../../components/sortingPagesComponents/SortingPagesNavbar'
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
+/* 
+    this page shows the total shirts for each size for appjam
+*/
 export default function AppjamSortedRosterPage() {
 
+    //auth variable
     const [user, setUser] = useState(null);
+
+    //where data from firebase is stored for the shirt sizes
     const [sizes, setSizes] = useState({})
 
+    //navigation variable to naviagate to other pages
     let history = useHistory();
 
     //checks if user is currently logged in
@@ -27,7 +32,10 @@ export default function AppjamSortedRosterPage() {
           })
       });
 
+    //gets the appjam shirt size info fromt he database using firebase
     const sortedRosterCollection = useRef(fire.database().ref().child('shirts'))
+
+    //gets the info from firebase
     useEffect(() => {
         sortedRosterCollection.current.once('value', (snap) => {
             const shirtSizes = {}

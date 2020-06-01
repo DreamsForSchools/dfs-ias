@@ -1,12 +1,20 @@
 import React from 'react'
-import dfs_logo_reverse_icon from "../.././assets/dfs_logo_reverse_icon.svg"
+
 import {Link,useHistory, useLocation} from 'react-router-dom';
 import fire from '../.././config/fire';
 import { useState, useEffect } from 'react';
 
+
+/*
+    This component serves as the navbar when a user
+    goes to a program's home page and check the existing roster
+*/
 export default function SortingPagesNavbar({urlPath}) {
 
+    //auth variable
     const [user, setUser] = useState(null);
+
+    //variable for toggling the roster option's style when hovered over
     const [rosterLinkStyle, setRosterLinkStyle] = useState({
         paddingLeft: "50px",
         paddingRight: "50px",
@@ -15,6 +23,8 @@ export default function SortingPagesNavbar({urlPath}) {
         justifyContent: "space-around",
         alignTtems: "center",
     })
+
+     //variable for toggling the sorted roster option's style when hovered over
     const [sortedRosterLinkStyle, setSortedRosterLinkStyle] = useState({
         paddingLeft: "50px",
         paddingRight: "50px",
@@ -23,6 +33,8 @@ export default function SortingPagesNavbar({urlPath}) {
         justifyContent: "space-around",
         alignTtems: "center",
     })
+
+     //variable for toggling the shirt summary option's style when hovered over
     const [shirtLinkStyle, setShirtLinkStyle] = useState({
         paddingLeft: "50px",
         paddingRight: "50px",
@@ -33,11 +45,18 @@ export default function SortingPagesNavbar({urlPath}) {
     })
 
     console.log(urlPath)
+
+    //navigation variable to naviagate to other pages
     let history = useHistory();
+
+    //variable to find out the page's current url path
     let location = useLocation();
     
+    //checks if the user is logged in
+    //also checks if the user is either currently on the
+    //roster, sortedroster or shirt page and highlights 
+    //the corresponding tab in the nav bar
     useEffect(() => {
-        // Update the document title using the browser API
         fire.auth().onAuthStateChanged(user => {
             if (user){
                 setUser(user);
@@ -65,7 +84,7 @@ export default function SortingPagesNavbar({urlPath}) {
         }
       }, [location.pathname, history]);
 
-
+    //changes roster tab color when hovered over
     const rosterEnter = () => {
         if (!(location.pathname === "/"+urlPath+"home/roster")){
             setRosterLinkStyle({
@@ -75,7 +94,7 @@ export default function SortingPagesNavbar({urlPath}) {
         }
         
     }
-
+    //changes roster tab color back to white when mouse is not hovering over it
     const rosterLeave = () => {
         if (!(location.pathname === "/"+urlPath+"home/roster")){
             setRosterLinkStyle({
@@ -85,6 +104,7 @@ export default function SortingPagesNavbar({urlPath}) {
         }
     }
 
+    //changes sorted roster tab color when hovered over
     const SortedRosterEnter = () => {
         if (!(location.pathname === "/"+urlPath+"home/sortedroster")){
             setSortedRosterLinkStyle({
@@ -94,6 +114,7 @@ export default function SortingPagesNavbar({urlPath}) {
         }
     }
 
+    //changes sorted roster tab color back to white when mouse is not hovering over it
     const SortedRosterLeave = () => {
         if (!(location.pathname === "/"+urlPath+"home/sortedroster")){
             setSortedRosterLinkStyle({
@@ -103,6 +124,7 @@ export default function SortingPagesNavbar({urlPath}) {
         }
     }
 
+    //changes shirt tab color when hovered over
     const shirtEnter = () => {
         if (!(location.pathname === "/"+urlPath+"home/shirtsummary")){
             setShirtLinkStyle({
@@ -112,6 +134,7 @@ export default function SortingPagesNavbar({urlPath}) {
         }
     }
 
+    //changes shirt tab color back to white when mouse is not hovering over it
     const shirtLeave = () => {
         if (!(location.pathname === "/"+urlPath+"home/shirtsummary")){
             setShirtLinkStyle({
@@ -120,11 +143,6 @@ export default function SortingPagesNavbar({urlPath}) {
             })
         }
     }
-
-
-
-    // const location = useLocation();
-    // console.log(location);
 
     return (
         <div className="sortingPagesNavbarWrapper">

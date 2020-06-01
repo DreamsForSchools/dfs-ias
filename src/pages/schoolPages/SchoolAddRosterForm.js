@@ -6,12 +6,19 @@ import person from '../.././assets/person.svg'
 
 import fire from '../.././config/fire';
 
+/* 
+    form that asks whether the user wants to upload schools manually or through a file
+*/
 export default function SchoolAddRosterForm() {
 
+    //auth variable
     const [user, setUser] = useState(null);
     
+    //variable for capturing whether the user chooses
+    //manual upload of file upload
     const [input, setInput] = useState("");
 
+    //navigation variable to naviagate to other pages
     let history = useHistory();
 
     //checks if user is currently logged in
@@ -26,13 +33,15 @@ export default function SchoolAddRosterForm() {
           })
       });
 
-
+    //handles the state change everytime the user toggles 
+    //between manual vs file upload
     const onChangeRadio = (e) => {
         setInput(e.target.value);
         console.log(e.target.value);
-
     }
 
+    //function then the next button is clicked
+    //validates user input
     const nextClicked = () => {
         console.log("submit");
         // history.push('/schoolhome/uploadinstitution');
@@ -46,8 +55,6 @@ export default function SchoolAddRosterForm() {
         }else if (input === "manual"){
             alert('manual chosen (not yet implemented)')
         } 
-
-
     }
 
 
@@ -79,8 +86,6 @@ export default function SchoolAddRosterForm() {
 
                         </div>
 
-
-
                         <input 
                             type = 'submit'
                             value = 'Next'
@@ -97,9 +102,6 @@ export default function SchoolAddRosterForm() {
                 <img style={personIcon} src={person} alt="person icon"/>
                 <div style={square}></div>
             </div>
-
-            
-
 
         </div>
     )

@@ -37,7 +37,9 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import fire from './config/fire';
 
-
+/*
+  Contains all the routing links
+*/
 class App extends React.Component {
 
   constructor(props){

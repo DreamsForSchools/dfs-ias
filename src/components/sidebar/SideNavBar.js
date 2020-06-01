@@ -4,11 +4,16 @@ import {Link,useHistory} from 'react-router-dom';
 import fire from '../.././config/fire';
 import { useState, useEffect } from 'react';
 
+//this component is the universal side navigation bar
 export default function SideNavBar(props) {
 
+    //auth variable
     const [user, setUser] = useState(null);
     
+    //navigation variable to naviagate to other pages
     let history = useHistory();
+
+    //logs the current user out
     const logout = () => {
         if(user){
             setUser(null); 
@@ -21,8 +26,8 @@ export default function SideNavBar(props) {
         history.push('/');
     }
 
+    //checks if the user is logged in
     useEffect(() => {
-        // Update the document title using the browser API
         fire.auth().onAuthStateChanged(user => {
             if (user){
                 setUser(user);

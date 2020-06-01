@@ -1,17 +1,20 @@
 import React from 'react'
 
-import SideNavBar from '../../../components/sidebar/SideNavBar';
-import SortingPagesNavbar from '../../../components/sortingPagesComponents/SortingPagesNavbar'
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
+/* 
+    this page shows the sorted roster for webjam
+*/
 export default function WebjamSortedRosterPage() {
 
+    //User auth 
     const [user, setUser] = useState(null);
 
+    //History hook for navigation
     let history = useHistory();
 
     //checks if user is currently logged in

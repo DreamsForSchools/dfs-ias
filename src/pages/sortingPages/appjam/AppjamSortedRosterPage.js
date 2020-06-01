@@ -16,6 +16,9 @@ import birb from '../../.././assets/animalIcons/birb.png';
 
 import fire from '../../.././config/fire';
 
+/* 
+    this page shows the sorted roster for appjam
+*/
 export default function AppjamSortedRosterPage() {
 
     //User auth 
@@ -76,16 +79,19 @@ export default function AppjamSortedRosterPage() {
 
     console.log(schools)
 
+    //shows modal if user really wants to re-sort
     const resortClicked = () => {
         console.log("resort");
         setShowResortModal(!showResortModal);
     }
 
+    //re-sort when clicked yes on the modal
     const resortYes = () => {
         console.log("YES RESORT!");
         setShowResortModal(!showResortModal);
     }
 
+    //don't resort when no is clicked on the modal
     const resortNo = () => {
         console.log("DONT RESORT!");
         setShowResortModal(!showResortModal);
