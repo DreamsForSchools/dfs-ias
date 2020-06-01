@@ -5,7 +5,6 @@ import {
   View,
   Document,
   StyleSheet,
-  Image
 } from "@react-pdf/renderer";
 
 /* 
@@ -47,7 +46,6 @@ export default function GeneratePDF({sortedRoster}) {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: 'column',
-            backgroundColor: '#E4E4E4',
             backgroundColor: "none",
             marginTop: "5px"
         },

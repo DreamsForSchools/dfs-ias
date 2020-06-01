@@ -3,13 +3,13 @@ import React from 'react'
 import dfs_logo_fullcolor_320x132_google from './../assets/dfs_logo_fullcolor_320x132_google.png';
 
 import { useHistory } from "react-router-dom";
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 import fire from '.././config/fire';
 
 export default function ResetPassword() {
 
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
     const [email, setEmail] = useState("");
 
     let history = useHistory();
@@ -31,6 +31,7 @@ export default function ResetPassword() {
         setEmail(e.target.value);
     };
 
+    //firebase sends a reset password email to the given email
     const onSubmit = (e) => {
         fire.auth().sendPasswordResetEmail(email).then(function() {
             console.log("email sent")
