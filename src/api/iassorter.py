@@ -15,7 +15,10 @@ def sort(instructors:list, institutions:list):
             if sched_match != {}:
                 result[s.name].append(Match(t.name, s.name, t.region, 
                     t.previousmentor, t.car, t.languages, 
-                    t.multipledays, sched_match, s.instructors))
+                    t.multipledays, s.instructors, 
+                    t.shirtsize, t.gender, t.university, t.year,
+                    t.ethnicity, s.address, s.county, s.schedule,
+                    t.schedule))
 
     sortedDict = randInstructToSchool(result)
     return sortedDict

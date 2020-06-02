@@ -5,6 +5,9 @@ import api.dfsapi
 def upload_shirtsize(program:str):
 	instructors = api.fbread.read_instructors(program)
 
+	if instructors == False:
+		return False
+
 	shirtsizes = getshirtsize(instructors)
 
 	db = api.dfsapi.get_db()

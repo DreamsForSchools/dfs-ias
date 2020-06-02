@@ -12,6 +12,10 @@ def read_instructors(program:str):
 	instructors = list()
 
 	keys = db.child(program).child("instructors").shallow().get()
+
+	if keys.val() == None:
+		return False
+
 	recentdb = max(keys.val())
 
 	data = db.child(program).child("instructors").child(recentdb).get()
@@ -61,6 +65,10 @@ def read_institutions(program:str):
 	institutions = list()
 
 	keys = db.child(program).child("institutions").shallow().get()
+
+	if keys.val() == None:
+		return False
+
 	recentdb = max(keys.val())
 
 	data = db.child(program).child("institutions").child(recentdb).get()

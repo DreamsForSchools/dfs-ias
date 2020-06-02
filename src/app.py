@@ -1,9 +1,8 @@
 from flask import Flask, jsonify, request
 import api.fbstoresort
 import api.shirtsize
-import api.lockinstructor
-import api.unlockinstructor
 import api.fbresort
+import api.manageinstructors
 
 app = Flask(__name__)
 
@@ -29,9 +28,9 @@ def lock_instructor():
     teacher_name = json_input['TeacherName']
     school_name = json_input['SchoolName']
 
-    api.lockinstructor.lock_instructor(program, teacher_name, school_name)
+    locked_instructor = api.manageinstructors.lock_instructor(program, teacher_name, school_name)
     
-    return 'Done', 201
+    return jsonify(locked_instructor)
 
 @app.route('/unlockinstructor', methods=['GET', 'POST'])
 def unlock_instructor():
@@ -40,9 +39,9 @@ def unlock_instructor():
     teacher_name = json_input['TeacherName']
     school_name = json_input['SchoolName']
 
-    api.unlockinstructor.unlock_instructor(program, teacher_name, school_name)
+    unlocked_instructor = api.manageinstructors.unlock_instructor(program, teacher_name, school_name)
 
-    return 'Done', 201
+    return jsonify(unlocked_instructor)
 
 @app.route('/resort', methods=['GET', 'POST'])
 def resort():
@@ -53,14 +52,30 @@ def resort():
     
     return 'Done', 201
 
-@app.route('/removeinstructor', methods=['GET', 'POST'])
+@app.route('/removeinstructor', methods=['GET','POST'])
 def remove_instructor():
     json_input = request.get_json()
     program = json_input['Program']
     school_name = json_input['SchoolName']
     teacher_name = json_input['TeacherName']
 
+    api.manageinstructors.remove_instructor(program, school_name, teacher_name)
+
+    return 'Done', 201
+
+@app.route('/showavailablemoves', methods=['GET','POST'])
+def available_moves():
+    json_input = request.get_json()
+    program = json_input['Program']
+    school_name = json_input['SchoolName']
+    teacher_name = json_input['TeacherName']
+
+    api.manageinstructors.available_moves(program, school_name, teacher_name)
     
+    return 'Done', 201
+
+@app.route('/moveinstructor', methods=['GET', 'POST'])
+def move_instructor():
 
     return 'Done', 201
 
