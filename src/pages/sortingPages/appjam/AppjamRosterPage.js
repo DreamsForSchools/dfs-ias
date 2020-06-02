@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
-/* 
+/*
     this page shows the roster for appjam
 */
 export default function AppjamRosterPage(props) {
@@ -33,7 +33,7 @@ export default function AppjamRosterPage(props) {
             }else{
                 history.push('/');
             }
-            
+
           })
       });
 
@@ -108,32 +108,71 @@ export default function AppjamRosterPage(props) {
 
                 <div style={sortBtnContainer}>
                     <button onClick={sortClicked} style={sortBtn}>SORT!</button>
-                </div>     
+                </div>
+
+
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Ethnicity</th>
+                    <th>Languages</th>
+                    <th>University</th>
+                    <th>Year</th>
+                    <th>Region</th>
+                    <th>M</th>
+                    <th>T</th>
+                    <th>W</th>
+                    <th>Th</th>
+                    <th>Fri</th>
+                    <th>PrevMentor</th>
+                    <th>Car</th>
+                    <th>Multiple Days</th>
+                    <th>Shirt Size</th>
+
+                  </tr>
+                </thead>
+                </table>
 
                 <div style={firebaseRoster}>
+
                     {roster.map((mentor) => (
+
                         <div style={mentorContainer} key={mentor.mentorID}>
-                            <h3 style={data}>{mentor.name}</h3>
-                            <h3 style={data}>{mentor.gender}</h3>
-                            <h3 style={data}>{mentor.ethnicity}</h3>
-                            <h3 style={data}>{mentor.languages}</h3>
-                            <h3 style={data}>{mentor.university}</h3>
-                            <h3 style={data}>{mentor.year}</h3>
-                            <h3 style={data}>{mentor.region}</h3>
-                            <h3 style={data}>{mentor.monday}</h3>
-                            <h3 style={data}>{mentor.tuesday}</h3>
-                            <h3 style={data}>{mentor.wednesday}</h3>
-                            <h3 style={data}>{mentor.thursday}</h3>
-                            <h3 style={data}>{mentor.friday}</h3>
-                            <h3 style={data}>{mentor.prevMentor}</h3>
-                            <h3 style={data}>{mentor.car}</h3>
-                            <h3 style={data}>{mentor.multipleDays}</h3>
-                            <h3 style={data}>{mentor.shirtSize}</h3>
+
+                        <table class="table table-condensed">
+
+                           <tbody>
+                             <tr>
+                             <td class= "">{mentor.name}</td>
+                               <td class="center">{mentor.gender}</td>
+                               <td>{mentor.ethnicity}</td>
+                               <td>{mentor.languages}</td>
+                               <td>{mentor.university}</td>
+                               <td>{mentor.year}</td>
+                               <td>{mentor.region}</td>
+                               <td>{mentor.monday}</td>
+                               <td>{mentor.tuesday}</td>
+                               <td>{mentor.wednesday}</td>
+                               <td>{mentor.thursday}</td>
+                               <td>{mentor.friday}</td>
+                               <td>{mentor.prevMentor}</td>
+                               <td>{mentor.car}</td>
+                               <td>{mentor.multipleDays}</td>
+                               <td>{mentor.shirtSize}</td>
+
+
+                             </tr>
+
+                           </tbody>
+                         </table>
+
                         </div>
                     ))}
 
                 </div>
-            </div> 
+            </div>
 
         </div>
     )

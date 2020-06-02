@@ -16,6 +16,8 @@ a{
   text-decoration: none;
 }
 
+
+
 /*  --------------- START PROGRAM PAGE --------------- */
 
 .programPageContainer{
@@ -240,7 +242,7 @@ a{
   display: flex;
 	justify-content: center;
 	align-items: center;
-  
+
 }
 
 .instructorCardsContainer{
