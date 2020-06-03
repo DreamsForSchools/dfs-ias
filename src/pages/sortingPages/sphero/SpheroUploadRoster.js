@@ -35,7 +35,8 @@ class SpheroUploadRosterPage extends Component {
                     const Friday = data[i][15];
                     const newUser = {"Name": name, "Gender": gender, "Ethnicity": ethnicity, "Region": region, "University": university, "Year": year,
                                     "PreviousMentor": returner, "Car": car, "Languages": languages, "ShirtSize": shirtsize,
-                                    "MultipleDays": multipledays, "Monday": Monday, "Tuesday": Tuesday, "Wednesday": Wednesday, "Thursday": Thursday, "Friday": Friday};
+                                    "MultipleDays": multipledays, "Monday": Monday, "Tuesday": Tuesday, "Wednesday": Wednesday, "Thursday": Thursday, "Friday": Friday,
+                                    "Program": "Sphero", "Manual": "False"};
                     userList.push(newUser);
 
                     fetch('https://dfs-ias.firebaseio.com/SpheroElementary/instructors.json', {
