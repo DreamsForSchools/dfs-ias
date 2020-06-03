@@ -238,6 +238,7 @@ a{
 /*  --------------- START SortedInstructorsCard COMPONENT --------------- */
 .sortedInstructorCardsWrapper{
   display: flex;
+  flex-direction: column;
 	justify-content: center;
 	align-items: center;
   

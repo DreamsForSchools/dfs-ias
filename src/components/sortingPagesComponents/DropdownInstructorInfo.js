@@ -1,5 +1,7 @@
 import React from 'react'
 
+import MoveInstructor from './MoveInstructor';
+
 // import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 
@@ -28,6 +30,8 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
 
     const[isLocked, setIsLocked] = useState(false)
 
+    const[isMove, setIsMove] = useState(false);
+
     //function that shows the options menu when edit button is clicked
     const toggleOptionsMenu = (e,name) => {
         console.log("Hello " + name);
@@ -45,6 +49,13 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
     //function that triggers when move button is clicked
     const moveBtnClicked = (e, mentorID) => {
         console.log("MOVED " + mentorID)
+        setIsMove(!isMove);
+    }
+
+    const moveBtnClickedInMoveInstructor = (e) => {
+        console.log("MOVED FROM DROPDOWNINSTRUCTORS!!!")
+        // alert("MOVED FROM DROPDOWNINSTRUCTORS")
+        setIsMove(!isMove);
     }
 
     //function that triggers when lock button is clicked
@@ -59,22 +70,26 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
     }
 
     return (
-        <div style={instructorsInfo} key={person.name}>
-            <img src={person.car === "Yes" && person.prevMentor === "Yes" ? carMentor : person.car === "Yes" && person.prevMentor !== "Yes"? car : person.car !== "Yes" && person.prevMentor === "Yes" ? mentor : null} style={carMentorIcon}/>
-            <img src={savedIcon[parseInt(savedIconIndex, 10)]} style={animalIcon}/>
-            <h3 style={instructorInfoNameStyle}>{person.name} {isLocked?(<img src={lock}/>):null}</h3>
-            <button style={editBtn} onClick={(e) => { toggleOptionsMenu(e, person.name) }}>
-                <img src={options} style={optionsIcon}/>
-                <div style={optionsMenuPosition}>
-                    {isOptionsMenuOpen?(
-                        <div className="optionsMenu">
-                            <button onClick={(e) => { moveBtnClicked(e, person.name) }} className="optionBtn moveBtn">MOVE</button>
-                            <button onClick={(e) => { lockBtnClicked(e, person.name) }} className="optionBtn lockBtn">{isLocked?"Unlock":"Lock"}</button>
-                            <button onClick={(e) => { deleteBtnClicked(e, person.name) }} className="optionBtn deleteBtn">Delete</button>
-                        </div>
-                    ):null}
-                </div>
-            </button>
+        <div>
+            {isMove? (<MoveInstructor instructor={person.name} onMove={moveBtnClickedInMoveInstructor}/>) : null}
+
+            <div style={instructorsInfo} key={person.name}>
+                <img src={person.car === "Yes" && person.prevMentor === "Yes" ? carMentor : person.car === "Yes" && person.prevMentor !== "Yes"? car : person.car !== "Yes" && person.prevMentor === "Yes" ? mentor : null} style={carMentorIcon}/>
+                <img src={savedIcon[parseInt(savedIconIndex, 10)]} style={animalIcon}/>
+                <h3 style={instructorInfoNameStyle}>{person.name} {isLocked?(<img src={lock}/>):null}</h3>
+                <button style={editBtn} onClick={(e) => { toggleOptionsMenu(e, person.name) }}>
+                    <img src={options} style={optionsIcon}/>
+                    <div style={optionsMenuPosition}>
+                        {isOptionsMenuOpen?(
+                            <div className="optionsMenu">
+                                <button onClick={(e) => { moveBtnClicked(e, person.name) }} className="optionBtn moveBtn">MOVE</button>
+                                <button onClick={(e) => { lockBtnClicked(e, person.name) }} className="optionBtn lockBtn">{isLocked?"Unlock":"Lock"}</button>
+                                <button onClick={(e) => { deleteBtnClicked(e, person.name) }} className="optionBtn deleteBtn">Pending</button>
+                            </div>
+                        ):null}
+                    </div>
+                </button>
+            </div>
         </div>
     )
 }
