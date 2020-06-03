@@ -5,7 +5,7 @@ import csv from 'csv';
 
 class AppjamUploadRosterPage extends Component {
     
-    onDrop (files) {
+    onDrop(files) {
         this.setState({ files });
 
         var file = files[0];
@@ -35,7 +35,8 @@ class AppjamUploadRosterPage extends Component {
                     const Friday = data[i][15];
                     const newUser = {"Name": name, "Gender": gender, "Ethnicity": ethnicity, "Region": region, "University": university, "Year": year,
                                     "PreviousMentor": returner, "Car": car, "Languages": languages, "ShirtSize": shirtsize,
-                                    "MultipleDays": multipledays, "Monday": Monday, "Tuesday": Tuesday, "Wednesday": Wednesday, "Thursday": Thursday, "Friday": Friday};
+                                    "MultipleDays": multipledays, "Monday": Monday, "Tuesday": Tuesday, "Wednesday": Wednesday, "Thursday": Thursday, "Friday": Friday,
+                                    "Program": "Appjam", "Manual": "False"};
                     userList.push(newUser);
 
                     fetch('https://dfs-ias.firebaseio.com/AppJam+/instructors.json', {
@@ -55,11 +56,6 @@ class AppjamUploadRosterPage extends Component {
 
     goNext=()=> {
         this.props.history.push("/appjamhome/roster");
-
-        // this.props.history.push({
-        //     pathname: '/appjamhome/roster',
-        //     state: { quarter: this.props.location.state.quarter, year: this.props.location.state.year }
-        // })
     }
 
     render() {
@@ -76,7 +72,6 @@ class AppjamUploadRosterPage extends Component {
                     <button onClick={this.goNext} style={nextButtonStyle}>Next</button>
                 </div>
             </div>
-            // <h1>HELLO WORLD</h1>
         )
     }
 }
