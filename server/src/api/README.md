@@ -1,4 +1,7 @@
 # To run API as localhost
+
+First time
+
 1. Clone the repository
 2. cd to server
 3. pip3 install virtualenv (if you don't have virtualenv installed in your machine)
@@ -7,6 +10,12 @@
 6. pip install -r requirementst.txt (install all the necessary packages in the virtualenv)
 7. cd to src
 8. flask run
+
+Later times
+1. cd to server
+2. source venc/bin/activate
+3. cd to src
+4. flask run
 
 # To upload instructors:
 http://127.0.0.1:5000/uploadinstructors
