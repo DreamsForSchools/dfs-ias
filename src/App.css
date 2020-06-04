@@ -401,3 +401,18 @@ a{
 /*  --------------- START AppjamSortedRosterPage COMPONENT --------------- */
 
 /*  --------------- END AppjamSortedRosterPage COMPONENT --------------- */
+
+.pendingLockedName{
+  font-weight: 400;
+  font-size: 12px;
+  padding: 1px;
+  color: #202E47;
+  width: 300px;
+  text-align: center
+}
+
+.pendingLockedName:hover{
+  background-color: #A4A3CE;
+  cursor: pointer;
+  color: white
+}

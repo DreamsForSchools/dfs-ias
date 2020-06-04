@@ -2,6 +2,8 @@ import React from 'react'
 
 import TitleToolbar from '../../.././components/sortingPagesComponents/TitleToolbar';
 import SortedInstructorsCard from '../../../components/sortingPagesComponents/SortedInstructorsCard';
+import LockedList from '../../../components/sortingPagesComponents/LockedList'
+import PendingList from '../../../components/sortingPagesComponents/PendingList'
 
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
@@ -179,24 +181,8 @@ export default function AppjamSortedRosterPage() {
                 
                 <div className="sortedInstructorCardsWrapper">
                     <div style={pendingLockedContainer}>
-                        <div style={pendingLockedBox}>
-                            <h3 style={pendingLockedTitle}>Pending</h3>
-                            <div style={pendingLockedNameContainer}>
-                                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                            </div>
-                        </div>
-                        <div style={pendingLockedBox}>
-                            <h3 style={pendingLockedTitle}>Locked</h3>
-                            <div style={pendingLockedNameContainer}>
-                                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                            </div>
-                        </div>
-                        
+                        <PendingList/>
+                        <LockedList />
                     </div>
 
                     <div className="instructorCardsContainer">
@@ -259,8 +245,12 @@ const pendingLockedNameContainer = {
 const pendingLockedName = {
     fontWeight: "400",
     fontSize: "12px",
-    margin: "1px",
-    color: "#202E47"
+    // margin: "1px",
+    padding: "1px",
+    color: "#202E47",
+    // backgroundColor: "#A4A3CE",
+    width: "300px",
+    textAlign: "center"
 }
 
 const modalContainer = {

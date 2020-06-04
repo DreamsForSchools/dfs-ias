@@ -25,6 +25,13 @@ export default function MoveInstructor({instructor, onMove}) {
         onMove();
     }
 
+    const cancel = (e) => {
+        console.log("CANCEL from MOVEINSTRUCTOR.js")
+        onMove();
+    }
+
+
+
     return (
         <div style={modalContainer}>
             
@@ -47,7 +54,11 @@ export default function MoveInstructor({instructor, onMove}) {
 
                 </div>
 
-                <button onClick={moveFinal} style={nextBtn}>MOVE!</button>
+                <div style={buttonContainer}>
+                    <button onClick={cancel} style={cancelBtn}>Cancel</button>
+                    <button onClick={moveFinal} style={nextBtn}>MOVE!</button>
+                </div>
+                
             </div>
         </div>
     )
@@ -112,6 +123,17 @@ const dropdowns = {
     marginTop: "10px"
 }
 
+const cancelBtn = {
+    width: "105px",
+    height: "45px",
+    backgroundColor: "#49479D",
+    fontSize: "14px",
+    color: "white",
+    border: "0px solid",
+    borderRadius: "10px",
+    marginTop: "20px",
+}
+
 const nextBtn = {
     width: "105px",
     height: "45px",
@@ -120,8 +142,8 @@ const nextBtn = {
     color: "white",
     border: "0px solid",
     borderRadius: "10px",
-    marginTop: "10px"
-
+    marginTop: "20px",
+    marginLeft: "40px"
 }
 
 const dropdownStyle = {
@@ -132,4 +154,11 @@ const dropdownStyle = {
     fontSize: "18px",
     border: "0px solid",
     boxShadow: "1px 1px 10px #E6E6E8"
+}
+
+const buttonContainer = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
 }
