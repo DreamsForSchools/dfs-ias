@@ -28,8 +28,10 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
     //toggle condition for the options for instructors
     const[isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
 
+    //toggle condition for locking instructors
     const[isLocked, setIsLocked] = useState(false)
 
+    //toggle condition for moving instructors
     const[isMove, setIsMove] = useState(false);
 
     //function that shows the options menu when edit button is clicked
@@ -52,6 +54,7 @@ export default function DropdownInstructorInfo({person, mentorsFromProps, savedI
         setIsMove(!isMove);
     }
 
+    //passed into MoveInstructor Component so the modal can be toggled off
     const moveBtnClickedInMoveInstructor = (e) => {
         console.log("MOVED FROM DROPDOWNINSTRUCTORS!!!")
         // alert("MOVED FROM DROPDOWNINSTRUCTORS")

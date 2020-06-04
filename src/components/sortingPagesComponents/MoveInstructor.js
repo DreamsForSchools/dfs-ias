@@ -6,8 +6,8 @@ import { useState, useEffect, useRef } from 'react';
 // import firebase from 'firebase';
 
 /*
-    This component contains instructor info once you expand the card
-    it also has the edit options which contains "Move, lock, and delete"
+    This component is a modal that asks the user where they
+    want to move an instructor after clicking the move button
 */
 export default function MoveInstructor({instructor, onMove}) {
 
