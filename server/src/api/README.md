@@ -2,7 +2,7 @@
 
 First time
 
-1. Clone the repository
+1. Clone the server folder in master branch
 2. cd to server
 3. pip3 install virtualenv (if you don't have virtualenv installed in your machine)
 4. virtualenv venv (make a new virtual environment called venv)
