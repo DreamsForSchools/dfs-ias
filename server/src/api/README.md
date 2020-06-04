@@ -30,7 +30,7 @@ POST request with json object in this format.
 For uploading a roster by looping through every row of the csv file set the first instructor with "New":true and the rest with "New":false 
 
 For manual uploads set "New":false
-<br/>
+<br />
 
 # To upload institutions:
 
@@ -56,7 +56,7 @@ POST request with json object in this format
 For uploading a roster by looping through every row of the csv file set the first institution with "New":true and the rest with "New":false 
 
 For manual uploads set "New":false
-
+<br />
 
 # To sort:
 
@@ -71,7 +71,7 @@ Returns a json object showing institutions as keys and list of instructors as va
 Adds a new timestamp in the matches tab and stores the json object there.
 
 If any error occurs it returns false and the sorted information is not stored. 
-
+<br />
 
 # To store shirt sizes:
 
@@ -86,7 +86,7 @@ Returns a json object with shirt sizes and their quantities.
 Adds a shirts tab in the program.
 
 If any error occurs it returns false and the shirts information is not stored. 
-
+<br />
 
 # To lock instructor:
 
@@ -103,7 +103,7 @@ Returns false if unsuccessful lock and no information stored
 Creates a locked tab with information of the locked instructor 
 
 Changes the locked variable to true.
-
+<br />
 
 # To unlock instructor:
 
@@ -120,7 +120,7 @@ Returns false if unsuccessful unlock and no information is removed
 Removes the instructor from the locked tab
 
 Changes the locked variable to false
-
+<br />
 
 # To resort:
 
@@ -135,7 +135,7 @@ Returns json object with institutions as keys and list of instructors as value.
 Returns false if any error occurs.
 
 Gets the instructors from the locked tab and are added as default when matching them with institutions.
-
+<br />
 
 # To remove instructor:
 
@@ -158,7 +158,7 @@ Creates a Removed tab and stores instructor there
 Creates an Available tab and stores available institution there
 
 Instructor has to be first removed from the institution to be able to move to an institution with empty slot. 
-
+<br />
 
 # To show available moves:
 
@@ -174,7 +174,7 @@ POST request with json object in this format
 Returns a list of institutions the instructor can be moved to if successful
 
 The instructor has to be a removed instructor
-
+<br />
 
 # To move instructor:
 
