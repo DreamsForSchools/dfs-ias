@@ -7,7 +7,8 @@ import PendingListNameButton from './PendingListNameButton'
 // import firebase from 'firebase';
 
 /*
-    This component is shows locked students
+    This component is shows pending students
+    meaning they are temporarily removed from the sorted roster
 */
 export default function PendingList({instructorList}) {
 

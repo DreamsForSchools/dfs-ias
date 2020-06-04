@@ -7,7 +7,9 @@ import MoveInstructor from './MoveInstructor'
 // import firebase from 'firebase';
 
 /*
-    This component is shows locked students
+    This component is shows names on the pending list
+    when their name is clicked they can be moved back to 
+    the sorted roster to an available school
 */
 export default function PendingList({name}) {
 
