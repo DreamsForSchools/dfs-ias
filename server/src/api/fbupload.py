@@ -11,7 +11,8 @@ Upload
 def upload_institutions(school:dict):
 	db = api.dfsapi.get_db()
 
-	db.child("hello").set({"Min":"Sung"})
+			
+
 	
 	Mon = api.dbtools.minute_range(school["Monday"])
 	Tue = api.dbtools.minute_range(school["Tuesday"])
@@ -51,6 +52,13 @@ def upload_institutions(school:dict):
 				db.child(p).child("institutions").child(latest).child(school_info['Name']).set(school_info)
 	db.child("institutions").child(school_info['Name']).set(school_info)
 
+	for p in school['Program']:
+		keys = db.child(p).child("institutions").shallow().get()
+		if keys.val() != None:
+			db_length = len(keys.val())
+			if db_length > 10:
+				oldest = min(keys.val())
+				db.child(p).child("institutions").child(oldest).remove()
 
 
 '''
@@ -106,6 +114,14 @@ def upload_instructors(teacher:dict):
 				db.child(p).child("instructors").child(latest).child(teacher_info['Name']).set(teacher_info)
 		
 		db.child("instructors").child(teacher_info['Name']).set(teacher_info)
+
+	for p in teacher['Program']:
+		keys = db.child(p).child("instructors").shallow().get()
+		if keys.val() != None:
+			db_length = len(keys.val())
+			if db_length > 10:
+				oldest = min(keys.val())
+				db.child(p).child("instructors").child(oldest).remove()
 	return
 		
 

@@ -27,7 +27,8 @@ def upload_matches(program:str):
 		db_length = len(keys.val())
 		if db_length > 10:
 			oldest = min(keys.val())
-			db.child(program).child("matches").child(oldest).remove()		
+			db.child(program).child("matches").child(oldest).remove()
+			print("Here")		
 
 	json_matches = defaultdict(list)
 
