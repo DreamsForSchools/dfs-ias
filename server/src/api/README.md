@@ -1,4 +1,4 @@
-#To upload instructors:
+# To upload instructors:
 
 http://127.0.0.1:5000/uploadinstructors
 
@@ -30,9 +30,9 @@ POST request with json object in this format.
 For uploading a roster by looping through every row of the csv file set the first instructor with "New":true and the rest with "New":false 
 
 For manual uploads set "New":false
+<br/>
 
-
-To upload institutions:
+# To upload institutions:
 
 http://127.0.0.1:5000/uploadinstitutions
 
@@ -58,7 +58,7 @@ For uploading a roster by looping through every row of the csv file set the firs
 For manual uploads set "New":false
 
 
-To sort:
+# To sort:
 
 http://127.0.0.1:5000/sort
 
@@ -73,7 +73,7 @@ Adds a new timestamp in the matches tab and stores the json object there.
 If any error occurs it returns false and the sorted information is not stored. 
 
 
-To store shirt sizes:
+# To store shirt sizes:
 
 http://127.0.0.1:5000/shirts
 
@@ -88,7 +88,7 @@ Adds a shirts tab in the program.
 If any error occurs it returns false and the shirts information is not stored. 
 
 
-To lock instructor:
+# To lock instructor:
 
 http://127.0.0.1:5000/lockinstructor
 
@@ -105,7 +105,7 @@ Creates a locked tab with information of the locked instructor
 Changes the locked variable to true.
 
 
-To unlock instructor:
+# To unlock instructor:
 
 http://127.0.0.1:5000/unlockinstructor
 
@@ -122,7 +122,7 @@ Removes the instructor from the locked tab
 Changes the locked variable to false
 
 
-To resort:
+# To resort:
 
 http://127.0.0.1:5000/resort
 
@@ -137,7 +137,7 @@ Returns false if any error occurs.
 Gets the instructors from the locked tab and are added as default when matching them with institutions.
 
 
-To remove instructor:
+# To remove instructor:
 
 http://127.0.0.1:5000/removeinstructor
 
@@ -160,7 +160,7 @@ Creates an Available tab and stores available institution there
 Instructor has to be first removed from the institution to be able to move to an institution with empty slot. 
 
 
-To show available moves:
+# To show available moves:
 
 http://127.0.0.1:5000/showavailablemoves
 
@@ -176,7 +176,7 @@ Returns a list of institutions the instructor can be moved to if successful
 The instructor has to be a removed instructor
 
 
-To move instructor:
+# To move instructor:
 
 http://127.0.0.1:5000/moveinstructor
 
