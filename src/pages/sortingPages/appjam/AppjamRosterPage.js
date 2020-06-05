@@ -265,17 +265,20 @@ const sortBtnContainer = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: "50vw"
+    // marginLeft: "50vw"
 }
 
 const sortBtn = {
-    fontSize: "14px",
+    fontSize: "18px",
+    fontWeight: "500",
     color: "white",
     backgroundColor: "#49479D",
     borderRadius: "28px",
     height: "46px",
     paddingLeft: "15px",
     paddingRight: "15px",
-    marginLeft: "10px"
+    marginLeft: "10px",
+    marginBottom: "20px",
+    width: "300px"
 
 }
