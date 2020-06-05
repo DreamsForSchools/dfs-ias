@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
-import fire from '../fire';
+import fire from '.././config/fire';
 import './manual.css';
 
 class ManualRosterPage extends Component {

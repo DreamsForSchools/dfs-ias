@@ -9,6 +9,7 @@ import WebjamHomePage from './pages/WebjamHomePage';
 import TemplatePage from './pages/TemplatePage';
 import ResetPassword from './pages/ResetPassword';
 import UploadInstitutionPage from './pages/UploadInstitutionPage';
+import ManualRosterPage from './pages/AddInstructorPage';
 
 import SchoolAddRosterForm from './pages/schoolPages/SchoolAddRosterForm'
 
@@ -85,6 +86,10 @@ class App extends React.Component {
 
             {/*UploadInstitutionPage Component */}
             <Route path="/schoolhome/uploadinstitution" exact component={UploadInstitutionPage} />
+
+
+            {/*ManualRosterPage Component */}
+            <Route path="/manualaddinstructor" exact component={ManualRosterPage} />
 
 
             {/* AppjamPage Component */}
