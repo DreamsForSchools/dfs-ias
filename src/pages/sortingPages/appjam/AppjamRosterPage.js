@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import fire from '../../.././config/fire';
 
-/* 
+/*
     this page shows the roster for appjam
 */
 export default function AppjamRosterPage(props) {
@@ -33,7 +33,7 @@ export default function AppjamRosterPage(props) {
             }else{
                 history.push('/');
             }
-            
+
           })
       });
 
@@ -52,41 +52,98 @@ export default function AppjamRosterPage(props) {
 
     //stores the roster taken from the database
     const [roster, setRoster] = useState([])
-    //accesses firebase for the appjam instructors roster
-    const sortedRosterCollection = useRef(fire.database().ref().child('Instructors'))
 
-    //accesses firebase for the roster
+    // //accesses firebase for the appjam instructors roster
+    // const sortedRosterCollection = useRef(fire.database().ref().child('AppJam+/instructors'))
+
+    // //accesses firebase for the roster
+    // useEffect(() => {
+    //     sortedRosterCollection.current.once('value', (snap) => {
+    //         const rosterFire = []
+    //         snap.forEach((doc) =>{
+    //             const mentorID = doc.key;
+    //             const mentorList = doc.val();
+    //             rosterFire.push(
+    //                 {
+    //                     "mentorID": mentorID,
+    //                     "car": mentorList["Car"],
+    //                     "ethnicity": mentorList["Ethnicity"],
+    //                     "friday": mentorList["Friday"],
+    //                     "gender": mentorList["Gender"],
+    //                     "languages": mentorList["Languages"],
+    //                     "monday": mentorList["Monday"],
+    //                     "multipleDays": mentorList["MultipleDays"],
+    //                     "name": mentorList["Name"],
+    //                     "prevMentor": mentorList["PreviousMentor"],
+    //                     "region": mentorList["Region"],
+    //                     "shirtSize": mentorList["ShirtSize"],
+    //                     "thursday": mentorList["Thursday"],
+    //                     "tuesday": mentorList["Tuesday"],
+    //                     "university": mentorList["University"],
+    //                     "wednesday": mentorList["Wednesday"],
+    //                     "year": mentorList["Year"]
+    //                 }
+    //             )
+    //         });
+    //         setRoster(rosterFire);
+    //     });
+    // },[]);
+
+    const appjamRosterCollection = useRef(fire.database().ref().child('AppJam+/instructors'));
+
     useEffect(() => {
-        sortedRosterCollection.current.once('value', (snap) => {
-            const rosterFire = []
+        var latestRoster = 0;
+        appjamRosterCollection.current.on('value', (snap) => {
             snap.forEach((doc) =>{
-                const mentorID = doc.key;
-                const mentorList = doc.val();
-                rosterFire.push(
-                    {
-                        "mentorID": mentorID,
-                        "car": mentorList["Car"],
-                        "ethnicity": mentorList["Ethnicity"],
-                        "friday": mentorList["Friday"],
-                        "gender": mentorList["Gender"],
-                        "languages": mentorList["Languages"],
-                        "monday": mentorList["Monday"],
-                        "multipleDays": mentorList["MultipleDays"],
-                        "name": mentorList["Name"],
-                        "prevMentor": mentorList["PreviousMentor"],
-                        "region": mentorList["Region"],
-                        "shirtSize": mentorList["ShirtSize"],
-                        "thursday": mentorList["Thursday"],
-                        "tuesday": mentorList["Tuesday"],
-                        "university": mentorList["University"],
-                        "wednesday": mentorList["Wednesday"],
-                        "year": mentorList["Year"]
-                    }
-                )
+                console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
+                if (latestRoster < doc.key){
+                    latestRoster = doc.key
+                }
             });
-            setRoster(rosterFire);
+            console.log("LATEST ROSTER:",latestRoster)
         });
-    },[]);
+
+
+        appjamRosterCollection.current.once('value', (snap) => {     
+            const rosterFire = []      
+            snap.forEach((doc) =>{
+                if (latestRoster === doc.key){
+                    console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
+                    const instructorArray = doc.val();
+                    for (var instructor in instructorArray){
+                        // console.log(instructor)
+                        const mentorID = instructor;
+                        const mentorList = instructorArray[instructor];
+                        rosterFire.push(
+                            {
+                                "mentorID": mentorID,
+                                "car": mentorList["Car"],
+                                "ethnicity": mentorList["Ethnicity"],
+                                "friday": mentorList["Friday"],
+                                "gender": mentorList["Gender"],
+                                "languages": mentorList["Languages"],
+                                "monday": mentorList["Monday"],
+                                "multipleDays": mentorList["MultipleDays"],
+                                "name": mentorList["Name"],
+                                "prevMentor": mentorList["PreviousMentor"],
+                                "region": mentorList["Region"],
+                                "shirtSize": mentorList["ShirtSize"],
+                                "thursday": mentorList["Thursday"],
+                                "tuesday": mentorList["Tuesday"],
+                                "university": mentorList["University"],
+                                "wednesday": mentorList["Wednesday"],
+                                "year": mentorList["Year"]
+                            }
+                        )
+                        
+                    }
+                    // console.log("THE NEW ROSTER YES",roster)
+                }
+            });
+            console.log(rosterFire)
+            setRoster(rosterFire)
+        });
+      },[]);
 
     const sortClicked = (e, name) => {
         history.push('/appjamhome/sortedroster');
@@ -101,32 +158,71 @@ export default function AppjamRosterPage(props) {
 
                 <div style={sortBtnContainer}>
                     <button onClick={sortClicked} style={sortBtn}>SORT!</button>
-                </div>     
+                </div>
+
+
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Ethnicity</th>
+                    <th>Languages</th>
+                    <th>University</th>
+                    <th>Year</th>
+                    <th>Region</th>
+                    <th>M</th>
+                    <th>T</th>
+                    <th>W</th>
+                    <th>Th</th>
+                    <th>Fri</th>
+                    <th>PrevMentor</th>
+                    <th>Car</th>
+                    <th>Multiple Days</th>
+                    <th>Shirt Size</th>
+
+                  </tr>
+                </thead>
+                </table>
 
                 <div style={firebaseRoster}>
+
                     {roster.map((mentor) => (
+
                         <div style={mentorContainer} key={mentor.mentorID}>
-                            <h3 style={data}>{mentor.name}</h3>
-                            <h3 style={data}>{mentor.gender}</h3>
-                            <h3 style={data}>{mentor.ethnicity}</h3>
-                            <h3 style={data}>{mentor.languages}</h3>
-                            <h3 style={data}>{mentor.university}</h3>
-                            <h3 style={data}>{mentor.year}</h3>
-                            <h3 style={data}>{mentor.region}</h3>
-                            <h3 style={data}>{mentor.monday}</h3>
-                            <h3 style={data}>{mentor.tuesday}</h3>
-                            <h3 style={data}>{mentor.wednesday}</h3>
-                            <h3 style={data}>{mentor.thursday}</h3>
-                            <h3 style={data}>{mentor.friday}</h3>
-                            <h3 style={data}>{mentor.prevMentor}</h3>
-                            <h3 style={data}>{mentor.car}</h3>
-                            <h3 style={data}>{mentor.multipleDays}</h3>
-                            <h3 style={data}>{mentor.shirtSize}</h3>
+
+                        <table class="table table-condensed">
+
+                           <tbody>
+                             <tr>
+                             <td class= "">{mentor.name}</td>
+                               <td className="center">{mentor.gender}</td>
+                               <td>{mentor.ethnicity}</td>
+                               <td>{mentor.languages}</td>
+                               <td>{mentor.university}</td>
+                               <td>{mentor.year}</td>
+                               <td>{mentor.region}</td>
+                               <td>{mentor.monday}</td>
+                               <td>{mentor.tuesday}</td>
+                               <td>{mentor.wednesday}</td>
+                               <td>{mentor.thursday}</td>
+                               <td>{mentor.friday}</td>
+                               <td>{mentor.prevMentor}</td>
+                               <td>{mentor.car}</td>
+                               <td>{mentor.multipleDays}</td>
+                               <td>{mentor.shirtSize}</td>
+
+
+                             </tr>
+
+                           </tbody>
+                         </table>
+
                         </div>
                     ))}
 
                 </div>
-            </div> 
+            </div>
 
         </div>
     )
@@ -162,17 +258,20 @@ const sortBtnContainer = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: "50vw"
+    // marginLeft: "50vw"
 }
 
 const sortBtn = {
-    fontSize: "14px",
+    fontSize: "18px",
+    fontWeight: "500",
     color: "white",
     backgroundColor: "#49479D",
     borderRadius: "28px",
     height: "46px",
     paddingLeft: "15px",
     paddingRight: "15px",
-    marginLeft: "10px"
+    marginLeft: "10px",
+    marginBottom: "20px",
+    width: "300px"
 
 }
