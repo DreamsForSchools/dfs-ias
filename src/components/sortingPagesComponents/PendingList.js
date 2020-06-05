@@ -16,11 +16,11 @@ export default function PendingList({instructorList}) {
         <div style={pendingLockedBox}>
             <h3 style={pendingLockedTitle}>Pending</h3>
             <div style={pendingLockedNameContainer}>
-                <PendingListNameButton name="Hannah Fragante"/>
+                {/* <PendingListNameButton name="Hannah Fragante"/>
                 <PendingListNameButton name="Dylan Fragante"/>
                 <PendingListNameButton name="Annie Fragante"/>
                 <PendingListNameButton name="Deodato Fragante"/>
-                <PendingListNameButton name="Rodita Fragante"/>
+                <PendingListNameButton name="Rodita Fragante"/> */}
             </div>
         </div>
     )

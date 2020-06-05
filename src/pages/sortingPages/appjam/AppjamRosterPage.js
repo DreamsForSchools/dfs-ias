@@ -145,12 +145,47 @@ export default function AppjamRosterPage(props) {
         });
       },[]);
 
-    const sortClicked = (e, name) => {
-        history.push('/appjamhome/sortedroster');
+    // const sortClicked = (e, name) => {
+    //     history.push('/appjamhome/sortedroster');
+    // }
+    const [isLoading, setIsLoading] = useState(false);
+
+    const sortRoster = () => {
+        return fetch('http://apurva29.pythonanywhere.com/sort', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({"Program":"AppJam+"}),
+        })
+        .then(response => response.json())
+    }
+
+    const promiseRoster = () =>{
+        return Promise.all([sortRoster()])
+    }
+
+    const sortClicked = (e) => {
+        // history.push('/appjamhome/sortedroster');
+        setIsLoading(!isLoading);
+        promiseRoster()
+        .then(([sorted]) => {
+            // both have loaded!
+            setIsLoading(!isLoading);
+            console.log("PROMISE DONE!!!!",sorted);
+            history.push('/appjamhome/sortedroster');
+        })
     }
 
     return (
         <div>
+
+            {isLoading?(
+                <div style={loading}>
+                <h3>SORTING.... Please Wait.</h3>
+            </div>
+            ):null} 
 
             <TitleToolbar program="appjam+" season={quarter} year={year}  urlPath="appjam"/>
 
@@ -274,4 +309,16 @@ const sortBtn = {
     marginBottom: "20px",
     width: "300px"
 
+}
+
+const loading = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(32, 46, 71, 0.7)",
+    color: "white"
 }

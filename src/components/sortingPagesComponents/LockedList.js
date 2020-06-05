@@ -14,8 +14,8 @@ export default function LockedList({instructorList}) {
         <div style={pendingLockedBox}>
             <h3 style={pendingLockedTitle}>Locked</h3>
             <div style={pendingLockedNameContainer}>
-                <h4 style={pendingLockedName}>Hannah Fragante</h4>
-                <h4 style={pendingLockedName}>Hannah Fragante</h4>
+                {/* <h4 style={pendingLockedName}>Hannah Fragante</h4>
+                <h4 style={pendingLockedName}>Hannah Fragante</h4> */}
             </div>
         </div>
     )
