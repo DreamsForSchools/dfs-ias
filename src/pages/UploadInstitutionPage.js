@@ -3,8 +3,26 @@ import Dropzone from 'react-dropzone';
 import csv from 'csv';
 import fire from '../config/fire';
 
-class UploadInstitutionPage extends Component {
-    
+class UploadInstitutionsPage extends Component {
+    splitString = (string) => {
+        if (string == "") {
+            return "";
+        }
+        else {
+            var tokens = string.split(" ");
+            return [tokens[0], tokens[2]];
+        }
+    }
+
+    checkNew = (program, programList) => {
+        if (programList.includes(program)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     onDrop(files) {
         this.setState({ files });
 
@@ -14,7 +32,23 @@ class UploadInstitutionPage extends Component {
         reader.onload = () => {
             csv.parse(reader.result, (err, data) => {
 
-                for (var i = 1; i < data.length; i++) {
+                var programList = [];
+                
+                const firstInstitution = {"Name": data[1][0], "Address": data[1][1], "Program": [data[1][3]], "County": data[1][2], "Instructors": parseInt(data[1][4]),
+                                            "Monday": this.splitString(data[1][5]), "Tuesday": this.splitString(data[1][6]), "Wednesday": this.splitString(data[1][7]),
+                                            "Thursday": this.splitString(data[1][8]), "Friday": this.splitString(data[1][9]), "New": true};
+
+                programList.push(data[1][3]);
+
+                fetch('http://apurva29.pythonanywhere.com/uploadinstitutions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(firstInstitution)
+                })
+
+                for (var i = 2; i < data.length; i++) {
                     const name = data[i][0];
                     const address = data[i][1];
                     const county = data[i][2];
@@ -26,9 +60,20 @@ class UploadInstitutionPage extends Component {
                     const thursday = data[i][8];
                     const friday = data[i][9];
                     
-                    const newInstitution = {"Address": address, "Program": program, "County" : county, "Instructors": instructors, "Monday": monday, "Tuesday": tuesday, "Wednesday": wednesday, "Thursday": thursday, "Friday": friday};
-                    fire.database().ref("Institutions").set(name);
-                    fire.database().ref("Institutions/"+name).set(newInstitution);
+                    const newInstitution = {"Name": name, "Address": address, "Program": [program], "County" : county, "Instructors": parseInt(instructors), "Monday": this.splitString(monday),
+                                            "Tuesday": this.splitString(tuesday), "Wednesday": this.splitString(wednesday), "Thursday": this.splitString(thursday), "Friday": this.splitString(friday), "New": this.checkNew(program, programList)};
+
+                    fetch('http://apurva29.pythonanywhere.com/uploadinstitutions', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newInstitution)
+                    })
+
+                    if (programList.includes(program) == false) {
+                        programList.push(program);
+                    }
                 };
             });
         };
@@ -48,7 +93,7 @@ class UploadInstitutionPage extends Component {
                 <br /><br /><br />
                 <div style={dropZoneStyle} className = "dropzone">
                     <h2 style={h2Style}>Please upload your <font size={fontSize} color="#0099FF">CSV </font>institution roster...</h2>
-                    <Dropzone accept=".csv" onDropAccepted={this.onDrop.bind(this)} style={dropBoxStyle}>upload new...</Dropzone>
+                    <Dropzone accept=".csv" onDropAccepted={this.onDrop.bind(this)} style={dropBoxStyle}>upload new..</Dropzone>
                     <br /><br /><br />
                     <button onClick={this.goNext} style={nextButtonStyle}>Next</button>
                 </div>
@@ -114,4 +159,4 @@ const nextButtonStyle = {
     cursor: "pointer"
 }
 
-export default UploadInstitutionPage;
+export default UploadInstitutionsPage;
