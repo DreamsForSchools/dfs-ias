@@ -4,6 +4,15 @@ import {Redirect} from 'react-router-dom';
 import csv from 'csv';
 
 class AppjamUploadRosterPage extends Component {
+    splitString = (string) => {
+        if (string == "") {
+            return "";
+        }
+        else {
+            var tokens = string.split(" ");
+            return [tokens[0], tokens[2]];
+        }
+    }
     
     onDrop(files) {
         this.setState({ files });
@@ -16,7 +25,23 @@ class AppjamUploadRosterPage extends Component {
 
                 var userList = [];
 
-                for (var i = 1; i < data.length; i++) {
+                const firstUser = {"Name": data[1][0], "Gender": data[1][1], "Ethnicity": data[1][2], "Region": data[1][3], "University": data[1][4], "Year": data[1][5],
+                                    "PreviousMentor": data[1][6], "Car": data[1][7], "Languages": data[1][8], "ShirtSize": data[1][9],
+                                    "MultipleDays": data[1][10], "Monday": this.splitString(data[1][11]), "Tuesday":  this.splitString(data[1][12]), "Wednesday":  this.splitString(data[1][13]), 
+                                    "Thursday":  this.splitString(data[1][14]), "Friday":  this.splitString(data[1][15]),
+                                    "Program": ["AppJam+"], "New": true};
+
+                userList.push(firstUser);
+
+                fetch('http://apurva29.pythonanywhere.com/uploadinstructors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(firstUser)
+                })
+
+                for (var i = 2; i < data.length; i++) {
                     const name = data[i][0];
                     const gender = data[i][1];
                     const ethnicity = data[i][2];
@@ -35,15 +60,15 @@ class AppjamUploadRosterPage extends Component {
                     const Friday = data[i][15];
                     const newUser = {"Name": name, "Gender": gender, "Ethnicity": ethnicity, "Region": region, "University": university, "Year": year,
                                     "PreviousMentor": returner, "Car": car, "Languages": languages, "ShirtSize": shirtsize,
-                                    "MultipleDays": multipledays, "Monday": Monday, "Tuesday": Tuesday, "Wednesday": Wednesday, "Thursday": Thursday, "Friday": Friday,
-                                    "Program": "Appjam", "Manual": "False"};
+                                    "MultipleDays": multipledays, "Monday": this.splitString(Monday), "Tuesday":  this.splitString(Tuesday), "Wednesday":  this.splitString(Wednesday), 
+                                    "Thursday":  this.splitString(Thursday), "Friday":  this.splitString(Friday),
+                                    "Program": ["AppJam+"], "New": false};
                     userList.push(newUser);
 
-                    fetch('https://dfs-ias.firebaseio.com/AppJam+/instructors.json', {
+                    fetch('http://apurva29.pythonanywhere.com/uploadinstructors', {
                         method: 'POST',
                         headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(newUser)
                     })
