@@ -52,41 +52,98 @@ export default function AppjamRosterPage(props) {
 
     //stores the roster taken from the database
     const [roster, setRoster] = useState([])
-    //accesses firebase for the appjam instructors roster
-    const sortedRosterCollection = useRef(fire.database().ref().child('Instructors'))
 
-    //accesses firebase for the roster
+    // //accesses firebase for the appjam instructors roster
+    // const sortedRosterCollection = useRef(fire.database().ref().child('AppJam+/instructors'))
+
+    // //accesses firebase for the roster
+    // useEffect(() => {
+    //     sortedRosterCollection.current.once('value', (snap) => {
+    //         const rosterFire = []
+    //         snap.forEach((doc) =>{
+    //             const mentorID = doc.key;
+    //             const mentorList = doc.val();
+    //             rosterFire.push(
+    //                 {
+    //                     "mentorID": mentorID,
+    //                     "car": mentorList["Car"],
+    //                     "ethnicity": mentorList["Ethnicity"],
+    //                     "friday": mentorList["Friday"],
+    //                     "gender": mentorList["Gender"],
+    //                     "languages": mentorList["Languages"],
+    //                     "monday": mentorList["Monday"],
+    //                     "multipleDays": mentorList["MultipleDays"],
+    //                     "name": mentorList["Name"],
+    //                     "prevMentor": mentorList["PreviousMentor"],
+    //                     "region": mentorList["Region"],
+    //                     "shirtSize": mentorList["ShirtSize"],
+    //                     "thursday": mentorList["Thursday"],
+    //                     "tuesday": mentorList["Tuesday"],
+    //                     "university": mentorList["University"],
+    //                     "wednesday": mentorList["Wednesday"],
+    //                     "year": mentorList["Year"]
+    //                 }
+    //             )
+    //         });
+    //         setRoster(rosterFire);
+    //     });
+    // },[]);
+
+    const appjamRosterCollection = useRef(fire.database().ref().child('AppJam+/instructors'));
+
     useEffect(() => {
-        sortedRosterCollection.current.once('value', (snap) => {
-            const rosterFire = []
+        var latestRoster = 0;
+        appjamRosterCollection.current.on('value', (snap) => {
             snap.forEach((doc) =>{
-                const mentorID = doc.key;
-                const mentorList = doc.val();
-                rosterFire.push(
-                    {
-                        "mentorID": mentorID,
-                        "car": mentorList["Car"],
-                        "ethnicity": mentorList["Ethnicity"],
-                        "friday": mentorList["Friday"],
-                        "gender": mentorList["Gender"],
-                        "languages": mentorList["Languages"],
-                        "monday": mentorList["Monday"],
-                        "multipleDays": mentorList["MultipleDays"],
-                        "name": mentorList["Name"],
-                        "prevMentor": mentorList["PreviousMentor"],
-                        "region": mentorList["Region"],
-                        "shirtSize": mentorList["ShirtSize"],
-                        "thursday": mentorList["Thursday"],
-                        "tuesday": mentorList["Tuesday"],
-                        "university": mentorList["University"],
-                        "wednesday": mentorList["Wednesday"],
-                        "year": mentorList["Year"]
-                    }
-                )
+                console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
+                if (latestRoster < doc.key){
+                    latestRoster = doc.key
+                }
             });
-            setRoster(rosterFire);
+            console.log("LATEST ROSTER:",latestRoster)
         });
-    },[]);
+
+
+        appjamRosterCollection.current.once('value', (snap) => {     
+            const rosterFire = []      
+            snap.forEach((doc) =>{
+                if (latestRoster === doc.key){
+                    console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
+                    const instructorArray = doc.val();
+                    for (var instructor in instructorArray){
+                        // console.log(instructor)
+                        const mentorID = instructor;
+                        const mentorList = instructorArray[instructor];
+                        rosterFire.push(
+                            {
+                                "mentorID": mentorID,
+                                "car": mentorList["Car"],
+                                "ethnicity": mentorList["Ethnicity"],
+                                "friday": mentorList["Friday"],
+                                "gender": mentorList["Gender"],
+                                "languages": mentorList["Languages"],
+                                "monday": mentorList["Monday"],
+                                "multipleDays": mentorList["MultipleDays"],
+                                "name": mentorList["Name"],
+                                "prevMentor": mentorList["PreviousMentor"],
+                                "region": mentorList["Region"],
+                                "shirtSize": mentorList["ShirtSize"],
+                                "thursday": mentorList["Thursday"],
+                                "tuesday": mentorList["Tuesday"],
+                                "university": mentorList["University"],
+                                "wednesday": mentorList["Wednesday"],
+                                "year": mentorList["Year"]
+                            }
+                        )
+                        
+                    }
+                    // console.log("THE NEW ROSTER YES",roster)
+                }
+            });
+            console.log(rosterFire)
+            setRoster(rosterFire)
+        });
+      },[]);
 
     const sortClicked = (e, name) => {
         history.push('/appjamhome/sortedroster');
@@ -146,7 +203,7 @@ export default function AppjamRosterPage(props) {
                            <tbody>
                              <tr>
                              <td class= "">{mentor.name}</td>
-                               <td class="center">{mentor.gender}</td>
+                               <td className="center">{mentor.gender}</td>
                                <td>{mentor.ethnicity}</td>
                                <td>{mentor.languages}</td>
                                <td>{mentor.university}</td>
