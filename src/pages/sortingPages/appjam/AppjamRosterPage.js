@@ -178,6 +178,14 @@ export default function AppjamRosterPage(props) {
         })
     }
 
+    const addClicked = (e) => {
+        // history.push('/appjamhome/sortedroster');
+        history.push({
+            pathname: "/manualaddinstructor",
+            state: {isNewRoster: false}
+        });
+    }
+
     return (
         <div>
 
@@ -191,8 +199,13 @@ export default function AppjamRosterPage(props) {
 
             <div className="programPageContainer">
 
-                <div style={sortBtnContainer}>
-                    <button onClick={sortClicked} style={sortBtn}>SORT!</button>
+                <div style={buttonContainer}>
+                    <div style={sortBtnContainer}>
+                        <button onClick={addClicked} style={addBtn}>Add Instructor</button>
+                    </div>
+                    <div style={sortBtnContainer}>
+                        <button onClick={sortClicked} style={sortBtn}>SORT!</button>
+                    </div>
                 </div>
 
 
@@ -263,6 +276,13 @@ export default function AppjamRosterPage(props) {
     )
 }
 
+const buttonContainer = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+}
+
 
 const firebaseRoster = {
     display: "flex",
@@ -309,6 +329,21 @@ const sortBtn = {
     marginBottom: "20px",
     width: "300px"
 
+}
+
+const addBtn = {
+    fontSize: "18px",
+    fontWeight: "500",
+    color: "#49479D",
+    backgroundColor: "white",
+    borderRadius: "28px",
+    height: "46px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    marginLeft: "10px",
+    marginBottom: "20px",
+    width: "300px",
+    border: "1px solid #49479D"
 }
 
 const loading = {

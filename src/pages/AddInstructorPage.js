@@ -137,7 +137,8 @@ class ManualRosterPage extends Component {
     }
 
     goNext=()=> {
-        this.props.history.push("/schoolhome");
+        // this.props.history.push("/schoolhome");
+        console.log(this.props.location.state.isNewRoster)
     }
 
     render() {
@@ -194,7 +195,7 @@ class ManualRosterPage extends Component {
                                                 <input id="3rd-year-btn" type="radio" name="year" value="3rd" checked={value} onChange={this.handleChange}/>
                                                 <label for="3rd-year-btn">3rd</label>
                                                 <input id="4th-year-btn" type="radio" name="year" value="4th" checked={value} onChange={this.handleChange}/>
-                                                <label for="4th-year-btn">4th</label>
+                                                <label for="4th-year-btn">4th+</label>
                                                 <input id="grad-year-btn" type="radio" name="year" value="Graduate" checked={value} onChange={this.handleChange}/>
                                                 <label for="grad-year-btn">Graduate</label>
                                             </div>

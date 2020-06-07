@@ -58,8 +58,9 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
     const [collapsedCardStyle, setCollapsedCardStyle] = useState({
         display: "flex",
         flexDirection: "row",
-        minWidth: "508px",
-        maxWidth: "550px",
+        // minWidth: "508px",
+        // maxWidth: "550px",
+        width: "550px",
         height: "82px",
         borderRadius: "15px",
         marginTop: "20px",
@@ -146,8 +147,9 @@ export default function SortedInstructorsCard({SbgColor, SborderColor, instructo
         setCollapsedCardStyle({
             display: "flex",
             flexDirection: "row",
-            minWidth: "508px",
-            maxWidth: "550px",
+            // minWidth: "508px",
+            // maxWidth: "550px",
+            width: "550px",
             height: "82px",
             borderRadius: "15px",
             marginTop: "20px",

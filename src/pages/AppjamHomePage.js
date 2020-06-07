@@ -100,8 +100,8 @@ export default function AppjamHomePage() {
                     {showNewRostertModal?(
                         <div style={modalContainer}>
                             <div style={modal}>
-                                <h4>Are you sure you want to make a new roster?</h4>
-                                <h5>This will delete the current appjam+ instructor roster.</h5>
+                                <h4 style = {text}>Are you sure you want to make a new roster?</h4>
+                                <h5 style = {text}>This will delete the current appjam+ instructor roster.</h5>
                                 <div style={modalOptions}>
                                     <button onClick={newRosterNo} style={noBtn}>NO</button>
                                     <button onClick={newRosterYes} style={yesBtn}>Yes</button>
@@ -115,6 +115,11 @@ export default function AppjamHomePage() {
 
         </div>
     )
+}
+
+const text = {
+    fontSize: "14px",
+    fontWeight: "500"
 }
 
 const buttonsContainer = {

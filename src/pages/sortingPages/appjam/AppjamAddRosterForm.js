@@ -81,12 +81,18 @@ export default function AppjamAddRosterForm() {
                     });
                 });
             }else if (input === "manual"){
-                alert('manual chosen (not yet implemented)')
+                // alert('manual chosen (not yet implemented)')
                 quarterYearDatabase.current.once('value', (snap) => {
                     snap.ref.set({
                         quarter: quarter,
                         year: year
                     });
+                });
+
+                // history.push('/manualaddinstructor');
+                history.push({
+                    pathname: "/manualaddinstructor",
+                    state: {isNewRoster: true}
                 });
             } 
         }
@@ -145,9 +151,9 @@ export default function AppjamAddRosterForm() {
                             <h3 style={radiotitleText}>How do you want to add your roster?</h3>
 
                             <div onChange={onChangeRadio}>
-                                <div style={radioItem}>
+                                {/* <div style={radioItem}>
                                     <input type="radio" value="manual" name="input"/> <p style={radioChoice}>Manual Input</p>
-                                </div>
+                                </div> */}
 
                                 <div style={radioItem}>
                                     <input type="radio" value="file" name="input"/> <p style={radioChoice} >File Upload</p>

@@ -12,6 +12,7 @@ import UploadInstitutionPage from './pages/UploadInstitutionPage';
 import ManualRosterPage from './pages/AddInstructorPage';
 
 import SchoolAddRosterForm from './pages/schoolPages/SchoolAddRosterForm'
+import SchoolRosterPage from './pages/schoolPages/SchoolRosterPage'
 
 import AppjamSortedRosterPage from './pages/sortingPages/appjam/AppjamSortedRosterPage';
 import AppjamRosterPage from './pages/sortingPages/appjam/AppjamRosterPage';
@@ -86,6 +87,9 @@ class App extends React.Component {
 
             {/*UploadInstitutionPage Component */}
             <Route path="/schoolhome/uploadinstitution" exact component={UploadInstitutionPage} />
+
+            {/*UploadInstitutionPage Component */}
+            <Route path="/schoolhome/roster" exact component={SchoolRosterPage} />
 
 
             {/*ManualRosterPage Component */}
