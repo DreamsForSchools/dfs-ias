@@ -68,7 +68,11 @@ export default function SchoolRosterPage() {
     }
 
       const [appjamRoster, setAppjamRoster] = useState([])
+      const [spheroRoster, setSpheroRoster] = useState([])
+      const [webjamRoster, setWebjamRoster] = useState([])
       const appjamRosterCollection = useRef(fire.database().ref().child('AppJam+/institutions'));
+      const spheroRosterCollection = useRef(fire.database().ref().child('SpheroElementary/institutions'));
+      const webjamRosterCollection = useRef(fire.database().ref().child('WebJam/institutions'));
 
       useEffect(() => {
           var latestRoster = 0;
@@ -105,12 +109,94 @@ export default function SchoolRosterPage() {
                           )
                           
                       }
-                      // console.log("THE NEW ROSTER YES",roster)
                   }
               });
-              console.log(rosterFire)
+            //   console.log(rosterFire)
               setAppjamRoster(rosterFire)
           });
+
+          var latestRoster = 0;
+          spheroRosterCollection.current.on('value', (snap) => {
+              snap.forEach((doc) =>{
+                  console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
+                  if (latestRoster < doc.key){
+                      latestRoster = doc.key
+                  }
+              });
+              console.log("LATEST ROSTER:",latestRoster)
+          });
+  
+  
+          spheroRosterCollection.current.once('value', (snap) => {     
+              const rosterFire = []      
+              snap.forEach((doc) =>{
+                  if (latestRoster === doc.key){
+                      console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
+                      const schoolArray = doc.val();
+                      for (var school in schoolArray){
+                        //   console.log(school)
+                          const schoolID = school;
+                          const schoolList = schoolArray[school];
+                          rosterFire.push(
+                              {
+                                  "mentorID": schoolID,
+                                  "address": schoolList["Address"],
+                                  "county": schoolList["County"],
+                                  "instructors": schoolList["Instructors"],
+                                  "name": schoolList["Name"],
+                                  "schedule": convertSchedule(schoolList["Schedule"]),
+                              }
+                          )
+                          
+                      }
+                  }
+              });
+            //   console.log(rosterFire)
+                setSpheroRoster(rosterFire)
+          });
+
+          var latestRoster = 0;
+          webjamRosterCollection.current.on('value', (snap) => {
+              snap.forEach((doc) =>{
+                  console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
+                  if (latestRoster < doc.key){
+                      latestRoster = doc.key
+                  }
+              });
+              console.log("LATEST ROSTER:",latestRoster)
+          });
+  
+  
+          webjamRosterCollection.current.once('value', (snap) => {     
+              const rosterFire = []      
+              snap.forEach((doc) =>{
+                  if (latestRoster === doc.key){
+                      console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
+                      const schoolArray = doc.val();
+                      for (var school in schoolArray){
+                        //   console.log(school)
+                          const schoolID = school;
+                          const schoolList = schoolArray[school];
+                          rosterFire.push(
+                              {
+                                  "mentorID": schoolID,
+                                  "address": schoolList["Address"],
+                                  "county": schoolList["County"],
+                                  "instructors": schoolList["Instructors"],
+                                  "name": schoolList["Name"],
+                                  "schedule": convertSchedule(schoolList["Schedule"]),
+                              }
+                          )
+                          
+                      }
+                  }
+              });
+            //   console.log(rosterFire)
+                setWebjamRoster(rosterFire)
+          });
+
+
+
         },[]);
 
 
@@ -123,32 +209,103 @@ export default function SchoolRosterPage() {
 
                 <div className="hozLineDivider"></div>
 
-                <div style={gridWrapper}>
-                    <div style={gridContainer}>
-                        <div style={titleRow}>Name</div>
-                        <div style={titleRow}>Address</div>
-                        <div style={titleRow}>County</div>
-                        <div style={titleRow}># of Instructors</div>
-                        <div style={titleRow}>Mon</div>
-                        <div style={titleRow}>Tue</div>
-                        <div style={titleRow}>Wed</div>
-                        <div style={titleRow}>Thu</div>
-                        <div style={titleRow}>Fri</div>
-                    </div>
-
-                    {appjamRoster.map((school,i) => (
-                        <div style={gridEntryContainer} key={school.name}>
-                            <div style={entryRow}>{school.name}</div>
-                            <div style={entryRow}>{school.address}</div>
-                            <div style={entryRow}>{school.county}</div>
-                            <div style={entryRow}>{school.instructors}</div>
-                            <div style={entryRow}>{school.schedule.mon}</div>
-                            <div style={entryRow}>{school.schedule.tue}</div>
-                            <div style={entryRow}>{school.schedule.wed}</div>
-                            <div style={entryRow}>{school.schedule.thu}</div>
-                            <div style={entryRow}>{school.schedule.fri}</div>
+                <div style={programSchools}>
+                    <h1 style={schoolText}>Appjam+ Schools</h1>
+                    <div style={gridWrapper}>
+                        <div style={gridContainer}>
+                            <div style={titleRow}>Name</div>
+                            <div style={titleRow}>Address</div>
+                            <div style={titleRow}>County</div>
+                            <div style={titleRow}># of Instructors</div>
+                            <div style={titleRow}>Mon</div>
+                            <div style={titleRow}>Tue</div>
+                            <div style={titleRow}>Wed</div>
+                            <div style={titleRow}>Thu</div>
+                            <div style={titleRow}>Fri</div>
                         </div>
-                    ))}
+
+
+                        {appjamRoster.map((school,i) => (
+                            <div style={gridEntryContainer} key={school.name}>
+                                <div style={entryRow}>{school.name}</div>
+                                <div style={entryRow}>{school.address}</div>
+                                <div style={entryRow}>{school.county}</div>
+                                <div style={entryRow}>{school.instructors}</div>
+                                <div style={entryRow}>{school.schedule.mon}</div>
+                                <div style={entryRow}>{school.schedule.tue}</div>
+                                <div style={entryRow}>{school.schedule.wed}</div>
+                                <div style={entryRow}>{school.schedule.thu}</div>
+                                <div style={entryRow}>{school.schedule.fri}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div style={fixMargin}>
+                    <div style={programSchools}>
+                        <h1 style={schoolText}>Sphero Schools</h1>
+                        <div style={gridWrapper}>
+                            <div style={gridContainer}>
+                                <div style={titleRow}>Name</div>
+                                <div style={titleRow}>Address</div>
+                                <div style={titleRow}>County</div>
+                                <div style={titleRow}># of Instructors</div>
+                                <div style={titleRow}>Mon</div>
+                                <div style={titleRow}>Tue</div>
+                                <div style={titleRow}>Wed</div>
+                                <div style={titleRow}>Thu</div>
+                                <div style={titleRow}>Fri</div>
+                            </div>
+
+
+                            {spheroRoster.map((school,i) => (
+                                <div style={gridEntryContainer} key={school.name}>
+                                    <div style={entryRow}>{school.name}</div>
+                                    <div style={entryRow}>{school.address}</div>
+                                    <div style={entryRow}>{school.county}</div>
+                                    <div style={entryRow}>{school.instructors}</div>
+                                    <div style={entryRow}>{school.schedule.mon}</div>
+                                    <div style={entryRow}>{school.schedule.tue}</div>
+                                    <div style={entryRow}>{school.schedule.wed}</div>
+                                    <div style={entryRow}>{school.schedule.thu}</div>
+                                    <div style={entryRow}>{school.schedule.fri}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div style={fixMargin}>
+                    <div style={programSchools}>
+                        <h1 style={schoolText}>WebJam Schools</h1>
+                        <div style={gridWrapper}>
+                            <div style={gridContainer}>
+                                <div style={titleRow}>Name</div>
+                                <div style={titleRow}>Address</div>
+                                <div style={titleRow}>County</div>
+                                <div style={titleRow}># of Instructors</div>
+                                <div style={titleRow}>Mon</div>
+                                <div style={titleRow}>Tue</div>
+                                <div style={titleRow}>Wed</div>
+                                <div style={titleRow}>Thu</div>
+                                <div style={titleRow}>Fri</div>
+                            </div>
+
+
+                            {webjamRoster.map((school,i) => (
+                                <div style={gridEntryContainer} key={school.name}>
+                                    <div style={entryRow}>{school.name}</div>
+                                    <div style={entryRow}>{school.address}</div>
+                                    <div style={entryRow}>{school.county}</div>
+                                    <div style={entryRow}>{school.instructors}</div>
+                                    <div style={entryRow}>{school.schedule.mon}</div>
+                                    <div style={entryRow}>{school.schedule.tue}</div>
+                                    <div style={entryRow}>{school.schedule.wed}</div>
+                                    <div style={entryRow}>{school.schedule.thu}</div>
+                                    <div style={entryRow}>{school.schedule.fri}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
                     
                 
@@ -160,11 +317,22 @@ export default function SchoolRosterPage() {
     )
 }
 
+const fixMargin = {
+    marginTop: "-380px"
+}
+
+const programSchools = {
+    marginTop: "20px"
+}
+
+const schoolText = {
+    color: "#5B7082",
+    marginLeft: "10%"
+}
+
 const gridWrapper = {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
 }
 
 const gridContainer = {
@@ -172,7 +340,7 @@ const gridContainer = {
     gridTemplateColumns: "200px 300px 200px 150px 80px 80px 80px 80px 80px ",
     gridTemplateRows: "50px 50px 50px 50px 50px 50px 50px 50px 50px ",
     justifyContent: "center",
-    marginTop: "20px"
+    marginTop: "10px"
 
 }
 
@@ -181,11 +349,12 @@ const gridEntryContainer = {
     gridTemplateColumns: "200px 300px 200px 150px 80px 80px 80px 80px 80px ",
     gridTemplateRows: "50px 50px 50px 50px 50px 50px 50px 50px 50px ",
     justifyContent: "center",
+    marginTop: "-405px"
 
 }
 
 const titleRow = {
-    backgroundColor: "#202E47",
+    backgroundColor: "#5B7082",
     color: "white",
     fontSize: "14px",
     textAlign: "center",
@@ -204,7 +373,7 @@ const entryRow = {
     height: "50px",
     paddingTop: "16px",
     marginLeft: "-0.5px",
-    marginTop: "-0.5px"
+    // marginTop: "-0.5px"
 }
 
 const yes1 = {
