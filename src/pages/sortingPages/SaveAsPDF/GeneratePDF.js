@@ -9,6 +9,7 @@ import {
 
 /* 
     formats the PDF when the user wants to save the sorted roster
+    it uses the react-pdf api
 */
 export default function GeneratePDF({sortedRoster}) {
 

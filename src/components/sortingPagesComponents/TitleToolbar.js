@@ -7,8 +7,11 @@ import { useState, useEffect } from 'react';
 
 import fire from '../.././config/fire';
 
-// This Component includes the SideNavBar component, 
-// the title header and the SortingPagesNavbar component
+/*
+    This Component includes the SideNavBar component, 
+    the title header and the SortingPagesNavbar component
+ */
+
 export default function TitleToolbar(props) {
 
     //auth variable
@@ -36,6 +39,13 @@ export default function TitleToolbar(props) {
             <div className="sortingPagesContainer">
                 <div style={titleBtn}>
                     <h1 className="sortedPagePageTitle">{props.program} {props.season} {props.year}</h1>
+
+                    {/* we had planned on having the new roster button here 
+                    and also a button for updating the roster
+                    i.e. reuploading but we kinda changed it and put
+                    it in the homeages. We left these here just in case 
+                    you guys change your mind and think that this is better */}
+
                     {/* <div style={rosterbuttons}>
                         <button style={uddateRosterBtn}>update roster</button>
                         <button style={newRosterBtn}>new roster</button>

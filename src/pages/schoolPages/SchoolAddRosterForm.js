@@ -44,7 +44,6 @@ export default function SchoolAddRosterForm() {
     //validates user input
     const nextClicked = () => {
         console.log("submit");
-        // history.push('/schoolhome/uploadinstitution');
 
         if (input === ""){
             alert("Please select how to input your roster")
@@ -74,9 +73,16 @@ export default function SchoolAddRosterForm() {
                             <h3 style={radiotitleText}>How do you want to add your roster?</h3>
 
                             <div onChange={onChangeRadio}>
-                                <div style={radioItem}>
+
+                                {/* THIS IS A MANUAL INPUT OPTION 
+                                we had planned on adding manual input to add a new roster but the way
+                                the code is implemented right, it's a little complicated and
+                                we kind of ran out of time but it's something that the future team 
+                                should consider*/}
+
+                                {/* <div style={radioItem}>
                                     <input type="radio" value="manual" name="input"/> <p style={radioChoice}>Manual Input</p>
-                                </div>
+                                </div> */}
 
                                 <div style={radioItem}>
                                     <input type="radio" value="file" name="input"/> <p style={radioChoice} >File Upload</p>
@@ -118,7 +124,6 @@ const mainContainer = {
 const leftHalf = {
     height: "100vh",
     width: "50vw",
-    // backgroundColor: "lightblue"
 }
 
 const rightHalf = {

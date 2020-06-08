@@ -1,6 +1,5 @@
 import React from 'react'
 
-// import SideNavBar from '../components/sidebar/SideNavBar';
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 
@@ -52,8 +51,8 @@ export default function ProgramSchoolRosterTable({program, databaseName}) {
     }
     
     // converts schedule from database to a more readable format
+    // resulting format looks like this: {mon:"3:00-5:00", tue:"", wed:"3:00-5:00", Tthu:"3:00-5:00", fri:""}
     const convertSchedule = (schedArray) => {
-        // console.log(schedArray)
         var finalSchedArray = {
             "mon": "",
             "tue": "",
@@ -86,10 +85,10 @@ export default function ProgramSchoolRosterTable({program, databaseName}) {
 
     //accesses the database and store the roster respectively
     useEffect(() => {
+        //finds the latest roster in the database
         var latestRoster = 0;
         programRosterCollection.current.on('value', (snap) => {
             snap.forEach((doc) =>{
-                console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
                 if (latestRoster < doc.key){
                     latestRoster = doc.key
                 }
@@ -102,10 +101,8 @@ export default function ProgramSchoolRosterTable({program, databaseName}) {
             const rosterFire = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){
-                    console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
                     const schoolArray = doc.val();
                     for (var school in schoolArray){
-                      //   console.log(school)
                         const schoolID = school;
                         const schoolList = schoolArray[school];
                         rosterFire.push(
@@ -122,8 +119,7 @@ export default function ProgramSchoolRosterTable({program, databaseName}) {
                     }
                 }
             });
-          //   console.log(rosterFire)
-          setRoster(rosterFire)
+            setRoster(rosterFire)
         });
 
       },[]);
@@ -216,5 +212,4 @@ const entryRow = {
     height: "50px",
     paddingTop: "16px",
     marginLeft: "-0.5px",
-    // marginTop: "-0.5px"
 }

@@ -8,6 +8,10 @@ import ProgramSchoolRosterTable from '../../components/schoolPagesComponents/Pro
 
 import fire from '../.././config/fire';
 
+/*
+    This page shows the schools available from each program
+    in a table
+ */
 export default function SchoolRosterPage() {
 
     const [user, setUser] = useState(null);

@@ -4,7 +4,10 @@ import {Link,useHistory} from 'react-router-dom';
 import fire from '../.././config/fire';
 import { useState, useEffect } from 'react';
 
-//this component is the universal side navigation bar
+/*
+    this component is the universal side navigation bar
+ */
+
 export default function SideNavBar(props) {
 
     //auth variable

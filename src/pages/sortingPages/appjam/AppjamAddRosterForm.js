@@ -151,6 +151,12 @@ export default function AppjamAddRosterForm() {
                             <h3 style={radiotitleText}>How do you want to add your roster?</h3>
 
                             <div onChange={onChangeRadio}>
+                                {/* THIS IS A MANUAL INPUT OPTION 
+                                we had planned on adding manual input to add a new roster but the way
+                                the code is implemented right, it's a little complicated and
+                                we kind of ran out of time but it's something that the future team 
+                                should consider*/}
+
                                 {/* <div style={radioItem}>
                                     <input type="radio" value="manual" name="input"/> <p style={radioChoice}>Manual Input</p>
                                 </div> */}
