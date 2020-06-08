@@ -91,7 +91,7 @@ class AppjamUploadRosterPage extends Component {
             <div style={mainContainerStyle} align = "center" oncontextmenu="return false">
                 <br /><br /><br />
                 <div style={dropZoneStyle} className = "dropzone">
-                    <h2 style={h2Style}>Please upload your <font size={fontSize} color="#49479D">CSV </font>roster...</h2>
+                    <h2 style={h2Style}>Please upload your <font size={fontSize} color="#49479D">CSV </font>roster for APPJAM+ INSTRUCTORS...</h2>
                     <Dropzone accept=".csv" onDropAccepted={this.onDrop.bind(this)} style={dropBoxStyle}>upload new..</Dropzone>
                     <br /><br /><br />
                     <button onClick={this.goNext} style={nextButtonStyle}>Next</button>
