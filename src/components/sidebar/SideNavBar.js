@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
     this component is the universal side navigation bar
  */
 
-export default function SideNavBar(props) {
+export default function SideNavBar() {
 
     //auth variable
     const [user, setUser] = useState(null);
