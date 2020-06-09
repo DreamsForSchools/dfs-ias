@@ -8,6 +8,12 @@ import api.iassorter
 import api.fbread
 from api.match import Match
 
+'''
+Reads the instructors and institutions from the firebase database
+in the most recent timestamp under the specified program.
+Matches instructors to institutions and stores the matches
+by creating a recent timestamp under the matches tab under the specified program.
+'''
 def upload_matches(program:str):
 	instructors = api.fbread.read_instructors(program)
 	institutions = api.fbread.read_institutions(program)
@@ -41,35 +47,9 @@ def upload_matches(program:str):
 	return json_matches
 
 '''
-def match_to_school_dict(match : Match) -> dict:
-	school_dict = {
-		"SchoolName" : match.school_name,
-		"SchoolAddress" : match.school_address,
-		"SchoolCounty" : match.school_county,
-		"SchoolInstructors" : match.instructors,
-		"SchoolSchedule" : match.school_schedule
-		}
-	return school_dict
-
-
-def match_to_teacher_dict(match:Match) -> dict:
-	teacher_dict = {
-		"Name" : match.teacher_name,
-		"Gender" : match.gender,
-		"Ethnicity" : match.ethnicity,
-		"Region" : match.region, 
-		"University" : match.university,
-		"Year" : match.year, 
-		"PreviousMentor" : match.previous_mentor,
-		"TeacherSchedule" : match.teacher_schedule,
-		"Car" : match.car,
-		"Languages" : match.languages, 
-		"ShirtSize" : match.shirtsize,
-		"MultipleDays" : match.multiple_days,
-	}
-	return teacher_dict
+Converts match objects into a dictionary with information
+of both the instructor and institution.
 '''
-
 def match_to_dict(match : Match) -> dict:
 	match_dict = {"TeacherName" : match.teacher_name,
 		"SchoolName" : match.school_name, 

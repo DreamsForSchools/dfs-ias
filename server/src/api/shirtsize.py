@@ -2,6 +2,12 @@ from collections import defaultdict
 import api.fbread
 import api.dfsapi
 
+'''
+Reads the shirtsizes of every instructor
+in the most recent timestamp under the specified program
+and creates a shirts tab specfying the shirt sizes 
+and their quantities.
+'''
 def upload_shirtsize(program:str):
 	instructors = api.fbread.read_instructors(program)
 
@@ -17,7 +23,10 @@ def upload_shirtsize(program:str):
 
 	return shirtsizes
 
-
+'''
+Stores the shirtsize of every instructor
+in a dictionary.
+'''
 def getshirtsize(instructors:list):
 
 	shirts = defaultdict(int)

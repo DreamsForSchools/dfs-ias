@@ -7,6 +7,11 @@ from api.instructor import Instructor
 from api.institution import Institution
 import api.manageinstructors
 
+'''
+Reads the instructors in the most recent timestamp
+under the specified program and creates a list 
+of Instructor objects. 
+'''
 def read_instructors(program:str):
 	db = api.dfsapi.get_db()
 
@@ -43,6 +48,11 @@ def read_instructors(program:str):
 
 	return instructors
 
+'''
+Reads the institutions in the most recent timestamp
+under the specified program and creates a ist of
+Institution objects.
+'''
 def read_institutions(program:str):
 	db = api.dfsapi.get_db()
 

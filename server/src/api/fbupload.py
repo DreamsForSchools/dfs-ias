@@ -6,14 +6,14 @@ import api.dbtools
 from collections import defaultdict
 
 '''
-Upload 
+Uploads institution to the firebase database
+under the specified program with the given
+json object that contains information 
+about the institution.
 '''
 def upload_institutions(school:dict):
 	db = api.dfsapi.get_db()
 
-			
-
-	
 	Mon = api.dbtools.minute_range(school["Monday"])
 	Tue = api.dbtools.minute_range(school["Tuesday"])
 	Wed = api.dbtools.minute_range(school["Wednesday"])
@@ -62,9 +62,10 @@ def upload_institutions(school:dict):
 
 
 '''
-Upload CSV roster of instructors to the real time database firebase
+Uploads instructor to the firebase database
+under the specified program based on the 
+information provided in the json object.
 '''
-
 def upload_instructors(teacher:dict):
 
 	Mon = api.dbtools.minute_range(teacher["Monday"])

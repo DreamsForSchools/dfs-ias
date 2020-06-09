@@ -6,14 +6,24 @@ from api.institution import Institution
 from api.iassorter import *
 import api.fbupload
 
+'''
+Calls upload instructor function.
+'''
 def upload_instructor(teacher:dict):
     api.fbupload.upload_instructors(teacher)
     return
 
+'''
+Calls upload institution function.
+'''
 def upload_institution(school:dict):
     api.fbupload.upload_institutions(school)
     return
 
+'''
+Creates a locked tab with information about locked instructors.
+Modifies the locked attribute of an instructor to true.
+'''
 def lock_instructor(program:str, teacher:str, school:str):
     db = api.dfsapi.get_db()
 
@@ -33,6 +43,11 @@ def lock_instructor(program:str, teacher:str, school:str):
     
     return False
 
+'''
+Removed the instructor in the locked tab.
+Changes the lock attribute of the instructor
+to false.
+'''
 def unlock_instructor(program:str, teacher:str, school:str):
     db = api.dfsapi.get_db()
 
@@ -49,6 +64,11 @@ def unlock_instructor(program:str, teacher:str, school:str):
             return True
     return False
 
+'''
+Removes instructor from the matches.
+Adds instructor in the removed tab.
+Adds institution with available space in the Available tab.
+'''
 def remove_instructor(program:str, school:str, teacher:str):
     db = api.dfsapi.get_db()
     valid_program = db.child(program).get()
@@ -94,6 +114,9 @@ def remove_instructor(program:str, school:str, teacher:str):
 
     return False
 
+'''
+Moves the instructor to another institution.
+'''
 def move_instructor(program:str, to_school:str, teacher:str):
     db = api.dfsapi.get_db()
     valid_program = db.child(program).get()
@@ -138,6 +161,9 @@ def move_instructor(program:str, to_school:str, teacher:str):
             return True
     return False
 
+'''
+Displays the available schools the instructor can be moved to
+'''
 def available_moves(program:str,teacher:str):
     db = api.dfsapi.get_db()
     valid_program = db.child(program).get()
@@ -161,7 +187,9 @@ def available_moves(program:str,teacher:str):
             return school_options
     return False
 
-
+'''
+Makes an instructor object.
+'''
 def make_instructor(info:dict):
     return Instructor(
         info['Name'],
@@ -178,6 +206,9 @@ def make_instructor(info:dict):
         info['MultipleDays']
     )
 
+'''
+Makes a list of institution objects
+'''
 def make_institution_list(info:dict, program:str):
     institutions = list()
 
@@ -192,6 +223,12 @@ def make_institution_list(info:dict, program:str):
 
     return institutions
 
+'''
+Converts the schedule read from the firebase 
+database to dictionary with keys being the days 
+in integers and the values being the list of tuple
+of time ranges
+'''
 def schedule_to_dict(schedule:list)->dict:
     schedule_dict = defaultdict(list)
     
@@ -207,6 +244,11 @@ def schedule_to_dict(schedule:list)->dict:
 
     return schedule_dict
 
+'''
+Check the institutions that have matching schedule
+and region with the instructor and create a list
+of match objects.
+'''
 def match_schools_to_instructor(teacher:Instructor, schools:[Institution]) -> dict:
     possible_matches = defaultdict(list)
 
@@ -237,6 +279,10 @@ def match_schools_to_instructor(teacher:Instructor, schools:[Institution]) -> di
 
     return possible_matches
 
+'''
+Create a dictionary of the institutions as keys
+and integer as value.
+'''
 def make_weights_dict(possible_moves:dict) -> dict:
     school_weights = defaultdict(int)
     for teacher in possible_moves:
@@ -244,7 +290,12 @@ def make_weights_dict(possible_moves:dict) -> dict:
             school_weights[match.school_name] = 0
 
     return school_weights
-    
+
+'''
+Based on the parameters of an instructor
+increase the weight of the institution to
+represent a better match with the instructor.
+'''
 def find_best_match(possible_moves:dict, school_weights:dict) -> dict:
     school_options = []
     for teacher in possible_moves:

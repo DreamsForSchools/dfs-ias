@@ -1,14 +1,25 @@
+'''
+Updates the time ranges for each day in the schedule
+by merging if time ranges overlap.
+'''
 def update_schedule(schedule : dict):
 	for day in schedule:
 		new_time = modify_time_ranges(schedule[day])
 		schedule[day] = new_time
 
+'''
+Create a dictionary of days as keys and a list of 
+tuple time ranges as value.
+'''
 def make_schedule(schedule : dict, time_range : (int,int), 
 	days : [int]):
 	
 	for day in days:
 		schedule[day].append(time_range)
 
+'''
+Check if tuple of time ranges overlap with each other. 
+'''
 def merge_time_range(current : (int,int), new : (int,int)) -> int:
 	
 	if current[0] <= new[0] <= current[1]:
@@ -27,7 +38,11 @@ def merge_time_range(current : (int,int), new : (int,int)) -> int:
 	else:
 		return 5
 
-
+'''
+Based on the overlap of the tuple of time ranges,
+the time ranges are merged into 1. 
+E.g. (900, 1020) and (930, 1080) --> (900,1080)
+'''
 def modify_time_ranges(tlist : [(int,int)]) -> list:
 	new_tlist = list()
 

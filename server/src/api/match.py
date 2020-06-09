@@ -1,3 +1,8 @@
+'''
+Match object that contains information of both
+the matched instructor and institution.
+'''
+
 class Match:
 	def __init__(self, TeacherName, SchoolName, Region, PreviousMentor,
 		Car, Languages, MultipleDays, Instructors, ShirtSize,

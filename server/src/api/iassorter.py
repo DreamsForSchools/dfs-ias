@@ -5,6 +5,22 @@ from api.instructor import Instructor
 from api.institution import Institution
 from api.match import Match
 
+'''
+Creates a dictionary where keys are
+the institutions and the values are list
+of match objects specifying the matched
+instructor.
+Initially creates a dictionary with keys being
+the institutions and the values being
+a list of match objects specifying instructors
+that have matching region and schedule with the 
+institution.
+Then, based on the different parameters of the 
+instructor and the maximum number of instructors
+needed by the institution the final matched
+dictionary is returned.
+'''
+
 def sort(instructors:list, institutions:list):
 
     result = defaultdict(list)

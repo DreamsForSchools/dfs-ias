@@ -1,5 +1,13 @@
+'''
+This module is for authentication when accessing the 
+firebase database.
+'''
+
 import pyrebase
 
+'''
+Authentication credentials to access the firebase database.
+'''
 auth = {
     "apiKey": "AIzaSyD5xRlDFsIss2U9nR-tSriQIRwBzPmvQ5k",
     "authDomain": "dfs-ias.firebaseapp.com",
