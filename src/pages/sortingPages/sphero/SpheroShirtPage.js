@@ -56,7 +56,7 @@ export default function SpheroShirtPage() {
 
     //gets the info from firebase
     useEffect(() => {
-        fetch('http://apurva29.pythonanywhere.com/shirts', {
+        fetch('https://apurva29.pythonanywhere.com/shirts', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',

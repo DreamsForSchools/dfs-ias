@@ -68,7 +68,7 @@ class WebjamUploadRosterPage extends Component {
                                     "Program": ["WebJam"], "New": false};
                     userList.push(newUser);
 
-                    fetch('http://apurva29.pythonanywhere.com/uploadinstructors', {
+                    fetch('https://apurva29.pythonanywhere.com/uploadinstructors', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

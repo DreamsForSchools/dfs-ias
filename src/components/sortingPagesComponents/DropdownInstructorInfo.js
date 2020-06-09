@@ -66,7 +66,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
 
         if (isLocked){
             console.log("UNLOCK",program, person.name, person.schoolName)
-            fetch('http://apurva29.pythonanywhere.com/unlockinstructor', {
+            fetch('https://apurva29.pythonanywhere.com/unlockinstructor', {
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
             .then(response => response.json())
         }else{
             console.log("LOCK",program, person.name, person.schoolName)
-            fetch('http://apurva29.pythonanywhere.com/lockinstructor', {
+            fetch('https://apurva29.pythonanywhere.com/lockinstructor', {
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
     //function that triggers when pending button is clicked
     const pendingBtnClicked = (e, name) => {
         console.log("PENDING",program, person.name, person.schoolName)
-        fetch('http://apurva29.pythonanywhere.com/removeinstructor', {
+        fetch('https://apurva29.pythonanywhere.com/removeinstructor', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
