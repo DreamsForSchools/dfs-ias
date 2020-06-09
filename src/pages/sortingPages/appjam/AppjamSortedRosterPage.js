@@ -38,6 +38,9 @@ export default function AppjamSortedRosterPage() {
     //stores the year from the database
     const [year, setYear] = useState("");
 
+    //loading modal when resorting
+    const [isLoading, setIsLoading] = useState(false);
+
     //History hook for navigation
     let history = useHistory();
 
@@ -195,6 +198,23 @@ export default function AppjamSortedRosterPage() {
 
     // console.log(schools)
 
+    const resortRoster = () => {
+        return fetch('http://apurva29.pythonanywhere.com/resort', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({"Program":"AppJam+"}),
+        })
+        .then(response => response.json())
+    }
+
+    const promiseRoster = () =>{
+        return Promise.all([resortRoster()])
+    }
+
+
     //shows modal if user really wants to re-sort
     const resortClicked = () => {
         console.log("resort");
@@ -205,6 +225,17 @@ export default function AppjamSortedRosterPage() {
     const resortYes = () => {
         console.log("YES RESORT!");
         setShowResortModal(!showResortModal);
+
+        setIsLoading(!isLoading);
+        promiseRoster()
+        .then(([sorted]) => {
+            // both have loaded!
+            setIsLoading(!isLoading);
+            console.log("PROMISE DONE=RESORTED!!!!",sorted);
+            window.location.reload();
+        })
+
+
     }
 
     //don't resort when no is clicked on the modal
@@ -216,6 +247,13 @@ export default function AppjamSortedRosterPage() {
 
     return (
         <div>
+
+            {isLoading?(
+                <div style={loading}>
+                <h3>RE-SORTING.... Please Wait.</h3>
+            </div>
+            ):null}
+    
             <TitleToolbar program="appjam+" season={quarter} year={year} urlPath="appjam"/>
 
             <div className="programPageContainer">
@@ -502,4 +540,16 @@ const iconGuideTextStyle = {
     marginLeft: "3px",
     color: "#202E47",
     color: "#49479D"
+}
+
+const loading = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(32, 46, 71, 0.7)",
+    color: "white"
 }
