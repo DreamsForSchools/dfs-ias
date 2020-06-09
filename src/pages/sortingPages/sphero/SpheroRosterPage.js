@@ -167,7 +167,7 @@ export default function SpheroRosterPage() {
         // history.push('/appjamhome/sortedroster');
         history.push({
             pathname: "/manualaddinstructor",
-            state: {isNewRoster: false}
+            state: {isNewRoster: false, program:"sphero"}
         });
     }
 

@@ -138,7 +138,8 @@ class ManualRosterPage extends Component {
 
     goNext=()=> {
         // this.props.history.push("/schoolhome");
-        console.log(this.props.location.state.isNewRoster)
+        // console.log(this.props.location.state.isNewRoster)
+        this.props.history.push("/"+this.props.location.state.program+"home/roster");
     }
 
     render() {
