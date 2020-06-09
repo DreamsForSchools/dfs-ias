@@ -117,7 +117,7 @@ export default function SpheroRosterPage() {
     return (
         <div>
 
-            <TitleToolbar program="sphero" season={quarter} year={year}  urlPath="appjam"/>
+            <TitleToolbar program="sphero" season={quarter} year={year}  urlPath="sphero"/>
 
             <div className="programPageContainer">
 
