@@ -159,8 +159,38 @@ export default function WebjamRosterPage() {
         });
       },[]);
 
-    const sortClicked = (e, name) => {
-        history.push('/webjamhome/sortedroster');
+    // const sortClicked = (e, name) => {
+    //     history.push('/webjamhome/sortedroster');
+    // }
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const sortRoster = () => {
+        return fetch('https://apurva29.pythonanywhere.com/sort', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({"Program":"WebJam"}),
+        })
+        .then(response => response.json())
+    }
+
+    const promiseRoster = () =>{
+        return Promise.all([sortRoster()])
+    }
+
+    const sortClicked = (e) => {
+        // history.push('/appjamhome/sortedroster');
+        setIsLoading(!isLoading);
+        promiseRoster()
+        .then(([sorted]) => {
+            // both have loaded!
+            setIsLoading(!isLoading);
+            console.log("PROMISE DONE!!!!",sorted);
+            history.push('/appjamhome/sortedroster');
+        })
     }
 
     const addClicked = (e) => {
@@ -174,6 +204,11 @@ export default function WebjamRosterPage() {
 
     return (
         <div>
+            {isLoading?(
+                <div style={loading}>
+                <h3>SORTING.... Please Wait.</h3>
+            </div>
+            ):null}
 
             <TitleToolbar program="webjam" season={quarter} year={year}  urlPath="webjam"/>
 

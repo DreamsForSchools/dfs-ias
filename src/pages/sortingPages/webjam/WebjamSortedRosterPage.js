@@ -199,7 +199,7 @@ export default function WebjamSortedRosterPage() {
     // console.log(schools)
 
     const resortRoster = () => {
-        return fetch('http://apurva29.pythonanywhere.com/resort', {
+        return fetch('https://apurva29.pythonanywhere.com/resort', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
