@@ -69,7 +69,7 @@ export default function AppjamSortedRosterPage() {
 
     return (
         <div>
-            <TitleToolbar program="appjam+" season={quarter} year={year} urlPath="appjam"/>
+            <TitleToolbar program="Appjam+" season={quarter} year={year} urlPath="appjam"/>
 
             <div className="programPageContainer">
                 <div style={tableContainer}>
