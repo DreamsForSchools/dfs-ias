@@ -38,6 +38,9 @@ export default function AppjamSortedRosterPage() {
     //stores the year from the database
     const [year, setYear] = useState("");
 
+    //loading modal when resorting
+    const [isLoading, setIsLoading] = useState(false);
+
     //History hook for navigation
     let history = useHistory();
 
@@ -66,38 +69,53 @@ export default function AppjamSortedRosterPage() {
         });
     },[]);
 
-    // //accesses firebase for the sorted roster
-    // const sortedRosterCollection = useRef(fire.database().ref().child('sortedroster'))
+      //convers mins into hours and mins in a day 
+      // i.e. 900 -> 3:00
+      const convertMins = (mins) => {
+        var num = mins;
+        var finHours = Math.trunc(num/60%12)
+        var hours = (num / 60);
+        var rhours = Math.floor(hours);
+        var minutes = (hours - rhours) * 60;
+        var rminutes = Math.round(minutes);
+        if (rminutes == 0){
+            rminutes="00"
+        }
+        return finHours + ":" + rminutes;
+    }
 
-    // //accesses firebase for the sorted roster
-    // useEffect(() => {
-    //     sortedRosterCollection.current.once('value', (snap) => {
-    //         const roster = []
-    //         snap.forEach((doc) =>{
-    //             const school = doc.key;
-    //             const mentorList = doc.val();
-    //             const mentorArray = [];
-    //             for (var k in mentorList){
-    //                 mentorArray.push(
-    //                     {
-    //                         "name":k,
-    //                         "firstName": k.split(" ")[0],
-    //                         "car": mentorList[k]["Car"],
-    //                         "languages": mentorList[k]["Languages"],
-    //                         "multipleDays": mentorList[k]["MultipleDays"],
-    //                         "prevMentor": mentorList[k]["PreviousMentor"],
-    //                         "region": mentorList[k]["Region"],
-    //                         "schoolName": mentorList[k]["SchoolName"],
-    //                     }
-    //                 )
-    //             }
-    //             const schoolMentor = {school:school, mentors: mentorArray};
-    //             roster.push(schoolMentor);
-    //         });
-    //         setSchools(roster);
-    //     });
-    // },[]);
+    //takes in an array of start and end time and converts it respectfully
+    //i.e [900 - 1020] -> 3:00-5:00
+    const convertTime = (dayTimesArray) => {
+        return convertMins(dayTimesArray[0]) + "-" + convertMins(dayTimesArray[1])
+    }
+    
+    // converts schedule from database to a more readable format
+    const convertSchedule = (schedArray) => {
+        // console.log(schedArray)
+        var finalSchedArray = {
+            "mon": "",
+            "tue": "",
+            "wed": "",
+            "thu": "",
+            "fri": ""
+        }
 
+        for (var day in schedArray){
+            if (day == 1){
+                finalSchedArray["mon"] = convertTime(schedArray[day][0])
+            }else if (day == 2){
+                finalSchedArray["tue"] = convertTime(schedArray[day][0])
+            }else if (day == 3){
+                finalSchedArray["wed"] = convertTime(schedArray[day][0])
+            }else if (day == 4){
+                finalSchedArray["thu"] = convertTime(schedArray[day][0])
+            }else if (day == 5){
+                finalSchedArray["fri"] = convertTime(schedArray[day][0])
+            }
+        }
+        return finalSchedArray
+    }
 
     const appjamSortedRosterCollection = useRef(fire.database().ref().child('AppJam+/matches'));
     const firstChild = useRef(fire.database().ref().child('AppJam+/matches').limitToFirst(1));
@@ -108,7 +126,7 @@ export default function AppjamSortedRosterPage() {
         var latestRoster = 0;
         appjamSortedRosterCollection.current.on('value', (snap) => {
             matchesLen = snap.numChildren();
-            console.log("NUMBER OF MATCHES", matchesLen)
+            // console.log("NUMBER OF MATCHES", matchesLen)
             snap.forEach((doc) =>{
                 console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
                 if (latestRoster < doc.key){
@@ -118,7 +136,7 @@ export default function AppjamSortedRosterPage() {
             console.log("LATEST ROSTER:",latestRoster)
             
             if (parseInt(matchesLen) > 10){
-                console.log("ADASDDASDSADSA", matchesLen)
+                // console.log("ADASDDASDSADSA", matchesLen)
                 firstChild.current.once('value', (snap) => {
                     snap.forEach((doc) =>{
                         console.log("OLDEST MATCH",doc.key);
@@ -133,15 +151,13 @@ export default function AppjamSortedRosterPage() {
             const roster = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){
-                    console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
+                    // console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
                     const schoolArray = doc.val();
                     for (var school in schoolArray){
-                        console.log(school)
+                        // console.log(school)
                         const mentorInfoArray = []
                         for (var mentor in schoolArray[school]){
-                            // console.log(schoolArray[school][mentor]["Languages"])
                             if (schoolArray[school][mentor]["TeacherName"] != undefined){
-                            // if (schoolArray[school] != "Locked" || ){
                                 mentorInfoArray.push(
                                     {
                                         "name":schoolArray[school][mentor]["TeacherName"],
@@ -155,10 +171,10 @@ export default function AppjamSortedRosterPage() {
                                         "shirtSize": schoolArray[school][mentor]["ShirtSize"],
                                         "university": schoolArray[school][mentor]["University"],
                                         "year": schoolArray[school][mentor]["Year"],
-                                        "teacherSchedule": schoolArray[school][mentor]["TeacherSchedule"],
+                                        "teacherSchedule": convertSchedule(schoolArray[school][mentor]["TeacherSchedule"]),
                                         "region": schoolArray[school][mentor]["Region"],
                                         "schoolName": schoolArray[school][mentor]["SchoolName"],
-                                        "schoolSchedule": schoolArray[school][mentor]["Schedule"],
+                                        "schoolSchedule": convertSchedule(schoolArray[school][mentor]["Schedule"]),
                                         "isLocked": schoolArray[school][mentor]["Locked"],
                                     }
                                 )
@@ -182,6 +198,23 @@ export default function AppjamSortedRosterPage() {
 
     // console.log(schools)
 
+    const resortRoster = () => {
+        return fetch('http://apurva29.pythonanywhere.com/resort', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({"Program":"AppJam+"}),
+        })
+        .then(response => response.json())
+    }
+
+    const promiseRoster = () =>{
+        return Promise.all([resortRoster()])
+    }
+
+
     //shows modal if user really wants to re-sort
     const resortClicked = () => {
         console.log("resort");
@@ -192,6 +225,17 @@ export default function AppjamSortedRosterPage() {
     const resortYes = () => {
         console.log("YES RESORT!");
         setShowResortModal(!showResortModal);
+
+        setIsLoading(!isLoading);
+        promiseRoster()
+        .then(([sorted]) => {
+            // both have loaded!
+            setIsLoading(!isLoading);
+            console.log("PROMISE DONE=RESORTED!!!!",sorted);
+            window.location.reload();
+        })
+
+
     }
 
     //don't resort when no is clicked on the modal
@@ -203,7 +247,14 @@ export default function AppjamSortedRosterPage() {
 
     return (
         <div>
-            <TitleToolbar program="appjam+" season={quarter} year={year} urlPath="appjam"/>
+
+            {isLoading?(
+                <div style={loading}>
+                <h3>RE-SORTING.... Please Wait.</h3>
+            </div>
+            ):null}
+    
+            <TitleToolbar program="Appjam+" season={quarter} year={year} urlPath="appjam"/>
 
             <div className="programPageContainer">
 
@@ -263,13 +314,13 @@ export default function AppjamSortedRosterPage() {
                 
                 <div className="sortedInstructorCardsWrapper">
                     <div style={pendingLockedContainer}>
-                        <PendingList/>
-                        <LockedList />
+                        <PendingList program="AppJam+"/>
+                        <LockedList program="AppJam+"/>
                     </div>
 
                     <div className="instructorCardsContainer">
                         {schools.map((schoolMentors,i) => (
-                            <SortedInstructorsCard instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF" key={schoolMentors.school}/>
+                            <SortedInstructorsCard program="AppJam+" instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF" key={schoolMentors.school}/>
                         ))}
                     </div>
                 </div>
@@ -489,4 +540,16 @@ const iconGuideTextStyle = {
     marginLeft: "3px",
     color: "#202E47",
     color: "#49479D"
+}
+
+const loading = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(32, 46, 71, 0.7)",
+    color: "white"
 }
