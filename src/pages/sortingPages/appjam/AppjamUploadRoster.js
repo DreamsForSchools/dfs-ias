@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
-import {Redirect} from 'react-router-dom';
 import csv from 'csv';
 
+// Page for Appjam program for uploading a csv file instructor roster
 class AppjamUploadRosterPage extends Component {
+
+    // Splits the strings that are read from csv file and returns array with first and third token. Used mainly for the schedule (Monday: 10:00-12:00 returns [10:00, 12:00]
     splitString = (string) => {
         if (string == "") {
             return "";
@@ -14,6 +16,7 @@ class AppjamUploadRosterPage extends Component {
         }
     }
     
+    // Handles looping through the csv file for the data entries and calling the API to upload to the database
     onDrop(files) {
         this.setState({ files });
 
@@ -79,6 +82,7 @@ class AppjamUploadRosterPage extends Component {
         reader.readAsBinaryString(file);
     }
 
+    // Routing for the Next button to go to the correct page
     goNext=()=> {
         this.props.history.push("/appjamhome/roster");
     }
