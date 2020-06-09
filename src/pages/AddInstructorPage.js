@@ -1,8 +1,9 @@
+
 import React, {Component} from 'react';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
-import fire from '.././config/fire';
 import './manual.css';
 
+// Page for manually uploading instructors to database. Currently not in use, but is fully functional a definite future implementation into the web app.
 class ManualRosterPage extends Component {
     constructor() {
         super();
@@ -32,12 +33,14 @@ class ManualRosterPage extends Component {
         this.handleCheck = this.handleCheck.bind(this);
     }
 
+    // Alters state when an input field is changed
     handleChange(e) {
         this.setState({
             [e.target.name]: e.target.value
         });
     }
 
+    // Handles the toggle checkbox buttons for programs
     handleCheck(e) {
         if (this.state.programs.includes(e.target.value)) {
             console.log(this.state.programs, e.target.value);
@@ -52,6 +55,7 @@ class ManualRosterPage extends Component {
         });
     }
 
+    // These functions could definitely be optimized, but I couldn't figure out how to use the time range picker that I installed. These just alter the schedule sections of the state.
     onMonday = monday => {
         this.setState({
             monday
@@ -82,6 +86,7 @@ class ManualRosterPage extends Component {
         });
     }
 
+    // Calls the API with the current state to push data to database and then resets the state.
     handleSubmit(e) {
         e.preventDefault();
         const instructor = {
@@ -136,6 +141,7 @@ class ManualRosterPage extends Component {
         });
     }
 
+    // Routing for the page
     goNext=()=> {
         // this.props.history.push("/schoolhome");
         // console.log(this.props.location.state.isNewRoster)
