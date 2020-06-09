@@ -167,7 +167,7 @@ export default function WebjamRosterPage() {
         // history.push('/appjamhome/sortedroster');
         history.push({
             pathname: "/manualaddinstructor",
-            state: {isNewRoster: false}
+            state: {isNewRoster: false, program:"webjam"}
         });
     }
 

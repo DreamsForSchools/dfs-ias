@@ -87,7 +87,7 @@ class UploadInstitutionsPage extends Component {
 
     // Routing for the Next button to go to the correct page
     goNext=()=> {
-        this.props.history.push("/template");
+        this.props.history.push("/schoolhome/roster");
     }
 
     render() {

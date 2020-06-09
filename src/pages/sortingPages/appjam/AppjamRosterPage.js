@@ -233,7 +233,7 @@ export default function AppjamRosterPage(props) {
         // history.push('/appjamhome/sortedroster');
         history.push({
             pathname: "/manualaddinstructor",
-            state: {isNewRoster: false}
+            state: {isNewRoster: false, program:"appjam"}
         });
     }
 
