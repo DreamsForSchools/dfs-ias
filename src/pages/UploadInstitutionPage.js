@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
 import csv from 'csv';
-import fire from '../config/fire';
 
+// Page for uploading a csv file institution roster
 class UploadInstitutionsPage extends Component {
+
+    // Splits the strings that are read from csv file and returns array with first and third token. Used mainly for the schedule (Monday: 10:00-12:00 returns [10:00, 12:00]
     splitString = (string) => {
         if (string == "") {
             return "";
@@ -14,6 +16,7 @@ class UploadInstitutionsPage extends Component {
         }
     }
 
+    // Given a program(Appjam, Webjam, Sphero), checks to see if a school for that program has already been uploaded to the database. We do this since we need to change the "New" boolean JSON value for the API to operate properly.
     checkNew = (program, programList) => {
         if (programList.includes(program)) {
             return false;
@@ -23,6 +26,7 @@ class UploadInstitutionsPage extends Component {
         }
     }
 
+    // Handles looping through the csv file for the data entries and calling the API to upload to the database
     onDrop(files) {
         this.setState({ files });
 
@@ -81,6 +85,7 @@ class UploadInstitutionsPage extends Component {
         reader.readAsBinaryString(file);
     }
 
+    // Routing for the Next button to go to the correct page
     goNext=()=> {
         this.props.history.push("/template");
     }
