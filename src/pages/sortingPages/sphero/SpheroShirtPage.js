@@ -52,10 +52,21 @@ export default function SpheroShirtPage() {
     },[]);
 
     //gets the appjam shirt size info fromt he database using firebase
-    const sortedRosterCollection = useRef(fire.database().ref().child('shirts'))
+    const sortedRosterCollection = useRef(fire.database().ref().child('SpheroElementary/shirts'))
 
     //gets the info from firebase
     useEffect(() => {
+        fetch('http://apurva29.pythonanywhere.com/shirts', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({"Program":"SpheroElementary"}),
+        })
+        .then(response => response.json())
+        
+
         sortedRosterCollection.current.once('value', (snap) => {
             const shirtSizes = {}
             // const roster = []
