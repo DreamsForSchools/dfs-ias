@@ -249,7 +249,7 @@ export default function AppjamSortedRosterPage() {
                     </div>
 
                     <div style={saveResort}>
-                        <button onClick={resortClicked} style={resortBtn}>Re-sort!</button>
+                        <button onClick={resortClicked} style={resortBtn}>Re-sort!!</button>
                         {showResortModal?(
                             <div style={modalContainer}>
                                 <div style={modal}>
