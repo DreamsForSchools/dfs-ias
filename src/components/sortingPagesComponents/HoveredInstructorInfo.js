@@ -65,9 +65,9 @@ export default function HoveredInstructorInfo({person, savedIconIndex, savedIcon
                                         <h3 style={hoverName}>{person.name}</h3>
                                     </div>
                                     <div className="hoverMoreInfoHeaderYearGenderEthnicity">
-                                        <h3 style={hoverYearGenderEthnicityText}>4th+</h3>
-                                        <h3 style={hoverYearGenderEthnicityText}>Male</h3>
-                                        <h3 style={hoverYearGenderEthnicityText}>Caucasian</h3>
+                                        <h3 style={hoverYearGenderEthnicityText}>{person.year}</h3>
+                                        <h3 style={hoverYearGenderEthnicityText}>{person.gender}</h3>
+                                        <h3 style={hoverYearGenderEthnicityText}>{person.ethnicity}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -76,19 +76,19 @@ export default function HoveredInstructorInfo({person, savedIconIndex, savedIcon
                                 <div className="hoverMoreInfoDetailsRegionSchoolSchedContainer">
                                     <div className="hoverMoreInfoDetailsRegionSchoolGrid">
                                         <h3 style={hoverRegionSchoolText}>{person.region}</h3>
-                                        <h3 style={hoverRegionSchoolText}>University of California Irvine</h3>
+                                        <h3 style={hoverRegionSchoolText}>{person.university}</h3>
                                     </div>
                                     <div className="hoverMoreInfoDetailsSchedGrid">
                                         <h6 style={hoverSchedDays}>M</h6>
-                                        <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                        <h6 style={hoverSchedTimes}>{person.teacherSchedule.mon}</h6>
                                         <h6 style={hoverSchedDays}>T</h6>
-                                        <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                        <h6 style={hoverSchedTimes}>{person.teacherSchedule.tue}</h6>
                                         <h6 style={hoverSchedDays}>W</h6>
-                                        <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                        <h6 style={hoverSchedTimes}>{person.teacherSchedule.wed}</h6>
                                         <h6 style={hoverSchedDays}>T</h6>
-                                        <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                        <h6 style={hoverSchedTimes}>{person.teacherSchedule.thu}</h6>
                                         <h6 style={hoverSchedDays}>F</h6>
-                                        <h6 style={hoverSchedTimes}>15:00-17:45</h6>
+                                        <h6 style={hoverSchedTimes}>{person.teacherSchedule.fri}</h6>
                                     </div>
                                 </div>
                                 <div className="hoverMoreInfoDetailsOtherContainer">

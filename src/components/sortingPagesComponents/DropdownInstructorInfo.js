@@ -90,9 +90,18 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
         setIsLocked(!isLocked);
     }
 
-    //function that triggers when delete button is clicked
-    const deleteBtnClicked = (e, name) => {
-        console.log("DELETE " + name);
+    //function that triggers when pending button is clicked
+    const pendingBtnClicked = (e, name) => {
+        console.log("PENDING",program, person.name, person.schoolName)
+        fetch('http://apurva29.pythonanywhere.com/removeinstructor', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({"Program":program, "TeacherName": person.name, "SchoolName":person.schoolName}),
+        })
+        .then(response => response.json())
+        window.location.reload();
     }
 
     return (
@@ -110,7 +119,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
                             <div className="optionsMenu">
                                 {/* <button onClick={(e) => { moveBtnClicked(e, person.name) }} className="optionBtn moveBtn">MOVE</button> */}
                                 <button onClick={(e) => { lockBtnClicked(e, person.name) }} className="optionBtn lockBtn">{isLocked?"Unlock":"Lock"}</button>
-                                <button onClick={(e) => { deleteBtnClicked(e, person.name) }} className="optionBtn deleteBtn">Pending</button>
+                                <button onClick={(e) => { pendingBtnClicked(e, person.name) }} className="optionBtn deleteBtn">Pending</button>
                             </div>
                         ):null}
                     </div>

@@ -3,19 +3,62 @@ import React from 'react'
 import { useState, useEffect, useRef } from 'react';
 import PendingListNameButton from './PendingListNameButton'
 
-// import fire from '../../.././config/fire';
+import fire from '../.././config/fire';
 // import firebase from 'firebase';
 
 /*
     This component is shows pending students
     meaning they are temporarily removed from the sorted roster
 */
-export default function PendingList({instructorList}) {
+export default function PendingList({program}) {
+
+
+    const [removedInstructors, setRemovedInstructors] = useState([]);
+
+    const appjamSortedRosterCollection = useRef(fire.database().ref().child(program+'/matches'));
+
+    useEffect(() => {
+
+        var latestRoster = 0;
+        appjamSortedRosterCollection.current.on('value', (snap) => {
+            snap.forEach((doc) =>{
+                console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
+                if (latestRoster < doc.key){
+                    latestRoster = doc.key
+                }
+            });
+            console.log("LATEST ROSTER:",latestRoster)
+        });
+
+
+        appjamSortedRosterCollection.current.once('value', (snap) => {     
+            const removedList = []      
+            snap.forEach((doc) =>{
+                if (latestRoster === doc.key){
+                    console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
+                    const schoolArray = doc.val();
+                    for (var school in schoolArray){
+                        // console.log("LOCKED LIST", school)
+                        if (school === "Removed"){
+                            for (var removedInstructor in schoolArray[school]){
+                                removedList.push(removedInstructor)
+                            }
+                        }
+                    }
+                }
+            });
+            console.log("REMOVED LIST",removedList)
+            setRemovedInstructors(removedList);
+        });
+      },[]);
 
     return (
         <div style={pendingLockedBox}>
             <h3 style={pendingLockedTitle}>Pending</h3>
             <div style={pendingLockedNameContainer}>
+                {removedInstructors.map((instructors,i) => (
+                    <PendingListNameButton name={instructors} program={program} key={i}/>
+                ))}
                 {/* <PendingListNameButton name="Hannah Fragante"/>
                 <PendingListNameButton name="Dylan Fragante"/>
                 <PendingListNameButton name="Annie Fragante"/>
