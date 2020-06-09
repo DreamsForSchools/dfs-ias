@@ -66,6 +66,54 @@ export default function AppjamSortedRosterPage() {
         });
     },[]);
 
+      //convers mins into hours and mins in a day 
+      // i.e. 900 -> 3:00
+      const convertMins = (mins) => {
+        var num = mins;
+        var finHours = Math.trunc(num/60%12)
+        var hours = (num / 60);
+        var rhours = Math.floor(hours);
+        var minutes = (hours - rhours) * 60;
+        var rminutes = Math.round(minutes);
+        if (rminutes == 0){
+            rminutes="00"
+        }
+        return finHours + ":" + rminutes;
+    }
+
+    //takes in an array of start and end time and converts it respectfully
+    //i.e [900 - 1020] -> 3:00-5:00
+    const convertTime = (dayTimesArray) => {
+        return convertMins(dayTimesArray[0]) + "-" + convertMins(dayTimesArray[1])
+    }
+    
+    // converts schedule from database to a more readable format
+    const convertSchedule = (schedArray) => {
+        // console.log(schedArray)
+        var finalSchedArray = {
+            "mon": "",
+            "tue": "",
+            "wed": "",
+            "thu": "",
+            "fri": ""
+        }
+
+        for (var day in schedArray){
+            if (day == 1){
+                finalSchedArray["mon"] = convertTime(schedArray[day][0])
+            }else if (day == 2){
+                finalSchedArray["tue"] = convertTime(schedArray[day][0])
+            }else if (day == 3){
+                finalSchedArray["wed"] = convertTime(schedArray[day][0])
+            }else if (day == 4){
+                finalSchedArray["thu"] = convertTime(schedArray[day][0])
+            }else if (day == 5){
+                finalSchedArray["fri"] = convertTime(schedArray[day][0])
+            }
+        }
+        return finalSchedArray
+    }
+
     const appjamSortedRosterCollection = useRef(fire.database().ref().child('AppJam+/matches'));
     const firstChild = useRef(fire.database().ref().child('AppJam+/matches').limitToFirst(1));
 
@@ -120,10 +168,10 @@ export default function AppjamSortedRosterPage() {
                                         "shirtSize": schoolArray[school][mentor]["ShirtSize"],
                                         "university": schoolArray[school][mentor]["University"],
                                         "year": schoolArray[school][mentor]["Year"],
-                                        "teacherSchedule": schoolArray[school][mentor]["TeacherSchedule"],
+                                        "teacherSchedule": convertSchedule(schoolArray[school][mentor]["TeacherSchedule"]),
                                         "region": schoolArray[school][mentor]["Region"],
                                         "schoolName": schoolArray[school][mentor]["SchoolName"],
-                                        "schoolSchedule": schoolArray[school][mentor]["Schedule"],
+                                        "schoolSchedule": convertSchedule(schoolArray[school][mentor]["Schedule"]),
                                         "isLocked": schoolArray[school][mentor]["Locked"],
                                     }
                                 )

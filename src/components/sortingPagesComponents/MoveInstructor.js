@@ -9,7 +9,7 @@ import { useState, useEffect, useRef } from 'react';
     This component is a modal that asks the user where they
     want to move an instructor after clicking the move button
 */
-export default function MoveInstructor({instructor, onMove}) {
+export default function MoveInstructor({instructor, onMove, schools, program}) {
 
     const [school, setSchool] = useState("")
 
@@ -20,9 +20,21 @@ export default function MoveInstructor({instructor, onMove}) {
 
     const moveFinal = (e) => {
         console.log("MOVED from MOVEINSTRUCTOR.js")
-        console.log("MOVE TO", school)
-
-        onMove();
+        console.log("MOVE TO", instructor, school, program)
+        if (school !== ""){
+            fetch('http://apurva29.pythonanywhere.com/moveinstructor', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({"Program":program, "TeacherName": instructor, "SchoolName":school}),
+            })
+            .then(response => response.json())
+            window.location.reload();
+    
+            onMove();
+        }
+        
     }
 
     const cancel = (e) => {
@@ -46,10 +58,13 @@ export default function MoveInstructor({instructor, onMove}) {
 
                     <select name="school" style={dropdownStyle} value={school} onChange={onChangeSchool}>
                         <option value="" disabled selected>Choose School...</option>
-                        <option value="School1">School1</option>
+                        {schools.map((schoolName,i) => (
+                            <option value={schoolName} key={schoolName}>{schoolName}</option>
+                        ))}
+                        {/* <option value="School1">School1</option>
                         <option value="School2">School2</option>
                         <option value="School3">School3</option>
-                        <option value="School5">School4</option>
+                        <option value="School5">School4</option> */}
                     </select>
 
                 </div>
