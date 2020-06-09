@@ -260,57 +260,58 @@ export default function AppjamRosterPage(props) {
                 </div>
 
 
-
-
                 <h1 style={programText}>Appjam+</h1>
+                <div style={programSchools}>
+                    
 
-                <div style={gridWrapper}>
-                <div style={gridContainer}>
-                    <div style={titleRow}>Name</div>
-                    <div style={titleRow}>Gender</div>
-                    <div style={titleRow}>Ethnicity</div>
-                    <div style={titleRow}>Languages</div>
-                    <div style={titleRow}>University</div>
-                    <div style={titleRow}>Year</div>
-                    <div style={titleRow}>Region</div>
-                    <div style={titleRow}>Mon</div>
-                    <div style={titleRow}>Tue</div>
-                    <div style={titleRow}>Wed</div>
-                    <div style={titleRow}>Thu</div>
-                    <div style={titleRow}>Fri</div>
-                    <div style={titleRow}>Prev Mentor</div>
-                    <div style={titleRow}>Car</div>
-                    <div style={titleRow}>Multiple Days</div>
-                    <div style={titleRow}>Shirt Size</div>
-                </div>
-
-
-                    {roster.map((mentor) => (
-                        <div style={gridEntryContainer} key={mentor.mentorID}>
-                        <div style={entryRow}>{mentor.name}</div>
-                        <div style={entryRow}>{mentor.gender}</div>
-                        <div style={entryRow}>{mentor.ethnicity}</div>
-                        <div style={entryRow}>{mentor.languages}</div>
-                        <div style={entryRow}>{mentor.university}</div>
-                        <div style={entryRow}>{mentor.year}</div>
-                        <div style={entryRow}>{mentor.region}</div>
-                        <div style={entryRow}>{mentor.schedule.mon}</div>
-                        <div style={entryRow}>{mentor.schedule.tue}</div>
-                        <div style={entryRow}>{mentor.schedule.wed}</div>
-                        <div style={entryRow}>{mentor.schedule.thu}</div>
-                        <div style={entryRow}>{mentor.schedule.fri}</div>
-                        <div style={entryRow}>{mentor.prevMentor}</div>
-                        <div style={entryRow}>{mentor.car}</div>
-                        <div style={entryRow}>{mentor.multipleDays}</div>
-                        <div style={entryRow}>{mentor.shirtSize}</div>
-
+                    <div style={gridWrapper}>
+                        <div style={gridContainer}>
+                            <div style={titleRow}>Name</div>
+                            <div style={titleRow}>Gender</div>
+                            <div style={titleRow}>Ethnicity</div>
+                            <div style={titleRow}>Languages</div>
+                            <div style={titleRow}>University</div>
+                            <div style={titleRow}>Year</div>
+                            <div style={titleRow}>Region</div>
+                            <div style={titleRow}>Mon</div>
+                            <div style={titleRow}>Tue</div>
+                            <div style={titleRow}>Wed</div>
+                            <div style={titleRow}>Thu</div>
+                            <div style={titleRow}>Fri</div>
+                            <div style={titleRow}>Prev Mentor</div>
+                            <div style={titleRow}>Car</div>
+                            <div style={titleRow}>Multiple Days</div>
+                            <div style={titleRow}>Shirt Size</div>
                         </div>
 
-                    ))}
 
+                        {roster.map((mentor) => (
+                            <div style={gridEntryContainer} key={mentor.mentorID}>
+                                <div style={entryRow}>{mentor.name}</div>
+                                <div style={entryRow}>{mentor.gender}</div>
+                                <div style={entryRow}>{mentor.ethnicity}</div>
+                                <div style={entryRow}>{mentor.languages}</div>
+                                <div style={entryRow}>{mentor.university}</div>
+                                <div style={entryRow}>{mentor.year}</div>
+                                <div style={entryRow}>{mentor.region}</div>
+                                <div style={entryRow}>{mentor.schedule.mon}</div>
+                                <div style={entryRow}>{mentor.schedule.tue}</div>
+                                <div style={entryRow}>{mentor.schedule.wed}</div>
+                                <div style={entryRow}>{mentor.schedule.thu}</div>
+                                <div style={entryRow}>{mentor.schedule.fri}</div>
+                                <div style={entryRow}>{mentor.prevMentor}</div>
+                                <div style={entryRow}>{mentor.car}</div>
+                                <div style={entryRow}>{mentor.multipleDays}</div>
+                                <div style={entryRow}>{mentor.shirtSize}</div>
+                            </div>
+
+                        ))}
+
+                    </div>
                 </div>
+
             </div>
-            </div>
+        </div>
 
     )
 }
@@ -318,7 +319,8 @@ export default function AppjamRosterPage(props) {
 
 
 const programSchools = {
-    marginTop: "20px"
+    // marginLeft: "-500px"
+
 }
 
 
@@ -334,7 +336,7 @@ const gridWrapper = {
 
 const gridContainer = {
     display: "grid",
-    gridTemplateColumns: "200px 80px 200px 150px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px ",
+    gridTemplateColumns: "200px 80px 200px 150px 150px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px ",
     gridTemplateRows: "50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px ",
     justifyContent: "center",
     marginTop: "10px",
@@ -344,7 +346,7 @@ const gridContainer = {
 
 const gridEntryContainer = {
     display: "grid",
-    gridTemplateColumns: "200px 80px 200px 150px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px",
+    gridTemplateColumns: "200px 80px 200px 150px 150px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px",
     gridTemplateRows: "50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px  ",
     justifyContent: "center",
     marginTop: "-750px",
