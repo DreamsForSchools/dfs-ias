@@ -66,39 +66,6 @@ export default function AppjamSortedRosterPage() {
         });
     },[]);
 
-    // //accesses firebase for the sorted roster
-    // const sortedRosterCollection = useRef(fire.database().ref().child('sortedroster'))
-
-    // //accesses firebase for the sorted roster
-    // useEffect(() => {
-    //     sortedRosterCollection.current.once('value', (snap) => {
-    //         const roster = []
-    //         snap.forEach((doc) =>{
-    //             const school = doc.key;
-    //             const mentorList = doc.val();
-    //             const mentorArray = [];
-    //             for (var k in mentorList){
-    //                 mentorArray.push(
-    //                     {
-    //                         "name":k,
-    //                         "firstName": k.split(" ")[0],
-    //                         "car": mentorList[k]["Car"],
-    //                         "languages": mentorList[k]["Languages"],
-    //                         "multipleDays": mentorList[k]["MultipleDays"],
-    //                         "prevMentor": mentorList[k]["PreviousMentor"],
-    //                         "region": mentorList[k]["Region"],
-    //                         "schoolName": mentorList[k]["SchoolName"],
-    //                     }
-    //                 )
-    //             }
-    //             const schoolMentor = {school:school, mentors: mentorArray};
-    //             roster.push(schoolMentor);
-    //         });
-    //         setSchools(roster);
-    //     });
-    // },[]);
-
-
     const appjamSortedRosterCollection = useRef(fire.database().ref().child('AppJam+/matches'));
     const firstChild = useRef(fire.database().ref().child('AppJam+/matches').limitToFirst(1));
 
@@ -108,7 +75,7 @@ export default function AppjamSortedRosterPage() {
         var latestRoster = 0;
         appjamSortedRosterCollection.current.on('value', (snap) => {
             matchesLen = snap.numChildren();
-            console.log("NUMBER OF MATCHES", matchesLen)
+            // console.log("NUMBER OF MATCHES", matchesLen)
             snap.forEach((doc) =>{
                 console.log(parseInt(doc.key), "NEW!!!!NEW!!!")
                 if (latestRoster < doc.key){
@@ -118,7 +85,7 @@ export default function AppjamSortedRosterPage() {
             console.log("LATEST ROSTER:",latestRoster)
             
             if (parseInt(matchesLen) > 10){
-                console.log("ADASDDASDSADSA", matchesLen)
+                // console.log("ADASDDASDSADSA", matchesLen)
                 firstChild.current.once('value', (snap) => {
                     snap.forEach((doc) =>{
                         console.log("OLDEST MATCH",doc.key);
@@ -133,15 +100,13 @@ export default function AppjamSortedRosterPage() {
             const roster = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){
-                    console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
+                    // console.log("LATEST ROSTER DOC.KEY:",doc.key, doc.val())
                     const schoolArray = doc.val();
                     for (var school in schoolArray){
-                        console.log(school)
+                        // console.log(school)
                         const mentorInfoArray = []
                         for (var mentor in schoolArray[school]){
-                            // console.log(schoolArray[school][mentor]["Languages"])
                             if (schoolArray[school][mentor]["TeacherName"] != undefined){
-                            // if (schoolArray[school] != "Locked" || ){
                                 mentorInfoArray.push(
                                     {
                                         "name":schoolArray[school][mentor]["TeacherName"],
@@ -263,13 +228,13 @@ export default function AppjamSortedRosterPage() {
                 
                 <div className="sortedInstructorCardsWrapper">
                     <div style={pendingLockedContainer}>
-                        <PendingList/>
-                        <LockedList />
+                        <PendingList program="AppJam+"/>
+                        <LockedList program="AppJam+"/>
                     </div>
 
                     <div className="instructorCardsContainer">
                         {schools.map((schoolMentors,i) => (
-                            <SortedInstructorsCard instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF" key={schoolMentors.school}/>
+                            <SortedInstructorsCard program="AppJam+" instructors={schoolMentors} SbgColor="#7FC9FF" SborderColor="#0099FF" key={schoolMentors.school}/>
                         ))}
                     </div>
                 </div>
