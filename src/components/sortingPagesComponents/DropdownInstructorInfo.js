@@ -70,6 +70,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({"Program":program, "TeacherName": person.name, "SchoolName":person.schoolName}),
             })
@@ -80,6 +81,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({"Program":program, "TeacherName": person.name, "SchoolName":person.schoolName}),
             })
