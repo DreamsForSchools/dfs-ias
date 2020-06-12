@@ -189,7 +189,7 @@ export default function WebjamRosterPage() {
             // both have loaded!
             setIsLoading(!isLoading);
             console.log("PROMISE DONE!!!!",sorted);
-            history.push('/appjamhome/sortedroster');
+            history.push('/webjamhome/sortedroster');
         })
     }
 

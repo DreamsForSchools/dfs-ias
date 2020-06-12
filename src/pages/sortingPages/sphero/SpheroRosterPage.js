@@ -189,7 +189,7 @@ export default function SpheroRosterPage() {
             // both have loaded!
             setIsLoading(!isLoading);
             console.log("PROMISE DONE!!!!",sorted);
-            history.push('/appjamhome/sortedroster');
+            history.push('/spherohome/sortedroster');
         })
     }
 
