@@ -1,11 +1,11 @@
 import pyrebase
 from collections import defaultdict
 
-import api.dbtools
-import api.dfsapi
-from api.instructor import Instructor
-from api.institution import Institution
-import api.manageinstructors
+import dbtools
+import dfsapi
+from instructor import Instructor
+from institution import Institution
+import manageinstructors
 
 '''
 Reads the instructors in the most recent timestamp
@@ -13,7 +13,7 @@ under the specified program and creates a list
 of Instructor objects. 
 '''
 def read_instructors(program:str):
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 
 	instructors = list()
 
@@ -40,7 +40,9 @@ def read_instructors(program:str):
 		Languages = instructor["Languages"]
 		ShirtSize = instructor["ShirtSize"]
 		MultipleDays = instructor["MultipleDays"]
-		Schedule = api.manageinstructors.schedule_to_dict(instructor["Schedule"])
+		if "Schedule" not in instructor:
+			continue
+		Schedule = manageinstructors.schedule_to_dict(instructor["Schedule"])
 
 		instructors.append(Instructor(Name, Gender, Ethnicity, Region,
 			University, Year, PreviousMentor, Schedule,
@@ -54,7 +56,7 @@ under the specified program and creates a ist of
 Institution objects.
 '''
 def read_institutions(program:str):
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 
 	institutions = list()
 
@@ -74,7 +76,7 @@ def read_institutions(program:str):
 		Address = institution["Address"]
 		County = institution["County"]
 		Instructors = institution["Instructors"]
-		Schedule = api.manageinstructors.schedule_to_dict(institution["Schedule"])
+		Schedule = manageinstructors.schedule_to_dict(institution["Schedule"])
 
 		institutions.append(Institution(Name, Address, County, 
 			Instructors, Schedule))

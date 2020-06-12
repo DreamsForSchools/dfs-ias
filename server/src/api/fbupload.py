@@ -1,8 +1,8 @@
 import pyrebase
-import api.dfsapi
+import dfsapi
 import calendar
 import time
-import api.dbtools
+import dbtools
 from collections import defaultdict
 
 '''
@@ -12,13 +12,13 @@ json object that contains information
 about the institution.
 '''
 def upload_institutions(school:dict):
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 
-	Mon = api.dbtools.minute_range(school["Monday"])
-	Tue = api.dbtools.minute_range(school["Tuesday"])
-	Wed = api.dbtools.minute_range(school["Wednesday"])
-	Thurs = api.dbtools.minute_range(school["Thursday"])
-	Fri = api.dbtools.minute_range(school["Friday"])
+	Mon = dbtools.minute_range(school["Monday"])
+	Tue = dbtools.minute_range(school["Tuesday"])
+	Wed = dbtools.minute_range(school["Wednesday"])
+	Thurs = dbtools.minute_range(school["Thursday"])
+	Fri = dbtools.minute_range(school["Friday"])
 
 	Schedule = defaultdict(list)
 		
@@ -68,11 +68,11 @@ information provided in the json object.
 '''
 def upload_instructors(teacher:dict):
 
-	Mon = api.dbtools.minute_range(teacher["Monday"])
-	Tue = api.dbtools.minute_range(teacher["Tuesday"])
-	Wed = api.dbtools.minute_range(teacher["Wednesday"])
-	Thurs = api.dbtools.minute_range(teacher["Thursday"])
-	Fri = api.dbtools.minute_range(teacher["Friday"])
+	Mon = dbtools.minute_range(teacher["Monday"])
+	Tue = dbtools.minute_range(teacher["Tuesday"])
+	Wed = dbtools.minute_range(teacher["Wednesday"])
+	Thurs = dbtools.minute_range(teacher["Thursday"])
+	Fri = dbtools.minute_range(teacher["Friday"])
 
 	Schedule = defaultdict(list)
 		
@@ -102,7 +102,7 @@ def upload_instructors(teacher:dict):
 		"Schedule" : Schedule
 	}
 
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 	
 	for p in teacher['Program']:
 		if teacher['New']:

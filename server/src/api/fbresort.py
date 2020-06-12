@@ -1,7 +1,7 @@
 import pyrebase
-import api.dfsapi
-from api.match import Match
-import api.iassorter
+import dfsapi
+from match import Match
+import iassorter
 
 from collections import defaultdict
 
@@ -13,12 +13,13 @@ def resort_matches(program:str):
 
     if fblocked != None:
         locked = get_locked_matches(fblocked)
+        iassorter.resort(locked, program)
         return fblocked
     else:
         return False
 
 def get_locked_instructors(program:str):
-    db = api.dfsapi.get_db()
+    db = dfsapi.get_db()
     keys = db.child(program).child("matches").shallow().get()
 
     if keys.val() != None:
@@ -38,18 +39,18 @@ def get_locked_matches(fblocked:dict):
             instructors = int(info['Instructors']) - locked_num
 
             locked[school].append(Match(
-                info['TeacherName'], 
-                info['SchoolName'], 
-                info['Region'], 
-                info['PreviousMentor'], 
+                info['TeacherName'],
+                info['SchoolName'],
+                info['Region'],
+                info['PreviousMentor'],
                 info['Car'],
                 info['Languages'],
                 info['MultipleDays'],
                 instructors,
                 info['ShirtSize'],
                 info['Gender'],
-                info['University'], 
-                info['Year'], 
+                info['University'],
+                info['Year'],
                 info['Ethnicity'],
                 info['SchoolAddress'],
                 info['SchoolCounty'],

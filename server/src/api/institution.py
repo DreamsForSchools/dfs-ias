@@ -1,6 +1,6 @@
 '''
 Institution class that contains all relevant information of an
-Instutiton where Instructors will be matched to.                
+Instutiton where Instructors will be matched to.
 '''
 
 class Institution:

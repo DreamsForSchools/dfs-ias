@@ -1,23 +1,23 @@
 import pyrebase
 from collections import defaultdict
-import api.dfsapi
-from api.instructor import Instructor
-from api.institution import Institution
-from api.iassorter import *
-import api.fbupload
+import dfsapi
+from instructor import Instructor
+from institution import Institution
+from iassorter import *
+import fbupload
 
 '''
 Calls upload instructor function.
 '''
 def upload_instructor(teacher:dict):
-    api.fbupload.upload_instructors(teacher)
+    fbupload.upload_instructors(teacher)
     return
 
 '''
 Calls upload institution function.
 '''
 def upload_institution(school:dict):
-    api.fbupload.upload_institutions(school)
+    fbupload.upload_institutions(school)
     return
 
 '''
@@ -25,9 +25,11 @@ Creates a locked tab with information about locked instructors.
 Modifies the locked attribute of an instructor to true.
 '''
 def lock_instructor(program:str, teacher:str, school:str):
-    db = api.dfsapi.get_db()
+    db = dfsapi.get_db()
 
     timestamps = db.child(program).child("matches").shallow().get()
+    print("Timestamps: " + str(timestamps))
+    print("Timestamps Value: " + str(timestamps.val()))
 
     if timestamps.val() != None:
         latest = max(timestamps.val())
@@ -40,7 +42,7 @@ def lock_instructor(program:str, teacher:str, school:str):
             db.child(program).child("matches").child(latest).child("Locked").child(school).child(teacher).set(info.val())
 
             return info.val()
-    
+
     return False
 
 '''
@@ -49,14 +51,20 @@ Changes the lock attribute of the instructor
 to false.
 '''
 def unlock_instructor(program:str, teacher:str, school:str):
-    db = api.dfsapi.get_db()
+    db = dfsapi.get_db()
 
     timestamps = db.child(program).child("matches").shallow().get()
+    print("Timestamps: " + str(timestamps))
+    print("Timestamps Value: " + str(timestamps.val()))
+    #for key,val in timestamps.items():
+        #print("Key: " + str(key) + " Value: " + str(val))
 
     if timestamps.val() != None:
         latest = max(timestamps.val())
-        
+        print("Timestamp Value: " + str(latest))
+
         locked_teachers = db.child(program).child("matches").child(latest).child("Locked").child(school).shallow().get()
+        print("Locked Teachers Value: " + str(locked_teachers.val()))
 
         if locked_teachers.val() != None and teacher in locked_teachers.val():
             db.child(program).child("matches").child(latest).child(school).child(teacher).update({"Locked":False})
@@ -70,7 +78,7 @@ Adds instructor in the removed tab.
 Adds institution with available space in the Available tab.
 '''
 def remove_instructor(program:str, school:str, teacher:str):
-    db = api.dfsapi.get_db()
+    db = dfsapi.get_db()
     valid_program = db.child(program).get()
     if valid_program.val() != None:
         timestamps = db.child(program).child("matches").shallow().get()
@@ -107,7 +115,7 @@ def remove_instructor(program:str, school:str, teacher:str):
             teacher_info["Year"] = result["Year"]
             teacher_info["ShirtSize"] = result["ShirtSize"]
 
-            db.child(program).child("matches").child(latest).child("Removed").child(teacher).set(teacher_info)    
+            db.child(program).child("matches").child(latest).child("Removed").child(teacher).set(teacher_info)
             db.child(program).child("matches").child(latest).child(school).child(teacher).remove()
 
             return True
@@ -118,7 +126,7 @@ def remove_instructor(program:str, school:str, teacher:str):
 Moves the instructor to another institution.
 '''
 def move_instructor(program:str, to_school:str, teacher:str):
-    db = api.dfsapi.get_db()
+    db = dfsapi.get_db()
     valid_program = db.child(program).get()
     if valid_program.val() != None:
         timestamps = db.child(program).child("matches").shallow().get()
@@ -149,7 +157,7 @@ def move_instructor(program:str, to_school:str, teacher:str):
                 "University" : removed_teacher['University'],
                 "Year" : removed_teacher['Year'],
             }
-            
+
             db.child(program).child("matches").child(latest).child(to_school).child(teacher).set(match_info)
             db.child(program).child("matches").child(latest).child("Removed").child(teacher).remove()
             required_instructors = int(available_school["Instructors"]) - 1
@@ -157,7 +165,7 @@ def move_instructor(program:str, to_school:str, teacher:str):
                 db.child(program).child("matches").child(latest).child("Available").child(to_school).remove()
             else:
                 db.child(program).child("matches").child(latest).child("Available").child(to_school).update({"Instructors":required_instructors})
-            
+
             return True
     return False
 
@@ -165,7 +173,7 @@ def move_instructor(program:str, to_school:str, teacher:str):
 Displays the available schools the instructor can be moved to
 '''
 def available_moves(program:str,teacher:str):
-    db = api.dfsapi.get_db()
+    db = dfsapi.get_db()
     valid_program = db.child(program).get()
     if valid_program.val() != None:
 
@@ -224,14 +232,14 @@ def make_institution_list(info:dict, program:str):
     return institutions
 
 '''
-Converts the schedule read from the firebase 
-database to dictionary with keys being the days 
+Converts the schedule read from the firebase
+database to dictionary with keys being the days
 in integers and the values being the list of tuple
 of time ranges
 '''
 def schedule_to_dict(schedule:list)->dict:
     schedule_dict = defaultdict(list)
-    
+
     if type(schedule) != dict:
         for i in range(1,len(schedule)):
             if schedule[i] != None:
@@ -258,7 +266,7 @@ def match_schools_to_instructor(teacher:Instructor, schools:[Institution]) -> di
             possible_matches[teacher.name].append(
                 Match(
                     teacher.name,
-                    school.name, 
+                    school.name,
                     teacher.region,
                     teacher.previousmentor,
                     teacher.car,
@@ -306,12 +314,12 @@ def find_best_match(possible_moves:dict, school_weights:dict) -> dict:
                 school_weights[match.school_name] += 1
             if car.strip().lower() == "yes":
                 school_weights[match.school_name] += 1
-    
+
     sorted_weights = {k:v for k,v in sorted(school_weights.items(), key=lambda item: item[1])}
 
     for school in sorted_weights:
         school_options.append(school)
 
     return school_options
-    
+
 

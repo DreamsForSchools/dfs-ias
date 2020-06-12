@@ -1,6 +1,6 @@
 from collections import defaultdict
-import api.fbread
-import api.dfsapi
+import fbread
+import dfsapi
 
 '''
 Reads the shirtsizes of every instructor
@@ -9,14 +9,14 @@ and creates a shirts tab specfying the shirt sizes
 and their quantities.
 '''
 def upload_shirtsize(program:str):
-	instructors = api.fbread.read_instructors(program)
+	instructors = fbread.read_instructors(program)
 
 	if instructors == False:
 		return False
 
 	shirtsizes = getshirtsize(instructors)
 
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 
 	for shirt in shirtsizes:
 		db.child(program).child("shirts").child(shirt).set(shirtsizes[shirt])

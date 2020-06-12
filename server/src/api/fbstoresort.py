@@ -3,10 +3,10 @@ from collections import defaultdict
 import calendar
 import time
 
-import api.dfsapi
-import api.iassorter
-import api.fbread
-from api.match import Match
+import dfsapi
+import iassorter
+import fbread
+from match import Match
 
 '''
 Reads the instructors and institutions from the firebase database
@@ -15,18 +15,18 @@ Matches instructors to institutions and stores the matches
 by creating a recent timestamp under the matches tab under the specified program.
 '''
 def upload_matches(program:str):
-	instructors = api.fbread.read_instructors(program)
-	institutions = api.fbread.read_institutions(program)
+	instructors = fbread.read_instructors(program)
+	institutions = fbread.read_institutions(program)
 
 	if instructors == False:
 		return False
 	if institutions == False:
 		return False
 
-	result = api.iassorter.sort(instructors, institutions)
+	result = iassorter.sort(instructors, institutions)
 
 	timestamp = str(calendar.timegm(time.gmtime()))
-	db = api.dfsapi.get_db()
+	db = dfsapi.get_db()
 
 	keys = db.child(program).child("matches").shallow().get()
 	if keys.val() != None:
