@@ -87,9 +87,8 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
             })
             .then(response => response.json())
         }
-        window.location.reload();
-
         setIsLocked(!isLocked);
+        window.location.reload(); 
     }
 
     //function that triggers when pending button is clicked
