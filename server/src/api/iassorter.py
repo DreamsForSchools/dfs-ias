@@ -16,7 +16,13 @@ def sort(instructors:list, institutions:list):
     for s in institutions:
         for t in instructors:
             sched_match = same_schedule_region(s, t)
+            #print("Schedule Match: " + str(sched_match))
             if sched_match != {}:
+                #print("Found a Schedule Match!")
+                result[s.name].append(Match(t.name, s.name, t.region,
+                    t.previousmentor, t.car, t.languages,
+                    t.multipledays, s.instructors, t.shirtsize, t.gender, t.university, t.year, t.ethnicity, s.address, s.county, s.schedule, t.schedule))
+            else:
                 result[s.name].append(Match(t.name, s.name, t.region,
                     t.previousmentor, t.car, t.languages,
                     t.multipledays, s.instructors, t.shirtsize, t.gender, t.university, t.year, t.ethnicity, s.address, s.county, s.schedule, t.schedule))
@@ -125,6 +131,7 @@ def randInstructToSchool(regionAndSchools: dict) -> dict:
         #Index for while control
         teachCount = 0
         # time_iters = 0
+        print("Length of List: " + str(listLength))
         if listLength < school_instructors_needed:
             #break
             while teachCount < listLength:
