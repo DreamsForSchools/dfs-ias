@@ -8,7 +8,7 @@ First time
 4. virtualenv venv (make a new virtual environment called venv)
 5. source venv/bin/activate (activate virtual environment)
 6. pip install -r requirementst.txt (install all the necessary packages in the virtualenv)
-7. cd to src
+7. cd to api
 8. flask run
 
 Later times
