@@ -183,8 +183,18 @@ export default function SortedInstructorsCard({program, SbgColor, SborderColor, 
                     <div style={uncollapsedCardStyle}> {/* className="uncollapsedCard" */}
                     <div style={schoolInfo}>
                         <h3 style={schoolInfoStyle}>{typeof instructors !== 'undefined'?instructors["school"]:"undefined :')"}</h3> {/*Lathrop Intermediate */}
-                        <h3 style={schoolInfoStyle}>Mon/Wed</h3>
-                        <h3 style={schoolInfoStyle}>3:50-5:30</h3>
+                        <div style={hoverMoreInfoDetailsSchedGrid}>
+                            <h6 style={hoverSchedDays}>M</h6>
+                            <h6 style={hoverSchedTimes}>{instructors["mentors"][0]["schoolSchedule"]["mon"]}</h6>
+                            <h6 style={hoverSchedDays}>T</h6>
+                            <h6 style={hoverSchedTimes}>{instructors["mentors"][0]["schoolSchedule"]["tue"]}</h6>
+                            <h6 style={hoverSchedDays}>W</h6>
+                            <h6 style={hoverSchedTimes}>{instructors["mentors"][0]["schoolSchedule"]["wed"]}</h6>
+                            <h6 style={hoverSchedDays}>T</h6>
+                            <h6 style={hoverSchedTimes}>{instructors["mentors"][0]["schoolSchedule"]["thu"]}</h6>
+                            <h6 style={hoverSchedDays}>F</h6>
+                            <h6 style={hoverSchedTimes}>{instructors["mentors"][0]["schoolSchedule"]["fri"]}</h6>
+                        </div>
                     </div>
                     
                     <div style={instructorsInfoContainer}>
@@ -202,6 +212,28 @@ export default function SortedInstructorsCard({program, SbgColor, SborderColor, 
         </div>
 
     )
+}
+
+const hoverMoreInfoDetailsSchedGrid = {
+    display: "grid",
+    gridTemplateColumns: "13px 127px",
+    gridTemplateRows: "15px 15px 15px 15px 15px",
+    marginTop: "3px",
+    justifyContent: "center",
+    alignItems: "center",
+}
+
+const hoverSchedDays = {
+    color: "white",
+    fontSize: "12px",
+    fontWeight: "400",
+}
+
+const hoverSchedTimes = {
+    color: "white",
+    fontSize: "11px",
+    fontWeight: "400",
+    marginLeft: "2px"
 }
 
 const schoolStyle = {
