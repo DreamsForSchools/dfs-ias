@@ -2,6 +2,8 @@ import pyrebase
 import dfsapi
 from match import Match
 import iassorter
+import calendar
+import time
 
 from collections import defaultdict
 
@@ -13,10 +15,37 @@ def resort_matches(program:str):
 
     if fblocked != None:
         locked = get_locked_matches(fblocked)
-        iassorter.resort(locked, program)
-        return fblocked
+        print("Locked: " + str(locked))
+        print("Program: " + program)
+        result = iassorter.resort(locked, program)
+        print("FBRESORT RESULT: ")
+        print_result(result)
+        timestamp = str(calendar.timegm(time.gmtime()))
+        db = dfsapi.get_db()
+        keys = db.child(program).child("matches").shallow().get()
+        if keys.val() != None:
+            db_length = len(keys.val())
+            if db_length > 10:
+                oldest = min(keys.val())
+                db.child(program).child("matches").child(oldest).remove()
+                print("Here")
+        json_matches = defaultdict(list)
+        for school in result:
+            for match in result[school]:
+                match_dict = match_to_dict(match)
+                json_matches[school].append(match_dict)
+                db.child(program).child("matches").child(timestamp).child(school).child(match.teacher_name).set(match_dict)
+        return json_matches
+        #return fblocked
     else:
         return False
+
+def print_result(result : dict):
+    for school in result:
+        print(school, ':', end =' ')
+        for match in result[school]:
+            print(match.teacher_name + ",", end=' ')
+        print("\n")
 
 def get_locked_instructors(program:str):
     db = dfsapi.get_db()
@@ -59,3 +88,25 @@ def get_locked_matches(fblocked:dict):
                 info['Locked']
             ))
     return locked
+
+def match_to_dict(match : Match) -> dict:
+	match_dict = {"TeacherName" : match.teacher_name,
+		"SchoolName" : match.school_name,
+		"Region" : match.region,
+		"PreviousMentor" : match.previous_mentor,
+		"Car" : match.car,
+		"Languages" : match.languages,
+		"MultipleDays" : match.multiple_days,
+		"Schedule" : match.schedule,
+		"Locked" : match.locked,
+		"Instructors" : match.instructors,
+		"Gender" : match.gender,
+		"University" : match.university,
+		"Year" : match.year,
+		"Ethnicity" : match.ethnicity,
+		"SchoolAddress" : match.school_address,
+		"SchoolCounty" : match.school_county,
+		"TeacherSchedule" : match.teacher_schedule,
+		"ShirtSize" : match.shirtsize
+	}
+	return match_dict

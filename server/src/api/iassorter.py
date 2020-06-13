@@ -7,9 +7,13 @@ from match import Match
 
 import fbread
 
-unlocked_dict = defaultdict(list)
+global_locked_dict = defaultdict(list)
+resorting = False
 
 def sort(instructors:list, institutions:list):
+
+    global resorting
+    resorting = False
 
     result = defaultdict(list)
 
@@ -28,7 +32,8 @@ def sort(instructors:list, institutions:list):
                     t.multipledays, s.instructors, t.shirtsize, t.gender, t.university, t.year, t.ethnicity, s.address, s.county, s.schedule, t.schedule))
 
     sortedDict = randInstructToSchool(result)
-    print("THE RESULT: " + str(sortedDict))
+    print("THE RESULT: ")
+    print_result(sortedDict)
     return sortedDict
 
 def resort(locked_dict: dict, program: str):
@@ -38,10 +43,14 @@ def resort(locked_dict: dict, program: str):
     institutions = fbread.read_institutions(program)
     locked_instructors = list()
 
+    global global_locked_dict
+
     for institution in locked_dict:
         print("Institution: " + institution)
         for instructor in locked_dict[institution]:
             locked_instructors.append(instructor.teacher_name)
+            global_locked_dict[institution].append(instructor)
+            #institution.instructors -= 1
 
     #print("Getting Resorted: " + str(result))
     pool_of_instructors = fbread.read_instructors(program)
@@ -50,7 +59,12 @@ def resort(locked_dict: dict, program: str):
             instructors.append(instructor)
     #print("List of Instructors: " + str(instructors))
     printInstructorList(instructors)
-    sort(instructors, institutions)
+    global resorting
+    resorting = True
+    result = sort(instructors, institutions)
+    print("RESORTED RESULT:")
+    print_result(result)
+    return result
     # reSortedDict = randInstructToSchool(result)
     # return reSortedDict
 
@@ -109,6 +123,12 @@ def myPrint(resultDict: dict):
             print(value.teacher_name + ",", end=' ')
         print("\n")
 
+def printMatches(mlist: list):
+    matches = list()
+    for m in mlist:
+        matches.append(m.teacher_name)
+    print("List of Matches: " + str(matches))
+
 
 def randInstructToSchool(regionAndSchools: dict) -> dict:
 
@@ -116,12 +136,16 @@ def randInstructToSchool(regionAndSchools: dict) -> dict:
     resultDict = {}
     indexChecked = list()
 
+    global global_locked_dict
+
     #Assuming List() associated with a school in this region are not the same...?
     for key in regionAndSchools:
             #Grab the actual amount of instructors paired with the school (key)
         listLength = len(regionAndSchools[key])
         newList = list()
-        print("Institution: " + str(regionAndSchools[key]))
+        print("Key: " + str(key))
+        printMatches(regionAndSchools[key])
+        #print("Institution: " + str(regionAndSchools[key]))
 
         #Grab number of instrutors needed @ each school to perform rand alg & name for printing/Testing purposes.
         for match in regionAndSchools[key]:
@@ -132,6 +156,12 @@ def randInstructToSchool(regionAndSchools: dict) -> dict:
         teachCount = 0
         # time_iters = 0
         print("Length of List: " + str(listLength))
+
+        if key in global_locked_dict:
+            for instructor in global_locked_dict[key]:
+                newList.append(instructor)
+                teachCount += 1
+
         if listLength < school_instructors_needed:
             #break
             while teachCount < listLength:
@@ -150,13 +180,22 @@ def randInstructToSchool(regionAndSchools: dict) -> dict:
                     indexChecked.append(randNum)
                     #Accessing List() values and appending them to resultDict() (future: add more weights/specifications here...?)
                     value = regionAndSchools.get(key)
+                    #print("LENGTH OF VALUE: " + str(len(value)))
+                    print("Random Number: " + str(randNum))
                     instructChosen = value[randNum]
-                    if(assignWeights(instructChosen)):
+                    global resorting
+                    if resorting==True:
+                        print("Resorting enabled!")
+                        newList.append(instructChosen)
+                        teachCount+=1
+                    elif(assignWeights(instructChosen)):
                         newList.append(instructChosen)
                         teachCount+= 1
                         # time_iters = 0
 
         #Populate resultDict()
+        print("SELECTED MATCHES SORTED:")
+        printMatches(newList)
         resultDict[key] = newList
 
         #Cleanup
