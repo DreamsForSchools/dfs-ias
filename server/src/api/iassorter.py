@@ -137,6 +137,7 @@ def randInstructToSchool(regionAndSchools: dict) -> dict:
     indexChecked = list()
 
     global global_locked_dict
+    print("SIZE OF GLOBAL LOCKED DICT: " + str(len(global_locked_dict)))
 
     #Assuming List() associated with a school in this region are not the same...?
     for key in regionAndSchools:

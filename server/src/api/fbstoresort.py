@@ -34,7 +34,7 @@ def upload_matches(program:str):
 		if db_length > 10:
 			oldest = min(keys.val())
 			db.child(program).child("matches").child(oldest).remove()
-			print("Here")		
+			print("Here")
 
 	json_matches = defaultdict(list)
 
@@ -43,6 +43,7 @@ def upload_matches(program:str):
 			match_dict = match_to_dict(match)
 			json_matches[school].append(match_dict)
 			db.child(program).child("matches").child(timestamp).child(school).child(match.teacher_name).set(match_dict)
+			db.child(program).child("matches").child(timestamp).child(school).child(match.teacher_name).update({"Locked":False})
 
 	return json_matches
 
@@ -52,18 +53,18 @@ of both the instructor and institution.
 '''
 def match_to_dict(match : Match) -> dict:
 	match_dict = {"TeacherName" : match.teacher_name,
-		"SchoolName" : match.school_name, 
-		"Region" : match.region, 
-		"PreviousMentor" : match.previous_mentor, 
+		"SchoolName" : match.school_name,
+		"Region" : match.region,
+		"PreviousMentor" : match.previous_mentor,
 		"Car" : match.car,
-		"Languages" : match.languages, 
-		"MultipleDays" : match.multiple_days, 
-		"Schedule" : match.schedule, 
-		"Locked" : match.locked, 
-		"Instructors" : match.instructors, 
-		"Gender" : match.gender, 
+		"Languages" : match.languages,
+		"MultipleDays" : match.multiple_days,
+		"Schedule" : match.schedule,
+		"Locked" : match.locked,
+		"Instructors" : match.instructors,
+		"Gender" : match.gender,
 		"University" : match.university,
-		"Year" : match.year, 
+		"Year" : match.year,
 		"Ethnicity" : match.ethnicity,
 		"SchoolAddress" : match.school_address,
 		"SchoolCounty" : match.school_county,

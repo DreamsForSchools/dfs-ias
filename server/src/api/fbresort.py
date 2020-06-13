@@ -20,8 +20,11 @@ def resort_matches(program:str):
         result = iassorter.resort(locked, program)
         print("FBRESORT RESULT: ")
         print_result(result)
-        timestamp = str(calendar.timegm(time.gmtime()))
         db = dfsapi.get_db()
+        timestamps = db.child(program).child("matches").shallow().get()
+        latest = max(timestamps.val())
+        print("LATEST TIMESTAMP VALUE: " + str(latest))
+        timestamp = str(calendar.timegm(time.gmtime()))
         keys = db.child(program).child("matches").shallow().get()
         if keys.val() != None:
             db_length = len(keys.val())
@@ -35,6 +38,13 @@ def resort_matches(program:str):
                 match_dict = match_to_dict(match)
                 json_matches[school].append(match_dict)
                 db.child(program).child("matches").child(timestamp).child(school).child(match.teacher_name).set(match_dict)
+                #db.child(program).child("matches").child(timestamp).child("Locked").child(school).child(match.teacher_name).set(fblocked)
+        for institution in locked:
+            for instructor in locked[institution]:
+                print("INSTRUCTOR: ")
+                db.child(program).child("matches").child(latest).child("Locked").child(institution).child(instructor.teacher_name).update({"Locked":True})
+                info = db.child(program).child("matches").child(latest).child(institution).child(instructor.teacher_name).get()
+                db.child(program).child("matches").child(timestamp).child("Locked").child(institution).child(instructor.teacher_name).set(info.val())
         return json_matches
         #return fblocked
     else:
