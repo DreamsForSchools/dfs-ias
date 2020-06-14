@@ -44,10 +44,11 @@ class UploadInstitutionsPage extends Component {
 
                 programList.push(data[1][3]);
 
-                fetch('http://apurva29.pythonanywhere.com/uploadinstitutions', {
+                fetch('https://apurva29.pythonanywhere.com/uploadinstitutions', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+
                     },
                     body: JSON.stringify(firstInstitution)
                 })
@@ -67,10 +68,11 @@ class UploadInstitutionsPage extends Component {
                     const newInstitution = {"Name": name, "Address": address, "Program": [program], "County" : county, "Instructors": parseInt(instructors), "Monday": this.splitString(monday),
                                             "Tuesday": this.splitString(tuesday), "Wednesday": this.splitString(wednesday), "Thursday": this.splitString(thursday), "Friday": this.splitString(friday), "New": this.checkNew(program, programList)};
 
-                    fetch('http://apurva29.pythonanywhere.com/uploadinstitutions', {
+                    fetch('https://apurva29.pythonanywhere.com/uploadinstitutions', {
                         method: 'POST',
                         headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+
                         },
                         body: JSON.stringify(newInstitution)
                     })

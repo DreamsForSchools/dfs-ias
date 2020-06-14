@@ -29,10 +29,13 @@ export default function MoveInstructor({instructor, onMove, schools, program}) {
                 },
                 body: JSON.stringify({"Program":program, "TeacherName": instructor, "SchoolName":school}),
             })
-            .then(response => response.json())
-            window.location.reload();
+            .then(response => {
+                response.json()
+                onMove();
+            })
+            // window.location.reload();
     
-            onMove();
+            // onMove();
         }
         
     }

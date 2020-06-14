@@ -28,7 +28,7 @@ export default function LockedList({program}) {
         });
 
 
-        appjamSortedRosterCollection.current.once('value', (snap) => {     
+        appjamSortedRosterCollection.current.on('value', (snap) => {     
             const lockedList = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){

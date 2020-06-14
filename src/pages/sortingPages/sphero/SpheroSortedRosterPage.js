@@ -147,7 +147,7 @@ export default function SpheroSortedRosterPage() {
         });
 
 
-        spheroSortedRosterCollection.current.once('value', (snap) => {     
+        spheroSortedRosterCollection.current.on('value', (snap) => {     
             const roster = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){

@@ -31,7 +31,7 @@ export default function PendingListNameButton({name, program}) {
         });
 
 
-        appjamSortedRosterCollection.current.once('value', (snap) => {     
+        appjamSortedRosterCollection.current.on('value', (snap) => {     
             const availableList = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){

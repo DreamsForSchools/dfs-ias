@@ -147,7 +147,7 @@ export default function AppjamSortedRosterPage() {
         });
 
 
-        appjamSortedRosterCollection.current.once('value', (snap) => {     
+        appjamSortedRosterCollection.current.on('value', (snap) => {     
             const roster = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){

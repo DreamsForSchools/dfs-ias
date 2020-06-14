@@ -36,10 +36,11 @@ class WebjamUploadRosterPage extends Component {
 
                 userList.push(firstUser);
 
-                fetch('http://apurva29.pythonanywhere.com/uploadinstructors', {
+                fetch('https://apurva29.pythonanywhere.com/uploadinstructors', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+ 
                     },
                     body: JSON.stringify(firstUser)
                 })
@@ -71,7 +72,8 @@ class WebjamUploadRosterPage extends Component {
                     fetch('https://apurva29.pythonanywhere.com/uploadinstructors', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+
                         },
                         body: JSON.stringify(newUser)
                     })

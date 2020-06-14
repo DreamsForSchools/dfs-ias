@@ -31,7 +31,7 @@ export default function PendingList({program}) {
         });
 
 
-        appjamSortedRosterCollection.current.once('value', (snap) => {     
+        appjamSortedRosterCollection.current.on('value', (snap) => {     
             const removedList = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){

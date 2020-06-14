@@ -39,7 +39,8 @@ class AppjamUploadRosterPage extends Component {
                 fetch('https://apurva29.pythonanywhere.com/uploadinstructors', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+
                     },
                     body: JSON.stringify(firstUser)
                 })
@@ -68,10 +69,11 @@ class AppjamUploadRosterPage extends Component {
                                     "Program": ["AppJam+"], "New": false};
                     userList.push(newUser);
 
-                    fetch('http://apurva29.pythonanywhere.com/uploadinstructors', {
+                    fetch('https://apurva29.pythonanywhere.com/uploadinstructors', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+
                         },
                         body: JSON.stringify(newUser)
                     })

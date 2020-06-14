@@ -88,7 +88,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
             .then(response => response.json())
         }
         setIsLocked(!isLocked);
-        window.location.reload(); 
+        // window.location.reload(); 
     }
 
     //function that triggers when pending button is clicked
@@ -102,7 +102,7 @@ export default function DropdownInstructorInfo({program, person, mentorsFromProp
             body: JSON.stringify({"Program":program, "TeacherName": person.name, "SchoolName":person.schoolName}),
         })
         .then(response => response.json())
-        window.location.reload();
+        // window.location.reload();
     }
 
     return (

@@ -147,7 +147,7 @@ export default function WebjamSortedRosterPage() {
         });
 
 
-        webjamSortedRosterCollection.current.once('value', (snap) => {     
+        webjamSortedRosterCollection.current.on('value', (snap) => {     
             const roster = []      
             snap.forEach((doc) =>{
                 if (latestRoster === doc.key){
