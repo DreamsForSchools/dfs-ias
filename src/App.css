@@ -1,38 +1,422 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: 'Rubik', sans-serif;
+  line-height: 1.4;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+a{
+  color: #333;
+  text-decoration: none;
+}
+
+
+
+/*  --------------- START PROGRAM PAGE --------------- */
+
+.programPageContainer{
+  background-color: white;
+  margin-left: 212px;
+  height: 100vh;
+  margin-top: 3%;
+}
+
+@media only screen and (max-width: 1600px) {
+  .programPageContainer{
+    background-color: white;
+    margin-left: 212px;
+    height: 100vh;
+    margin-top: 7%;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.programPageTitle{
+  margin-left: 75px;
+  margin-top: 29px;
+  font-size: 72px;
+  font-weight: 500;
+  color: #202E47;
+}
+
+.hozLineDivider{
+  border-top: 1px solid #5B7082;
+  width: 80vw;
+  margin-left: 101px;
+  margin-top: 15px;
+}
+
+.programPageAddRosterBtn1{
+  margin-top: 49px;
+  margin-left: 50px;
+  width: 242px;
+  height: 253px;
+  border-radius: 15px;
+  border-width: 0px;
+  background-color: #5B7082;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
+}
+
+.programPageAddRosterBtn{
+  margin-top: 49px;
+  margin-left: 50px;
+  width: 242px;
+  height: 253px;
+  border-radius: 15px;
+  border-width: 0px;
+  background-color: #D2D5DA;
+  box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.1);
+}
+
+.programPageAddRosterBtn:hover{
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.addLogo1{
+  width: 50px;
+}
+
+.addLogo{
+  width: 76px;
+}
+
+.addRosterLaber1{
+  font-size: 18px;
+  font-weight: 400;
+  color: white;
+}
+
+.addRosterLaber{
+  font-size: 18px;
+  font-weight: 400;
+  color: #5B7082;
+}
+
+/*  --------------- END PROGRAM PAGE --------------- */
+
+/*  --------------- START SIDE NAVIGATION BAR --------------- */
+
+.sideNavbarWrapper {
+  display: flex;
+  position: relative;
+}
+
+.sideNavbar {
+  position: fixed;
+  width: 212px;
+  height: 100vh;
+  background-color: #202E47;
+  text-align: center;
+  color: #FFF;
+}
+
+.sideNavBarTitle{
+  font-weight: 500;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 36px;
+}
+
+.sideNavbarProgramsLabel {
+  text-align: left;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.sideNavbarLinks{
+  font-weight: 400;
+}
+
+.sideNavbarLink{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  color: #FFF;
+
+  height: 61px;
+  width: 212px;
+  background-color: #5B7082;
+  border-top: 0.5px solid #9097A3;
+  border-bottom: 0.5px solid #9097A3;
+  border-left: 0px;
+  border-right: 0px;
+  margin: -1px;
 }
 
-.App-link {
-  color: #61dafb;
+.sideNavbarLink:hover{
+  background-color: #7FC9FF;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sideNavbarSchool{
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.sideNavbarPrograms{
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.sideNavbarSignOutLink{
+  margin-top: 45vh;
+  height: 46px;
+}
+
+.sideNavbarLogo{
+  width: 62px;
+  margin-top: 10%;
+}
+
+/*  --------------- END SIDE NAVIGATION BAR --------------- */
+
+
+
+/*  --------------- START SORTING PAGES NAV BAR --------------- */
+
+.sortingPagesNavbar {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 4vh;
+  background-color: white;
+  color: #5B7082;
+  border-bottom: 0.5px solid #9097A3;
+  margin-left: 75px;
+  margin-top: 1%;
+}
+
+.sortingPagesNavbarLinks{
+  width: 50%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  list-style: none;
+  /* background-color: black; */
+  height: 4vh;
+
+}
+
+.sortedRosterNavLink{
+  padding-left: 50px;
+  padding-right: 50px;
+  height: 4vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+}
+
+
+/*  --------------- END SORTING PAGES NAV BAR --------------- */
+
+
+
+/*  --------------- START TitleToolbar Component--------------- */
+
+.sortingPagesContainer{
+  background-color: white;
+  margin-left: 212px;
+  height: 140px;
+}
+
+.sortedPagePageTitle{
+  font-size: 48px;
+  margin-left: 75px;
+  margin-top: 29px;
+  font-weight: 400;
+  color: #202E47;
+}
+
+/*  --------------- END TitleToolbar Component --------------- */
+
+
+
+/*  --------------- START SortedInstructorsCard COMPONENT --------------- */
+.sortedInstructorCardsWrapper{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+}
+
+.instructorCardsContainer{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 70vw;
+  justify-content: center;
+  /* display: grid;
+  width: 60vw;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(560px, 1fr)); */
+
+}
+/*  --------------- END SortedInstructorsCard COMPONENT --------------- */
+
+
+
+/*  --------------- START SortedInstructorsCard COMPONENT --------------- */
+.instructorCard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.hoverMoreInfoWrapper{
+  display: flex;
+	justify-content: center;
+  align-items: center;
+}
+
+.hoverMoreInfoContainer{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+  align-items: center;
+  height: 160px;
+  width: 280px;
+  background-color: #49479D;
+  padding: 10px;
+}
+
+.hoverMoreInfoHeaderContainer{
+  display: flex;
+  flex-direction: row;
+	justify-content: center;
+  align-items: left;
+  padding-left: 5px;
+}
+
+.hoverMoreInfoHeaderNameContainer{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+  align-items: left;
+  width: 215px;
+  margin-left: 5px;
+}
+
+.hoverMoreInfoHeaderYearGenderEthnicity{
+  display: flex;
+  flex-direction: row;
+	justify-content: left;
+	align-items: left;
+}
+
+.hoverMoreInfoDetailsContainer{
+  display: flex;
+  flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.hoverMoreInfoDetailsRegionSchoolSchedContainer, .hoverMoreInfoDetailsOtherContainer{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+	align-items: left;
+}
+
+.hoverMoreInfoDetailsRegionSchoolGrid{
+  display: "grid";
+  grid-template-columns: 140px;
+  grid-template-rows: 15px;
+}
+
+.hoverMoreInfoDetailsSchedGrid{
+  display: grid;
+  grid-template-columns: 13px 127px;
+  grid-template-rows: 15px 15px 15px 15px 15px;
+  margin-top: 3px;
+}
+
+.hoverMoreInfoDetailsOtherGrid{
+  display: "grid";
+  grid-template-columns: 150px;
+  grid-template-rows: 18px;
+}
+
+.hoverMoreInfoDetailsOtherItem{
+  display: flex;
+  flex-direction: row;
+	justify-content: left;
+  align-items: left;
+  margin-top: 5px;
+}
+
+.optionsMenu{
+  display: flex;
+  flex-direction: column;
+	justify-content: center;
+  align-items: center;
+  height: 48px;
+  width: 68px;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  /* padding: 2px; */
+
+}
+
+.optionBtn{
+  width: 68px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: white;
+  border: 0.5px solid #9097A3;
+
+}
+
+.optionBtn:hover{
+  background-color: #D9D9D9;
+}
+
+.moveBtn{
+  color: #0099FF;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-bottom: -1px;
+}
+
+.lockBtn{
+ color: #0099FF;
+ border-top-left-radius: 10px;
+ border-top-right-radius: 10px;
+}
+
+.deleteBtn{
+  color: #ED0101;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-top: -1px;
+}
+/*  --------------- END SortedInstructorsCard COMPONENT --------------- */
+
+
+/*  --------------- START AppjamSortedRosterPage COMPONENT --------------- */
+
+/*  --------------- END AppjamSortedRosterPage COMPONENT --------------- */
+
+.pendingLockedName{
+  font-weight: 400;
+  font-size: 12px;
+  padding: 1px;
+  color: #202E47;
+  width: 300px;
+  text-align: center
+}
+
+.pendingLockedName:hover{
+  background-color: #A4A3CE;
+  cursor: pointer;
+  color: white
 }
