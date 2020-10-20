@@ -8,7 +8,7 @@ Never directly push requests to master branch in this repo. Make a branch and wo
 
 ## Old Branches Explained
 
-Currently all the deployed code is in the master branch. The various mereged-finals and old-master make up all the experimental code from the previous team. This includes locally testing the backend. With the master branch the only way to do that is by directly uploading it and testing it live.
+Currently all the deployed code is in the master branch. The various mereged-finals and old-master branches make up all the experimental code from the previous team. This includes locally testing the backend. With the master branch the only way to do that is by directly uploading it and testing it live.
 
 ## Testing
 
