@@ -9,6 +9,25 @@ Never directly push requests to master branch in this repo. Make a branch and wo
 ## Old Branches Explained
 
 Currently all the deployed code is in the master branch. The various mereged-finals and old-master branches make up all the experimental code from the previous team. This includes locally testing the backend. With the master branch the only way to do that is by directly uploading it and testing it live.
+<br /><br />
+Workflow Example: I wanted to improve the Save as PDF function. So first from my local repo I made a new local branch.
+```
+git clone https://github.com/DreamsForSchools/dfs-ias
+cd dfs-ias
+git checkout -b better-pdf
+```
+Then I pushed it up to remote and made a pull request(on GitHub).
+```
+git push origin better-pdf
+```
+Now in the pull request I mentioned several goals. As soon as these goals are met I will merge that branch into master.<br />
+So while the request exists I will be working locally on the problem and pushing my changes to the new branch.
+Other people can also contribute towards that goal. They only have to push to the better-pdf branch not master.
+```
+... some work ...
+git commit -a 
+git push origin better-pdf
+```
 
 ## Testing
 
