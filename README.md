@@ -2,6 +2,14 @@
 
 The follwing is the final deployed version of the S20 UCI team. 
 
+## Contribution Rules
+
+Never directly push requests to master branch in this repo. Make a branch and work on that with others and only push that from your local repo to this remote.After it is finally complete make a pull request here to merge it with the master branch.
+
+## Old Branches Explained
+
+Currently all the deployed code is in the master branch. The various mereged-finals and old-master make up all the experimental code from the previous team. This includes locally testing the backend. With the master branch the only way to do that is by directly uploading it and testing it live.
+
 ## Testing
 
 ### Testing Frontend
