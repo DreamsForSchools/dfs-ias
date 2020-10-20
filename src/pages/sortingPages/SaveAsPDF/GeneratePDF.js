@@ -54,7 +54,27 @@ export default function GeneratePDF({sortedRoster}) {
             fontSize: "10px",
             // textAlign: "center",
             padding: "2px"
+        },
+        hoverSchedTimes: {
+            color: "black",
+            fontSize: "11px",
+            fontWeight: "400",
+            marginLeft: "2px"
+        },
+        hoverSchedDays: {
+            color: "black",
+            fontSize: "12px",
+            fontWeight: "400",
+        },
+        hoverMoreInfoDetailsSchedGrid: {
+            display: "grid",
+            gridTemplateColumns: "13px 127px",
+            gridTemplateRows: "15px 15px 15px 15px 15px",
+            marginTop: "3px",
+            justifyContent: "center",
+            alignItems: "center",
         }
+
 
 
 
@@ -68,7 +88,18 @@ export default function GeneratePDF({sortedRoster}) {
                         <View style={styles.schoolTextContainerStyle}>
                             <Text style={styles.schoolTextStyle}>{schoolMentors.school}</Text>
                         </View>
-
+                        <View style={styles.hoverMoreInfoDetailsSchedGrid}>
+                            <Text style={styles.hoverSchedDays}>M</Text>
+                            <Text style={styles.hoverSchedTimes}>{schoolMentors["mentors"][0]["schoolSchedule"]["mon"]}</Text>
+                            <Text style={styles.hoverSchedDays}>T</Text>
+                            <Text style={styles.hoverSchedTimes}>{schoolMentors["mentors"][0]["schoolSchedule"]["tue"]}</Text>
+                            <Text style={styles.hoverSchedDays}>W</Text>
+                            <Text style={styles.hoverSchedTimes}>{schoolMentors["mentors"][0]["schoolSchedule"]["wed"]}</Text>
+                            <Text style={styles.hoverSchedDays}>T</Text>
+                            <Text style={styles.hoverSchedTimes}>{schoolMentors["mentors"][0]["schoolSchedule"]["thu"]}</Text>
+                            <Text style={styles.hoverSchedDays}>F</Text>
+                            <Text style={styles.hoverSchedTimes}>{schoolMentors["mentors"][0]["schoolSchedule"]["fri"]}</Text>
+                        </View>
                         <View style={styles.mentorsContainer}>
                             {schoolMentors.mentors.map((mentors) => (
                                 <Text key={mentors.firstName} style={styles.mentorNameStyle}>{mentors.name}</Text>
