@@ -1,11 +1,8 @@
-# dfs-ias
-Dreams for Schools - Instructor App Sorter
+# Dreams For Schools - Instrutor App Sorterd
 
-## `To Run`
-`cd` into root folder<br /> 
-run `npm start`
+The follwing is the final deployed version of the S20 UCI team. 
 
-## Temporary Login Credentials
-email: `temp@dfs.com`<br />
-password: `123abc`
+## Testing
 
+
+## Deploying
