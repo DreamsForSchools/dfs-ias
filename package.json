@@ -10,6 +10,7 @@
     "@wojtekmaj/react-timerange-picker": "^3.0.0",
     "csv": "^3.1.0",
     "firebase": "^7.14.2",
+    "firebase-tools": "^8.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^4.2.13",
