@@ -34,11 +34,19 @@ def upload_instructors():
     fbupload.upload_instructors(instrparams)
     return "Uploading Instructors Success!"
 
+#@app.route('/deleteinstructors', methods=['GET', 'POST']) SM
+
 @app.route('/uploadinstitutions', methods=['GET', 'POST'])
 def upload_institutions():
     instparams = request.get_json()
     fbupload.upload_institutions(instparams)
     return "Uploading Institutions Success!"
+
+#@app.route('/dleteinstitutions', methods=['GET', 'POST']) KD
+
+#@app.route('/uploadprograms', methods=['GET', 'POST']) KD SM
+
+#@app.route('/deleteprograms', methods=['GET', 'POST']) KD SM
 
 @app.route('/lockinstructor', methods=['GET', 'POST'])
 def lock_instructors():
