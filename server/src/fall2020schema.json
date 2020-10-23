@@ -1,76 +1,92 @@
 {
-  "instructors": [
-    {
-      "name": "Thornton",
-      "gender": "male",
-      "year_of_instruction": 15,
-      "major": "computer science",
-      "university": "university of california irvine",
-      "region": [
-        "orange county"
-      ],
-      "city": "irvine",
-      "schedule": {
-        "1": {
-          "0": {
-            "0": 930,
-            "1": 1030
-          }
-        }
-      },
-      "car": true,
-      "returning_instructor": true,
-      "shirt_size": "M",
-      "programs_teaching": [
-        "Let's explore STEM",
-        "Coding Games with Scratch"
-      ],
-      "preferred_ranking_of_programs": {
-        "program_name": 1,
-        "other_program_name": 2
-      },
-      "languages_spoken": [
-        "spanish",
-        "english"
-      ],
-      "institution": [
-        "elementary_school",
-        "high_school"
-      ]
-    }
-  ],
-  "institutions": [
-    {
-      "name": "lynbrook high school",
-      "address": "rainbow drive",
-      "programs": [
-        "appjam"
-      ],
-      "number_of_instructors": 20,
-      "program_time_flexibility": true,
-      "special_language_request": [
-        "english"
-      ],
-      "is_virtual": false,
-      "location_preferences": [
-        "location"
-      ]
-    }
-  ],
-  "programs": [
-    {
-      "name": "Appjam",
-      "assigned_institutions": [
-        {
-          "lynbrook high school": [
-            {
-              "instructor name": {
-                "locked": true
+  "instructors": {
+      "Thornton,computer science,university of california irvine": {
+          "name": "Thornton",
+          "gender": "male",
+          "year_of_instruction": 15,
+          "major": "computer science",
+          "university": "university of california irvine",
+          "region": [
+              "orange county"
+          ],
+          "city": "irvine",
+          "schedule": {
+              "1": {
+                  "0": {
+                      "0": 930,
+                      "1": 1030
+                  }
               }
-            }
+          },
+          "car": true,
+          "returning_instructor": true,
+          "shirt_size": "M",
+          "programs_teaching": [
+              "Let's explore STEM",
+              "Coding Games with Scratch"
+          ],
+          "preferred_ranking_of_programs": {
+              "program_name": 1,
+              "other_program_name": 2
+          },
+          "languages_spoken": [
+              "spanish",
+              "english"
+          ],
+          "institution": [
+              "elementary_school",
+              "high_school"
           ]
-        }
-      ]
-    }
-  ]
+      }
+  },
+  "institutions": {
+      "lynbrook high school": {
+          "name": "lynbrook high school",
+          "address": "rainbow drive",
+          "programs": [
+              "appjam"
+          ],
+          "number_of_instructors": 20,
+          "program_time_flexibility": true,
+          "special_language_request": [
+              "english"
+          ],
+          "is_virtual": false,
+          "location_preferences": [
+              "location"
+          ]
+      },
+      "Santa Teresa HS": {
+          "name": "Santa Teresa HS",
+          "address": "123123",
+          "programs": [
+              "appjam"
+          ],
+          "number_of_instructors": 91872,
+          "program_time_flexibility": false,
+          "special_language_request": [
+              "english"
+          ],
+          "is_virtual": true,
+          "location_preferences": [
+              "location"
+          ]
+      }
+  },
+  "programs": {
+      "Appjam": {
+          "name": "Appjam",
+          "assigned_institutions": [
+              {
+                  "lynbrook high school": [
+                      {
+                          "instructor name": {
+                              "locked": true
+                          }
+                      }
+                  ]
+              }
+          ]
+      }
+  }
 }
