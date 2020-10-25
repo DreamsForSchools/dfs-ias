@@ -29,7 +29,13 @@ export default function SchoolRosterPage() {
             
           })
       });
-    
+      const addClicked = (e) => {
+        // history.push('/appjamhome/sortedroster');
+        history.push({
+            pathname: "/manualaddinstructor",
+            state: {isNewRoster: false, program:"sphero"}
+        });
+    } 
     return (
         <div>
             <SideNavBar />
@@ -39,6 +45,11 @@ export default function SchoolRosterPage() {
 
                 <div className="hozLineDivider"></div>
 
+                <div style={buttonContainer}>
+                    <div style={sortBtnContainer}>
+                        <button onClick={addClicked} style={addBtn}>Delete School</button>
+                    </div>
+                </div> 
                 <ProgramSchoolRosterTable program="AppJam+" databaseName="AppJam+"/>
 
                 <div style={fixMargin}>
@@ -60,3 +71,33 @@ const fixMargin = {
 }
 
 
+
+const buttonContainer = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+}
+
+
+const sortBtnContainer = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    // marginLeft: "50vw"
+}
+const addBtn = {
+    fontSize: "18px",
+    fontWeight: "500",
+    color: "#49479D",
+    backgroundColor: "white",
+    borderRadius: "28px",
+    height: "46px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    marginLeft: "10px",
+    marginBottom: "20px",
+    width: "300px",
+    border: "1px solid #49479D"
+}
