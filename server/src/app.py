@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import fbstoresort
 import fbresort
 import fbupload
+import fbdelete
 import manageinstructors
 import shirtsize
 from flask_cors import CORS
@@ -34,7 +35,12 @@ def upload_instructors():
     fbupload.upload_instructors(instrparams)
     return "Uploading Instructors Success!"
 
-#@app.route('/deleteinstructors', methods=['GET', 'POST']) SM
+#REQUIRES JSON OBJECT WITH PARAMETERS FOR SEASON, TEACHER NAME, TEACHER UNIVERSITY, AND TEACHER MAJOR.
+@app.route('/deleteinstructors', methods=['GET', 'POST']) SM
+def delete_instructors():
+    instrparams = request.get_json()
+    fbdelete.delete_instructor(instparams)
+    return "Deleting Instructors Success"
 
 @app.route('/uploadinstitutions', methods=['GET', 'POST'])
 def upload_institutions():
@@ -42,7 +48,7 @@ def upload_institutions():
     fbupload.upload_institutions(instparams)
     return "Uploading Institutions Success!"
 
-#@app.route('/dleteinstitutions', methods=['GET', 'POST']) KD
+#@app.route('/deleteinstitutions', methods=['GET', 'POST']) KD
 
 #@app.route('/uploadprograms', methods=['GET', 'POST']) KD SM
 
