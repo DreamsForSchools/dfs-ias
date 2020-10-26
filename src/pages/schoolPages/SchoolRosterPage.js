@@ -32,7 +32,7 @@ export default function SchoolRosterPage() {
       const addClicked = (e) => {
         // history.push('/appjamhome/sortedroster');
         history.push({
-            pathname: "/manualaddinstructor",
+            pathname: "/DeleteSchoolPage",
             state: {isNewRoster: false, program:"sphero"}
         });
     } 

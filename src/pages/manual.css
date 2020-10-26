@@ -137,6 +137,26 @@ label {
     grid-column-end: 4;
 }
 
+.deletebtn{
+    background-color: #e8212a;
+    border: none;
+    color: white;
+    font-family: "Rubik";
+    font-size: 1vw;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    left: 4vw;
+    bottom: 0;
+    border-radius: 3px;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    cursor: pointer
+
+}
+
 .submitbtn {
     background-color: #49479D;
     border: none;
@@ -157,7 +177,7 @@ label {
 }
 
 .nextbtn {
-    background-color: #49479D;
+    background-color: #4058a7;
     border: none;
     color: white;
     font-family: "Rubik";
