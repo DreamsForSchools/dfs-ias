@@ -10,6 +10,7 @@ import TemplatePage from './pages/TemplatePage';
 import ResetPassword from './pages/ResetPassword';
 import UploadInstitutionPage from './pages/UploadInstitutionPage';
 import ManualRosterPage from './pages/AddInstructorPage';
+import DeleteSchoolPage from './pages/schoolPages/DeleteSchool';
 
 import SchoolAddRosterForm from './pages/schoolPages/SchoolAddRosterForm'
 import SchoolRosterPage from './pages/schoolPages/SchoolRosterPage'
@@ -94,7 +95,9 @@ class App extends React.Component {
 
             {/*ManualRosterPage Component */}
             <Route path="/manualaddinstructor" exact component={ManualRosterPage} />
-
+            
+            {/*DeleteSchoolPage Component */}
+            <Route path="/DeleteSchoolPage" exact component={DeleteSchoolPage} />
 
             {/* AppjamPage Component */}
             <Route path="/appjamhome" exact component={AppjamHomePage} />

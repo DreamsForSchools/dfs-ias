@@ -39,7 +39,7 @@ class AppjamUploadInstitutionsPage extends Component {
             csv.parse(reader.result, (err, data) => {
 
                 var programList = [];
-                
+
                 const firstInstitution = {"Name": data[1][0], "Address": data[1][1], "Program": [data[1][3]], "County": data[1][2], "Instructors": parseInt(data[1][4]),
                                             "Monday": this.splitString(data[1][5]), "Tuesday": this.splitString(data[1][6]), "Wednesday": this.splitString(data[1][7]),
                                             "Thursday": this.splitString(data[1][8]), "Friday": this.splitString(data[1][9]), "New": true};
@@ -65,7 +65,7 @@ class AppjamUploadInstitutionsPage extends Component {
                     const wednesday = data[i][7];
                     const thursday = data[i][8];
                     const friday = data[i][9];
-                    
+
                     const newInstitution = {"Name": name, "Address": address, "Program": [program], "County" : county, "Instructors": parseInt(instructors), "Monday": this.splitString(monday),
                                             "Tuesday": this.splitString(tuesday), "Wednesday": this.splitString(wednesday), "Thursday": this.splitString(thursday), "Friday": this.splitString(friday), "New": this.checkNew(program, programList)};
 
