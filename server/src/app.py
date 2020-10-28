@@ -39,7 +39,7 @@ def upload_instructors():
 @app.route('/deleteinstructors', methods=['GET', 'POST'])
 def delete_instructors():
     instrparams = request.get_json()
-    fbdelete.delete_instructor(insrtparams)
+    fbdelete.delete_instructor(instrparams)
     return "Deleting Instructors Success"
 
 @app.route('/uploadinstitutions', methods=['GET', 'POST'])
