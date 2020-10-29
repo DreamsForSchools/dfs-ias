@@ -49,10 +49,10 @@ def upload_institutions():
     return "Uploading Institutions Success!"
 
 #@app.route('/deleteinstitutions', methods=['GET', 'POST']) KD
-@app.route('/deleteinstitutions', methods=['GET', 'POST'])
-def delete_institutions():
+@app.route('/deleteschool', methods=['GET', 'POST'])
+def delete_schools():
     instparams = request.get_json()
-    fbdelete.delete_institution(instparams["Season"], instparams["School"])
+    fbdelete.delete_school(instparams["Season"], instparams["School"])
     return "Deleted {}".format(instparams["School"])
 
 #@app.route('/uploadprograms', methods=['GET', 'POST']) KD SM
