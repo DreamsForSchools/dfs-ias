@@ -5,8 +5,8 @@ import fbupload
 import fbdelete
 import manageinstructors
 import shirtsize
+from exceptions import KeyNotFoundError
 from flask_cors import CORS
-
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -14,6 +14,8 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 @app.route('/')
 def main_view():
     return "Online Host for DFS-IAS Sorter API"
+
+# Sort Section
 
 @app.route('/sort', methods=['GET','POST'])
 def sort():
@@ -29,6 +31,8 @@ def resort():
     matches = fbresort.resort_matches(program)
     return jsonify(matches)
 
+# Instructor Section
+
 @app.route('/uploadinstructors', methods=['GET', 'POST'])
 def upload_instructors():
     instrparams = request.get_json()
@@ -42,22 +46,35 @@ def delete_instructors():
     fbdelete.delete_instructor(instrparams)
     return "Deleting Instructors Success"
 
+# School Section
+
 @app.route('/uploadinstitutions', methods=['GET', 'POST'])
 def upload_institutions():
     instparams = request.get_json()
     fbupload.upload_institutions(instparams)
     return "Uploading Institutions Success!"
 
-#@app.route('/deleteinstitutions', methods=['GET', 'POST']) KD
 @app.route('/deleteschool', methods=['GET', 'POST'])
 def delete_schools():
     instparams = request.get_json()
-    fbdelete.delete_school(instparams["Season"], instparams["School"])
-    return "Deleted {}".format(instparams["School"])
+    try:
+        fbdelete.delete_school(instparams["Season"], instparams["School"])
+        return "Delete ({}) Success!".format(instparams["School"])
+    except KeyNotFoundError as err:
+        print(err)
+        return repr(err)
 
-#@app.route('/uploadprograms', methods=['GET', 'POST']) KD SM
+# Program Section
 
-#@app.route('/deleteprograms', methods=['GET', 'POST']) KD SM
+@app.route('/uploadprograms', methods=['GET', 'POST'])
+def upload_programs():
+    pass
+
+@app.route('/deleteprograms', methods=['GET', 'POST'])
+def delete_programs():
+    pass
+
+# Lock Section
 
 @app.route('/lockinstructor', methods=['GET', 'POST'])
 def lock_instructors():
