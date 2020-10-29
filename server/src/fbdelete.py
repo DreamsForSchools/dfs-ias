@@ -15,15 +15,6 @@ def delete_instructor(teacher: dict):
 
     db.child(teacher["Season"]).child("Instructors").child(pk).remove()
 
-def delete_program(program:dict):
-    db = dfsapi.get_db()
-
-    data = db.child("programs").child(program["Name"]).get()
-    if not data.val():  raise KeyNotFoundError("temp path")
-
-    db.child("programs").child(program["Name"]).remove()
-
-
 def delete_school(season: str, school_key: str):
     db = dfsapi.get_db()
     
@@ -31,6 +22,14 @@ def delete_school(season: str, school_key: str):
     if not data.val():  raise KeyNotFoundError("dfs-ias/{s}/schools/{name}".format(s=season,name=school_key))
 
     db.child(season).child("schools").child(school_key).remove()
+
+def delete_program(program:dict):
+    db = dfsapi.get_db()
+
+    data = db.child("programs").child(program["Name"]).get()
+    if not data.val():  raise KeyNotFoundError("temp path")
+
+    db.child("programs").child(program["Name"]).remove()
 
 if __name__ == "__main__":
     print("Beginning Tests")
