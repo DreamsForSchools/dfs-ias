@@ -29,13 +29,21 @@ export default function SchoolRosterPage() {
             
           })
       });
-      const addClicked = (e) => {
+      const deleteSchoolBtnPressed = (e) => {
         // history.push('/appjamhome/sortedroster');
         history.push({
             pathname: "/DeleteSchoolPage",
             state: {isNewRoster: false, program:"sphero"}
         });
     } 
+    const addSchoolBtnPressed = (e) => {
+        // history.push('/appjamhome/sortedroster');
+        history.push({
+            pathname: "/AddSchoolPage",
+            state: {isNewRoster: false, program:"sphero"}
+        });
+    } 
+
     return (
         <div>
             <SideNavBar />
@@ -47,9 +55,13 @@ export default function SchoolRosterPage() {
 
                 <div style={buttonContainer}>
                     <div style={sortBtnContainer}>
-                        <button onClick={addClicked} style={addBtn}>Delete School</button>
+                        <button onClick={addSchoolBtnPressed} style={addBtn}>Add School</button>
+                    </div>
+                    <div style={sortBtnContainer}>
+                        <button onClick={deleteSchoolBtnPressed} style={addBtn}>Delete School</button>
                     </div>
                 </div> 
+                    
                 <ProgramSchoolRosterTable program="AppJam+" databaseName="AppJam+"/>
 
                 <div style={fixMargin}>
