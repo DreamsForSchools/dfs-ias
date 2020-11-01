@@ -96,7 +96,7 @@ class DeleteSchoolPage extends Component {
 
         console.log(JSON.stringify(delete_this_school));
 
-        fetch('https://apurva29.pythonanywhere.com/uploadinstructors', {
+        fetch('127.0.0.1:5000/deleteschool', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
