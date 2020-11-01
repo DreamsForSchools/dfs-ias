@@ -78,7 +78,7 @@
 			"name": "Appjam",
 			"assigned_institutions": {
 				"lynbrook high school": {
-					"instructor name": true
+					"instructor pk": true
 				}
 			}
 		}
