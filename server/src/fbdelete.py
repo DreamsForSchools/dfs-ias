@@ -17,7 +17,7 @@ def delete_instructor(season: str, instructor: dict):
     
     for s_str in instr_data["schools"]:
         dbtools.decriment_instructor_count(db, season, s_str)
-        dbtools.remove_instructor_from_program(db, season, s_str, pk)
+        dbtools.remove_instructor_from_programs(db, season, s_str, pk)
 
     db.child(season).child("instructors").child(pk).remove()
 
@@ -27,6 +27,9 @@ def delete_school(season: str, school_key: str):
     data = db.child(season).child("schools").child(school_key).get()
     if data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/schools/{name}".format(s=season,name=school_key))
 
+    dbtools.remove_school_from_instructors(db, season, school_key)
+    dbtools.remove_school_from_programs(db, season, school_key)
+
     db.child(season).child("schools").child(school_key).remove()
 
 def delete_program(season: str, program:str):
@@ -35,7 +38,12 @@ def delete_program(season: str, program:str):
     data = db.child(season).child("programs").child(program).get()
     if data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/programs/{p}".format(s=season, p=program))
 
+    dbtools.remove_program_from_instructors(db, season, program)
+    dbtools.remove_program_from_schools(db, season, program)
+
     db.child(season).child("programs").child(program).remove()
+
+
 
 if __name__ == "__main__":
     thor = {
@@ -44,8 +52,8 @@ if __name__ == "__main__":
         "university": "university of california irvine"
     }
     try:
-        # delete_school("fall2020", "school3")
-        # delete_program("fall2020", "AJ2")
-        delete_instructor("fall2020", thor)
+        delete_school("fall2020", "lynbrook high school")
+        # delete_program("fall2020", "Appjam")
+        # delete_instructor("fall2020", thor)
     except KeyNotFoundError as err:
         print(err)
