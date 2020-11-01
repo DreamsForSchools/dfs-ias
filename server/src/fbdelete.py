@@ -6,14 +6,15 @@ import dbtools
 from collections import defaultdict
 from exceptions import KeyNotFoundError
 
-def delete_instructor(season: str, teacher: dict):
+def delete_instructor(season: str, instructor: dict):
     db = dfsapi.get_db()
-    pk = teacher["Name"] + "," + teacher["Major"] + "," + teacher["University"]
+    # pk = teacher["Name"] + "," + teacher["Major"] + "," + teacher["University"]
+    pk = dbtools.get_instructor_key(instructor)
 
-    data = db.child(teacher["Season"]).child("Instructors").child(pk).get()
-    if data.val() is None:  raise KeyNotFoundError("temp path")
+    data = db.child(season).child("instructors").child(pk).get()
+    if data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/instructors/{i}".format(s=season, i=pk))
 
-    db.child(teacher["Season"]).child("Instructors").child(pk).remove()
+    db.child(season).child("instructors").child(pk).remove()
 
 def delete_school(season: str, school_key: str):
     db = dfsapi.get_db()
@@ -33,9 +34,15 @@ def delete_program(season: str, program:str):
 
 if __name__ == "__main__":
     print("Beginning Tests")
+    thor = {
+        "name": "Thornton",
+        "major": "computer science",
+        "university": "university of california irvine"
+    }
     try:
         # delete_school("fall2020", "school3")
-        delete_program("fall2020", "AJ2")
+        # delete_program("fall2020", "AJ2")
+        delete_instructor("fall2020", thor)
     except KeyNotFoundError as err:
         print(err)
     print("Ending Tests")
