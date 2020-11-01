@@ -34,28 +34,29 @@ def resort():
 # Instructor Section
 
 @app.route('/uploadinstructor', methods=['GET', 'POST'])
-def upload_instructors():
+def upload_instructor():
     instrparams = request.get_json()
     fbupload.upload_instructors(instrparams)
     return "Uploading Instructors Success!"
 
 #REQUIRES JSON OBJECT WITH PARAMETERS FOR SEASON, TEACHER NAME, TEACHER UNIVERSITY, AND TEACHER MAJOR.
 @app.route('/deleteinstructor', methods=['GET', 'POST'])
-def delete_instructors():
+def delete_instructor():
     instrparams = request.get_json()
-    fbdelete.delete_instructor(instrparams)
+
+    # fbdelete.delete_instructor(instrparams)
     return "Deleting Instructors Success"
 
 # School Section
 
 @app.route('/uploadschool', methods=['GET', 'POST'])
-def upload_institutions():
+def upload_school():
     instparams = request.get_json()
-    fbupload.upload_institutions(instparams)
+    fbupload.upload_school(instparams["Season"], instparams["School"])
     return "Uploading Institutions Success!"
 
 @app.route('/deleteschool', methods=['GET', 'POST'])
-def delete_schools():
+def delete_school():
     instparams = request.get_json()
     try:
         fbdelete.delete_school(instparams["Season"], instparams["School"])
@@ -67,12 +68,19 @@ def delete_schools():
 # Program Section
 
 @app.route('/uploadprogram', methods=['GET', 'POST'])
-def upload_programs():
-    pass
+def upload_program():
+    instparams = request.get_json()
+    fbupload.upload_program(instparams["Season"], instparams["Program"])
 
 @app.route('/deleteprogram', methods=['GET', 'POST'])
-def delete_programs():
-    pass
+def delete_program():
+    instparams = request.get_json()
+    try:
+        fbdelete.delete_program(instparams["Season"], instparams["Program"])
+        return "Delete ({}) Success!".format(instparams["Program"])
+    except KeyNotFoundError as err:
+        print(err)
+        return repr(err)
 
 # Lock Section
 
