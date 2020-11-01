@@ -7,61 +7,11 @@ from collections import defaultdict
 from exceptions import KeyExists
 
 '''
-Uploads institution to the firebase database
-under the specified program with the given
+Uploads school to the firebase database
+under the specified season and school with the given
 json object that contains information 
-about the institution.
+about the school.
 '''
-def upload_institutions(school:dict):
-	db = dfsapi.get_db()
-
-	Mon = dbtools.minute_range(school["Monday"])
-	Tue = dbtools.minute_range(school["Tuesday"])
-	Wed = dbtools.minute_range(school["Wednesday"])
-	Thurs = dbtools.minute_range(school["Thursday"])
-	Fri = dbtools.minute_range(school["Friday"])
-
-	Schedule = defaultdict(list)
-		
-	if Mon != None:
-		Schedule[1].append(Mon)
-	if Tue != None:
-		Schedule[2].append(Tue)
-	if Wed != None:
-		Schedule[3].append(Wed)
-	if Thurs != None:
-		Schedule[4].append(Thurs)
-	if Fri != None:
-		Schedule[5].append(Fri)
-	
-	school_info = {
-		"Name" : school["Name"], 
-		"Address" : school["Address"], 
-		"County" : school["County"], 
-		"Instructors" : school["Instructors"], 
-		"Schedule" : Schedule
-	}
-	
-	for p in school['Program']:
-		if school['New']:
-			latest = str(calendar.timegm(time.gmtime()))
-			db.child(p).child("institutions").child(latest).child(school_info['Name']).set(school_info)
-		else:
-			timestamps = db.child(p).child("institutions").shallow().get()
-			if timestamps.val() != None:
-				latest = max(timestamps.val())
-				db.child(p).child("institutions").child(latest).child(school_info['Name']).set(school_info)
-	db.child("institutions").child(school_info['Name']).set(school_info)
-
-	for p in school['Program']:
-		keys = db.child(p).child("institutions").shallow().get()
-		if keys.val() != None:
-			db_length = len(keys.val())
-			if db_length > 10:
-				oldest = min(keys.val())
-				db.child(p).child("institutions").child(oldest).remove()
-
-
 def upload_school(season: str, school: dict):
 	db = dfsapi.get_db()
 
@@ -73,68 +23,28 @@ def upload_school(season: str, school: dict):
 
 '''
 Uploads instructor to the firebase database
-under the specified program based on the 
+under the specified season and instructor based on the 
 information provided in the json object.
 '''
-def upload_instructors(teacher:dict):
-
-	Mon = dbtools.minute_range(teacher["Monday"])
-	Tue = dbtools.minute_range(teacher["Tuesday"])
-	Wed = dbtools.minute_range(teacher["Wednesday"])
-	Thurs = dbtools.minute_range(teacher["Thursday"])
-	Fri = dbtools.minute_range(teacher["Friday"])
-
-	Schedule = defaultdict(list)
-		
-	if Mon != None:
-		Schedule[1].append(Mon)
-	if Tue != None:
-		Schedule[2].append(Tue)
-	if Wed != None:
-		Schedule[3].append(Wed)
-	if Thurs != None:
-		Schedule[4].append(Thurs)
-	if Fri != None:
-		Schedule[5].append(Fri)
-
-	teacher_info = {
-		"Name" : teacher["Name"], 
-		"Gender" : teacher["Gender"], 
-		"Ethnicity" : teacher["Ethnicity"], 
-		"Region" : teacher["Region"], 
-		"University" : teacher["University"], 
-		"Year" : teacher["Year"], 
-		"PreviousMentor" : teacher["PreviousMentor"], 
-		"Car" : teacher["Car"], 
-		"Languages" : teacher["Languages"], 
-		"ShirtSize" : teacher["ShirtSize"], 
-		"MultipleDays" : teacher["MultipleDays"],
-		"Schedule" : Schedule
-	}
-
+def upload_instructor(season: str, instructor: dict):
 	db = dfsapi.get_db()
+
+	try:
+		pk = dbtools.get_instructor_key(instructor)
+	except KeyError as err:
+		print("pk not valid:", err)
+		return
 	
-	for p in teacher['Program']:
-		if teacher['New']:
-			latest = str(calendar.timegm(time.gmtime()))
-			db.child(p).child("instructors").child(latest).child(teacher_info['Name']).set(teacher_info)
-		else:
-			timestamps = db.child(p).child("instructors").shallow().get()
-			if timestamps.val() != None:
-				latest = max(timestamps.val())
-				db.child(p).child("instructors").child(latest).child(teacher_info['Name']).set(teacher_info)
-		
-		db.child("instructors").child(teacher_info['Name']).set(teacher_info)
+	data = db.child(season).child("instructors").child(pk).get()
+	if data.val():  raise KeyExists("dfs-ias/{s}/instructors/{i}".format(s=season, i=pk))
+	
+	db.child(season).child("instructors").child(pk).update(instructor)
 
-	for p in teacher['Program']:
-		keys = db.child(p).child("instructors").shallow().get()
-		if keys.val() != None:
-			db_length = len(keys.val())
-			if db_length > 10:
-				oldest = min(keys.val())
-				db.child(p).child("instructors").child(oldest).remove()
-	return
-
+'''
+Uploads program to the firebase database
+under the specified season and program based on the 
+information provided in the json object.
+'''
 def upload_program(season: str, program: dict):
 	db = dfsapi.get_db()
 
@@ -160,5 +70,12 @@ if __name__ == "__main__":
 			"SCH2": [{"instructor name": {"locked": True}}]
 		}]
 	}
+
+	i = {
+        "name": "Thornton",
+        "major": "computer science",
+		"university": "university of california irvine"
+    }
 	# upload_school("fall2020", s)
 	# upload_program("fall2020", p)
+	upload_instructors("fall2020", i)
