@@ -1,3 +1,5 @@
+from exceptions import KeyNotFoundError
+
 '''
 Updates the time ranges for each day in the schedule
 by merging if time ranges overlap.
@@ -117,8 +119,8 @@ def hours_to_minutes(time : str) -> int:
 Convert days of a week to integers. 
 '''
 def days_to_int(day : str) -> int:
-	week = ["Sunday", "Monday", "Tuesday", "Wednesday",
-	"Thursday", "Friday", "Saturday"]
+	# week = ["Sunday", "Monday", "Tuesday", "Wednesday",
+	# "Thursday", "Friday", "Saturday"]
 
 	str_day = day.strip().lower()
 
@@ -138,6 +140,24 @@ def days_to_int(day : str) -> int:
 		return 6
 	else:
 		return -1
+
+def get_instructor_key(instructor: dict):
+	return instructor["name"] + "," + instructor["major"] + "," + instructor["university"]
+
+def decriment_instructor_count(db, season: str, s_str: str):
+	school_data = db.child(season).child("schools").child(s_str).get()
+	if school_data.val() is None: raise KeyNotFoundError("dfs-ias/{s}/schools/{sc}".format(s=season, sc=s_str))
+	school_data = school_data.val()
+	tnum = school_data["number_of_instructors"] - 1
+
+	if tnum < 0: raise Exception("number_of_instructors invalid")
+
+	db.child(season).child("schools").child(s_str).update({"number_of_instructors": tnum})
+
+def remove_instructor_from_program(db, season: str, s_str:str, pk: str):
+	program_keys = db.child(season).child("programs").shallow().get().val()
+	for p in program_keys:
+		db.child(season).child("programs").child(p).child("assigned_institutions").child(s_str).child(pk).remove()
 
 '''
 Build list of the days of the week in integer
