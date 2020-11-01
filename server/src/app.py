@@ -33,14 +33,14 @@ def resort():
 
 # Instructor Section
 
-@app.route('/uploadinstructors', methods=['GET', 'POST'])
+@app.route('/uploadinstructor', methods=['GET', 'POST'])
 def upload_instructors():
     instrparams = request.get_json()
     fbupload.upload_instructors(instrparams)
     return "Uploading Instructors Success!"
 
 #REQUIRES JSON OBJECT WITH PARAMETERS FOR SEASON, TEACHER NAME, TEACHER UNIVERSITY, AND TEACHER MAJOR.
-@app.route('/deleteinstructors', methods=['GET', 'POST'])
+@app.route('/deleteinstructor', methods=['GET', 'POST'])
 def delete_instructors():
     instrparams = request.get_json()
     fbdelete.delete_instructor(instrparams)
@@ -48,7 +48,7 @@ def delete_instructors():
 
 # School Section
 
-@app.route('/uploadinstitutions', methods=['GET', 'POST'])
+@app.route('/uploadschool', methods=['GET', 'POST'])
 def upload_institutions():
     instparams = request.get_json()
     fbupload.upload_institutions(instparams)
@@ -66,11 +66,11 @@ def delete_schools():
 
 # Program Section
 
-@app.route('/uploadprograms', methods=['GET', 'POST'])
+@app.route('/uploadprogram', methods=['GET', 'POST'])
 def upload_programs():
     pass
 
-@app.route('/deleteprograms', methods=['GET', 'POST'])
+@app.route('/deleteprogram', methods=['GET', 'POST'])
 def delete_programs():
     pass
 
