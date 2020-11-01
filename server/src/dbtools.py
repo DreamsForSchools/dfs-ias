@@ -117,8 +117,8 @@ def hours_to_minutes(time : str) -> int:
 Convert days of a week to integers. 
 '''
 def days_to_int(day : str) -> int:
-	week = ["Sunday", "Monday", "Tuesday", "Wednesday",
-	"Thursday", "Friday", "Saturday"]
+	# week = ["Sunday", "Monday", "Tuesday", "Wednesday",
+	# "Thursday", "Friday", "Saturday"]
 
 	str_day = day.strip().lower()
 
@@ -138,6 +138,9 @@ def days_to_int(day : str) -> int:
 		return 6
 	else:
 		return -1
+
+def get_instructor_key(instructor: dict):
+	return instructor["name"] + "," + instructor["major"] + "," + instructor["university"]
 
 '''
 Build list of the days of the week in integer
