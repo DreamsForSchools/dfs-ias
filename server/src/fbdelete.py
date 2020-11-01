@@ -8,11 +8,16 @@ from exceptions import KeyNotFoundError
 
 def delete_instructor(season: str, instructor: dict):
     db = dfsapi.get_db()
-    # pk = teacher["Name"] + "," + teacher["Major"] + "," + teacher["University"]
     pk = dbtools.get_instructor_key(instructor)
 
-    data = db.child(season).child("instructors").child(pk).get()
-    if data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/instructors/{i}".format(s=season, i=pk))
+    instr_data = db.child(season).child("instructors").child(pk).get()
+    if instr_data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/instructors/{i}".format(s=season, i=pk))
+    instr_data = instr_data.val()
+
+    
+    for s_str in instr_data["schools"]:
+        dbtools.decriment_instructor_count(db, season, s_str)
+        dbtools.remove_instructor_from_program(db, season, s_str, pk)
 
     db.child(season).child("instructors").child(pk).remove()
 
@@ -33,7 +38,6 @@ def delete_program(season: str, program:str):
     db.child(season).child("programs").child(program).remove()
 
 if __name__ == "__main__":
-    print("Beginning Tests")
     thor = {
         "name": "Thornton",
         "major": "computer science",
@@ -45,4 +49,3 @@ if __name__ == "__main__":
         delete_instructor("fall2020", thor)
     except KeyNotFoundError as err:
         print(err)
-    print("Ending Tests")
