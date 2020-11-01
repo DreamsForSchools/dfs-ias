@@ -66,7 +66,7 @@ def upload_school(season: str, school: dict):
 	db = dfsapi.get_db()
 
 	data = db.child(season).child("schools").child(school["name"]).get()
-	if data.val() is not None:	raise KeyExists("dfs-ias/{s}/schools/{n}".format(s=season, n=school["name"]))
+	if data.val():	raise KeyExists("dfs-ias/{s}/schools/{n}".format(s=season, n=school["name"]))
 
 	# Set everything
 	db.child(season).child("schools").child(school["name"]).update(school)
@@ -134,7 +134,15 @@ def upload_instructors(teacher:dict):
 				oldest = min(keys.val())
 				db.child(p).child("instructors").child(oldest).remove()
 	return
-		
+
+def upload_program(season: str, program: dict):
+	db = dfsapi.get_db()
+
+	data = db.child(season).child("programs").child(program["name"]).get()
+	if data.val(): raise KeyExists("dfs-ias/{s}/programs/{n}".format(s=season, n=program["name"]))
+
+	db.child(season).child("programs").child(program["name"]).update(program)
+
 if __name__ == "__main__":
 	s = {
 		"name": "school3",
@@ -145,4 +153,12 @@ if __name__ == "__main__":
 		"number_of_instructors": 0,
 		"program_time_flexibility": False
 	}
-	upload_school("fall2020", s)
+
+	p = {
+		"name": "AJ2",
+		"assigned_institutions": [{
+			"SCH2": [{"instructor name": {"locked": True}}]
+		}]
+	}
+	# upload_school("fall2020", s)
+	# upload_program("fall2020", p)
