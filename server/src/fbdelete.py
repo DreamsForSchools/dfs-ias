@@ -4,26 +4,37 @@ import calendar
 import time
 import dbtools
 from collections import defaultdict
-
+from exceptions import KeyNotFoundError
 
 def delete_instructor(teacher: dict):
     db = dfsapi.get_db()
     pk = teacher["Name"] + "," + teacher["Major"] + "," + teacher["University"]
+
+    data = db.child(teacher["Season"]).child("Instructors").child(pk).get()
+    if data.val() is None:  raise KeyNotFoundError("temp path")
+
     db.child(teacher["Season"]).child("Instructors").child(pk).remove()
+
+def delete_school(season: str, school_key: str):
+    db = dfsapi.get_db()
+    
+    data = db.child(season).child("schools").child(school_key).get()
+    if not data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/schools/{name}".format(s=season,name=school_key))
+
+    db.child(season).child("schools").child(school_key).remove()
 
 def delete_program(program:dict):
     db = dfsapi.get_db()
-    db.child("Programs").child(program["Name"]).remove()
 
-def delete_institution(season: str, inst_key: str):
-    db = dfsapi.get_db()
-    
-    data = db.child(season).child("institutions").child(inst_key).get()
-    if not data.val(): print("EXCEPTION HERE (Path not found)")
+    data = db.child("programs").child(program["Name"]).get()
+    if not data.val() is None:  raise KeyNotFoundError("temp path")
 
-    db.child(season).child("institutions").child(inst_key).remove()
+    db.child("programs").child(program["Name"]).remove()
 
 if __name__ == "__main__":
     print("Beginning Tests")
-    delete_institution("fall2020", "Santa Teresa HS")
+    try:
+        delete_school("fall2020", "bad school")
+    except KeyNotFoundError as err:
+        print(err)
     print("Ending Tests")

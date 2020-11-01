@@ -4,6 +4,7 @@ import calendar
 import time
 import dbtools
 from collections import defaultdict
+from exceptions import KeyExists
 
 '''
 Uploads institution to the firebase database
@@ -60,6 +61,15 @@ def upload_institutions(school:dict):
 				oldest = min(keys.val())
 				db.child(p).child("institutions").child(oldest).remove()
 
+
+def upload_school(season: str, school: dict):
+	db = dfsapi.get_db()
+
+	data = db.child(season).child("schools").child(school["name"]).get()
+	if data.val() is not None:	raise KeyExists("dfs-ias/{s}/schools/{n}".format(s=season, n=school["name"]))
+
+	# Set everything
+	db.child(season).child("schools").child(school["name"]).update(school)
 
 '''
 Uploads instructor to the firebase database
@@ -125,7 +135,14 @@ def upload_instructors(teacher:dict):
 				db.child(p).child("instructors").child(oldest).remove()
 	return
 		
-
-
-
-
+if __name__ == "__main__":
+	s = {
+		"name": "school3",
+		"address": "123 street", 
+		"is_virtual": True,
+		"programs": ["P1", "P3"],
+		"special_language_request": ["eng", "vie"],
+		"number_of_instructors": 0,
+		"program_time_flexibility": False
+	}
+	upload_school("fall2020", s)
