@@ -154,10 +154,45 @@ def decriment_instructor_count(db, season: str, s_str: str):
 
 	db.child(season).child("schools").child(s_str).update({"number_of_instructors": tnum})
 
-def remove_instructor_from_program(db, season: str, s_str:str, pk: str):
-	program_keys = db.child(season).child("programs").shallow().get().val()
+def remove_instructor_from_programs(db, season: str, s_str:str, pk: str):
+	program_keys = db.child(season).child("programs").shallow().get()
+	if program_keys is None: raise KeyNotFoundError("awhdiouawhid")
+	program_keys = program_keys.val()
+
 	for p in program_keys:
 		db.child(season).child("programs").child(p).child("assigned_institutions").child(s_str).child(pk).remove()
+
+def remove_school_from_instructors(db, season: str, school_key: str):
+	instructor_keys = db.child(season).child("instructors").shallow().get()
+	if instructor_keys is None: raise KeyNotFoundError("djsssss")
+	instructor_keys = instructor_keys.val()
+
+	for pk in instructor_keys:
+		db.child(season).child("instructors").child(pk).child("schools").child(school_key).remove()
+
+def remove_school_from_programs(db, season, school_key: str):
+	program_keys = db.child(season).child("programs").shallow().get()
+	if program_keys is None: raise KeyNotFoundError("awhdiouawhid")
+	program_keys = program_keys.val()
+
+	for p in program_keys:
+		db.child(season).child("programs").child(p).child("assigned_institutions").child(school_key).remove()
+
+def remove_program_from_instructors(db, season: str, program_key: str):
+	instructor_keys = db.child(season).child("instructors").shallow().get()
+	if instructor_keys is None: raise KeyNotFoundError("djsssss")
+	instructor_keys = instructor_keys.val()
+
+	for pk in instructor_keys:
+		db.child(season).child("instructors").child(pk).child("preferred_ranking_of_programs").child(program_key).remove()
+
+def remove_program_from_schools(db, season: str, program_key: str):
+	school_keys = db.child(season).child("schools").shallow().get()
+	if school_keys is None: raise KeyNotFoundError("i am in physical pain")
+	school_keys = school_keys.val()
+
+	for school in school_keys:
+		db.child(season).child("schools").child(school).child("programs").child(program_key).remove()
 
 '''
 Build list of the days of the week in integer

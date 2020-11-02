@@ -36,15 +36,14 @@ def resort():
 @app.route('/uploadinstructor', methods=['GET', 'POST'])
 def upload_instructor():
     instrparams = request.get_json()
-    fbupload.upload_instructors(instrparams)
+    # fbupload.upload_instructors(instrparams)
     return "Uploading Instructors Success!"
 
 #REQUIRES JSON OBJECT WITH PARAMETERS FOR SEASON, TEACHER NAME, TEACHER UNIVERSITY, AND TEACHER MAJOR.
 @app.route('/deleteinstructor', methods=['GET', 'POST'])
 def delete_instructor():
     instrparams = request.get_json()
-
-    # fbdelete.delete_instructor(instrparams)
+    fbdelete.delete_instructor(instrparams["Season"], instrparams["Instructor"])
     return "Deleting Instructors Success"
 
 # School Section

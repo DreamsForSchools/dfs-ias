@@ -27,25 +27,26 @@
 			],
 			"preferred_ranking_of_programs": {
 				"program_name": 1,
-				"other_program_name": 2
+                "other_program_name": 2,
+                "Appjam": 3
 			},
 			"languages_spoken": [
 				"spanish",
 				"english"
 			],
-			"schools": [
-				"Santa Teresa HS",
-				"lynbrook high school"
-			]
+			"schools": {
+				"Santa Teresa HS": 1,
+				"lynbrook high school": 1
+            }
 		}
 	},
 	"schools": {
 		"lynbrook high school": {
 			"name": "lynbrook high school",
 			"address": "rainbow drive",
-			"programs": [
-				"appjam"
-			],
+			"programs": {
+				"Appjam": 1
+            },
 			"number_of_instructors": 20,
 			"program_time_flexibility": true,
 			"special_language_request": [
@@ -59,9 +60,9 @@
 		"Santa Teresa HS": {
 			"name": "Santa Teresa HS",
 			"address": "123123",
-			"programs": [
-				"appjam"
-			],
+			"programs": {
+				"Appjam": 1
+            },
 			"number_of_instructors": 91872,
 			"program_time_flexibility": false,
 			"special_language_request": [
@@ -78,7 +79,7 @@
 			"name": "Appjam",
 			"assigned_institutions": {
 				"lynbrook high school": {
-					"instructor pk": true
+					"Thornton,computer science,university of california irvine": true
 				}
 			}
 		}
