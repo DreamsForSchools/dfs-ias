@@ -9,6 +9,7 @@ class AddSchoolPage extends Component {
         super();
 
         this.state = {
+            season: 'Fall2020', 
             name: '',
             address: '', 
             programs: [],
@@ -17,9 +18,8 @@ class AddSchoolPage extends Component {
             special_language_request: [],
             is_virtual: '',
             region: '',
-            location_preferences: ''
+            location_preferences:[], 
             
-
 
 
 
@@ -44,7 +44,8 @@ class AddSchoolPage extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleCheck = this.handleCheck.bind(this);
+        this.handleCheckPrograms = this.handleCheckPrograms.bind(this);
+        this.handleCheckLanguages = this.handleCheckLanguages.bind(this);
     }
 
     // Alters state when an input field is changed
@@ -55,7 +56,7 @@ class AddSchoolPage extends Component {
     }
 
     // Handles the toggle checkbox buttons for programs
-    handleCheck(e) {
+    handleCheckPrograms(e) {
         if (this.state.programs.includes(e.target.value)) {
             console.log(this.state.programs, e.target.value);
             var idx = this.state.programs.indexOf(e.target.value);
@@ -68,6 +69,23 @@ class AddSchoolPage extends Component {
             [e.target.name]: this.state.programs
         });
     }
+    
+    handleCheckLanguages(e) {
+        if (this.state.special_language_request.includes(e.target.value)) {
+            console.log(this.state.special_language_request, e.target.value);
+            var idx = this.state.special_language_request.indexOf(e.target.value);
+            this.state.special_language_request.splice(idx, 1);
+        }
+        else {
+            this.state.special_language_request.push(e.target.value);
+        }
+        this.setState({
+            [e.target.name]: this.state.special_language_request
+        });
+    }
+
+
+    //create another handlecheck for the locations array
 
     // These functions could definitely be optimized, but I couldn't figure out how to use the time range picker that I installed. These just alter the schedule sections of the state.
     onMonday = monday => {
@@ -104,30 +122,22 @@ class AddSchoolPage extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const instructor = {
+            season : 'Fall2020',
             "Name": this.state.name,
-            "Gender": this.state.gender,
-            "Ethnicity": this.state.ethnicity,
-            "Region": this.state.region,
-            "University": this.state.univ,
-            "Year": this.state.year,
-            "Virtual": this.state.virtual,
-            "PreviousMentor": this.state.returner,
-            "Car": this.state.car,
-            "Languages": this.state.language,
-            "ShirtSize": this.state.shirtsize,
-            "MultipleDays": this.state.multipledays,
-            "Monday": this.state.monday,
-            "Tuesday": this.state.tuesday,
-            "Wednesday": this.state.wednesday,
-            "Thursday": this.state.thursday,
-            "Friday": this.state.friday,
+            "Address": this.state.address, 
             "Program": this.state.programs,
-            "New": false
+            "Number_of_instructors": this.state.number_of_instructors,
+            "Program_time_flexibility": this.state.program_time_flexibility,
+            "Special_language_request": this.state.special_language_request,
+            "Is_virtual": this.state.is_virtual,
+            "Region": this.state.region,
+            "Location_preferences": this.state.location_preferences,
+
         }
 
         console.log(JSON.stringify(instructor));
 
-        fetch('https://apurva29.pythonanywhere.com/uploadinstructors', {
+        fetch('http://127.0.0.1:5000/uploadschool', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -136,23 +146,16 @@ class AddSchoolPage extends Component {
         })
 
         this.setState({
+            season: 'Fall 2020',
             name: '',
-            gender: '',
-            ethnicity: '',
+            address: '', 
+            programs: [],
+            number_of_instructors: '',
+            program_time_flexibility: '',
+            special_language_request: [],
+            is_virtual: '',
             region: '',
-            univ: '',
-            year: '',
-            returner: '',
-            car: '',
-            language: '',
-            shirtsize: '',
-            multipledays: '',
-            monday: '',
-            tuesday: '',
-            wednesday: '',
-            thursday: '',
-            friday: '',
-            programs: []
+            location_preferences:[] 
         });
     }
 
@@ -178,49 +181,77 @@ class AddSchoolPage extends Component {
                                     <div className = "form-row">
                                         <div className="inputs">
                                             <label>Name</label>
-                                            <input type="text" name="univ" placeholder="University of California Irvine" onChange={this.handleChange} value={this.state.name}/>
-                                        </div>
-                                        <div className="inputs">
-                                            <label>Region</label>
-                                            <input id="region-input" type="text" name="region" placeholder="Orange County" onChange={this.handleChange} value={this.state.region}/>
+                                            <input type="text" name="name" placeholder="University of California Irvine" onChange={this.handleChange} value={this.state.name}/>
                                         </div>
                                         <div className="inputs">
                                             <label>Address</label>
-                                            <input id="region-input" type="text" name="region" placeholder="Street address, City, State, Zip" onChange={this.handleChange} value={this.state.address}/>
+                                            <input id="region-input" type="text" name="address" placeholder="Street address, City, State, Zip" onChange={this.handleChange} value={this.state.address}/>
                                         </div> 
                                         <div className="inputs">
                                         <label>Virtual</label>
                                         <div className = "radio-toolbar">
-                                            <input id="yes-virtual-btn" type="radio" name="virtual" value="Yes" checked={value} onChange={this.handleChange}/>
+                                            <input id="yes-virtual-btn" type="radio" name="is_virtual" value="Yes" checked={value} onChange={this.handleChange}/>
                                                 <label for="yes-virtual-btn">Yes</label>
-                                            <input id="no-virtual-btn" type="radio" name="virtual" value="No" checked={value} onChange={this.handleChange}/>
+                                            <input id="no-virtual-btn" type="radio" name="is_virtual" value="No" checked={value} onChange={this.handleChange}/>
                                                 <label for="no-virtual-btn">No</label>
 
-                                       </div> 
-                                    </div>
+                                        </div>
+                                        </div>  
+                                        <div className = "inputs">
+                                        <label>Program Time Flexibility</label>
+                                        <div className = "radio-toolbar">
+                                            <input id="yes-prgm-flex-btn" type="radio" name="program_time_flexibility" value="Yes" checked={value} onChange={this.handleChange}/>
+                                            <label for="yes-prgm-flex-btn">Yes</label>
+                                            <input id="no-prgm-flex-btn" type="radio" name="program_time_flexibility" value="No" checked={value} onChange={this.handleChange}/>
+                                            <label for="no-prgm-flex-btn">No</label>
+                                        </div>
+                                        </div>
+
+                                        <div className="inputs">
+                                            <label>Number of Instructors</label>
+                                            <input id="number-of-instructor-input" type="text" name="number_of_instructors" placeholder="54" onChange={this.handleChange} value={this.state.number_of_instructors}/>
+                                        </div> 
 
                                         <div className="inputs">
                                             <label>Languages</label>
                                             <div className="radio-toolbar">
-                                                <input id="1st-year-btn" type="checkbox" name="special_language_request" value="English" checked={value} onChange={this.handleCheck}/>
-                                                <label for="1st-year-btn">English</label>
-                                                <input id="2nd-year-btn" type="checkbox" name="special_language_request" value="Spanish" checked={value} onChange={this.handleCheck}/>
-                                                <label for="2nd-year-btn">Spanish</label>
-                                                <input id="3rd-year-btn" type="checkbox" name="special_language_request" value="Mandarin" checked={value} onChange={this.handleCheck}/>
-                                                <label for="3rd-year-btn">Mandarin</label>
-                                                <input id="4th-year-btn" type="checkbox" name="special_language_request" value="Hindi" checked={value} onChange={this.handleCheck}/>
-                                                <label for="4th-year-btn">Hindi</label>
-                                                <input id="grad-year-btn" type="checkbox" name="special_language_request" value="French" checked={value} onChange={this.handleCheck}/>
-                                                <label for="grad-year-btn">French</label>
-                                                <input id="German" type="checkbox" name="special_language_request" value="German" checked={value} onChange={this.handleCheck}/>
+                                                <input id="English" type="checkbox" name="special_language_request" value="English" checked={value} onChange={this.handleCheckLanguages}/>
+                                                <label for="English">English</label>
+                                                <input id="Spanish" type="checkbox" name="special_language_request" value="Spanish" checked={value} onChange={this.handleCheckLanguages}/>
+                                                <label for="Spanish">Spanish</label>
+                                                <input id="Mandarin" type="checkbox" name="special_language_request" value="Mandarin" checked={value} onChange={this.handleCheckLanguages}/>
+                                                <label for="Mandarin">Mandarin</label>
+                                                <input id="Hindi" type="checkbox" name="special_language_request" value="Hindi" checked={value} onChange={this.handleCheckLanguages}/>
+                                                <label for="Hindi">Hindi</label>
+                                                <input id="French" type="checkbox" name="special_language_request" value="French" checked={value} onChange={this.handleCheckLanguages}/>
+                                                <label for="French">French</label>
+                                                <input id="German" type="checkbox" name="special_language_request" value="German" checked={value} onChange={this.handleCheckLanguages}/>
                                                 <label for="German">German</label>
-                                                <input id="Korean" type="checkbox" name="special_language_request" value="Korean" checked={value} onChange={this.handleCheck}/>
+                                                <input id="Korean" type="checkbox" name="special_language_request" value="Korean" checked={value} onChange={this.handleCheckLanguages}/>
                                                 <label for="Korean">Korean</label>
                                             </div>
                                         </div>
+                                        <div className="inputs">
+                                                <label>Program(s)</label>
+                                                <div className="radio-toolbar">
+                                                    <input id="Sphero-btn" type="checkbox" name="programs" value="SpheroElementary" checked={value} onChange={this.handleCheckPrograms}/>
+                                                    <label for="Sphero-btn">Sphero</label>
+                                                    <input id="appjam-btn" type="checkbox" name="programs" value="AppJam+" checked={value} onChange={this.handleCheckPrograms}/>
+                                                    <label for="appjam-btn">Appjam+</label>
+                                                    <input id="webjam-btn" type="checkbox" name="programs" value="WebJam" checked={value} onChange={this.handleCheckPrograms}/>
+                                                    <label for="webjam-btn">Webjam</label>
+                                                </div>
+                                            </div>
                                     </div>
+                                    <button type="submit" className="submitbtn">
+                                        Save & Add Another
+                                    </button>
+                                    <button onClick={this.goNext} className="nextbtn">
+                                        Next
+                                    </button> 
                                 </form>
                             </section>
+{/*
                             <section className="column">
                                 <form onSubmit={this.handleSubmit}>
                                     <h2>Schedule</h2>
@@ -320,20 +351,13 @@ class AddSchoolPage extends Component {
                                                     <label for="appjam-btn">Appjam+</label>
                                                     <input id="webjam-btn" type="checkbox" name="programs" value="WebJam" checked={value} onChange={this.handleCheck}/>
                                                     <label for="webjam-btn">Webjam</label>
-                                                    <input id="webjam-btn" type="checkbox" name="programs" value="WebJam" checked={value} onChange={this.handleCheck}/>
-                                                    <label for="webjam-btn">Webjam</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" className="submitbtn">
-                                        Save & Add Another
-                                    </button>
-                                    <button onClick={this.goNext} className="nextbtn">
-                                        Next
-                                    </button>
+                                    
                                 </form>
-                            </section>
+</section>*/}
                         </div>
                     </div>
                 </div>

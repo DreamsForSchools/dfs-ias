@@ -72,6 +72,7 @@ label {
     display: grid;
     grid-template-columns: auto;
     padding-left: 5vh;
+    text-align: center;
     padding-right: 5vh;
 }
 
@@ -93,10 +94,12 @@ label {
     opacity: 0;
     position: fixed;
     width: 0;
+    text-align: center;
 }
 .radio-toolbar input[type="checkbox"] {
     opacity: 0;
     position: fixed;
+    text-align: center;
     width:0;
 }
 
