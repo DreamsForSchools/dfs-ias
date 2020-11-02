@@ -252,7 +252,7 @@ class AddSchoolPage extends Component {
                                             </div>
                                     </div>
                                     <button type="submit" className="submitbtn">
-                                        Save
+                                        Save & Add another
                                     </button>
                                     <button onClick={this.goNext} className="nextbtn">
                                         Back
