@@ -35,7 +35,7 @@ def resort():
 
 @app.route('/uploadinstructor', methods=['GET', 'POST'])
 def upload_instructor():
-    fbupload.upload_instructors(request.get_json())
+    fbupload.upload_instructor(request.get_json())
     return "Uploading Instructors Success!"
 
 #REQUIRES JSON OBJECT WITH PARAMETERS FOR SEASON, TEACHER NAME, TEACHER UNIVERSITY, AND TEACHER MAJOR.
