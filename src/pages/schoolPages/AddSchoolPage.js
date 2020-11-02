@@ -9,7 +9,7 @@ class AddSchoolPage extends Component {
         super();
 
         this.state = {
-            season: 'Fall2020', 
+            season: '', 
             name: '',
             address: '', 
             programs: [],
@@ -121,11 +121,19 @@ class AddSchoolPage extends Component {
     // Calls the API with the current state to push data to database and then resets the state.
     handleSubmit(e) {
         e.preventDefault();
+        var program_map = {}
+        var i;
+        for (i = 0; i < this.state.programs.length; i++)
+        {
+            program_map[this.state.programs[i]] = 1;    
+        }
+      //  var objectMap = new Map(this.state.programs.map(obj => [obj, 1]));
+        //program_dict = new Map(objects.map(this.state.programs => [this.state.programs.id, this.state.programs]));
         const instructor = {
-            season : 'Fall2020',
+            "Season" : 'Fall2020',
             "Name": this.state.name,
             "Address": this.state.address, 
-            "Program": this.state.programs,
+            "Program": program_map,
             "Number_of_instructors": this.state.number_of_instructors,
             "Program_time_flexibility": this.state.program_time_flexibility,
             "Special_language_request": this.state.special_language_request,
@@ -146,7 +154,7 @@ class AddSchoolPage extends Component {
         })
 
         this.setState({
-            season: 'Fall 2020',
+            season: '',
             name: '',
             address: '', 
             programs: [],
@@ -368,3 +376,4 @@ class AddSchoolPage extends Component {
 
 
 export default AddSchoolPage;
+

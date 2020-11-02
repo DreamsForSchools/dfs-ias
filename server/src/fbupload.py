@@ -12,22 +12,27 @@ under the specified season and school with the given
 json object that contains information 
 about the school.
 '''
-def upload_school(season: str, school: dict):
+#def upload_school(season: str, school: dict):
+def upload_school(school:dict):
+	print(school["Program"])
 	db = dfsapi.get_db()
-
-	data = db.child(season).child("schools").child(school["name"]).get()
-	if data.val():	raise KeyExists("dfs-ias/{s}/schools/{n}".format(s=season, n=school["name"]))
+	season = school["Season"] 
+	del school["Season"]
+	data = db.child(season).child("schools").child(school["Name"]).get()
+	if data.val():	raise KeyExists("dfs-ias/{s}/schools/{n}".format(s=season, n=school["Name"]))
 
 	# Set everything
-	db.child(season).child("schools").child(school["name"]).update(school)
+	db.child(season).child("schools").child(school["Name"]).update(school)
 
 '''
 Uploads instructor to the firebase database
 under the specified season and instructor based on the 
 information provided in the json object.
 '''
-def upload_instructor(season: str, instructor: dict):
+def upload_instructor( instructor: dict):
 	db = dfsapi.get_db()
+	season = instructor["Season"] 
+	del instructor["Season"]
 
 	try:
 		pk = dbtools.get_instructor_key(instructor)
@@ -45,8 +50,10 @@ Uploads program to the firebase database
 under the specified season and program based on the 
 information provided in the json object.
 '''
-def upload_program(season: str, program: dict):
+def upload_program(program: dict):
 	db = dfsapi.get_db()
+	season = program["Season"] 
+	del program["Season"]
 
 	data = db.child(season).child("programs").child(program["name"]).get()
 	if data.val(): raise KeyExists("dfs-ias/{s}/programs/{n}".format(s=season, n=program["name"]))

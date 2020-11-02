@@ -51,7 +51,8 @@ def delete_instructor():
 @app.route('/uploadschool', methods=['GET', 'POST'])
 def upload_school():
     instparams = request.get_json()
-    fbupload.upload_school(instparams["Season"], instparams["School"])
+    fbupload.upload_school(instparams)
+    #fbupload.upload_school(instparams["Season"], instparams["School"])
     return "Uploading Institutions Success!"
 
 @app.route('/deleteschool', methods=['GET', 'POST'])
