@@ -90,13 +90,14 @@ class DeleteSchoolPage extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const delete_this_school = {
+            "Season": 'fall2020',
             "School": this.state.school,
             "Region": this.state.region,
         }
 
         console.log(JSON.stringify(delete_this_school));
 
-        fetch('127.0.0.1:5000/deleteschool', {
+        fetch('https://apurva29.pythonanywhere.com/deleteschool', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

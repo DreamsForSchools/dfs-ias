@@ -130,7 +130,7 @@ class AddSchoolPage extends Component {
       //  var objectMap = new Map(this.state.programs.map(obj => [obj, 1]));
         //program_dict = new Map(objects.map(this.state.programs => [this.state.programs.id, this.state.programs]));
         const instructor = {
-            "Season" : 'Fall2020',
+            "Season" : 'fall2020',
             "Name": this.state.name,
             "Address": this.state.address, 
             "Program": program_map,
@@ -145,7 +145,7 @@ class AddSchoolPage extends Component {
 
         console.log(JSON.stringify(instructor));
 
-        fetch('http://127.0.0.1:5000/uploadschool', {
+        fetch('https://apurva29.pythonanywhere.com/uploadschool', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -171,7 +171,7 @@ class AddSchoolPage extends Component {
     goNext=()=> {
         // this.props.history.push("/schoolhome");
         // console.log(this.props.location.state.isNewRoster)
-        this.props.history.push("/"+this.props.location.state.program+"home/roster");
+        this.props.history.push("/schoolhome/roster");
     }
 
     render() {
@@ -252,10 +252,10 @@ class AddSchoolPage extends Component {
                                             </div>
                                     </div>
                                     <button type="submit" className="submitbtn">
-                                        Save & Add Another
+                                        Save
                                     </button>
                                     <button onClick={this.goNext} className="nextbtn">
-                                        Next
+                                        Back
                                     </button> 
                                 </form>
                             </section>
