@@ -14,10 +14,11 @@ about the school.
 '''
 #def upload_school(season: str, school: dict):
 def upload_school(school:dict):
-	print(school["Program"])
 	db = dfsapi.get_db()
+
 	season = school["Season"] 
 	del school["Season"]
+
 	data = db.child(season).child("schools").child(school["Name"]).get()
 	if data.val():	raise KeyExists("dfs-ias/{s}/schools/{n}".format(s=season, n=school["Name"]))
 
@@ -29,8 +30,9 @@ Uploads instructor to the firebase database
 under the specified season and instructor based on the 
 information provided in the json object.
 '''
-def upload_instructor( instructor: dict):
+def upload_instructor(instructor: dict):
 	db = dfsapi.get_db()
+
 	season = instructor["Season"] 
 	del instructor["Season"]
 
@@ -52,6 +54,7 @@ information provided in the json object.
 '''
 def upload_program(program: dict):
 	db = dfsapi.get_db()
+
 	season = program["Season"] 
 	del program["Season"]
 
@@ -83,6 +86,4 @@ if __name__ == "__main__":
         "major": "computer science",
 		"university": "university of california irvine"
     }
-	# upload_school("fall2020", s)
-	# upload_program("fall2020", p)
-	upload_instructors("fall2020", i)
+	upload_instructor(i)
