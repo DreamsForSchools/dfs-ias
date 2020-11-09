@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-import fbstoresort
-import fbresort
+#import fbstoresort
+import optimal_sort
 import fbupload
 import fbdelete
 import manageinstructors
@@ -20,15 +20,18 @@ def main_view():
 @app.route('/sort', methods=['GET','POST'])
 def sort():
     sortparams = request.get_json()
-    program = sortparams['Program']
-    matches = fbstoresort.upload_matches(program)
+    instructors = sortparams['Instructors']
+    schools = sortparams["Schools"]
+    matches = optimal_sort.optimal_sort(instructors, schools)
     return jsonify(matches)
 
 @app.route('/resort', methods=['GET', 'POST'])
 def resort():
     resortparams = request.get_json()
-    program = resortparams['Program']
-    matches = fbresort.resort_matches(program)
+    locked_instructors = sortparams["Locked"]
+    instructors = sortparams['Instructors']
+    schools = sortparams["Schools"]
+    matches = optimal_sort.optimal_resort(locked_instructors, instructors, schools)
     return jsonify(matches)
 
 # Instructor Section

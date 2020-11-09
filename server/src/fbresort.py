@@ -1,3 +1,4 @@
+#DEPRECATED REMOVE.
 import pyrebase
 import dfsapi
 from match import Match

@@ -6,30 +6,22 @@ import dbtools
 from collections import defaultdict
 from exceptions import KeyNotFoundError
 
-def delete_instructor(season: str, instructor: dict):
+def delete_instructor(season: str, instructor_key: str):
     db = dfsapi.get_db()
-    pk = dbtools.get_instructor_key(instructor)
 
-    instr_data = db.child(season).child("instructors").child(pk).get()
+    instr_data = db.child(season).child("instructors").child(instructor_key).get()
     if instr_data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/instructors/{i}".format(s=season, i=pk))
-    instr_data = instr_data.val()
 
-    
-    for s_str in instr_data["schools"]:
-        dbtools.decriment_instructor_count(db, season, s_str)
-        dbtools.remove_instructor_from_programs(db, season, s_str, pk)
-
-    db.child(season).child("instructors").child(pk).remove()
+    dbtools.remove_instructor_from_programs(db, season, instructor_key)
+    db.child(season).child("instructors").child(instructor_key).remove()
 
 def delete_school(season: str, school_key: str):
     db = dfsapi.get_db()
-    
+
     data = db.child(season).child("schools").child(school_key).get()
     if data.val() is None:  raise KeyNotFoundError("dfs-ias/{s}/schools/{name}".format(s=season,name=school_key))
 
-    dbtools.remove_school_from_instructors(db, season, school_key)
     dbtools.remove_school_from_programs(db, season, school_key)
-
     db.child(season).child("schools").child(school_key).remove()
 
 def delete_program(season: str, program:str):
@@ -44,16 +36,10 @@ def delete_program(season: str, program:str):
     db.child(season).child("programs").child(program).remove()
 
 
-
 if __name__ == "__main__":
-    thor = {
-        "name": "Thornton",
-        "major": "computer science",
-        "university": "university of california irvine"
-    }
     try:
-        delete_school("fall2020", "lynbrook high school")
+        #delete_program("spring2021", "AppjAm")
         # delete_program("fall2020", "Appjam")
-        # delete_instructor("fall2020", thor)
+        delete_instructor("spring2021", "-MLeXvdlqSdPYDnccgD-")
     except KeyNotFoundError as err:
         print(err)

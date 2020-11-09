@@ -1,3 +1,4 @@
+#DEPRECATED REMOVE.
 import pyrebase
 from collections import defaultdict
 import calendar
@@ -72,4 +73,3 @@ def match_to_dict(match : Match) -> dict:
 		"ShirtSize" : match.shirtsize
 	}
 	return match_dict
-
