@@ -43,12 +43,13 @@ def upload_instructor(instructor: dict):
 	#Set everything
 	instructor["programs"] = {k : i + 1 for i, k in enumerate(instructor["programs"])}
 	ret = db.child(season).child("instructors").push(instructor)
+	'''
 	pk = ret["name"]
 	if "programs" in instructor:
 		programs_list = instructor["programs"]
 		for program in programs_list:
 			db.child(season).child("programs").child(program).child("assigned_instructors").child(pk).set(1)
-
+		'''
 '''
 Uploads program to the firebase database
 under the specified season and program based on the

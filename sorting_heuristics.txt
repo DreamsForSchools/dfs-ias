@@ -1,0 +1,17 @@
+Heuristics:
+1. Instructor's preference for programs. (33%)
+2. Instructors' proximity.
+3. Instructors' availability.
+
+
+Returned JSON for match.
+{match:
+  {
+      school_primary_key_1 : [instructor_primary_key_1, instructor_primary_key_2]
+  }
+
+}
+
+Steps for sorting algorithm.
+1. Prune all schools to programs. (DONE)
+2. Instructors preference for program. (DONE)

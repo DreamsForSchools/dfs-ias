@@ -20,9 +20,9 @@ def main_view():
 @app.route('/sort', methods=['GET','POST'])
 def sort():
     sortparams = request.get_json()
-    instructors = sortparams['Instructors']
-    schools = sortparams["Schools"]
-    matches = optimal_sort.optimal_sort(instructors, schools)
+    season = sortparams['Season']
+    program = sortparams["Program"]
+    matches = optimal_sort.optimal_sort(season, program)
     return jsonify(matches)
 
 @app.route('/resort', methods=['GET', 'POST'])
