@@ -2,6 +2,7 @@ Heuristics:
 1. Instructor's preference for programs. (33%)
 2. Instructors' proximity.
 3. Instructors' availability.
+4. Car
 
 
 Returned JSON for match.

@@ -33,7 +33,7 @@ def optimal_sort(season: str, program: str):
 
         # Load distance data
         # Modeled in a way to reduce calls to GoogleMaps api
-        # distance_data = distance_heuristic(school, instructors_data)
+        distance_data = distance_heuristic(schools_data[school], instructors_data)
         # instructor: distance_score
 
         # Construct score for instructor-school pair
@@ -42,12 +42,15 @@ def optimal_sort(season: str, program: str):
 
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
             # instr_score += distance_data[instr]
+            # instr_score += next_heuristic_here
 
             qu.heappush(iqueue, (instr_score, instr))
         
         # Apply school with list
         instr_choices = qu.nsmallest(cap, iqueue)
-        # remove instr_choices from being used again
+        
+        # TODO remove instr_choices from being used again
+
         response[school] = [x[1] for x in instr_choices]
 
         # for _ in range(instructors_idx, cap):
@@ -68,11 +71,16 @@ def instructor_program_preference_heuristic(program: str, instructor):
     return BASE_OF_UNINTEREST
 
 def distance_heuristic(school: str, instructors: dict):
-    print("DH")
-    print(school)
+    print("Distance Heuristic BEGIN")
+    print(school["address"])
+    print()
     print(instructors)
+    print()
+    print({instr:instructors[instr]['region'][0] for instr in instructors}) # Change based on schematic
+    # Construct dict, instructor: address
 
     print(instructors['I1'])
+    print("Distance Heuristic END")
 
 def optimal_resort(locked_instructors: dict, instructors: list, schools: list):
     pass
