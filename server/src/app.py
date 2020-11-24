@@ -5,7 +5,9 @@ import fbupload
 import fbdelete
 import manageinstructors
 import shirtsize
+import dfsapi
 from exceptions import KeyNotFoundError
+from dfsgmap import distance_between
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -22,7 +24,19 @@ def sort():
     sortparams = request.get_json()
     season = sortparams['Season']
     program = sortparams["Program"]
-    matches = optimal_sort.optimal_sort(season, program)
+
+    db = dfsapi.get_db()
+    # Get all schools
+    schools_data = db.child(season).child("schools").get().val()
+    # Get all instructors
+    instructors_data = db.child(season).child("instructors").get().val()
+
+    distance_data = dict()
+    region_set = {instructors_data[instr]['region'][0] for instr in instructors_data}
+    for school in schools_data:
+        distance_data[school] = distance_between(list(region_set), schools_data[school]['address'])
+
+    matches = optimal_sort.optimal_sort(schools_data, instructors_data, distance_data, program)
     return jsonify(matches)
 
 @app.route('/resort', methods=['GET', 'POST'])
