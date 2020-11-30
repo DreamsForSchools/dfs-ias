@@ -5,10 +5,35 @@ Heuristics:
 4. Car
 
 
+Send to /resort/
+{
+  season: "fall2020",
+  programs:{
+    program1: {
+        school_primary_key_1 : [instructor_primary_key_1, instructor_primary_key_2]
+        school_primary_key_2 : [instructor_primary_key_3, instructor_primary_key_4]
+    }
+  }
+}
+
+(bool, [(start, end), (start, end)]) 
+
 Returned JSON for match.
-{match:
-  {
+{
+  program1: {
+      school_primary_key_1 : [
+        [
+          instructor_primary_key_1,
+          {
+            "monday" : 
+          }
+        ]
+      ]
+  },
+
+  program2: {
       school_primary_key_1 : [instructor_primary_key_1, instructor_primary_key_2]
+      school_primary_key_2 : [instructor_primary_key_3, instructor_primary_key_4]
   }
 
 }
