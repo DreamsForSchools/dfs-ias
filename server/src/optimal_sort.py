@@ -3,6 +3,7 @@ from datetime import datetime as dt
 import pyrebase
 import dfsapi
 import heapq as qu
+import json
 from dfsgmap import distance_between
 from collections import defaultdict
 
@@ -16,29 +17,41 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
             schools_in_program.add(key)
     
     # Initialize response variable
-    response = defaultdict(list)
+    response = defaultdict(dict)
 
     # Start sort loop
     for school in schools_in_program:
         # Find match for school
-        cap = int(schools_data[school]["number_of_instructors"]) # Capacity
+        # cap = int(schools_data[school]["number_of_instructors"]) # Capacity
+        cap = int(schools_data[school]["programs"][program]["number_of_instructors"])
         iqueue = [] # Used to gather top n choices
         # Construct score for instructor-school pair
         for instr in instructors_data:
             instr_score = 0
             # instr_score += next_heuristic_here
-            valid,match_dicationary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) 
-            if valid == False: continue 
+            valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) 
+            if not valid: continue 
+
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
             instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
-            qu.heappush(iqueue, (instr_score, instr))
+            qu.heappush(iqueue, (instr_score, (instr, match_dictionary)))
         
         # Apply school with list
-        print("Data to be chosen from:", iqueue)
         instr_choices = qu.nsmallest(cap, iqueue)
+        
         # TODO remove instr_choices from being used again
-        response[school] = [x[1] for x in instr_choices]
-    return response
+        for x in instr_choices:
+            instr, m_dict = x[1]
+            print(instr)
+            print(m_dict)
+
+            if school not in response[program]:
+                response[program][school] = dict()
+            
+
+            response[program][school][instr] = m_dict
+        # response[program][school] = [x[1] for x in instr_choices]
+    return dict(response)
 
 
 #(true, {day:[(start, end), (start, end)]})  #(start,end) is school's time slot that was encompassed by the instructor
@@ -65,7 +78,7 @@ def time_matched(inst_time: dict, school_time_list: list) -> list:
         dt_school_begin = dt.strptime(school_time_dic["start"], '%H:%M')
         dt_school_end   = dt.strptime(school_time_dic["end"], '%H:%M')
         if (dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end):
-            return_list.append((dt_school_begin, dt_school_end))
+            return_list.append((dt_school_begin.strftime("%H:%M"), dt_school_end.strftime("%H:%M")))
     return return_list
 
 def instructor_program_preference_heuristic(program: str, instructor):
@@ -83,9 +96,6 @@ def distance_heuristic(region: str, distance_data: dict):
     max_dist = max([v for v in distance_data.values()])
     distance = distance_data[region]
     normalized = BASE*(distance / max_dist)
-    print("Raw dist:", distance)
-    print("Normalized dist:", normalized)
-    print()
     return normalized
 
 def optimal_resort(locked_instructors: dict, instructors: list, schools: list):
@@ -93,6 +103,8 @@ def optimal_resort(locked_instructors: dict, instructors: list, schools: list):
 
 if __name__ == "__main__":
     # This __main__ simulates a call from app.py
+    # print(type(json.dumps({"x": 1, "y": 2})))
+    # exit(0)
 
     season = "Fall2020"
     program = "Appjam"
@@ -108,4 +120,6 @@ if __name__ == "__main__":
     for school in schools_data:
         distance_data[school] = distance_between(list(region_set), schools_data[school]['address'])
 
-    print(optimal_sort(schools_data, instructors_data, distance_data, program))
+    # print(jsonify(optimal_sort(schools_data, instructors_data, distance_data, program)))
+    data = optimal_sort(schools_data, instructors_data, distance_data, program)
+    
