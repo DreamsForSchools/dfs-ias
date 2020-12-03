@@ -9,13 +9,13 @@ from collections import defaultdict
 
 def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict, program: str):
     #Conducting an optimal sort of instructor/school pairings based on program specified.
-    
+
     # Get all schools that host the program
     schools_in_program = set()
     for key, data in schools_data.items():
         if program in data["programs"]:
             schools_in_program.add(key)
-    
+
     # Initialize response variable
     response = defaultdict(dict)
 
@@ -29,16 +29,16 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
         for instr in instructors_data:
             instr_score = 0
             # instr_score += next_heuristic_here
-            valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) 
-            if not valid: continue 
+            valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program])
+            if not valid: continue
 
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
             instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
             qu.heappush(iqueue, (instr_score, (instr, match_dictionary)))
-        
+
         # Apply school with list
         instr_choices = qu.nsmallest(cap, iqueue)
-        
+
         # TODO remove instr_choices from being used again
         for x in instr_choices:
             instr, m_dict = x[1]
@@ -47,7 +47,7 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
 
             if school not in response[program]:
                 response[program][school] = dict()
-            
+
 
             response[program][school][instr] = m_dict
         # response[program][school] = [x[1] for x in instr_choices]
@@ -55,7 +55,7 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
 
 
 #(true, {day:[(start, end), (start, end)]})  #(start,end) is school's time slot that was encompassed by the instructor
-#sample output: 
+#sample output:
 #(True, defaultdict(<class 'list'>, {'Monday': [[(datetime.datetime(1900, 1, 1, 9, 30), datetime.datetime(1900, 1, 1, 13, 30))]]}))
 def check_availability(instructor_schedule: dict, school_schedule: dict) -> (bool, list):
     availability = 0
@@ -68,12 +68,12 @@ def check_availability(instructor_schedule: dict, school_schedule: dict) -> (boo
             match_dicationary[day].extend(day_list)
         availability += len(day_list)
     return (availability > 0, match_dicationary)
-             
+
 def time_matched(inst_time: dict, school_time_list: list) -> list:
     return_list = [] #this will contain all the matched slots for a particular day
     dt_inst_begin = dt.strptime(inst_time["start"], '%H:%M')
     dt_inst_end   = dt.strptime(inst_time["end"],   '%H:%M')
-     
+
     for school_time_dic in school_time_list:
         dt_school_begin = dt.strptime(school_time_dic["start"], '%H:%M')
         dt_school_end   = dt.strptime(school_time_dic["end"], '%H:%M')
@@ -95,6 +95,8 @@ def distance_heuristic(region: str, distance_data: dict):
     BASE = 10
     max_dist = max([v for v in distance_data.values()])
     distance = distance_data[region]
+    if distance is None:
+        return BASE
     normalized = BASE*(distance / max_dist)
     return normalized
 
@@ -122,4 +124,3 @@ if __name__ == "__main__":
 
     # print(jsonify(optimal_sort(schools_data, instructors_data, distance_data, program)))
     data = optimal_sort(schools_data, instructors_data, distance_data, program)
-    
