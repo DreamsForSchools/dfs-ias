@@ -33,7 +33,7 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
             if not valid: continue
 
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
-            instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
+            #instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
             qu.heappush(iqueue, (instr_score, (instr, match_dictionary)))
 
         # Apply school with list
@@ -63,7 +63,8 @@ def check_availability(instructor_schedule: dict, school_schedule: dict) -> (boo
     for day, time_slots_list in instructor_schedule.items():
         day_list = [] #will contain all the time slots of school programs that can be taught by an instructor
         for inst_time_dic in time_slots_list:
-            day_list.extend(time_matched(inst_time_dic, school_schedule[day]))
+            if(day in school_schedule):
+                day_list.extend(time_matched(inst_time_dic, school_schedule[day]))
         if day_list:
             match_dicationary[day].extend(day_list)
         availability += len(day_list)
@@ -78,7 +79,7 @@ def time_matched(inst_time: dict, school_time_list: list) -> list:
         dt_school_begin = dt.strptime(school_time_dic["start"], '%H:%M')
         dt_school_end   = dt.strptime(school_time_dic["end"], '%H:%M')
         if (dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end):
-            return_list.append((dt_school_begin.strftime("%H:%M"), dt_school_end.strftime("%H:%M")))
+            return_list.append({'start':dt_school_begin.strftime("%H:%M"), 'end':dt_school_end.strftime("%H:%M")})
     return return_list
 
 def instructor_program_preference_heuristic(program: str, instructor):
