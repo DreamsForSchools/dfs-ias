@@ -6,6 +6,7 @@ import heapq as qu
 import json
 from dfsgmap import distance_between
 from collections import defaultdict
+import random
 
 def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict, program: str):
     #Conducting an optimal sort of instructor/school pairings based on program specified.
@@ -44,8 +45,6 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
         for x in instr_choices:
             #instr, m_dict = x[1]
             instr = x[1]
-            print(instr)
-            #print(m_dict)
 
             if school not in response[program]:
                 response[program][school] = dict()
@@ -53,9 +52,8 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
 
             response[program][school][instr] = 1
         # response[program][school] = [x[1] for x in instr_choices]
-    for item in response.items():
-        print(item)
-        print()
+    print("SORT: ")
+    print(response)
     return dict(response)
 
 def check_through_all_inst_time_slots(dt_school_begin: dt, dt_school_end: dt, inst_time_slots: list): 
@@ -100,7 +98,7 @@ def distance_heuristic(region: str, distance_data: dict):
     normalized = BASE*(distance / max_dist)
     return normalized
 
-def optimal_resort(locked_instructors: dict, schools_data: dict, instructors_data: dict, distance_data: dict, program: str):
+def optimal_resort(locked_dict: dict, schools_data: dict, instructors_data: dict, distance_data: dict, program: str):
     #Conducting an optimal sort of instructor/school pairings based on program specified.
 
     # Get all schools that host the program
@@ -113,6 +111,9 @@ def optimal_resort(locked_instructors: dict, schools_data: dict, instructors_dat
     response = defaultdict(dict)
 
     # Start sort loop
+    schools_in_program_list = list(schools_in_program)
+    random.shuffle(schools_in_program_list)
+
     for school in schools_in_program:
         # Find match for school
         # cap = int(schools_data[school]["number_of_instructors"]) # Capacity
@@ -120,17 +121,18 @@ def optimal_resort(locked_instructors: dict, schools_data: dict, instructors_dat
         iqueue = [] # Used to gather top n choices
         # Construct score for instructor-school pair
         for instr in instructors_data:
-            #if instr in locked_instructors and program in locked_instructors[instr]:
-            #   qu.heappush(iqueue, (0, instr))
-            #   continue
+            if program in locked_dict and school in locked_dict[program] and instr in locked_dict[program][school]:
+                qu.heappush(iqueue, (0, instr))
+                continue
             instr_score = 0
             # instr_score += next_heuristic_here
             #valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program])
             valid = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) #This returns True only if a instructor is available for all the days (+ all the time slots in each day) for a school's program 
             if not valid: continue
 
-            instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
-            instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
+            instr_score += random.randint(1,10)
+            #instr_score += random_scale_instructor_program_preference_heuristic * instructor_program_preference_heuristic(program, instructors_data[instr])
+            #instr_score += random_scale_distance_heuristic * distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
             #qu.heappush(iqueue, (instr_score, (instr, match_dictionary)))
             qu.heappush(iqueue, (instr_score, instr))
         # Apply school with list
@@ -140,24 +142,18 @@ def optimal_resort(locked_instructors: dict, schools_data: dict, instructors_dat
         for x in instr_choices:
             #instr, m_dict = x[1]
             instr = x[1]
-            print(instr)
-            #print(m_dict)
 
             if school not in response[program]:
                 response[program][school] = dict()
-
-
             response[program][school][instr] = 1
-        # response[program][school] = [x[1] for x in instr_choices]
-    for item in response.items():
-        print(item)
-        print()
+            if school == "35439":
+                print("Instructor: ", instr)
+                print("Score: ", x[0])
+    print("RESORT: ")
+    print(response)
     return dict(response)
 
 if __name__ == "__main__":
-    # This __main__ simulates a call from app.py
-    # print(type(json.dumps({"x": 1, "y": 2})))
-    # exit(0)
 
     season = "Fall 2020"
     program = "AppJam"
@@ -172,7 +168,4 @@ if __name__ == "__main__":
     region_set = {instructors_data[instr]['region'][0] for instr in instructors_data}
     for school in schools_data:
         distance_data[school] = distance_between(list(region_set), schools_data[school]['address'])
-
-    # print(jsonify(optimal_sort(schools_data, instructors_data, distance_data, program)))
     data = optimal_sort(schools_data, instructors_data, distance_data, program)
-    # print(data)
