@@ -29,7 +29,8 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
         for instr in instructors_data:
             instr_score = 0
             # instr_score += next_heuristic_here
-            valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program])
+            #valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program])
+            valid = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) #This returns True only if a instructor is available for all the days (+ all the time slots in each day) for a school's program 
             if not valid: continue
 
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
@@ -56,34 +57,26 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
         print()
     return dict(response)
 
+def check_through_all_inst_time_slots(dt_school_begin: dt, dt_school_end: dt, inst_time_slots: list): 
+    for inst_time_slot in inst_time_slots:
+        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M') 
+        dt_inst_end   = dt.strptime(inst_time_slot["end"], '%H:%M')
+        if dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end:
+            return True 
+    return False
 
-#(true, {day:[(start, end), (start, end)]})  #(start,end) is school's time slot that was encompassed by the instructor
-#sample output:
-#(True, defaultdict(<class 'list'>, {'Monday': [[(datetime.datetime(1900, 1, 1, 9, 30), datetime.datetime(1900, 1, 1, 13, 30))]]}))
-def check_availability(instructor_schedule: dict, school_schedule: dict) -> (bool, list):
-    availability = 0
-    match_dicationary = defaultdict(list)
-    for day, time_slots_list in instructor_schedule.items():
-        day_list = [] #will contain all the time slots of school programs that can be taught by an instructor
-        for inst_time_dic in time_slots_list:
-            if(day in school_schedule):
-                day_list.extend(time_matched(inst_time_dic, school_schedule[day]))
-        if day_list:
-            match_dicationary[day].extend(day_list)
-        availability += len(day_list)
-    return (availability > 0, match_dicationary)
+def check_instructor_avaialiabiltiy_for_this_day(day: str, school_time_slot_list : list, instructor_schedule: dict) -> bool:
+    for sch_time_slot in school_time_slot_list:
+        dt_school_begin = dt.strptime(sch_time_slot["start"], '%H:%M')
+        dt_school_end   = dt.strptime(sch_time_slot["end"], '%H:%M')
+        if check_through_all_inst_time_slots(dt_school_begin, dt_school_end, instructor_schedule[day]) == False: return False
+    return True         
 
-def time_matched(inst_time: dict, school_time_list: list) -> list:
-    return_list = [] #this will contain all the matched slots for a particular day
-    dt_inst_begin = dt.strptime(inst_time["start"], '%H:%M')
-    dt_inst_end   = dt.strptime(inst_time["end"],   '%H:%M')
-
-    for school_time_dic in school_time_list:
-        dt_school_begin = dt.strptime(school_time_dic["start"], '%H:%M')
-        dt_school_end   = dt.strptime(school_time_dic["end"], '%H:%M')
-        if (dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end):
-            return_list.append({'start':dt_school_begin.strftime("%H:%M"), 'end':dt_school_end.strftime("%H:%M")})
-    return return_list
+def check_availability(instructor_schedule: dict, school_schedule: dict) -> bool:
+    for day, school_time_slots_list in school_schedule: 
+        if type(school_time_slots_list) != list: continue
+        if check_instructor_avaialiabiltiy_for_this_day(day, school_time_slots_list, instructor_schedule) == False: return False
+    return True
 
 def instructor_program_preference_heuristic(program: str, instructor):
     BASE_OF_UNINTEREST = 10
