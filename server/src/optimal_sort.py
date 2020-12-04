@@ -33,7 +33,7 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
             if not valid: continue
 
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
-            #instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
+            instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
             qu.heappush(iqueue, (instr_score, (instr, match_dictionary)))
 
         # Apply school with list
@@ -51,6 +51,9 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
 
             response[program][school][instr] = m_dict
         # response[program][school] = [x[1] for x in instr_choices]
+    for item in response.items():
+        print(item)
+        print()
     return dict(response)
 
 
@@ -95,9 +98,11 @@ def instructor_program_preference_heuristic(program: str, instructor):
 def distance_heuristic(region: str, distance_data: dict):
     BASE = 10
     max_dist = max([v for v in distance_data.values()])
+
     distance = distance_data[region]
-    if distance is None:
+    if distance == -1:
         return BASE
+
     normalized = BASE*(distance / max_dist)
     return normalized
 
@@ -109,8 +114,8 @@ if __name__ == "__main__":
     # print(type(json.dumps({"x": 1, "y": 2})))
     # exit(0)
 
-    season = "Fall2020"
-    program = "Appjam"
+    season = "Fall 2020"
+    program = "AppJam"
 
     db = dfsapi.get_db()
     # Get all schools
@@ -125,3 +130,4 @@ if __name__ == "__main__":
 
     # print(jsonify(optimal_sort(schools_data, instructors_data, distance_data, program)))
     data = optimal_sort(schools_data, instructors_data, distance_data, program)
+    # print(data)
