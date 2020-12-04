@@ -45,12 +45,29 @@ def sort():
 
 @app.route('/resort', methods=['GET', 'POST'])
 def resort():
-    resortparams = request.get_json()
-    locked_instructors = sortparams["Locked"]
+    sortparams = request.get_json()
+    print("RP")
+    print(sortparams)
     season = sortparams['Season']
+    locked_instructors = sortparams["Locked"]
 
-    matches = optimal_sort.optimal_resort(locked_instructors, instructors, schools)
-    return jsonify(matches)
+    db = dfsapi.get_db()
+    # Get all schools
+    schools_data = db.child(season).child("schools").get().val()
+    # Get all instructors
+    instructors_data = db.child(season).child("instructors").get().val()
+    # Get all programs
+    programs_data = db.child(season).child("programs").get().val()
+
+    distance_data = dict()
+    region_set = {instructors_data[instr]['region'][0] for instr in instructors_data}
+    for school in schools_data:
+        distance_data[school] = distance_between(list(region_set), schools_data[school]['address'])
+
+    response = dict()
+    for program in programs_data:
+        response.update(optimal_sort.optimal_resort(locked_instructors, schools_data, instructors_data, distance_data, program))
+    return dumps(response)
 
 # Instructor Section
 
