@@ -29,7 +29,21 @@ export default function SchoolRosterPage() {
             
           })
       });
-    
+      const deleteSchoolBtnPressed = (e) => {
+        // history.push('/appjamhome/sortedroster');
+        history.push({
+            pathname: "/DeleteSchoolPage",
+            state: {isNewRoster: false, program:"sphero"}
+        });
+    } 
+    const addSchoolBtnPressed = (e) => {
+        // history.push('/appjamhome/sortedroster');
+        history.push({
+            pathname: "/AddSchoolPage",
+            state: {isNewRoster: false, program:"sphero"}
+        });
+    } 
+
     return (
         <div>
             <SideNavBar />
@@ -39,6 +53,15 @@ export default function SchoolRosterPage() {
 
                 <div className="hozLineDivider"></div>
 
+                <div style={buttonContainer}>
+                    <div style={sortBtnContainer}>
+                        <button onClick={addSchoolBtnPressed} style={addBtn}>Add School</button>
+                    </div>
+                    <div style={sortBtnContainer}>
+                        <button onClick={deleteSchoolBtnPressed} style={addBtn}>Delete School</button>
+                    </div>
+                </div> 
+                    
                 <ProgramSchoolRosterTable program="AppJam+" databaseName="AppJam+"/>
 
                 <div style={fixMargin}>
@@ -60,3 +83,33 @@ const fixMargin = {
 }
 
 
+
+const buttonContainer = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+}
+
+
+const sortBtnContainer = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    // marginLeft: "50vw"
+}
+const addBtn = {
+    fontSize: "18px",
+    fontWeight: "500",
+    color: "#49479D",
+    backgroundColor: "white",
+    borderRadius: "28px",
+    height: "46px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    marginLeft: "10px",
+    marginBottom: "20px",
+    width: "300px",
+    border: "1px solid #49479D"
+}

@@ -41,14 +41,14 @@ export default function SpheroRosterPage() {
     const quarterYearDatabase = useRef(fire.database().ref().child('seasonYear/-M8idEUsNN1M5VcJDv-I/sphero'))
 
     //accesses firebase for quarter and the year
-    useEffect(() => {
-        quarterYearDatabase.current.once('value', (snap) => {
-            const quarterYear = snap.val();
-            console.log("CURRENT QUARTER:", quarterYear)
-            setQuarter(quarterYear.quarter);
-            setYear(quarterYear.year);
-        });
-    },[]);
+  //  useEffect(() => {
+  //      quarterYearDatabase.current.once('value', (snap) => {
+  //          const quarterYear = snap.val();
+  //          console.log("CURRENT QUARTER:", quarterYear)
+  //          setQuarter(quarterYear.quarter);
+  //          setYear(quarterYear.year);
+  //      });
+  //  },[]);
 
     //stores the roster taken from the database
     const [roster, setRoster] = useState([])

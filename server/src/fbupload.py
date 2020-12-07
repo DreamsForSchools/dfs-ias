@@ -4,128 +4,91 @@ import calendar
 import time
 import dbtools
 from collections import defaultdict
+from exceptions import KeyExists
 
 '''
-Uploads institution to the firebase database
-under the specified program with the given
-json object that contains information 
-about the institution.
+Uploads school to the firebase database
+under the specified season and school with the given
+json object that contains information
+about the school.
 '''
-def upload_institutions(school:dict):
+#def upload_school(season: str, school: dict):
+def upload_school(school:dict):
 	db = dfsapi.get_db()
 
-	Mon = dbtools.minute_range(school["Monday"])
-	Tue = dbtools.minute_range(school["Tuesday"])
-	Wed = dbtools.minute_range(school["Wednesday"])
-	Thurs = dbtools.minute_range(school["Thursday"])
-	Fri = dbtools.minute_range(school["Friday"])
+	season = school["Season"]
+	del school["Season"]
 
-	Schedule = defaultdict(list)
-		
-	if Mon != None:
-		Schedule[1].append(Mon)
-	if Tue != None:
-		Schedule[2].append(Tue)
-	if Wed != None:
-		Schedule[3].append(Wed)
-	if Thurs != None:
-		Schedule[4].append(Thurs)
-	if Fri != None:
-		Schedule[5].append(Fri)
-	
-	school_info = {
-		"Name" : school["Name"], 
-		"Address" : school["Address"], 
-		"County" : school["County"], 
-		"Instructors" : school["Instructors"], 
-		"Schedule" : Schedule
-	}
-	
-	for p in school['Program']:
-		if school['New']:
-			latest = str(calendar.timegm(time.gmtime()))
-			db.child(p).child("institutions").child(latest).child(school_info['Name']).set(school_info)
-		else:
-			timestamps = db.child(p).child("institutions").shallow().get()
-			if timestamps.val() != None:
-				latest = max(timestamps.val())
-				db.child(p).child("institutions").child(latest).child(school_info['Name']).set(school_info)
-	db.child("institutions").child(school_info['Name']).set(school_info)
-
-	for p in school['Program']:
-		keys = db.child(p).child("institutions").shallow().get()
-		if keys.val() != None:
-			db_length = len(keys.val())
-			if db_length > 10:
-				oldest = min(keys.val())
-				db.child(p).child("institutions").child(oldest).remove()
-
-
+	# Set everything
+	program_preference = {}
+	school["programs"] = {k: 1 for k in school["programs"]}
+	ret = db.child(season).child("schools").push(school)
+	pk = ret["name"]
+	# Add School to programs.
+	if "programs" in school:
+		programs_list = school["programs"]
+		for program in programs_list:
+			db.child(season).child("programs").child(program).child("assigned_schools").child(pk).set(1)
 '''
 Uploads instructor to the firebase database
-under the specified program based on the 
+under the specified season and instructor based on the
 information provided in the json object.
 '''
-def upload_instructors(teacher:dict):
+def upload_instructor(instructor: dict):
+	db = dfsapi.get_db()
 
-	Mon = dbtools.minute_range(teacher["Monday"])
-	Tue = dbtools.minute_range(teacher["Tuesday"])
-	Wed = dbtools.minute_range(teacher["Wednesday"])
-	Thurs = dbtools.minute_range(teacher["Thursday"])
-	Fri = dbtools.minute_range(teacher["Friday"])
+	season = instructor["Season"]
+	del instructor["Season"]
 
-	Schedule = defaultdict(list)
-		
-	if Mon != None:
-		Schedule[1].append(Mon)
-	if Tue != None:
-		Schedule[2].append(Tue)
-	if Wed != None:
-		Schedule[3].append(Wed)
-	if Thurs != None:
-		Schedule[4].append(Thurs)
-	if Fri != None:
-		Schedule[5].append(Fri)
+	#Set everything
+	instructor["programs"] = {k : i + 1 for i, k in enumerate(instructor["programs"])}
+	ret = db.child(season).child("instructors").push(instructor)
+	'''
+	pk = ret["name"]
+	if "programs" in instructor:
+		programs_list = instructor["programs"]
+		for program in programs_list:
+			db.child(season).child("programs").child(program).child("assigned_instructors").child(pk).set(1)
+		'''
+'''
+Uploads program to the firebase database
+under the specified season and program based on the
+information provided in the json object.
+'''
+def upload_program(program: dict):
+	db = dfsapi.get_db()
 
-	teacher_info = {
-		"Name" : teacher["Name"], 
-		"Gender" : teacher["Gender"], 
-		"Ethnicity" : teacher["Ethnicity"], 
-		"Region" : teacher["Region"], 
-		"University" : teacher["University"], 
-		"Year" : teacher["Year"], 
-		"PreviousMentor" : teacher["PreviousMentor"], 
-		"Car" : teacher["Car"], 
-		"Languages" : teacher["Languages"], 
-		"ShirtSize" : teacher["ShirtSize"], 
-		"MultipleDays" : teacher["MultipleDays"],
-		"Schedule" : Schedule
+	season = program["Season"]
+	del program["Season"]
+
+	db.child(season).child("programs").child(program["name"]).update(program)
+
+if __name__ == "__main__":
+	s = {
+		"Name": "school3",
+		"Season": "spring2021",
+		"address": "123 street",
+		"is_virtual": True,
+		"programs": ["AppjAm", "Stupidjamp"],
+		"special_language_request": ["eng", "vie"],
+		"number_of_instructors": 0,
+		"program_time_flexibility": False
 	}
 
-	db = dfsapi.get_db()
-	
-	for p in teacher['Program']:
-		if teacher['New']:
-			latest = str(calendar.timegm(time.gmtime()))
-			db.child(p).child("instructors").child(latest).child(teacher_info['Name']).set(teacher_info)
-		else:
-			timestamps = db.child(p).child("instructors").shallow().get()
-			if timestamps.val() != None:
-				latest = max(timestamps.val())
-				db.child(p).child("instructors").child(latest).child(teacher_info['Name']).set(teacher_info)
-		
-		db.child("instructors").child(teacher_info['Name']).set(teacher_info)
+	p = {
+		"name": "AJ2",
+		"Season" : "spring2021",
+		"assigned_institutions": [{
+			"SCH2": [{"instructor name": {"locked": True}}]
+		}]
+	}
 
-	for p in teacher['Program']:
-		keys = db.child(p).child("instructors").shallow().get()
-		if keys.val() != None:
-			db_length = len(keys.val())
-			if db_length > 10:
-				oldest = min(keys.val())
-				db.child(p).child("instructors").child(oldest).remove()
-	return
-		
-
-
-
-
+	i = {
+        "name": "Thornton",
+		"Season" : "spring2021",
+        "major": "computer science",
+		"university": "university of california irvine",
+		"programs": ["AppjAm", "Stupidjamp"]
+    }
+	upload_instructor(i)
+	upload_school(s)
