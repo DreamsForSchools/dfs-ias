@@ -11,6 +11,9 @@ import random
 def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict, program: str):
     #Conducting an optimal sort of instructor/school pairings based on program specified.
 
+    #Initialize Instructor's schedule.
+    #key instructor -> {{start: 12:00,  end: 5:00},}
+
     # Get all schools that host the program
     schools_in_program = set()
     for key, data in schools_data.items():
@@ -33,7 +36,6 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
             #valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program])
             valid = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) #This returns True only if a instructor is available for all the days (+ all the time slots in each day) for a school's program 
             if not valid: continue
-
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
             instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
             #qu.heappush(iqueue, (instr_score, (instr, match_dictionary)))
@@ -41,10 +43,25 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
         # Apply school with list
         instr_choices = qu.nsmallest(cap, iqueue)
 
+        school_schedule_data = schools_data[school]["programs"][program]
         # TODO remove instr_choices from being used again
         for x in instr_choices:
             #instr, m_dict = x[1]
             instr = x[1]
+            for day, schedule_time_list in school_schedule_data.items():
+                if type(schedule_time_list) != list: continue
+                for schedule_time in schedule_time_list:
+                    length_instrs = len(instructors_data[instr]['schedule'][day])
+                    dt_school_begin = dt.strptime(schedule_time["start"], '%H:%M')
+                    dt_school_end = dt.strptime(schedule_time["end"], '%H:%M')
+                    for i in range(length_instrs):
+                        inst_time_slot = instructors_data[instr]['schedule'][day][i]
+                        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M') 
+                        dt_inst_end = dt.strptime(inst_time_slot["end"], '%H:%M')
+                        if dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end:
+                            instructors_data[instr]['schedule'][day][i]["end"] = schedule_time["start"]
+                            instructors_data[instr]['schedule'][day].append({"start" : schedule_time["end"], "end" : inst_time_slot["end"]})
+                            break
 
             if school not in response[program]:
                 response[program][school] = dict()
@@ -137,6 +154,21 @@ def optimal_resort(locked_dict: dict, schools_data: dict, instructors_data: dict
             qu.heappush(iqueue, (instr_score, instr))
         # Apply school with list
         instr_choices = qu.nsmallest(cap, iqueue)
+        school_schedule_data = schools_data[school]["programs"][program]
+        for day, schedule_time_list in school_schedule_data.items():
+                if type(schedule_time_list) != list: continue
+                for schedule_time in schedule_time_list:
+                    length_instrs = len(instructors_data[instr]['schedule'][day])
+                    dt_school_begin = dt.strptime(schedule_time["start"], '%H:%M')
+                    dt_school_end = dt.strptime(schedule_time["end"], '%H:%M')
+                    for i in range(length_instrs):
+                        inst_time_slot = instructors_data[instr]['schedule'][day][i]
+                        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M') 
+                        dt_inst_end = dt.strptime(inst_time_slot["end"], '%H:%M')
+                        if dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end:
+                            instructors_data[instr]['schedule'][day][i]["end"] = schedule_time["start"]
+                            instructors_data[instr]['schedule'][day].append({"start" : schedule_time["end"], "end" : inst_time_slot["end"]})
+                            break
 
         # TODO remove instr_choices from being used again
         for x in instr_choices:

@@ -20,6 +20,7 @@ def main_view():
 
 @app.route('/sort', methods=['GET','POST'])
 def sort():
+    instructors_time_not_available = {}
     sortparams = request.get_json()
     print("SP")
     print(sortparams)
