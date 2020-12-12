@@ -1,6 +1,6 @@
 # Dreams For Schools - Instrutor App Sorterd
 
-The follwing is the final deployed version of the S20 UCI team. 
+This app is designed to be used by Dreams for Schools administratiors. It helps them assign instructors to schools based on several heuristics. 
 
 ## Contribution Rules
 
