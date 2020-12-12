@@ -34,10 +34,13 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
             instr_score = 0
             # instr_score += next_heuristic_here
             #valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program])
-            valid = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) #This returns True only if a instructor is available for all the days (+ all the time slots in each day) for a school's program 
+            valid = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) #This returns True only if a instructor is available for all the days (+ all the time slots in each day) for a school's program
             if not valid: continue
             instr_score += instructor_program_preference_heuristic(program, instructors_data[instr])
-            instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
+            try:
+                instr_score += distance_heuristic(instructors_data[instr]['region'][0], distance_data[school])
+            except:
+                print('distance Error')
             #qu.heappush(iqueue, (instr_score, (instr, match_dictionary)))
             qu.heappush(iqueue, (instr_score, instr))
         # Apply school with list
@@ -56,7 +59,7 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
                     dt_school_end = dt.strptime(schedule_time["end"], '%H:%M')
                     for i in range(length_instrs):
                         inst_time_slot = instructors_data[instr]['schedule'][day][i]
-                        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M') 
+                        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M')
                         dt_inst_end = dt.strptime(inst_time_slot["end"], '%H:%M')
                         if dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end:
                             instructors_data[instr]['schedule'][day][i]["end"] = schedule_time["start"]
@@ -73,12 +76,12 @@ def optimal_sort(schools_data: dict, instructors_data: dict, distance_data: dict
     print(response)
     return dict(response)
 
-def check_through_all_inst_time_slots(dt_school_begin: dt, dt_school_end: dt, inst_time_slots: list): 
+def check_through_all_inst_time_slots(dt_school_begin: dt, dt_school_end: dt, inst_time_slots: list):
     for inst_time_slot in inst_time_slots:
-        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M') 
+        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M')
         dt_inst_end   = dt.strptime(inst_time_slot["end"], '%H:%M')
         if dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end:
-            return True 
+            return True
     return False
 
 def check_instructor_avaialiabiltiy_for_this_day(day: str, school_time_slot_list : list, instructor_schedule: dict) -> bool:
@@ -86,10 +89,10 @@ def check_instructor_avaialiabiltiy_for_this_day(day: str, school_time_slot_list
         dt_school_begin = dt.strptime(sch_time_slot["start"], '%H:%M')
         dt_school_end   = dt.strptime(sch_time_slot["end"], '%H:%M')
         if check_through_all_inst_time_slots(dt_school_begin, dt_school_end, instructor_schedule[day]) == False: return False
-    return True         
+    return True
 
 def check_availability(instructor_schedule: dict, school_schedule: dict) -> bool:
-    for day, school_time_slots_list in school_schedule.items(): 
+    for day, school_time_slots_list in school_schedule.items():
         if type(school_time_slots_list) != list: continue
         if check_instructor_avaialiabiltiy_for_this_day(day, school_time_slots_list, instructor_schedule) == False: return False
     return True
@@ -144,7 +147,7 @@ def optimal_resort(locked_dict: dict, schools_data: dict, instructors_data: dict
             instr_score = 0
             # instr_score += next_heuristic_here
             #valid, match_dictionary = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program])
-            valid = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) #This returns True only if a instructor is available for all the days (+ all the time slots in each day) for a school's program 
+            valid = check_availability( instructors_data[instr]["schedule"], schools_data[school]["programs"][program]) #This returns True only if a instructor is available for all the days (+ all the time slots in each day) for a school's program
             if not valid: continue
 
             instr_score += random.randint(1,10)
@@ -163,7 +166,7 @@ def optimal_resort(locked_dict: dict, schools_data: dict, instructors_data: dict
                     dt_school_end = dt.strptime(schedule_time["end"], '%H:%M')
                     for i in range(length_instrs):
                         inst_time_slot = instructors_data[instr]['schedule'][day][i]
-                        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M') 
+                        dt_inst_begin = dt.strptime(inst_time_slot["start"], '%H:%M')
                         dt_inst_end = dt.strptime(inst_time_slot["end"], '%H:%M')
                         if dt_inst_begin <= dt_school_begin and  dt_inst_end >= dt_school_end:
                             instructors_data[instr]['schedule'][day][i]["end"] = schedule_time["start"]
