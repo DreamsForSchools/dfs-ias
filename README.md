@@ -53,6 +53,18 @@ The back end is written in Python 3.7
 ## Important Facts
 1. The back end hosting website Python Anywhere hosts the website for free but it requires a log in at least once every three months and click the "Run until 3 months from today" button. Otherwise Python Anywhere will stop hosting the backend 
 
+## Outstanding items
+- Ability to save sorted roster as a pdf
+- Ability to save multiple version of sorted roster
+- Make show sort button bigger (more intuitive to use) 
+- Add a warning before attempting resort
+
+## Future improve
+- In the sorted roster have MWF and TuTh have different color
+- General front-end design changes to make the website more intuitive
+  - Change the season text (located at upper-right corner) color to white
+- Add carpool button 
+
 
 ## Contribution Rules
 
