@@ -22,7 +22,7 @@ A few things you can do with Instructor Assignment Sorter
 # Run on local machine
 To clone and run this application on your machine. From the command line:  
 ## Backend
-Follow this video: ![How to set up Backend](https://www.youtube.com/watch?v=bEGUAf6vNo4&list=PL4gnaB7L8JuaXDi6JPs8h_ytlf7IEhWI3&index=2)
+Follow this video: [How to set up Backend](https://www.youtube.com/watch?v=bEGUAf6vNo4&list=PL4gnaB7L8JuaXDi6JPs8h_ytlf7IEhWI3&index=2)
 <br />
 or follow the steps below
 1. `git clone https://github.com/DreamsForSchools/dfs-ias`
@@ -36,7 +36,7 @@ or follow the steps below
 
 ## Frontend
 
-Follow this video: ![How to set up Frontend](https://www.youtube.com/watch?v=1YsMWV4g2eI&list=PL4gnaB7L8JuaXDi6JPs8h_ytlf7IEhWI3&index=1)
+Follow this video: [How to set up Frontend](https://www.youtube.com/watch?v=1YsMWV4g2eI&list=PL4gnaB7L8JuaXDi6JPs8h_ytlf7IEhWI3&index=1)
 <br />
 or follow the steps below
 - Clone repo into local directory.
