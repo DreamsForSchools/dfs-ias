@@ -132,6 +132,7 @@ The back end is written in Python 3.7
 
 # Important Facts
 - The back end hosting website Python Anywhere hosts the website for free but it requires a log in at least once every three months and click the "Run until 3 months from today" button. Otherwise Python Anywhere will stop hosting the backend 
+  - Steps: Login to python anywhere -> Click "Web" -> Click "Run until 3 months from today"
 
 # Outstanding items
 - Ability to save sorted roster as a pdf
