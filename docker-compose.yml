@@ -1,0 +1,27 @@
+services:
+  # api:
+  #   build: api
+  #   command: npm start
+  #   volumes:
+  #     - ./api:/usr/app
+  #     - /usr/app/node_modules
+  #   ports:
+  #     - 5000:5000
+  #   depends_on:
+  #     - db
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  
