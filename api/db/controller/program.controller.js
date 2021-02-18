@@ -4,11 +4,8 @@ const Program = require('../model/program.model');
 
 exports.findAll = function(req, res) {
     Program.findAll(function(err, program) {
-      console.log('controller')
-      if (err)
-      res.send(err);
-      console.log('res', program);
-      res.send(program);
+      if (err) res.send(err);
+      else res.send(program);
     });
 };
 
@@ -22,7 +19,28 @@ exports.create = function(req, res) {
         Program.create(new_program, function(err, program) {
             if (err)
                 res.send(err);
-                res.json({error:false,message:"Program added successfully!",data:program});
+            else res.json({error:false, message:"Program added successfully!",data:program});
         });
     }
 };
+
+exports.findById = function(req, res) {
+    Program.findById(req.params.id, function(err, program) {
+        if (err) res.send(err);
+        else res.send(program);
+    })
+}
+
+exports.deleteById = function(req, res) {
+    Program.deleteById(req.params.id, function(err, program) {
+        if (err) res.send(err);
+        else res.send(program);
+    })
+}
+
+exports.updateById = function(req, res) {
+    Program.updateById(req.params.id, new Program(req.body), function(err, program) {
+        if (err) res.send(err);
+        else res.send(program);
+    })
+}
