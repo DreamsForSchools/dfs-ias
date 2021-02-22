@@ -1,14 +1,4 @@
 services:
-  # api:
-  #   build: api
-  #   command: npm start
-  #   volumes:
-  #     - ./api:/usr/app
-  #     - /usr/app/node_modules
-  #   ports:
-  #     - 5000:5000
-  #   depends_on:
-  #     - db
   db:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -19,9 +9,21 @@ services:
       - 3306:3306
     expose:
       - 3306
+  api:
+    build: api
+    command: npm start
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
-  
+networks:
+  backend:
