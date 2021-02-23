@@ -3,7 +3,7 @@ import './Sorter.scss';
 
 function Sorter() {
   return (
-    <div className="Sorter">
+    <div className="sorter">
       Sorter Page
     </div>
   );

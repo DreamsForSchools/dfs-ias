@@ -3,7 +3,7 @@ import './Instructors.scss';
 
 function Instructors() {
   return (
-    <div className="Instructors">
+    <div className="instructors">
       Instructors Page
     </div>
   );

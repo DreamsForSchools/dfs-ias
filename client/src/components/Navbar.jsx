@@ -12,7 +12,7 @@ const NavigationBar = () => (
         <Nav.Link className="nav-link" href="/programs">Programs</Nav.Link>
         <Nav.Link className="nav-link" href="/instructors">Instructors</Nav.Link>
         <Nav.Link className="nav-link" href="/sorter">Sorter</Nav.Link>
-        <DropdownButton className="season-btn" id="dropdown-basic-button" menuAlign="right" title="Season">
+        <DropdownButton className="season-selector" menuAlign="right" title="Season">
           <Dropdown.Item href="#/action-1">Winter 2021</Dropdown.Item>
           <Dropdown.Item href="#/action-2">Fall 2020</Dropdown.Item>
           <Dropdown.Item href="#/action-3">Summer 2020</Dropdown.Item>
