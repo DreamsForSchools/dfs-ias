@@ -17,14 +17,14 @@ Program.create = function (newProgram, result) {
 
 Program.findAll = function (result) {
     db.query("SELECT * from programs", function (err, res) {
-        if(err) result(null, err);
+        if(err) result(err, null);
         else result(null, res);
     });
 };
 
 Program.findById = function (id, result) {
     db.query("SELECT * from programs where program_id = ?", id, function (err, res) {
-        if(err) result(null, err);
+        if(err) result(err, null);
         else result(null, res);
 
     });
@@ -33,7 +33,7 @@ Program.findById = function (id, result) {
 Program.deleteById = function (id, result) {
     db.query("DELETE FROM programs WHERE program_id = ?", id,
         function (err, res) {
-            if (err) result(null, err);
+            if (err) result(err, null);
             else result(null, res);
     })
 }
@@ -42,7 +42,7 @@ Program.updateById = function (id, program, result) {
     db.query("UPDATE programs SET name = ?, color = ?, logo = ? WHERE program_id = ?",
         [program.name, program.color, program.logo, id],
         function(err, res) {
-            if (err) result(null, err);
+            if (err) result(err, null);
             else result(null, res);
     })
 }
