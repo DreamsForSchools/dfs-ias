@@ -1,0 +1,26 @@
+.navbar {
+  height: 10vh;
+  width: 100%;
+  background: white;
+  box-shadow: 0px 5px 40px rgba(0, 0, 0, 0.05);
+  font-family: Montserrat;
+}
+
+.nav-brand {
+  margin-left: 2rem;
+}
+
+.nav-link {
+  font-weight: 600;
+  font-size: 18px;
+  color: #212529 !important;
+  margin-right: 2rem;
+}
+
+.nav-link:hover {
+  color: #0099FF !important;
+}
+
+.season-selector {
+  margin-right: 2rem;
+}
