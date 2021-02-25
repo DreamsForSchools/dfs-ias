@@ -1,0 +1,25 @@
+.programs_page {
+  display: flex;
+
+  .program-gallery_container {
+    width: 75vw;
+
+    .option-bar_container {
+      display: flex;
+      padding: 3rem 5rem;
+    }
+
+    .program-gallery {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  .program-side-info_container {
+    width: 25vw;
+    height: 100vw;
+    background-color: blue;
+  }
+
+
+}
