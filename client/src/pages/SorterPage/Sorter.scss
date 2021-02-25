@@ -1,4 +1,16 @@
 .sorter {
+  background: #f5f7fb;
+  font-family: Montserrat, Rubik;
+}
+
+.main-wrapper {
   height: 100vh;
-  background: #F5F7FB;
+  width: 100%;
+}
+
+.sidebar-wrapper {
+  height: 100vh;
+  width: 100%;
+  background: white;
+  filter: drop-shadow(5px 0px 40px rgba(0, 0, 0, 0.05));
 }

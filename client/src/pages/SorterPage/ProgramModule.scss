@@ -1,0 +1,35 @@
+.program-module {
+  height: 50px;
+  width: 97%;
+  margin: 2rem 1rem;
+  border-radius: 10px;
+}
+
+.program-module:hover {
+  cursor: pointer;
+}
+
+.program-name {
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 20px;
+  padding-left: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.program-left {
+  float: left;
+  padding-left: 1rem;
+}
+
+.program-right {
+  float: right;
+  padding-right: 1rem;
+  z-index: 10;
+}
+
+.icon {
+  color: #FFFFFF;
+  height: 20px;
+}
