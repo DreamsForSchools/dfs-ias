@@ -30,6 +30,12 @@ exports.findById = function(req, res) {
         else res.send(locationCache);
     })
 }
+exports.findByName = function(req, res) {
+    LocationCache.findByName(req.params.name, function(err, locationCache) {
+        if (err) res.send(err);
+        else res.send(locationCache);
+    })
+}
 
 exports.deleteById = function(req, res) {
     LocationCache.deleteById(req.params.id, function(err, locationCache) {

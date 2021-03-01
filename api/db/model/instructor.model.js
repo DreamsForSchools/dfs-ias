@@ -22,6 +22,10 @@ var Instructor = function(instructor) {
     this.fourthpref = instructor.fourthpref;
     this.is_ASL = instructor.is_ASL;
     this.major = instructor.major;
+    this.availability = instructor.availability;
+    //post
+    //do location
+    //do schedule [{},{}]
 };
 
 Instructor.create = function (newInstructor, result) {
