@@ -1,16 +1,18 @@
 .program-module {
-  height: 50px;
-  width: 97%;
   margin: 2rem 1rem;
-  border-radius: 10px;
+  border-radius: 10px !important;
+  border: 0 !important;
 }
 
 .program-module:hover {
   cursor: pointer;
 }
 
-.program-name {
+.program-header {
   color: #FFFFFF;
+}
+
+.program-name {
   font-weight: 600;
   font-size: 20px;
   padding-left: 1rem;
@@ -20,16 +22,21 @@
 
 .program-left {
   float: left;
-  padding-left: 1rem;
+  margin-left: -1rem;
 }
 
 .program-right {
   float: right;
-  padding-right: 1rem;
+  margin-right: -1rem;
   z-index: 10;
 }
 
 .icon {
   color: #FFFFFF;
   height: 20px;
+}
+
+.program-body {
+  background-color: #DDDFE2;
+  border: none !important;
 }
