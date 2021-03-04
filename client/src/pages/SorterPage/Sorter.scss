@@ -1,16 +1,26 @@
+@import '../../DesignSystem';
+
 .sorter {
   background: #f5f7fb;
-  font-family: Montserrat, Rubik;
-}
+  height: calc(100vh -  #{$NAVBAR_HEIGHT});
+  overflow: hidden;
+  display: flex;
 
-.main-wrapper {
-  height: 100vh;
-  width: 100%;
-}
+  .main-wrapper {
+    width: 80%;
+    height: 100%;
+    overflow-y: scroll;
+    // temporary to be refactored
+  }
 
-.sidebar-wrapper {
-  height: 100vh;
-  width: 100%;
-  background: white;
-  filter: drop-shadow(5px 0px 40px rgba(0, 0, 0, 0.05));
+  .sidebar-wrapper {
+    min-width: 400px;
+    background: white;
+    filter: drop-shadow(5px 0px 40px rgba(0, 0, 0, 0.05));
+    width: 20%;
+    height: 100%;
+    background-color: white;
+    overflow-y: scroll;
+  }
+
 }
