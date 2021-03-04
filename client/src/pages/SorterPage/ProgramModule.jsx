@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './ProgramModule.scss';
-import { Accordion, Card } from "react-bootstrap";
+import { Accordion, Card, Button } from "react-bootstrap";
 import { CaretRightFill, CaretDownFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
 
 function ProgramModule({ name, color }) {
@@ -8,26 +8,26 @@ function ProgramModule({ name, color }) {
   const [lock, setLock] = useState(false);
 
   return (
-    <Accordion>
-      <Card className="program-module" style={{ backgroundColor: color }}>
-        <Card.Header>
+      <div>
+        <Accordion className="program_accordion">
+          <Card className="program-module" style={{ backgroundColor: color }}>
           <Accordion.Toggle className="program-header" onClick={() => {setShowContent(!showContent)}} as={Card.Header} eventKey="0">
             <span className="program-left">
-              {showContent ? <CaretDownFill className="icon" /> : <CaretRightFill className="icon" />} 
+              {showContent ? <CaretDownFill className="icon" /> : <CaretRightFill className="icon" />}
               <div className="program-name">{name}</div>
             </span>
-            <span className="program-right" onClick={() => {setLock(!lock)}}>
-              {lock ? <LockFill className="icon" /> : <UnlockFill className="icon" />}
-            </span>
           </Accordion.Toggle>
-        </Card.Header>
-        <Accordion.Collapse eventKey="0">
-          <Card.Body className="program-body">
-            Hello! I'm the body
-          </Card.Body>
-        </Accordion.Collapse>
-      </Card>
-    </Accordion>
+            <Accordion.Collapse eventKey="0">
+              <Card.Body className="program-body">
+                Hello! I'm the body
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+        <span className="program-right" onClick={() => {setLock(!lock)}}>
+          {lock ? <LockFill className="icon" /> : <UnlockFill className="icon" />}
+        </span>
+      </div>
 
 
     // <div

@@ -1,11 +1,23 @@
 .program-module {
-  margin: 2rem 1rem;
+  margin: 0.5rem 1rem 0.5rem 1rem;
   border-radius: 10px !important;
   border: 0 !important;
+  &:hover {
+    cursor: pointer;
+  }
+  .card-header {
+    background-color: #FFFFFF00;
+    border: 0;
+  }
+  .icon {
+    color: #FFF;
+    height: 20px;
+  }
 }
 
-.program-module:hover {
-  cursor: pointer;
+.program_accordion {
+  display: inline-block !important;
+  width: 98% !important;
 }
 
 .program-header {
@@ -20,20 +32,8 @@
   vertical-align: middle;
 }
 
-.program-left {
-  float: left;
-  margin-left: -1rem;
-}
-
 .program-right {
-  float: right;
-  margin-right: -1rem;
   z-index: 10;
-}
-
-.icon {
-  color: #FFFFFF;
-  height: 20px;
 }
 
 .program-body {
