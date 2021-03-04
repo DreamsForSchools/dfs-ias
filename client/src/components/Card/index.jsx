@@ -1,22 +1,34 @@
 import React from 'react';
 import './Card.scss';
 
-export const Mars = () => {
-    return (
-        <div>
-            <h4>Mars is cool</h4>
-        </div>
-    )
-
-}
 
 const Card = (props) => {
-    return (
-        <div className={"card-container"}>
-            <img src={props.item.logo} />
-            <h2 style={{marginBottom: '1rem', color: props.item.color}}>{props.item.name}</h2>
-        </div>
-    )
+    if(props.item.tag === props.filterType || props.filterType === "All" ){
+        if(props.viewType === "Programs"){
+            return (
+                <div className={"card-container"}>
+                    <div className={"card-image"}>
+                        <img src={props.item.logo} className={"program-image"}/>
+                    </div>
+                    <div className={"card-text"}>
+                        <h2 className={'title'}>{props.item.name}</h2>
+                    </div>
+                </div>
+            )
+        } else return (
+            <div className={"card-container"}>
+                <div className={"card-image"}>
+                    <img src={props.item.logo} className={"partner-image"}/>
+                </div>
+                <div className={"card-text"}>
+                    <h2 className={'title'}>{props.item.name}</h2>
+                </div>
+            </div>
+        )
+    }else{
+        return (null);
+    }
+
 }
 
 export default Card;
