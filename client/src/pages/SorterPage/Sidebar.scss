@@ -6,10 +6,10 @@
 
   .title {
     font-weight: bold;
-    font-size: 28px;
+    font-size: 32px;
     margin-top: 2rem;
     color: #212529;
-    text-align: left;
+    text-align: center;
   }
   
   .search {
@@ -34,12 +34,12 @@
     color: #4B4B92;
     border-radius: 10px;
     padding: 10px 15px;
-    width: 80px;
+    width: 6vw;
     height: 40px;
-    margin-right: 15px;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 1rem;
   }
 
   .filter-btn:hover {
@@ -51,7 +51,7 @@
     background-color: #4B4B92;
     border-radius: 10px;
     padding: 10px 15px;
-    width: 160px;
+    width: 10vw;
     height: 40px;
     font-size: 14px;
     font-weight: 600;
