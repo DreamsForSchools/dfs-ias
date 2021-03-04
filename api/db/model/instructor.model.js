@@ -1,5 +1,6 @@
 'use strict';
 
+var axios = require('axios');
 var db = require('../db.config');
 
 var Instructor = function(instructor) {
@@ -23,9 +24,6 @@ var Instructor = function(instructor) {
     this.is_ASL = instructor.is_ASL;
     this.major = instructor.major;
     this.availability = instructor.availability;
-    //post
-    //do location
-    //do schedule [{},{}]
 };
 
 Instructor.create = function (newInstructor, result) {
@@ -46,14 +44,16 @@ Instructor.create = function (newInstructor, result) {
                 console.log("======instructor exists, updating======");
                 insertedInstructorID = res[0].instructor_id;
                 //check if uni place has changed
-                //if has, check if has cache
-                locationCacheCheck(newInstructor, insertedInstructorID);
-
+                db.query("",newInstructor.university,function(err,res){
+                    if(err) result(err,null);
+                    locationCacheCheck(newInstructor, insertedInstructorID, result);
+                });
+                
                 //delete all instructor availability with this id
                 db.query("DELETE FROM instructor_availability WHERE instructor_id = ?", insertedInstructorID, function(err,res){
                     if(err) result(err, null);
                     //then insert all availability
-                    insertAvailability(availability, insertedInstructorID)
+                    insertAvailability(availability, insertedInstructorID, result);
                 });
             }else{  
                 console.log("======inserting new instructor======");
@@ -67,10 +67,10 @@ Instructor.create = function (newInstructor, result) {
                             else {
                                 insertedInstructorID = res[0].instructor_id;
                                 //check if locaction cache has same name
-                                locationCacheCheck(newInstructor, insertedInstructorID);
+                                locationCacheCheck(newInstructor, insertedInstructorID, result);
 
                                 //insert all availability
-                                insertAvailability(availability, insertedInstructorID);
+                                insertAvailability(availability, insertedInstructorID, result);
                             }
                         });
                     }
@@ -80,7 +80,7 @@ Instructor.create = function (newInstructor, result) {
     });
 }
 
-function locationCacheCheck(newInstructor, insertedInstructorID){
+function locationCacheCheck(newInstructor, insertedInstructorID,result){
     db.query("SELECT * FROM location_cache WHERE name = ?", newInstructor.university, function(err,res){
         if(err) result(err,null)
         if(res.length >=1 ){    //has same name, copy data over with new instructor_id
@@ -94,21 +94,45 @@ function locationCacheCheck(newInstructor, insertedInstructorID){
             });
         }else{//new gmap
             console.log("=== location doesnt exist, calling gmap ===");
-            let location;
+            let location = {};
             location.instructor_id = insertedInstructorID;
             location.name = newInstructor.university;
-            // location.address
-            // location.longititude  
-            // location.latitude   
-            // location.rawOffset   
-            // location.dstOffset 
-            // axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${newInstructor.university}`)
-            // .then((response) => {res.send(response.data)});
+
+            axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${newInstructor.university}&inputtype=textquery&fields=geometry,photos,name,formatted_address`)
+            .then((response) => {
+                console.log(response.data);
+                if(response.data.status == 'OK' && response.data.candidates.length >= 1){
+                    location.address = response.data.candidates[0].formatted_address;
+                    location.latitude = response.data.candidates[0].geometry.location.lat; 
+                    location.longititude = response.data.candidates[0].geometry.location.lng;
+                    if(response.data.candidates[0].photos[0].length > 1)
+                        location.image = response.data.candidates[0].photos[0].photo_reference;
+                    let date = new Date();
+                    console.log("location",location);
+                    console.log("time",date.getTime());
+                    axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`)
+                    .then((response) => {
+                        console.log("timezone");
+                        console.log(response);
+                        console.log(response.data);
+                        location.rawOffset = response.data.rawOffset;
+                        location.dstOffset = response.data.dstOffset;
+                        db.query("INSERT INTO location_cache set ?",location,function(err,res){
+                            console.log("==== inserting new location into location cache =====");
+                            console.log(res);
+                            if(err) result(err,null);
+                            else result(null,res);
+                        });
+                    });
+                }else{
+                    result(err,null);
+                }
+            });
         }
     });
 }
 
-function insertAvailability(availability, insertedInstructorID)
+function insertAvailability(availability, insertedInstructorID,result)
 {
     availability.forEach( el => {
         el.instructor_id = insertedInstructorID;
