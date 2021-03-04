@@ -94,7 +94,16 @@ function locationCacheCheck(newInstructor, insertedInstructorID){
             });
         }else{//new gmap
             console.log("=== location doesnt exist, calling gmap ===");
-
+            let location;
+            location.instructor_id = insertedInstructorID;
+            location.name = newInstructor.university;
+            // location.address
+            // location.longititude  
+            // location.latitude   
+            // location.rawOffset   
+            // location.dstOffset 
+            axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${newInstructor.university}`)
+            .then((response) => {res.send(response.data)});
         }
     });
 }
