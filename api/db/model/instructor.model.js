@@ -56,7 +56,7 @@ Instructor.create = function (newInstructor, result) {
                     insertAvailability(availability, insertedInstructorID)
                 });
             }else{  
-                console.log("======inserting new instructo======");
+                console.log("======inserting new instructor======");
                 //else insert new instructor
                 db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
                     if (err) result(err, null);
@@ -102,8 +102,8 @@ function locationCacheCheck(newInstructor, insertedInstructorID){
             // location.latitude   
             // location.rawOffset   
             // location.dstOffset 
-            axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${newInstructor.university}`)
-            .then((response) => {res.send(response.data)});
+            // axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${newInstructor.university}`)
+            // .then((response) => {res.send(response.data)});
         }
     });
 }
