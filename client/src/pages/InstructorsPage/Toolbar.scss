@@ -1,16 +1,27 @@
 .search {
   margin-right: 4rem;
   height: 30px;
-  width: 5vw;
+  width: 40vw !important;
 
   .search-bar {
-    background-color: #F2F5F7;
-    border-radius: 10px;
+    border-radius: 10px;  
     border: none;
   }
 
   .search-btn {
     background-color: #0099FF;
     border-radius: 0px 10px 10px 0px;
+  }
+}
+
+.filter-by {
+  margin-right: 4rem;
+
+  .label {
+    margin-right: 1rem;
+  }
+
+  .select {
+    width: 6vw !important;
   }
 }
