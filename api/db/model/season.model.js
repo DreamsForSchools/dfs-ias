@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../sqlconnector');
+var db = require('../db.config');
 
 var Season = function(season) {
     this.name = season.name;
