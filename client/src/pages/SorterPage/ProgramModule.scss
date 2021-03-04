@@ -37,6 +37,36 @@
 }
 
 .program-body {
-  background-color: #DDDFE2;
+  background-color: rgba(221, 223, 226, 0.80);;
   border: none !important;
+  display: flex;
 }
+
+.partner_container {
+  background-color: #FFFFFF;
+  margin: 1rem;
+  border-radius: 10px;
+  padding-bottom: 1rem;
+  width: 20vw;
+
+  .partner-name {
+    color: #202E47;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 2rem;
+  }
+
+  .instructor_container {
+    background-color: #F2F5F7;
+    margin: 0rem 2rem 1rem 2rem;
+    border-radius: 10px;
+    height: 5vh;
+    color: #202E47;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+}
+
+
+
