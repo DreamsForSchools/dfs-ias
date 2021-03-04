@@ -29,10 +29,84 @@ var Instructor = function(instructor) {
 };
 
 Instructor.create = function (newInstructor, result) {
-    db.query("INSERT INTO instructors set ?", newInstructor, function (err, res){
-        if (err) result(err, null);
-        else result(null, res);
-    })
+    let availability = JSON.parse(newInstructor.availability);
+    delete newInstructor['availability'];
+
+    db.query("SELECT instructor_id FROM instructors WHERE email = ?", newInstructor.email, function(err,res) {
+        if(err) result(err,null);
+        else{
+            let insertedInstructorID;;
+            console.log(res);
+            console.log(res.length);
+            console.log(typeof res);
+            
+
+            //if email exists update seasons_taught
+            if(res.length == 1){
+                console.log("======instructor exists, updating======");
+                insertedInstructorID = res[0].instructor_id;
+                //check if uni place has changed
+                //if has, check if has cache
+                locationCacheCheck(newInstructor, insertedInstructorID);
+
+                //delete all instructor availability with this id
+                db.query("DELETE FROM instructor_availability WHERE instructor_id = ?", insertedInstructorID, function(err,res){
+                    if(err) result(err, null);
+                    //then insert all availability
+                    insertAvailability(availability, insertedInstructorID)
+                });
+            }else{  
+                console.log("======inserting new instructo======");
+                //else insert new instructor
+                db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
+                    if (err) result(err, null);
+                    else {
+                        
+                        db.query("SELECT instructor_id from instructors WHERE email = ?", newInstructor.email, function (err, res) {
+                            if(err) result(err, null);
+                            else {
+                                insertedInstructorID = res[0].instructor_id;
+                                //check if locaction cache has same name
+                                locationCacheCheck(newInstructor, insertedInstructorID);
+
+                                //insert all availability
+                                insertAvailability(availability, insertedInstructorID);
+                            }
+                        });
+                    }
+                });
+            }         
+        }
+    });
+}
+
+function locationCacheCheck(newInstructor, insertedInstructorID){
+    db.query("SELECT * FROM location_cache WHERE name = ?", newInstructor.university, function(err,res){
+        if(err) result(err,null)
+        if(res.length >=1 ){    //has same name, copy data over with new instructor_id
+            let location = res[0];
+            location.instructor_id = insertedInstructorID;
+            delete location['id'];
+            console.log("=== inserting into location cache, dup location ===");
+            console.log(location);
+            db.query("INSERT INTO location_cache set ?",location,function(err,res){
+                if(err) result(err,null);
+            });
+        }else{//new gmap
+            console.log("=== location doesnt exist, calling gmap ===");
+
+        }
+    });
+}
+
+function insertAvailability(availability, insertedInstructorID)
+{
+    availability.forEach( el => {
+        el.instructor_id = insertedInstructorID;
+        db.query("INSERT INTO instructor_availability set ?", el, function(err, res){
+            if(err) result(err, null);
+        });
+    });
 }
 
 Instructor.findAll = function (result) {

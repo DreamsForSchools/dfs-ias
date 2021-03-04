@@ -44,7 +44,7 @@ router.put('/instructor/availability/:id', instructorAvailabilityController.upda
 router.post('/location', locationController.create);
 router.get('/location', locationController.findAll);
 router.get('/location/:id', locationController.findById);
-// router.get('/location/:name', locationController.findByName);
+router.get('/location/:name', locationController.findByName);
 router.delete('/location/:id', locationController.deleteById);
 router.put('/location/:id', locationController.updateById);
 
