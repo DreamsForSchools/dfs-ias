@@ -1,0 +1,72 @@
+.program-module {
+  margin: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 10px !important;
+  border: 0 !important;
+  &:hover {
+    cursor: pointer;
+  }
+  .card-header {
+    background-color: #FFFFFF00;
+    border: 0;
+  }
+  .icon {
+    color: #FFF;
+    height: 20px;
+  }
+}
+
+.program_accordion {
+  display: inline-block !important;
+  width: 98% !important;
+}
+
+.program-header {
+  color: #FFFFFF;
+}
+
+.program-name {
+  font-weight: 600;
+  font-size: 20px;
+  padding-left: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.program-right {
+  z-index: 10;
+}
+
+.program-body {
+  background-color: rgba(221, 223, 226, 0.80);;
+  border: none !important;
+  display: flex;
+}
+
+.partner_container {
+  background-color: #FFFFFF;
+  margin: 1rem;
+  border-radius: 10px;
+  padding-bottom: 1rem;
+  width: 20vw;
+
+  .partner-name {
+    color: #202E47;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 2rem;
+  }
+
+  .instructor_container {
+    background-color: #F2F5F7;
+    margin: 0rem 2rem 1rem 2rem;
+    border-radius: 10px;
+    height: 5vh;
+    color: #202E47;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+}
+
+
+
