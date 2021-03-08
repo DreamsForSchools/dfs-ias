@@ -33,31 +33,31 @@ Instructor.create = function (newInstructor, result) {
     db.query("SELECT instructor_id FROM instructors WHERE email = ?", newInstructor.email, function(err,res) {
         if(err) result(err,null);
         else{
-            let insertedInstructorID;;
-            console.log(res);
-            console.log(res.length);
-            console.log(typeof res);
-            
+            let insertedInstructorID;;            
 
             //if email exists update seasons_taught
             if(res.length == 1){
-                console.log("======instructor exists, updating======");
                 insertedInstructorID = res[0].instructor_id;
+
                 //check if uni place has changed
-                db.query("",newInstructor.university,function(err,res){
+                db.query("SELECT university FROM instructors WHERE instructor_id = ? ",insertedInstructorID,function(err,res){
                     if(err) result(err,null);
-                    locationCacheCheck(newInstructor, insertedInstructorID, result);
+                    else{
+                        if(res.length > 0 && res[0].university != newInstructor.university)
+                            locationCacheCheck(newInstructor.university, insertedInstructorID, result);
+                        db.query("DELETE FROM instructor_availability WHERE instructor_id = ?", insertedInstructorID, function(err,res){
+                            if(err) result(err, null);
+                            //then insert all availability
+                            insertAvailability(availability, insertedInstructorID, result);
+                            result(null,res);
+                        });
+                    } 
                 });
                 
                 //delete all instructor availability with this id
-                db.query("DELETE FROM instructor_availability WHERE instructor_id = ?", insertedInstructorID, function(err,res){
-                    if(err) result(err, null);
-                    //then insert all availability
-                    insertAvailability(availability, insertedInstructorID, result);
-                });
-            }else{  
-                console.log("======inserting new instructor======");
-                //else insert new instructor
+                
+            }else{ 
+                 //insert new instructor
                 db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
                     if (err) result(err, null);
                     else {
@@ -67,10 +67,11 @@ Instructor.create = function (newInstructor, result) {
                             else {
                                 insertedInstructorID = res[0].instructor_id;
                                 //check if locaction cache has same name
-                                locationCacheCheck(newInstructor, insertedInstructorID, result);
+                                locationCacheCheck(newInstructor.university, insertedInstructorID, result);
 
                                 //insert all availability
                                 insertAvailability(availability, insertedInstructorID, result);
+                                result(null,res);
                             }
                         });
                     }
@@ -80,27 +81,19 @@ Instructor.create = function (newInstructor, result) {
     });
 }
 
-function locationCacheCheck(newInstructor, insertedInstructorID,result){
-    db.query("SELECT * FROM location_cache WHERE name = ?", newInstructor.university, function(err,res){
+function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
+    db.query("SELECT * FROM location_cache WHERE name = ?", instructorUniversity, function(err,res){
         if(err) result(err,null)
-        if(res.length >=1 ){    //has same name, copy data over with new instructor_id
+        if(res.length >=1 ){    //if location cache exists, copy data over with new instructor_id
             let location = res[0];
             location.instructor_id = insertedInstructorID;
             delete location['id'];
-            console.log("=== inserting into location cache, dup location ===");
-            console.log(location);
-            db.query("INSERT INTO location_cache set ?",location,function(err,res){
-                if(err) result(err,null);
-            });
-        }else{//new gmap
-            console.log("=== location doesnt exist, calling gmap ===");
+            insertLocation(insertedInstructorID,location,result);
+        }else{                  //new gmap
             let location = {};
-            location.instructor_id = insertedInstructorID;
-            location.name = newInstructor.university;
-
-            axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${newInstructor.university}&inputtype=textquery&fields=geometry,photos,name,formatted_address`)
+            location.name = instructorUniversity;
+            axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${instructorUniversity}&inputtype=textquery&fields=geometry,photos,name,formatted_address`)
             .then((response) => {
-                console.log(response.data);
                 if(response.data.status == 'OK' && response.data.candidates.length >= 1){
                     location.address = response.data.candidates[0].formatted_address;
                     location.latitude = response.data.candidates[0].geometry.location.lat; 
@@ -108,27 +101,48 @@ function locationCacheCheck(newInstructor, insertedInstructorID,result){
                     if(response.data.candidates[0].photos[0].length > 1)
                         location.image = response.data.candidates[0].photos[0].photo_reference;
                     let date = new Date();
-                    console.log("location",location);
-                    console.log("time",date.getTime());
                     axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`)
                     .then((response) => {
-                        console.log("timezone");
-                        console.log(response);
-                        console.log(response.data);
                         location.rawOffset = response.data.rawOffset;
                         location.dstOffset = response.data.dstOffset;
-                        db.query("INSERT INTO location_cache set ?",location,function(err,res){
-                            console.log("==== inserting new location into location cache =====");
-                            console.log(res);
+                        db.query("INSERT INTO location_cache set ?",location,function(err,res){ //insert location cache w/o instructor id
                             if(err) result(err,null);
-                            else result(null,res);
+                            else{
+                                //insert into location cache WITH instructor ID
+                                location.instructor_id = insertedInstructorID;
+                                insertLocation(insertedInstructorID,location,result);
+                            }
                         });
+                        
                     });
                 }else{
                     result(err,null);
                 }
             });
         }
+    });
+}
+
+function insertLocation(insertedInstructorID,location,result)
+{
+    db.query("SELECT * FROM location_cache WHERE instructor_id = ?",insertedInstructorID,function(err,res){
+        if(err) result(err,null);
+        else{
+            if(res.length > 0 ){    //instructor already exists, update
+                db.query("UPDATE location_cache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, school_id = ? WHERE instructor_id = ?",
+                [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.school_id, insertedInstructorID],
+                function(err,res){
+                    if(err) result(err,null);
+                });
+            }else{
+                 //inserting location with instructor id
+                db.query("INSERT INTO location_cache set ?",location,function(err,res){
+                    if(err) result(err,null);                    
+                });
+ 
+            }
+        }
+
     });
 }
 
@@ -167,10 +181,13 @@ Instructor.deleteById = function (id, result) {
 
 Instructor.updateById = function (id, instructor, result) {
     db.query("UPDATE instructors SET email = ?, phone = ?, fname = ?, lname = ?, gender = ?, ethnicity = ?, university = ?, seasons_taught = ?, school_year = ?, graduation = ?, shirtsize = ?, car = ?, language_pref = ?, firstpref = ?, secondpref = ?, thirdpref = ?, fourthpref = ?, is_ASL = ?, major = ?  WHERE instructor_id = ?",
-        [instructor.email, instructor.phone, instructor.fname, instructor.lname, instructor.gender, instructor.ethnicity, instructor.university, instructor.seasons_taught, instructor.school_year, instructor.graduation, instructor.car, instructor.language_pref, instructor.shirtsize, instructor.firstpref, instructor.secondpref, instructor.thirdpref,instructor.fourthpref, instructor.is_ASL,instructor.major, id],
+        [instructor.email, instructor.phone, instructor.fname, instructor.lname, instructor.gender, instructor.ethnicity, instructor.university, instructor.seasons_taught, instructor.school_year, instructor.graduation, instructor.shirtsize, instructor.car, instructor.language_pref, instructor.firstpref, instructor.secondpref, instructor.thirdpref,instructor.fourthpref, instructor.is_ASL,instructor.major, id],
         function(err, res) {
             if (err) result(err, null);
-            else result(null, res);
+            else {
+                locationCacheCheck(instructor.university, id,result);
+                result(null, res);
+            }
     })
 }
 
