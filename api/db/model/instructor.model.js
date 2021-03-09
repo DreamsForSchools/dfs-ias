@@ -98,8 +98,8 @@ function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
                     location.address = response.data.candidates[0].formatted_address;
                     location.latitude = response.data.candidates[0].geometry.location.lat; 
                     location.longititude = response.data.candidates[0].geometry.location.lng;
-                    if(response.data.candidates[0].photos[0].length > 1)
-                        location.image = response.data.candidates[0].photos[0].photo_reference;
+                    if(response.data.candidates[0].photos.length >= 1)
+                        location.image = response.data.candidates[0].photos[0].photo_reference;                        
                     let date = new Date();
                     axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`)
                     .then((response) => {
