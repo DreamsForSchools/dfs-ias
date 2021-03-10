@@ -3,6 +3,7 @@ import './Instructors.scss';
 import Toolbar from './Toolbar';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
+import { getRandomInstructor, getRandomInstructorSet } from "../../util/sampleData";
 
 const DUMMY_DATA = [
     {
@@ -96,7 +97,7 @@ function Instructors() {
               <Toolbar />
               <InstructorsTable
                   handleInstructorRowClicked={handleInstructorRowClicked}
-                  data={DUMMY_DATA}
+                  data={getRandomInstructorSet(12)}
                   programsColorKey={DUMMY_PROGRAMS}
               />
             </div>
