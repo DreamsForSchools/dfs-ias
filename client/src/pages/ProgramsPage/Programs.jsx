@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import OptionsBar from './OptionsBar';
-import './Programs.scss';
 import './OptionsBar.scss';
 import Card from '../../components/Card';
 import AppJam_Logo from "../../assets/MobileDevLogo.png";
@@ -8,8 +7,6 @@ import WebJam_Logo from "../../assets/WebDevLogo.png";
 import Lestem_Logo from "../../assets/LESTEMLogo.png";
 import Efk_Logo from "../../assets/EFKLogo.png";
 import Scratch_Logo from "../../assets/ScratchLogo.png";
-
-
 
 function Programs() {
     const [data, setData] = useState([

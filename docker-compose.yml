@@ -20,10 +20,17 @@ services:
       - 5000:5000
     depends_on:
       - db
+  client:
+    build: client
+    command: npm start
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    ports:
+      - 3000:3000
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
-networks:
-  backend:
