@@ -3,6 +3,7 @@ import './Instructors.scss';
 import Toolbar from './Toolbar';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
+import { getRandomInstructor, getRandomInstructorSet } from "../../util/sampleData";
 
 //dummy data: to be removed once connect to backend
 import { INSTRUCTORS as instructors_data }  from '../../data/INSTRUCTORS'
@@ -28,7 +29,7 @@ function Instructors() {
               <Toolbar />
               <InstructorsTable
                   handleInstructorRowClicked={handleInstructorRowClicked}
-                  data={instructors_data}
+                  data={getRandomInstructorSet(12)}
                   programsColorKey={DUMMY_PROGRAMS}
               />
             </div>
