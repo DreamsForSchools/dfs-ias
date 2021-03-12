@@ -3,7 +3,7 @@ import "./Sidebar.scss";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import { Search, PlusCircle } from 'react-bootstrap-icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { data } from './data';
+import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
 
 const dragReducer = produce((draft, action) => {
@@ -18,7 +18,7 @@ const dragReducer = produce((draft, action) => {
 });
 
 const Sidebar = () => {
-  const [state, dispatch] = useReducer(dragReducer, { items: data, });
+  const [state, dispatch] = useReducer(dragReducer, { items: getRandomInstructorSet(10), });
 
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
@@ -76,7 +76,7 @@ const Sidebar = () => {
                           >
                             <div>
                               <span>
-                                {instructor.name}
+                                {instructor.firstName} {instructor.lastName}
                               </span>
                             </div>
                           </div>

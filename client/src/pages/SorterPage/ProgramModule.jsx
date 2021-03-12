@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useReducer } from "react";
 import './ProgramModule.scss';
-import { Accordion, Card, Button } from "react-bootstrap";
+import { Accordion, Card } from "react-bootstrap";
 import { CaretRightFill, CaretDownFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { data } from './data';
+import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
 
 const dragReducer = produce((draft, action) => {
@@ -20,7 +20,7 @@ const dragReducer = produce((draft, action) => {
 function ProgramModule({ name, color }) {
   const [showContent, setShowContent] = useState(false);
   const [lock, setLock] = useState(false);
-  const [state, dispatch] = useReducer(dragReducer, { items: data, });
+  const [state, dispatch] = useReducer(dragReducer, { items: getRandomInstructorSet(5), });
 
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
@@ -76,7 +76,7 @@ function ProgramModule({ name, color }) {
                                   >
                                     <div>
                                       <span>
-                                        {instructor.name}
+                                        {instructor.firstName} {instructor.lastName}
                                       </span>
                                     </div>
                                   </div>
@@ -104,7 +104,8 @@ function ProgramModule({ name, color }) {
                             <Draggable
                               key={instructor.id}
                               draggableId={instructor.id}
-                              index={index}                          >
+                              index={index}                          
+                            >
                               {(provided) => {
                                 return (
                                   <div
@@ -115,7 +116,7 @@ function ProgramModule({ name, color }) {
                                   >
                                     <div>
                                       <span>
-                                        {instructor.name}
+                                        {instructor.firstName} {instructor.lastName}
                                       </span>
                                     </div>
                                   </div>
@@ -155,7 +156,7 @@ function ProgramModule({ name, color }) {
                                   >
                                     <div>
                                       <span>
-                                        {instructor.name}
+                                        {instructor.firstName} {instructor.lastName}
                                       </span>
                                     </div>
                                   </div>
@@ -195,7 +196,7 @@ function ProgramModule({ name, color }) {
                                   >
                                     <div>
                                       <span>
-                                        {instructor.name}
+                                        {instructor.firstName} {instructor.lastName}
                                       </span>
                                     </div>
                                   </div>
