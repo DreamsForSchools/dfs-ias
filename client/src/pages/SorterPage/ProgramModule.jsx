@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useReducer } from "react";
 import './ProgramModule.scss';
+import Instructor from './Instructor.jsx';
 import { Accordion, Card } from "react-bootstrap";
-import { CaretRightFill, CaretDownFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
+import { CaretRightFill, CaretDownFill, LockFill, UnlockFill, Calendar4, People } from 'react-bootstrap-icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
@@ -59,6 +60,9 @@ function ProgramModule({ name, color }) {
                         className="partner_container"
                       >
                         <h1 className="partner-name">Villa Fundamental</h1>
+                        <div className="info">
+                          <Calendar4 /> Schedule <People /> Instructors
+                        </div>
                         {state.items?.map((instructor, index) => {
                           return (
                             <Draggable
@@ -76,7 +80,15 @@ function ProgramModule({ name, color }) {
                                   >
                                     <div>
                                       <span>
-                                        {instructor.firstName} {instructor.lastName}
+                                        <Instructor
+                                          firstName={instructor.firstName}
+                                          lastName={instructor.lastName}
+                                          car={instructor.hasCar}
+                                          returnee={instructor.previouslyTaught}
+                                          ASL={instructor.isASL}
+                                          pref={instructor.pref}
+                                          availability={instructor.availability}
+                                        />                                       
                                       </span>
                                     </div>
                                   </div>
@@ -116,7 +128,15 @@ function ProgramModule({ name, color }) {
                                   >
                                     <div>
                                       <span>
-                                        {instructor.firstName} {instructor.lastName}
+                                        <Instructor
+                                          firstName={instructor.firstName}
+                                          lastName={instructor.lastName}
+                                          car={instructor.hasCar}
+                                          returnee={instructor.previouslyTaught}
+                                          ASL={instructor.isASL}
+                                          pref={instructor.pref}
+                                          availability={instructor.availability}
+                                        />  
                                       </span>
                                     </div>
                                   </div>
@@ -156,7 +176,15 @@ function ProgramModule({ name, color }) {
                                   >
                                     <div>
                                       <span>
-                                        {instructor.firstName} {instructor.lastName}
+                                        <Instructor
+                                          firstName={instructor.firstName}
+                                          lastName={instructor.lastName}
+                                          car={instructor.hasCar}
+                                          returnee={instructor.previouslyTaught}
+                                          ASL={instructor.isASL}
+                                          pref={instructor.pref}
+                                          availability={instructor.availability}
+                                        />  
                                       </span>
                                     </div>
                                   </div>

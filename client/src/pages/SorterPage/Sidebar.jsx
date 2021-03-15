@@ -1,5 +1,6 @@
 import React, { useCallback, useReducer } from "react";
 import "./Sidebar.scss";
+import Instructor from './Instructor.jsx';
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import { Search, PlusCircle } from 'react-bootstrap-icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -76,7 +77,15 @@ const Sidebar = () => {
                           >
                             <div>
                               <span>
-                                {instructor.firstName} {instructor.lastName}
+                                <Instructor
+                                  firstName={instructor.firstName}
+                                  lastName={instructor.lastName}
+                                  car={instructor.hasCar}
+                                  returnee={instructor.previouslyTaught}
+                                  ASL={instructor.isASL}
+                                  pref={instructor.pref}
+                                  availability={instructor.availability}
+                                /> 
                               </span>
                             </div>
                           </div>
