@@ -9,23 +9,23 @@ function Sorter() {
       <div className="main-wrapper">
         <ProgramModule
           name="AppJam"
-          color="#4B4B92"
+          color="#BB6BD9"
         />
         <ProgramModule
           name="LESTEM"
-          color="#40CCC8"
-        />
-        <ProgramModule
-          name="Scratch"
           color="#F2994A"
         />
         <ProgramModule
+          name="Scratch"
+          color="#F2C94C"
+        />
+        <ProgramModule
           name="WebJam"
-          color="#E82029"
+          color="#40CCC8"
         />
         <ProgramModule
           name="Engineering Inventors"
-          color="#27AE60"
+          color="#4B4B92"
         />
       </div>
       <div className="sidebar-wrapper">

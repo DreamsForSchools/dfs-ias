@@ -26,11 +26,11 @@ function ProgramModule({ name, color }) {
   const [state, dispatch] = useReducer(dragReducer, { items: getRandomInstructorSet(4), items1: getRandomInstructorSet(4), items2: getRandomInstructorSet(4), items3: getRandomInstructorSet(4)});
 
   const programsColorKey = {
-    "AppJam": "#4B4B92",
-    "WebJam": "#E82029",
-    "LESTEM": "#40CCC8",
-    "Engineering Inventors": "#27AE60",
-    "Scratch": "#F2994A"
+    "AppJam": "#BB6BD9",
+    "WebJam": "#40CCC8",
+    "LESTEM": "#F2994A",
+    "Engineering Inventors": "#4B4B92",
+    "Scratch": "#F2C94C"
   };
 
   const onDragEnd = useCallback((result) => {
