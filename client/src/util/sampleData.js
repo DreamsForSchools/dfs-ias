@@ -28,7 +28,7 @@ export const getRandomInstructor = () => {
 
     const DUMMY_DATA =
         {
-            id: count,
+            id: count.toString(),
             isActive: chance.bool(),
             email: email,
             firstName: firstName,
