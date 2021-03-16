@@ -4,17 +4,11 @@ import Toolbar from './Toolbar';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
 import { getRandomInstructor, getRandomInstructorSet } from "../../util/sampleData";
+import { Page, SideInfoWrapper, Wrapper } from '../../design-system/layout/Styled';
 
 //dummy data: to be removed once connect to backend
-import { INSTRUCTORS as instructors_data }  from '../../data/INSTRUCTORS'
-
-const DUMMY_PROGRAMS = {
-        "AppJam": "#BB6BD9",
-        "WebJam": "#40CCC8",
-        "LESTEM": "#F2994A",
-        "Engineering Inventors": "#4B4B92",
-        "Scratch": "#F2C94C"
-    };
+import { INSTRUCTORS as instructors_data }  from '../../data/INSTRUCTORS';
+import { PROGRAM_COLOR_KEYS as program_color_keys }  from '../../data/PROGRAMS';
 
 function Instructors() {
     const [instructorFocus, setInstructorFocus] = React.useState();
@@ -24,22 +18,22 @@ function Instructors() {
     }
 
     return (
-        <div className="instructors_page">
-            <div className={"instructor-list_container"}>
+        <Page>
+            <Wrapper>
               <Toolbar />
               <InstructorsTable
                   handleInstructorRowClicked={handleInstructorRowClicked}
                   data={getRandomInstructorSet(12)}
-                  programsColorKey={DUMMY_PROGRAMS}
+                  programsColorKey={program_color_keys}
               />
-            </div>
-            <div className={"instructor-side-info_container"}>
+            </Wrapper>
+            <SideInfoWrapper className={"instructor-side-info_container"}>
                 <InstructorsSideInfo
                     instructor={instructorFocus}
-                    programsColorKey={DUMMY_PROGRAMS}
+                    programsColorKey={program_color_keys}
                 />
-            </div>
-        </div>
+            </SideInfoWrapper>
+        </Page>
     );
 }
 export default Instructors;

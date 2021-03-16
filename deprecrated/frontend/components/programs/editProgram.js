@@ -17,7 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import { useAuth } from "../../lib/useAuth.js";
 import { mutate } from 'swr';
 
-import { SketchPicker  } from 'react-color'
+import { SketchPicker  } from 'react-style'
 import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 

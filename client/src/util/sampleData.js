@@ -1,4 +1,4 @@
-import faker from  'faker';
+import faker from 'faker';
 const chance = require('chance').Chance();
 
 var count = 0;

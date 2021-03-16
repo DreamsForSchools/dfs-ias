@@ -12,7 +12,7 @@ body {
 }
 
 a{
-  color: #333;
+  style: #333;
   text-decoration: none;
 }
  */
@@ -200,7 +200,7 @@ a{
   justify-content: left;
   align-items: center;
   list-style: none;
-  /* background-color: black; */
+  /* background-style: black; */
   height: 4vh;
 
 }

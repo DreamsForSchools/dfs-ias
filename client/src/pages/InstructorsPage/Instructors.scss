@@ -1,19 +1,14 @@
 @import '../../DesignSystem';
 
-.instructors_page {
-  display: flex;
-  background: #F5F7FB;
-  height: calc(100vh - #{$NAVBAR_HEIGHT});
-  overflow: hidden;
-
-  .instructor-list_container {
-    width: 100%;
     .instructor_toolbar {
       display: flex;
       padding: 3rem 5rem;
     }
     .instructor_table {
       padding: 0 5rem;
+      overflow-y: scroll;
+      height: 100%;
+      padding-bottom: 11rem;
 
       table {
         text-align: center;
@@ -37,17 +32,7 @@
           }
         }
       }
-    }
-  }
 
-  .instructor-side-info_container {
-    width: 550px;
-    height: 100%;
-    background-color: white;
-    text-align: center;
-    overflow-y: scroll;
-    .instructor-side-info {
-       margin: 1.5rem 0;
       .badge {
         margin: 0.2rem;
         font-weight: 400;
@@ -75,5 +60,3 @@
         }
       }
     }
-  }
-}

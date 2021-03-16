@@ -39,7 +39,7 @@ Program.deleteById = function (id, result) {
 }
 
 Program.updateById = function (id, program, result) {
-    db.query("UPDATE programs SET name = ?, color = ?, logo = ? WHERE program_id = ?",
+    db.query("UPDATE programs SET name = ?, style = ?, logo = ? WHERE program_id = ?",
         [program.name, program.color, program.logo, id],
         function(err, res) {
             if (err) result(err, null);

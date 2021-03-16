@@ -1,0 +1,49 @@
+import styled from 'styled-components';
+
+export const Wrapper = styled.div`
+  margin: 1.5rem;
+`;
+
+export const BadgeContainer = styled.div`
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  .badge {
+    margin: 0.2rem;
+    font-weight: 400;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem; 
+  }
+`;
+
+export const Title = styled.h1`
+  font-weight: bold;
+  text-align: center;
+  font-size: 2rem;
+`;
+
+export const Subtitle = styled.h5`
+`;
+
+export const Text = styled.p`
+`;
+
+export const PartnerProgramSection = styled.div`
+    ${({programColor}) => `
+        background-color: ${programColor};
+    `
+    };
+  
+  color: white;
+  width: 100%;
+  border-radius: 10px;
+  padding: 0.8rem;
+  margin: 1rem 0;
+`;
+
+export const Image = styled.img`
+  width: 100%;    
+`;
+
+export const Avatar = styled.img`
+  width: 200px;    
+`;
