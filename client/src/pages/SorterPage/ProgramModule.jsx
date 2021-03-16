@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useReducer } from "react";
 import './ProgramModule.scss';
-import Instructor from './Instructor.jsx';
+import Partner from './Partner.jsx';
 import { Accordion, Card } from "react-bootstrap";
-import { CaretRightFill, CaretDownFill, LockFill, UnlockFill, Calendar4, People } from 'react-bootstrap-icons';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { CaretRightFill, CaretDownFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
 
@@ -54,187 +54,48 @@ function ProgramModule({ name, color }) {
                 <Droppable droppableId="items" type="INSTRUCTOR">
                   {(provided) => {
                     return (
-                      <div
-                        ref={provided.innerRef}
+                      <Partner 
+                        name='Villa Fundamental'
+                        provided={provided}
+                        state={state}
                         {...provided.droppableProps}
-                        className="partner_container"
-                      >
-                        <h1 className="partner-name">Villa Fundamental</h1>
-                        <div className="info">
-                          <Calendar4 /> Schedule <People /> Instructors
-                        </div>
-                        {state.items?.map((instructor, index) => {
-                          return (
-                            <Draggable
-                              key={instructor.id}
-                              draggableId={instructor.id}
-                              index={index}
-                            >
-                              {(provided) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className="instructor_container"
-                                  >
-                                    <div>
-                                      <span>
-                                        <Instructor
-                                          firstName={instructor.firstName}
-                                          lastName={instructor.lastName}
-                                          car={instructor.hasCar}
-                                          returnee={instructor.previouslyTaught}
-                                          ASL={instructor.isASL}
-                                          pref={instructor.pref}
-                                          availability={instructor.availability}
-                                        />                                       
-                                      </span>
-                                    </div>
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
+                      />
                     );
                   }}
                 </Droppable>
                 <Droppable droppableId="items2" type="INSTRUCTOR">
                   {(provided) => {
                     return (
-                      <div
-                        ref={provided.innerRef}
+                      <Partner 
+                        name='Carr Intermmediate'
+                        provided={provided}
+                        state={state}
                         {...provided.droppableProps}
-                        className="partner_container"
-                      >
-                        <h1 className="partner-name">Carr Intermediate</h1>
-                        {state.items2?.map((instructor, index) => {
-                          return (
-                            <Draggable
-                              key={instructor.id}
-                              draggableId={instructor.id}
-                              index={index}                          
-                            >
-                              {(provided) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className="instructor_container"
-                                  >
-                                    <div>
-                                      <span>
-                                        <Instructor
-                                          firstName={instructor.firstName}
-                                          lastName={instructor.lastName}
-                                          car={instructor.hasCar}
-                                          returnee={instructor.previouslyTaught}
-                                          ASL={instructor.isASL}
-                                          pref={instructor.pref}
-                                          availability={instructor.availability}
-                                        />  
-                                      </span>
-                                    </div>
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
+                      />
                     );
                   }}
                 </Droppable>
                 <Droppable droppableId="items3" type="INSTRUCTOR">
                   {(provided) => {
                     return (
-                      <div
-                        ref={provided.innerRef}
+                      <Partner 
+                        name='Fremont Fundamental'
+                        provided={provided}
+                        state={state}
                         {...provided.droppableProps}
-                        className="partner_container"
-                      >
-                        <h1 className="partner-name">Fremont Fundamental</h1>
-                        {state.items3?.map((instructor, index) => {
-                          return (
-                            <Draggable
-                              key={instructor.id}
-                              draggableId={instructor.id}
-                              index={index}
-                            >
-                              {(provided) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className="instructor_container"
-                                  >
-                                    <div>
-                                      <span>
-                                        <Instructor
-                                          firstName={instructor.firstName}
-                                          lastName={instructor.lastName}
-                                          car={instructor.hasCar}
-                                          returnee={instructor.previouslyTaught}
-                                          ASL={instructor.isASL}
-                                          pref={instructor.pref}
-                                          availability={instructor.availability}
-                                        />  
-                                      </span>
-                                    </div>
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
+                      />
                     );
                   }}
                 </Droppable>
                 <Droppable droppableId="items4" type="INSTRUCTOR">
                   {(provided) => {
                     return (
-                      <div
-                        ref={provided.innerRef}
+                      <Partner 
+                        name='Edison Elementary'
+                        provided={provided}
+                        state={state}
                         {...provided.droppableProps}
-                        className="partner_container"
-                      >
-                        <h1 className="partner-name">Edison Elementary</h1>
-                        {state.items4?.map((instructor, index) => {
-                          return (
-                            <Draggable
-                              key={instructor.id}
-                              draggableId={instructor.id}
-                              index={index}
-                            >
-                              {(provided) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className="instructor_container"
-                                  >
-                                    <div>
-                                      <span>
-                                        {instructor.firstName} {instructor.lastName}
-                                      </span>
-                                    </div>
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
+                      />
                     );
                   }}
                 </Droppable>
