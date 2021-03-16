@@ -3,7 +3,7 @@ import './Instructors.scss';
 import Toolbar from './Toolbar';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
-import { getRandomInstructor, getRandomInstructorSet } from "../../util/sampleData";
+import { dummyInstructorSet } from "../../util/sampleData";
 import { Page, SideInfoWrapper, Wrapper } from '../../design-system/layout/Styled';
 
 //dummy data: to be removed once connect to backend
@@ -23,7 +23,7 @@ function Instructors() {
               <Toolbar />
               <InstructorsTable
                   handleInstructorRowClicked={handleInstructorRowClicked}
-                  data={getRandomInstructorSet(12)}
+                  data={dummyInstructorSet}
                   programsColorKey={program_color_keys}
               />
             </Wrapper>
