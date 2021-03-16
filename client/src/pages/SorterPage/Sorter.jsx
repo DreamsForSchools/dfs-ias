@@ -1,13 +1,12 @@
 import React from 'react';
 import './Sorter.scss';
 import Sidebar from './Sidebar.jsx';
-import { Container, Row, Col } from "react-bootstrap";
 import ProgramModule from './ProgramModule.jsx';
 
 function Sorter() {
   return (
     <div className="sorter">
-      <div className="main-wrapper" style={{padding: "2rem"}}>
+      <div className="main-wrapper">
         <ProgramModule
           name="AppJam"
           color="#4B4B92"

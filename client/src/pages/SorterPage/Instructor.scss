@@ -1,0 +1,39 @@
+.instructor {
+
+  .name {
+    color: #202E47;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    font-weight: normal;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    background: #F2C94C;
+    border-radius: 30px;
+    width: auto;
+    display: inline-block;
+    padding: 3px 10px;
+    margin-right: 0.5rem;
+  }
+  
+  .pref {
+    margin-bottom: 1rem;
+  }
+
+  .availability h5 {
+    color: #54595F;
+    font-family: 'Rubik';
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 12px;
+  }
+
+}
