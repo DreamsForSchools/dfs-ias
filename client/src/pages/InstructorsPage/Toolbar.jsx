@@ -29,7 +29,7 @@ const Toolbar = () => {
                         <option>5</option>
                     </Form.Control>
                 </Form.Group>      
-                <Button><PlusCircle /> Add Instructor</Button>
+                <Button className="add-button"><PlusCircle /> Add Instructor</Button>
             </Form>
         </div>
     )
