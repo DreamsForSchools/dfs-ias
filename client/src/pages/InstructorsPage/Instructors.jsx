@@ -3,8 +3,8 @@ import './Instructors.scss';
 import Toolbar from './Toolbar';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
-import { dummyInstructorSet } from "../../util/sampleData";
 import { Page, SideInfoWrapper, Wrapper } from '../../design-system/layout/Styled';
+import { getRandomInstructorSet } from "../../util/sampleData";
 
 //dummy data: to be removed once connect to backend
 import { INSTRUCTORS as instructors_data }  from '../../data/INSTRUCTORS';
@@ -18,26 +18,7 @@ function Instructors() {
         setInstructorFocus(instructor);
     }
 
-<<<<<<< Updated upstream
-    return (
-        <Page>
-            <Wrapper>
-              <Toolbar />
-              <InstructorsTable
-                  handleInstructorRowClicked={handleInstructorRowClicked}
-                  data={dummyInstructorSet}
-                  programsColorKey={program_color_keys}
-              />
-            </Wrapper>
-            <SideInfoWrapper className={"instructor-side-info_container"}>
-                <InstructorsSideInfo
-                    instructor={instructorFocus}
-                    programsColorKey={program_color_keys}
-                />
-            </SideInfoWrapper>
-        </Page>
-    );
-=======
+
     React.useEffect(() => {
         getInstructor();
     }, [])
@@ -66,7 +47,7 @@ function Instructors() {
             // </Page>
             <div className="instructors_page">
                 <div className={"instructor-list_container"}>
-                    <Toolbar />
+                    <Toolbar/>
                     <InstructorsTable
                         handleInstructorRowClicked={handleInstructorRowClicked}
                         data={instructorData}
@@ -84,7 +65,6 @@ function Instructors() {
     } else {
         return <></>
     }
-
->>>>>>> Stashed changes
 }
+
 export default Instructors;
