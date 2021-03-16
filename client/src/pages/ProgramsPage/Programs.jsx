@@ -1,16 +1,9 @@
 import React, {useState} from 'react';
 import OptionsBar from './OptionsBar';
 import './OptionsBar.scss';
-import { Page, SideInfoWrapper, Wrapper } from '../../design-system/layout/Styled';
-import Card from '../../components/Card';
-import AppJam_Logo from "../../assets/MobileDevLogo.png";
-import WebJam_Logo from "../../assets/WebDevLogo.png";
-import Lestem_Logo from "../../assets/LESTEMLogo.png";
-import Efk_Logo from "../../assets/EFKLogo.png";
-import Scratch_Logo from "../../assets/ScratchLogo.png";
-import InstructorsSideInfo from "../InstructorsPage/InstructorsSideInfo";
+import { Page, SideInfoWrapper, Wrapper, GalleryWrapper } from '../../design-system/layout/Styled';
 
-import { PartnerCard } from '../../design-system/container/Cards';
+import { PartnerCard, ProgramCard } from '../../design-system/container/Cards';
 
 //dummy data: to be removed once connect to backend
 import { PROGRAM_COLOR_KEYS as program_color_keys, PROGRAMS as programs_data }  from '../../data/PROGRAMS';
@@ -20,7 +13,7 @@ import ProgramSideInfo from "./ProgramSideInfo";
 
 
 const Programs = () => {
-    const [viewType, setViewType] = useState("Partners");
+    const [viewType, setViewType] = useState("Programs");
     const [filterType, setFilterType] = useState("All");
     const [dataFocus, setDataFocus] = React.useState();
 
@@ -30,11 +23,11 @@ const Programs = () => {
 
     const getViewType = (type) => {
         setViewType(type);
+        setDataFocus();
     }
 
     const handleCardClick = (data) => {
         setDataFocus(data);
-        console.log(data);
     }
 
     const renderSideInfo = () => {
@@ -58,14 +51,20 @@ const Programs = () => {
         <Page>
             <Wrapper>
                 <OptionsBar viewType={getViewType} filterType={getfilterType}/>
-                <div className={'program-gallery'}>
+                <GalleryWrapper>
                     { viewType === "Partners" && (
                         partners_data.map((el, index) =>
                             <PartnerCard item={el} key={index} onClick={handleCardClick}/>
                         )
                       )
                     }
-                </div>
+                    { viewType === "Programs" && (
+                        programs_data.map((el, index) =>
+                            <ProgramCard item={el} key={index} onClick={handleCardClick}/>
+                        )
+                    )
+                    }
+                </GalleryWrapper>
             </Wrapper>
             <SideInfoWrapper>
                 {renderSideInfo()}

@@ -5,10 +5,13 @@ import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
 import Dot from "../../components/Dot";
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
-import { Wrapper, Title, Avatar  } from "../../design-system/container/SideInfo";
 
 const InstructorsSideInfo = (props) => {
     const { instructor, programsColorKey } = props;
+
+    if (instructor) {
+        formatAvailability(instructor.availability);
+    }
 
     if (!instructor) {
         return (
@@ -17,18 +20,18 @@ const InstructorsSideInfo = (props) => {
     }
 
     return (
-        <Wrapper>
+        <div className={'instructor-side-info'}>
             <Fade right duration={200}>
                 <div>
-                    <Title>
+                    <h1 style={{fontWeight: "bold", textAlign: "center"}}>
                         {instructor.firstName + " " + instructor.lastName}
-                    </Title>
+                    </h1>
                     <Button variant="info">Edit Instructor
                         <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
                     </Button>
 
                     <div style={{margin: "2rem 0"}}>
-                        <Avatar src={avatar} />
+                        <img style={{width: "200px"}} src={avatar} />
                     </div>
 
                     <h6>Preferences</h6>
@@ -184,7 +187,7 @@ const InstructorsSideInfo = (props) => {
                     </div>
                 </div>
             </Fade>
-        </Wrapper>
+        </div>
     )
 }
 

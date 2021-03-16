@@ -2,7 +2,7 @@ export const PROGRAMS = [
     {
         name: "WebJam",
         color: "#40CCC8",
-        logo: "WebJam_Logo",
+        logo: "https://i.ibb.co/T8kL0pM/Web-Dev-Logo.png",
         session: [
             {
                 partner: "Villa Fundamental",
@@ -64,7 +64,7 @@ export const PROGRAMS = [
     {
         name: "AppJam",
         color: "#BB6BD9",
-        logo: "AppJam_Logo",
+        logo: "https://i.ibb.co/fHqN0fD/Mobile-Dev-Logo.png",
         session: [
             {
                 partner: "Villa Fundamental",
@@ -103,7 +103,7 @@ export const PROGRAMS = [
     {
         name: "Engineering Inventors",
         color: "#4B4B92",
-        logo: "Efk_Logo",
+        logo: "https://i.ibb.co/Pwt1yG3/EFKLogo.png",
         session: [
             {
                 partner: "Edison Elementary School",
@@ -165,7 +165,7 @@ export const PROGRAMS = [
     {
         name: "LESTEM",
         color: "#F2994A",
-        logo: "Lestem_Logo",
+        logo: "https://i.ibb.co/Jng1xMw/LESTEMLogo.png",
         session: [
             {
                 partner: "Edison Elementary School",
@@ -196,7 +196,7 @@ export const PROGRAMS = [
     {
         name: "Scratch",
         color: "#F2C94C",
-        logo: "Scratch_Logo",
+        logo: "https://i.ibb.co/bFW9VZW/Scratch-Logo.png",
         session: [
             {
                 partner: "Edison Elementary School",

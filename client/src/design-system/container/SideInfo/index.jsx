@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { color } from "../../style";
 
 export const Wrapper = styled.div`
   margin: 1.5rem;
@@ -15,6 +16,18 @@ export const BadgeContainer = styled.div`
   }
 `;
 
+export const TagContainer = styled.div`
+  font-size: 1rem;
+  margin-top: 1rem;
+  .badge {
+    margin: 0.2rem;
+    font-weight: 400;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem; 
+  }
+`;
+
+
 export const Title = styled.h1`
   font-weight: bold;
   text-align: center;
@@ -25,6 +38,7 @@ export const Subtitle = styled.h5`
 `;
 
 export const Text = styled.p`
+    margin: 0;
 `;
 
 export const PartnerProgramSection = styled.div`
@@ -37,6 +51,14 @@ export const PartnerProgramSection = styled.div`
   width: 100%;
   border-radius: 10px;
   padding: 0.8rem;
+  margin: 1rem 0;
+`;
+
+export const ProgramSection = styled.div`
+  background-color: ${color.neutral.EGGSHELL};
+  width: 100%;
+  border-radius: 10px;
+  padding: 1.5rem;
   margin: 1rem 0;
 `;
 

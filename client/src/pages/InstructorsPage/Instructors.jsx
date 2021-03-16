@@ -12,11 +12,13 @@ import { PROGRAM_COLOR_KEYS as program_color_keys }  from '../../data/PROGRAMS';
 
 function Instructors() {
     const [instructorFocus, setInstructorFocus] = React.useState();
+    const [instructorData, setInstructorData] = React.useState(null);
 
     const handleInstructorRowClicked = (instructor) => {
         setInstructorFocus(instructor);
     }
 
+<<<<<<< Updated upstream
     return (
         <Page>
             <Wrapper>
@@ -35,5 +37,54 @@ function Instructors() {
             </SideInfoWrapper>
         </Page>
     );
+=======
+    React.useEffect(() => {
+        getInstructor();
+    }, [])
+
+    const getInstructor = () => {
+        setInstructorData(getRandomInstructorSet(12));
+    };
+
+    if (instructorData) {
+        return (
+            // <Page>
+            //     <Wrapper>
+            //       <Toolbar />
+            //       <InstructorsTable
+            //           handleInstructorRowClicked={handleInstructorRowClicked}
+            //           data={getRandomInstructorSet(12)}
+            //           programsColorKey={program_color_keys}
+            //       />
+            //     </Wrapper>
+            //     <SideInfoWrapper className={"instructor-side-info_container"}>
+            //         <InstructorsSideInfo
+            //             instructor={instructorFocus}
+            //             programsColorKey={program_color_keys}
+            //         />
+            //     </SideInfoWrapper>
+            // </Page>
+            <div className="instructors_page">
+                <div className={"instructor-list_container"}>
+                    <Toolbar />
+                    <InstructorsTable
+                        handleInstructorRowClicked={handleInstructorRowClicked}
+                        data={instructorData}
+                        programsColorKey={program_color_keys}
+                    />
+                </div>
+                <div className={"instructor-side-info_container"}>
+                    <InstructorsSideInfo
+                        instructor={instructorFocus}
+                        programsColorKey={program_color_keys}
+                    />
+                </div>
+            </div>
+        );
+    } else {
+        return <></>
+    }
+
+>>>>>>> Stashed changes
 }
 export default Instructors;

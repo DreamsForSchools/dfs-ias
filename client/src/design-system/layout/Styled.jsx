@@ -21,3 +21,9 @@ export const SideInfoWrapper = styled.div`
   text-align: center;
   overflow-y: scroll;
 `;
+
+export const GalleryWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+`;
