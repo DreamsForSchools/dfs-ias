@@ -23,7 +23,7 @@ const dragReducer = produce((draft, action) => {
 function ProgramModule({ name, color }) {
   const [showContent, setShowContent] = useState(false);
   const [lock, setLock] = useState(false);
-  const [state, dispatch] = useReducer(dragReducer, { items: getRandomInstructorSet(5), });
+  const [state, dispatch] = useReducer(dragReducer, { items: getRandomInstructorSet(4), items1: getRandomInstructorSet(4), items2: getRandomInstructorSet(4), items3: getRandomInstructorSet(4)});
 
   const programsColorKey = {
     "AppJam": "#4B4B92",
@@ -118,7 +118,7 @@ function ProgramModule({ name, color }) {
                     );
                   }}
                 </Droppable>
-                <Droppable droppableId="items" type="INSTRUCTOR">
+                <Droppable droppableId="items1" type="INSTRUCTOR">
                   {(provided) => {
                     return (
                       <div
@@ -130,7 +130,7 @@ function ProgramModule({ name, color }) {
                         <div className="info">
                           <Calendar4 /> Schedule <People /> Instructors
                         </div>
-                        {state.items?.map((instructor, index) => {
+                        {state.items1?.map((instructor, index) => {
                           return (
                             <Draggable
                               key={instructor.id}
@@ -175,7 +175,7 @@ function ProgramModule({ name, color }) {
                     );
                   }}
                 </Droppable>
-                <Droppable droppableId="items" type="INSTRUCTOR">
+                <Droppable droppableId="items2" type="INSTRUCTOR">
                   {(provided) => {
                     return (
                       <div
@@ -187,7 +187,7 @@ function ProgramModule({ name, color }) {
                         <div className="info">
                           <Calendar4 /> Schedule <People /> Instructors
                         </div>
-                        {state.items?.map((instructor, index) => {
+                        {state.items2?.map((instructor, index) => {
                           return (
                             <Draggable
                               key={instructor.id}
@@ -232,7 +232,7 @@ function ProgramModule({ name, color }) {
                     );
                   }}
                 </Droppable>
-                <Droppable droppableId="items" type="INSTRUCTOR">
+                <Droppable droppableId="items3" type="INSTRUCTOR">
                   {(provided) => {
                     return (
                       <div
@@ -244,7 +244,7 @@ function ProgramModule({ name, color }) {
                         <div className="info">
                           <Calendar4 /> Schedule <People /> Instructors
                         </div>
-                        {state.items?.map((instructor, index) => {
+                        {state.items3?.map((instructor, index) => {
                           return (
                             <Draggable
                               key={instructor.id}
