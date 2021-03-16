@@ -2,10 +2,12 @@ import React, { useState, useCallback, useReducer } from "react";
 import './ProgramModule.scss';
 import Partner from './Partner.jsx';
 import { Accordion, Card } from "react-bootstrap";
-import { CaretRightFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { CaretRightFill, LockFill, UnlockFill, Calendar4, People } from 'react-bootstrap-icons';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
+import Dot from "../../components/Dot";
+import { formatAvailability } from "../../util/formatData";
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
@@ -22,6 +24,14 @@ function ProgramModule({ name, color }) {
   const [showContent, setShowContent] = useState(false);
   const [lock, setLock] = useState(false);
   const [state, dispatch] = useReducer(dragReducer, { items: getRandomInstructorSet(5), });
+
+  const programsColorKey = {
+    "AppJam": "#4B4B92",
+    "WebJam": "#E82029",
+    "LESTEM": "#40CCC8",
+    "Engineering Inventors": "#27AE60",
+    "Scratch": "#F2994A"
+  };
 
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
@@ -52,6 +62,234 @@ function ProgramModule({ name, color }) {
             <Card.Body className="program-body">
               <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="items" type="INSTRUCTOR">
+                  {(provided) => {
+                    return (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="partner"
+                      >
+                        <h1 className="partner-name">Villa Fundamental</h1>
+                        <div className="info">
+                          <Calendar4 /> Schedule <People /> Instructors
+                        </div>
+                        {state.items?.map((instructor, index) => {
+                          return (
+                            <Draggable
+                              key={instructor.id}
+                              draggableId={instructor.id}
+                              index={index}
+                            >
+                              {(provided) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <div className="instructor">
+                                      <div className="name">
+                                        {instructor.firstName} {instructor.lastName}
+                                      </div>
+                                      <div className="tags">
+                                        {instructor.hasCar ? <div className="tag">Car</div> : null}
+                                        {instructor.previouslyTaught ? <div className="tag">Returnee</div> : null}
+                                        {instructor.isASL ? <div className="tag">ASL</div> : null}
+                                      </div>
+                                      <div className="pref">
+                                        {instructor.pref.map((el, idx) =>
+                                            <Dot color={programsColorKey[el]} key={idx}/>
+                                        )}
+                                      </div>
+                                      <div className="availability">
+                                        {formatAvailability(instructor.availability).map((e) =>
+                                          <h5>{e}</h5>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+                <Droppable droppableId="items" type="INSTRUCTOR">
+                  {(provided) => {
+                    return (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="partner"
+                      >
+                        <h1 className="partner-name">Carr Intermediate</h1>
+                        <div className="info">
+                          <Calendar4 /> Schedule <People /> Instructors
+                        </div>
+                        {state.items?.map((instructor, index) => {
+                          return (
+                            <Draggable
+                              key={instructor.id}
+                              draggableId={instructor.id}
+                              index={index}
+                            >
+                              {(provided) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <div className="instructor">
+                                      <div className="name">
+                                        {instructor.firstName} {instructor.lastName}
+                                      </div>
+                                      <div className="tags">
+                                        {instructor.hasCar ? <div className="tag">Car</div> : null}
+                                        {instructor.previouslyTaught ? <div className="tag">Returnee</div> : null}
+                                        {instructor.isASL ? <div className="tag">ASL</div> : null}
+                                      </div>
+                                      <div className="pref">
+                                        {instructor.pref.map((el, idx) =>
+                                            <Dot color={programsColorKey[el]} key={idx}/>
+                                        )}
+                                      </div>
+                                      <div className="availability">
+                                        {formatAvailability(instructor.availability).map((e) =>
+                                          <h5>{e}</h5>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+                <Droppable droppableId="items" type="INSTRUCTOR">
+                  {(provided) => {
+                    return (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="partner"
+                      >
+                        <h1 className="partner-name">Fremont Fundamental</h1>
+                        <div className="info">
+                          <Calendar4 /> Schedule <People /> Instructors
+                        </div>
+                        {state.items?.map((instructor, index) => {
+                          return (
+                            <Draggable
+                              key={instructor.id}
+                              draggableId={instructor.id}
+                              index={index}
+                            >
+                              {(provided) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <div className="instructor">
+                                      <div className="name">
+                                        {instructor.firstName} {instructor.lastName}
+                                      </div>
+                                      <div className="tags">
+                                        {instructor.hasCar ? <div className="tag">Car</div> : null}
+                                        {instructor.previouslyTaught ? <div className="tag">Returnee</div> : null}
+                                        {instructor.isASL ? <div className="tag">ASL</div> : null}
+                                      </div>
+                                      <div className="pref">
+                                        {instructor.pref.map((el, idx) =>
+                                            <Dot color={programsColorKey[el]} key={idx}/>
+                                        )}
+                                      </div>
+                                      <div className="availability">
+                                        {formatAvailability(instructor.availability).map((e) =>
+                                          <h5>{e}</h5>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+                <Droppable droppableId="items" type="INSTRUCTOR">
+                  {(provided) => {
+                    return (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="partner"
+                      >
+                        <h1 className="partner-name">Edison Elementary</h1>
+                        <div className="info">
+                          <Calendar4 /> Schedule <People /> Instructors
+                        </div>
+                        {state.items?.map((instructor, index) => {
+                          return (
+                            <Draggable
+                              key={instructor.id}
+                              draggableId={instructor.id}
+                              index={index}
+                            >
+                              {(provided) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <div className="instructor">
+                                      <div className="name">
+                                        {instructor.firstName} {instructor.lastName}
+                                      </div>
+                                      <div className="tags">
+                                        {instructor.hasCar ? <div className="tag">Car</div> : null}
+                                        {instructor.previouslyTaught ? <div className="tag">Returnee</div> : null}
+                                        {instructor.isASL ? <div className="tag">ASL</div> : null}
+                                      </div>
+                                      <div className="pref">
+                                        {instructor.pref.map((el, idx) =>
+                                            <Dot color={programsColorKey[el]} key={idx}/>
+                                        )}
+                                      </div>
+                                      <div className="availability">
+                                        {formatAvailability(instructor.availability).map((e) =>
+                                          <h5>{e}</h5>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+                {/* <Droppable droppableId="items" type="INSTRUCTOR">
                   {(provided) => {
                     return (
                       <Partner 
@@ -98,7 +336,7 @@ function ProgramModule({ name, color }) {
                       />
                     );
                   }}
-                </Droppable>
+                </Droppable> */}
               </DragDropContext>
             </Card.Body>
           </Accordion.Collapse>
