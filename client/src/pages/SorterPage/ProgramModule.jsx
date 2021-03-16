@@ -2,7 +2,7 @@ import React, { useState, useCallback, useReducer } from "react";
 import './ProgramModule.scss';
 import Partner from './Partner.jsx';
 import { Accordion, Card } from "react-bootstrap";
-import { CaretRightFill, CaretDownFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
+import { CaretRightFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
@@ -44,7 +44,7 @@ function ProgramModule({ name, color }) {
         <Card className="program-module" style={{ backgroundColor: color }}>
           <Accordion.Toggle className="program-header" onClick={() => { setShowContent(!showContent) }} as={Card.Header} eventKey="0">
             <span className="program-left">
-              {showContent ? <CaretDownFill className="icon" /> : <CaretRightFill className="icon" />}
+              <CaretRightFill className={showContent ? "caret-down" : "caret-right"}/>
               <div className="program-name">{name}</div>
             </span>
           </Accordion.Toggle>
