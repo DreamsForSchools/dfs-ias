@@ -78,6 +78,8 @@ export const getRandomInstructor = () => {
     return (DUMMY_DATA);
 }
 
+export const dummyInstructorSet = getRandomInstructorSet(12)
+
 
 
 

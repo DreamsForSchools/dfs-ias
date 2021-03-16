@@ -1,5 +1,5 @@
 .search {
-  margin-right: 4rem;
+  margin-right: 8rem;
   height: 30px;
   width: 40vw !important;
 
@@ -15,7 +15,7 @@
 }
 
 .filter-by {
-  margin-right: 4rem;
+  margin-right: 3rem;
 
   .label {
     margin-right: 1rem;
@@ -24,4 +24,12 @@
   .select {
     width: 6vw !important;
   }
+}
+
+.add-button {
+  background: #4B4B92 !important;
+  border-radius: 10px !important;
+  border: none !important;
+  font-size: 20px;
+  padding: 0.5rem 1rem !important;
 }
