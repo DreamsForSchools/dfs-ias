@@ -1,0 +1,36 @@
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Switch, Redirect, Route } from "react-router-dom";
+
+import NavigationBar from './components/Navbar.jsx';
+import Programs from "./pages/ProgramsPage/Programs";
+import Instructors from "./pages/InstructorsPage/Instructors";
+import Sorter from "./pages/SorterPage/Sorter";
+
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <NavigationBar />
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/programs" />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route path="/programs">
+            <Programs />
+          </Route>
+          <Route path="/instructors">
+            <Instructors />
+          </Route>
+          <Route path="/sorter">
+            <Sorter />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  );
+}
+
+export default App;

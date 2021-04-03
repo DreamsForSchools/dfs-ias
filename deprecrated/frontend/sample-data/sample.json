@@ -1,0 +1,35 @@
+{
+    "program 1": {
+        "school 1":{
+            "instructor 1":{
+                "mon":{
+                    "0": {
+                        "start":"12:00",
+                        "end": "13:00"
+                    }
+                }
+            },
+            "instructor 2":{
+                "tue":{
+                    "0":{
+                        ...
+                    },
+                    "1":{
+
+                    }
+                }
+            }
+        }
+    }
+}
+// Backup Response
+{
+    "program 1": {
+        "school 1":{
+            "instructors 1": 0,
+            "instructors 2": 0,
+            "instructors 3": 0,
+            
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "build": {
+      "env": {
+        "FIREBASE_API_KEY": "AIzaSyD5xRlDFsIss2U9nR-tSriQIRwBzPmvQ5k",
+        "FIREBASE_AUTH_DOMAIN": "dfs-ias.firebaseapp.com",
+        "FIREBASE_DATABASE_URL": "https://dfs-ias.firebaseio.com",
+        "FIREBASE_PROJECT_ID": "dfs-ias",
+        "FIREBASE_STORAGE_BUCKET": "dfs-ias.appspot.com",
+        "FIREBASE_MESSAGING_SENDER_ID": "44070275331",
+        "FIREBASE_APP_ID": "1:44070275331:web:a825361e868c7e63824136",
+        "FIREBASE_MEASUREMENT_ID": "G-0LQRWS0W4Z"
+      }
+    }
+  }

@@ -1,23 +1,15 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-.idea
 
 # dependencies
-deprecrated/frontend/node_modules
+/node_modules
 /.pnp
 .pnp.js
-deprecrated/backend/lib
-api/node_modules
-client/node_modules
 
 # testing
 /coverage
-.vscode
 
 # production
 /build
-.firebase
-.cache
-package-lock.json
 
 # misc
 .DS_Store
@@ -25,10 +17,7 @@ package-lock.json
 .env.development.local
 .env.test.local
 .env.production.local
-.env
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*.log
-__pycache__

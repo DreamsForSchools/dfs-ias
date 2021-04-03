@@ -1,0 +1,51 @@
+.program-module {
+  margin: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 10px !important;
+  border: 0 !important;
+  &:hover {
+    cursor: pointer;
+  }
+  .card-header {
+    background-color: #FFFFFF00;
+    border: 0;
+  }
+  .caret-down {
+    color: #FFF;
+    height: 20px;
+    transform: rotate(90deg);
+    transition: all 0.3s;
+  }
+  .caret-right {
+    color: #FFF;
+    height: 20px;
+    transition: all 0.3s;
+  }
+}
+
+.program_accordion {
+  display: inline-block !important;
+  width: 98% !important;
+}
+
+.program-header {
+  color: #FFFFFF;
+}
+
+.program-name {
+  font-weight: 600;
+  font-size: 20px;
+  padding-left: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.program-right {
+  z-index: 10;
+  visibility: hidden;
+}
+
+.program-body {
+  background-color: rgba(221, 223, 226, 0.80);;
+  border: none !important;
+  display: flex;
+}
