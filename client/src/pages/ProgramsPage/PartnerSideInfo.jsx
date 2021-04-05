@@ -5,7 +5,7 @@ import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
 import Dot from "../../components/Dot";
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
-import { Wrapper, Title, Image, Subtitle, PartnerProgramSection, Text, BadgeContainer } from "../../design-system/container/SideInfo";
+import { Wrapper, Title, Image, Subtitle, PartnerProgramSection, Text, BadgeContainer } from "../../design-system/components/SideInfo";
 
 const PartnerSideInfo = (props) => {
     const { partner, programsColorKey } = props;

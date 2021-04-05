@@ -6,7 +6,7 @@ const Card = (props) => {
     if(props.item.tag === props.filterType || props.filterType === "All" ){
         if(props.viewType === "Programs"){
             return (
-                <div className={"card-container"}>
+                <div className={"card-components"}>
                     <div className={"card-image"}>
                         <img src={props.item.logo} className={"program-image"}/>
                     </div>
@@ -16,7 +16,7 @@ const Card = (props) => {
                 </div>
             )
         } else return (
-            <div className={"card-container"}>
+            <div className={"card-components"}>
                 <div className={"card-image"}>
                     <img src={props.item.logo} className={"partner-image"}/>
                 </div>

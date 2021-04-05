@@ -13,7 +13,7 @@ import {
     Text,
     ProgramSection,
     TagContainer
-} from "../../design-system/container/SideInfo";
+} from "../../design-system/components/SideInfo";
 
 const ProgramSideInfo = (props) => {
     const { program, programsColorKey } = props;
