@@ -28,7 +28,8 @@ router.delete('/season/:id', seasonController.deleteById);
 router.get('/season/:id', seasonController.findById);
 router.put('/season/:id', seasonController.updateById)
 
-router.post('/instructor', instructorController.create);
+router.post('/instructor', instructorController.createSingle);
+router.post('/instructor/CSV', instructorController.createCSV);
 router.get('/instructor', instructorController.findAll);
 router.get('/instructor/:id', instructorController.findById);
 router.delete('/instructor/:id', instructorController.deleteById);

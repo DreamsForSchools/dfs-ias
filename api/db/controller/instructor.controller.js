@@ -9,14 +9,29 @@ exports.findAll = function(req, res) {
     });
 };
 
-exports.create = function(req, res) {
+exports.createSingle = function(req, res) {
     const new_instructor = new Instructor(req.body);
     //handles null error
     if (req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }
     else {
-        Instructor.create(new_instructor, function(err, instructor) {
+        Instructor.createSingle(new_instructor, function(err, instructor) {
+            if (err)
+                res.send(err);
+            else res.json({error:false, message:"Instructor added successfully!",data:instructor});
+        });
+    }
+};
+
+exports.createCSV = function(req, res) {
+    const new_instructor = new Instructor(req.body);
+    //handles null error
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0){
+        res.status(400).send({ error:true, message: 'Please provide all required field' });
+    }
+    else {
+        Instructor.createCSV(new_instructor, function(err, instructor) {
             if (err)
                 res.send(err);
             else res.json({error:false, message:"Instructor added successfully!",data:instructor});
