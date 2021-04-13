@@ -2,7 +2,7 @@ import React from "react";
 import Fade from 'react-reveal/Fade';
 import { PencilSquare, CalendarWeek, TelephoneFill, X, Check } from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
-import Dot from "../../components/Dot";
+import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
 

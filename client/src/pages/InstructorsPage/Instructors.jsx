@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
 import './Instructors.scss';
-import Toolbar from './Toolbar';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
 import {Page, SideInfoWrapper, Wrapper} from '../../design-system/layout/Styled';
 import {getRandomInstructorSet} from "../../util/sampleData";
 import {FormControl, InputGroup, Button} from "react-bootstrap";
 import {PlusCircle, Filter, Search, FileEarmarkTextFill, CloudUploadFill, ChevronRight, ChevronLeft} from 'react-bootstrap-icons';
+import AddInstructorManuallyModal from "../../components/AddInstructorManuallyModal";
 
 
 //dummy data: to be removed once connect to backend
 import {INSTRUCTORS as instructors_data} from '../../data/INSTRUCTORS';
 import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {Modal} from "react-bootstrap";
-import AddInstructorManuallyModal from "./AddInstructorManuallyModal";
 
 function Instructors() {
     const [instructorFocus, setInstructorFocus] = useState();

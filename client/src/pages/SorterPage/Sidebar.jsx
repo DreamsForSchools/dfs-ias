@@ -6,7 +6,7 @@ import { Search, PlusCircle } from 'react-bootstrap-icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
-import Dot from "../../components/Dot";
+import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
 
 const dragReducer = produce((draft, action) => {

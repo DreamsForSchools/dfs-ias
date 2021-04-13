@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
-import Dot from '../../components/Dot';
+import Dot from '../../design-system/dots';
 
 const InstructorsRow = (props) => {
     const {
