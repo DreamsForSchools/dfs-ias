@@ -29,8 +29,7 @@ var Instructor = function(instructor) {
 Instructor.createSingle = function (newInstructor,result){
     let availability = JSON.parse(newInstructor.availability);
     delete newInstructor['availability'];
-    
-    console.log(newInstructor);
+
     db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
         if (err) result(err, null);
         else {
@@ -67,88 +66,7 @@ Instructor.createCSV = function (requestBody, result) {
         });
 
     });
-    result(null,responseReturn);
-
-    
-
-    // let CSVjson = JSON.parse(requestBody.CSVraw);
-    
-    // CSVjson.availability = JSON.stringify(CSVjson.availability);
-
-    // let responseReturn;
-
-    //     axios.post('http://localhost:5000/api/instructor',CSVjson).then((response) => {
-    //         responseReturn = response;
-    //     }, (error) => {
-    //         responseReturn = error;       
-    //         result(error,null);     //TODO unsure what to put here
-    //     });
     // result(null,responseReturn);
-
-    
-
-
-    
-    
-
-
-
-
-    // let availability = JSON.parse(newInstructor.availability);
-    // delete newInstructor['availability'];
-
-    // db.query("SELECT * FROM instructors WHERE email = ?", newInstructor.email, function(err,res) {
-    //     if(err) result(err,null);
-    //     else{
-    //         let insertedInstructorID;;            
-
-    //         //if email exists update seasons_taught
-    //         if(res.length == 1){
-    //             insertedInstructorID = res[0].instructorId;
-    //             db.query("UPDATE instructors SET seasons_taught = ? WHERE instructorId = ?", [res[0].seasons_taught+1, insertedInstructorID], function(err,res){
-    //                 if(err) result(err,null);
-    //                 else{
-    //                     //check if uni place has changed
-    //                     db.query("SELECT university FROM instructors WHERE instructorId = ? ",insertedInstructorID,function(err,res){
-    //                         if(err) result(err,null);
-    //                         else{
-    //                             if(res.length > 0 && res[0].university != newInstructor.university)
-    //                                 locationCacheCheck(newInstructor.university, insertedInstructorID, result);
-    //                                 //delete all instructor availability with this id
-    //                             db.query("DELETE FROM instructorAvailability WHERE instructorId = ?", insertedInstructorID, function(err,res){
-    //                                 if(err) result(err, null);
-    //                                 //then insert all availability
-    //                                 insertAvailability(availability, insertedInstructorID, result);
-    //                                 result(null,res);
-    //                             });
-    //                         } 
-    //                     });
-    //                 }
-    //             });             
-                
-    //         }else{ 
-    //              //insert new instructor
-    //             db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
-    //                 if (err) result(err, null);
-    //                 else {
-                        
-    //                     db.query("SELECT instructorId from instructors WHERE email = ?", newInstructor.email, function (err, res) {
-    //                         if(err) result(err, null);
-    //                         else {
-    //                             insertedInstructorID = res[0].instructorId;
-    //                             //check if locaction cache has same name
-    //                             locationCacheCheck(newInstructor.university, insertedInstructorID, result);
-
-    //                             //insert all availability
-    //                             insertAvailability(availability, insertedInstructorID, result);
-    //                             result(null,res);
-    //                         }
-    //                     });
-    //                 }
-    //             });
-    //         }         
-    //     }
-    // });
 }
 
 //check if location exists (and insert)
