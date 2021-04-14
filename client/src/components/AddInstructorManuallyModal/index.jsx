@@ -7,14 +7,17 @@ import {formatMilitaryTime} from "../../util/formatData";
 import Lottie from "lottie-react";
 import carAnimation from '../../assets/sedan-car-animation.json';
 import aslAnimation from '../../assets/asl-animation.json';
-
 import {timeSlots, gender, ethnicity, shirtSize, schoolYear, university} from '../../constant';
 import {PROGRAMS} from "../../data/PROGRAMS";
 
-export default function AddInstructorManuallyModal() {
+var isEqual = require('lodash/isEqual');
+var includes = require('lodash/includes');
+
+
+export default function AddInstructorManuallyModal({handleSubmit}) {
     const [step, setStep] = useState(0);
     const [programPreference, setProgramPreference] = useState([]);
-    const [choices, setChoices] = useState([]);
+    const [timeAvailability, setTimeAvailability] = useState([]);
 
     const [formInput, setFormInput] = useState(
         {
@@ -105,13 +108,55 @@ export default function AddInstructorManuallyModal() {
 
     const handlePrevStep = () => setStep(step - 1);
 
-    const renderTimeSlotCheckboxes = (day) => {
+    const handleTimeSlotInput = (e) => {
+        if (timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify(e))) {
+            setTimeAvailability(timeAvailability.filter(function (ele) {
+                return JSON.stringify(ele) != JSON.stringify(e);
+            }));
+        } else {
+            setTimeAvailability([...timeAvailability, e]);
+        };
+    };
+
+    React.useEffect(() => {
+        parseAvailability(timeAvailability);
+    }, [timeAvailability])
+
+    const parseAvailability = (arr) => {
+        let parsed = [];
+        arr.sort((a, b) => {
+            if (a.weekday > b.weekday) return 1;
+            if (a.weekday < b.weekday) return -1;
+
+            if (Number(a.startTime.split(':')[0]) < Number(b.startTime.split(':')[0])) return -1;
+            if (Number(a.startTime.split(':')[0]) > Number(b.startTime.split(':')[0])) return 1;
+        });
+
+        setFormInput({...formInput, availability: arr})
+
+        console.log(arr);
+    };
+
+    const renderTimeSlotCheckboxes = (time) => {
         const element = [];
 
         for (let i = 0; i < 5; i++) {
             element.push(
                 <td key={i} style={{textAlign: 'center'}}>
-                    <input type={'checkbox'} aria-label="Checkbox for following text input"/>
+                    <input
+                        onChange={() => handleTimeSlotInput({
+                            weekday: i + 1,
+                            startTime: timeSlots[time].startTime,
+                            endTime: timeSlots[time].endTime
+                        })}
+                        type={'checkbox'}
+                        aria-label="Checkbox for following text input"
+                        checked={timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify({
+                            weekday: i + 1,
+                            startTime: timeSlots[time].startTime,
+                            endTime: timeSlots[time].endTime
+                        }))}
+                    />
                 </td>
             )
         }
@@ -221,20 +266,22 @@ export default function AddInstructorManuallyModal() {
             setProgramPreference(programPreference.filter(function (ele) {
                 return ele != e;
             }));
-        }
-        else if (programPreference.length < 4) {
+        } else if (programPreference.length < 4) {
             setProgramPreference([...programPreference, e]);
-        };
+        }
+        ;
     };
 
     React.useEffect(() => {
-        setFormInput({...formInput,
-            firstPref: programPreference[0] || null ,
-            secondPref: programPreference[1] || null,
-            thirdPref: programPreference[2] || null,
-            fourthPref: programPreference[3] || null
-        }
-    )}, [programPreference])
+        setFormInput({
+                ...formInput,
+                firstPref: programPreference[0] || null,
+                secondPref: programPreference[1] || null,
+                thirdPref: programPreference[2] || null,
+                fourthPref: programPreference[3] || null
+            }
+        )
+    }, [programPreference])
 
 
     const preferences = (
@@ -256,11 +303,15 @@ export default function AddInstructorManuallyModal() {
                     margin: '0.75rem',
                     display: 'flex'
                 }}>
-                    <div style={{margin: 'auto', objectFit: 'contain', opacity: programPreference.length == 4 && !programPreference.includes(e.name) && '0.2'}}>
+                    <div style={{
+                        margin: 'auto',
+                        objectFit: 'contain',
+                        opacity: programPreference.length == 4 && !programPreference.includes(e.name) && '0.2'
+                    }}>
                         <img style={{height: 60, marginBottom: '1rem'}} src={e.logo}/>
                         <h6>{e.name}</h6>
                     </div>
-                    { programPreference.includes(e.name) &&
+                    {programPreference.includes(e.name) &&
                     <div style={{position: 'absolute'}}>
                         <Badge pill variant="warning">
                             {programPreference.indexOf(e.name) + 1}
@@ -293,7 +344,8 @@ export default function AddInstructorManuallyModal() {
             </Modal.Body>
             <Modal.Footer style={{border: '0', padding: '0 3rem 2rem 3rem'}}>
                 <Button variant="outline-primary" onClick={handlePrevStep} style={{marginRight: 'auto'}}><ChevronLeft/>Back</Button>
-                <Button variant="primary" onClick={handleNextStep}>Next<ChevronRight/></Button>
+                {step != 3 ? (<Button variant="primary" onClick={handleNextStep}>Next<ChevronRight/></Button>) : (
+                    <Button variant="primary" onClick={() => handleSubmit(formInput)}>Submit</Button>)}
             </Modal.Footer>
         </>
     );

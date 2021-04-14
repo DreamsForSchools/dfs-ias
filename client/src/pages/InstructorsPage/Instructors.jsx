@@ -33,6 +33,11 @@ function Instructors() {
         setInstructorFocus(instructor);
     }
 
+    const handleAddNewInstructorManually = (instructor) => {
+        setInstructorData([instructor, ...instructorData])
+        handleCloseInputModal();
+    }
+
     React.useEffect(() => {
         getInstructor();
     }, [])
@@ -94,7 +99,7 @@ function Instructors() {
             }
             { addInstructorMethod === 'MANUAL' && (
                 <>
-                    <AddInstructorManuallyModal/>
+                    <AddInstructorManuallyModal handleSubmit={handleAddNewInstructorManually}/>
                 </>
             )
             }
@@ -125,7 +130,7 @@ function Instructors() {
 
                     <InstructorsTable
                         handleInstructorRowClicked={handleInstructorRowClicked}
-                        data={getRandomInstructorSet(12)}
+                        data={instructorData}
                         programsColorKey={program_color_keys}
                     />
                 </Wrapper>
