@@ -26,48 +26,84 @@ var Instructor = function(instructor) {
     this.availability = instructor.availability;
 };
 
-Instructor.createSingle = function (newInstructor,result){
-    let availability = JSON.parse(newInstructor.availability);
+Instructor.createSingle = function (newInstructor, result) {
+    let availability = newInstructor.availability;
+    console.log(newInstructor);
     delete newInstructor['availability'];
 
     db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
         if (err) result(err, null);
         else {
-            db.query("SELECT instructorId from instructors WHERE email = ?", newInstructor.email, function (err, res) {
-                if(err) result(err, null);
-                else {
-                    let insertedInstructorID = res[0].instructorId;
-                    //insert all availability
-                    insertAvailability(availability, insertedInstructorID, result);
+            let insertedInstructorID = res.insertId;
 
-                    //check if locaction cache has same name
-                    locationCacheCheck(newInstructor.university, insertedInstructorID, result);
+            //insert all availability
+            insertAvailability(availability, insertedInstructorID, result);
 
-                    result(null,res);
-                }
-            });
+            // //check if locaction cache has same name
+            // locationCacheCheck(newInstructor.university, insertedInstructorID, result);
+
+            result(null, res);
         }
     });
 
 }
 
 Instructor.createCSV = function (requestBody, result) {
+    let newInstructorArray = requestBody.newInstructorArray;
+    let responseReturn;
+
+    newInstructorArray.forEach(instructor => {
+        //TODO IF EMAIL EXISTS CALL UPDATE FUNCTION, ELSE DO REGULAR INSERT FUNCTION
+        Instructor.createSingle(instructor, function (err, res) {
+            if (err) result(err, null);
+            else responseReturn = res;
+        });
+    });
+    result(null, responseReturn);
+}
+
+// Instructor.createSingle = function (newInstructor,result){
+//     let availability = JSON.parse(newInstructor.availability);
+//     delete newInstructor['availability'];
+
+//     db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
+//         if (err) result(err, null);
+//         else {
+//             db.query("SELECT instructorId from instructors WHERE email = ?", newInstructor.email, function (err, res) {
+//                 if(err) result(err, null);
+//                 else {
+//                     let insertedInstructorID = res[0].instructorId;
+//                     //insert all availability
+//                     insertAvailability(availability, insertedInstructorID, result);
+
+//                     //check if locaction cache has same name
+//                     locationCacheCheck(newInstructor.university, insertedInstructorID, result);
+
+//                     result(null,res);
+//                 }
+//             });
+//         }
+//     });
+
+// }
+
+// Instructor.createCSV = function (requestBody, result) {
     
 
-    let CSVjson = JSON.parse(requestBody.CSVraw);
-    let responseReturn;
-    CSVjson.forEach( el => {
-        el.availability = JSON.stringify(el.availability);
-        axios.post('http://localhost:5000/api/instructor',el).then((response) => {
-            responseReturn = response;
-        }, (error) => {
-            responseReturn = error;       
-            result(error,null);     //TODO unsure what to put here
-        });
+//     let CSVjson = JSON.parse(requestBody.CSVraw);
+//     let responseReturn;
+//     CSVjson.forEach( el => {
+//         el.availability = JSON.stringify(el.availability);
+//         axios.post('http://localhost:5000/api/instructor',el).then((response) => {
+//             responseReturn = response;
+//         }, (error) => {
+//             responseReturn = error;       
+//             result(error,null);     //TODO unsure what to put here
+//         });
 
-    });
-    // result(null,responseReturn);
-}
+//     });
+//     // result(null,responseReturn);
+// }
 
 //check if location exists (and insert)
 function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
