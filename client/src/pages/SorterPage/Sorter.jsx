@@ -15,7 +15,7 @@ const getPartnerInstructors = (droppableId, sorterData) => {
 }
 
 const Sorter = () => {
-  const { sorterData, setsorterData } = useContext(AppContext);
+  const { sorterData, setSorterData } = useContext(AppContext);
   const { searchedInstructors } = useContext(AppContext);
 
   const onDragEnd = (result) => {
@@ -33,10 +33,9 @@ const Sorter = () => {
         const [removed] = newSearchedInstructors.splice(source.index, 1);
         partnerInstructors.splice(destination.index, 0, removed);
 
-        setsorterData(newSorterData);
+        setSorterData(newSorterData);
     } else if (source.droppableId !== 'search-result' && source.droppableId !== destination.droppableId) {
         // moved from one partner to the other
-        
         const newSorterData = [...sorterData];
         const fromPartnerInstructors = getPartnerInstructors(source.droppableId, newSorterData);
         const toPartnerInstructors = getPartnerInstructors(destination.droppableId, newSorterData);
@@ -44,7 +43,7 @@ const Sorter = () => {
         const [removed] = fromPartnerInstructors.splice(source.index, 1);
         toPartnerInstructors.splice(destination.index, 0, removed);
 
-        setsorterData(newSorterData);
+        setSorterData(newSorterData);
     } else if (source.droppableId === destination.droppableId) {
         // moved to the same partner -> reorder
         const newSorterData = [...sorterData];
@@ -53,7 +52,7 @@ const Sorter = () => {
         const [removed] = partnerInstructors.splice(source.index, 1);
         partnerInstructors.splice(destination.index, 0, removed);
 
-        setsorterData(newSorterData);
+        setSorterData(newSorterData);
     }
   };
 

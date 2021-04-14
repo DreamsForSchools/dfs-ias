@@ -1,7 +1,9 @@
 .program-module {
-  margin: 0.5rem 1rem 0.5rem 1rem;
+  margin: 1rem;
   border-radius: 10px !important;
   border: 0 !important;
+  display: flex;
+  flex-direction: column;
   &:hover {
     cursor: pointer;
   }
@@ -34,9 +36,10 @@
 .program-name {
   font-weight: 600;
   font-size: 20px;
-  padding-left: 1rem;
+  padding: 1rem;
   display: inline-block;
   vertical-align: middle;
+  color: #FFFFFF;
 }
 
 .program-right {
@@ -44,8 +47,9 @@
   visibility: hidden;
 }
 
-.program-body {
+.partners-container {
   background-color: rgba(221, 223, 226, 0.80);;
   border: none !important;
   display: flex;
+  padding: 0.5rem;
 }

@@ -33,11 +33,12 @@ const AppContextProvider = ({ children }) => {
   const [partners, setPartners] = useState(["Villa Fundamental", "Carr Intermediate", "Fremont Fundamental", "Edison Elementary"])
     
   return (
-    <AppContext.Provider value={{
-      sorterData, setSorterData,
-      searchedInstructors, setSearchedInstructors,
-      programs, setPrograms,
-      partners, setPartners,
+    <AppContext.Provider 
+      value={{
+        sorterData, setSorterData,
+        searchedInstructors, setSearchedInstructors,
+        programs, setPrograms,
+        partners, setPartners,
     }}>
       {children}
     </AppContext.Provider>
