@@ -1,4 +1,3 @@
-// import React, { useState, useCallback, useReducer } from "react";
 import React, { useContext, useState } from "react";
 import { AppContext } from '../AppContextProvider';
 import { getRandomInstructorSet } from "../../../util/sampleData";
