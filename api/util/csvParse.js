@@ -1,6 +1,9 @@
 const csv = require('csvtojson')
+const axios = require('axios');
 
-const instructors = [];
+// USAGE:
+// node /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/csvParse.js /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/instructorData.csv
+
 const filePath = process.argv.slice(2)[0];
 const weekdays = {
     mondays: 1,
@@ -12,22 +15,26 @@ const weekdays = {
     sundays: 7
 }
 
-
 csv({
     noheader: false,
-    headers: ['omit', 'email', 'fname', 'lname', 'phone', 'gender', 'ethnicity', 'university', 'major', 'omit', 'omit', 'school_year', 'graduation', 'first_pref', 'second_pref', 'third_pref', 'fourth_pref', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'avail_09_10', 'avail_10_11', 'avail_11_12', 'avail_12_13', 'avail_13_14', 'avail_14_15', 'avail_15_16', 'avail_16_17', 'avail_17_18', 'omit', 'car', 'languages', 'is_asl', 'omit', 'shirtsize', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit'],
+    headers: ['omit', 'email', 'firstName', 'lastName', 'phoneNumber', 'gender', 'ethnicity', 'university', 'major', 'omit', 'omit', 'schoolYear', 'graduationDate', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'programmingLanguages', 'firstPref', 'secondPref', 'thirdPref', 'fourthPref', 'avail_09_10', 'avail_10_11', 'avail_11_12', 'avail_12_13', 'avail_13_14', 'avail_14_15', 'avail_15_16', 'avail_16_17', 'avail_17_18', 'omit', 'hasCar', 'shirtSize', 'isASL', 'otherLanguages', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit'],
     colParser: {
         "omit": "omit"
     },
     checkType: false
 }).fromFile(filePath)
     .then(instructors => {
-        // console.log(instructors);
 
         parseAvailability(instructors);
-        instructors.forEach(obj => {
-            console.log(obj)
-        })
+
+        let payload = {newInstructorArray: instructors}
+        axios.post('http://localhost:5000/api/instructor/CSV',
+            payload).then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error);
+        });
+
     }).catch(err => {
     // log error if any
     console.log(err);
@@ -42,16 +49,19 @@ const parseAvailability = (instructorData) => {
         Object.entries(obj).forEach(([key, value]) => {
             if (`${key}`.startsWith('avail')) {
                 let timeSlot = `${key}`.split('_');
-                let availableDays = `${value}`.split(',');
+                let availableDays = `${value}`.split(';');
                 insertAvailability(timeSlot[1], timeSlot[2], availableDays, availability);
                 delete obj[key];
+            } else if (`${key}`.startsWith('isASL') || `${key}`.startsWith('hasCar')) {
+                if (`${value}` === 'Yes') {
+                    obj[`${key}`] = true;
+                } else {
+                    obj[`${key}`] = false;
+                }
             }
         });
         obj['availability'] = availability;
-        // console.log(obj);
     });
-
-
 }
 
 const insertAvailability = (start, end, availableDays, availability) => {
