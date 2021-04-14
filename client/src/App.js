@@ -6,6 +6,7 @@ import NavigationBar from './components/Navbar.jsx';
 import Programs from "./pages/ProgramsPage/Programs";
 import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";
+import AppContextProvider from './pages/SorterPage/AppContextProvider';
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
             <Instructors />
           </Route>
           <Route path="/sorter">
-            <Sorter />
+            <AppContextProvider>
+              <Sorter />
+            </AppContextProvider>
           </Route>
         </Switch>
       </Router>

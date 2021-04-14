@@ -1,21 +1,22 @@
-import React, { createContext, useContext } from 'react';
-import './Sorter.scss';
-import Sidebar from './Sidebar.jsx';
-import ProgramModule from './ProgramModule.jsx';
-import MainPanel from './MainPanel.jsx';
+import React, { useContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { AppContext } from './AppContextProvider';
 
-const getQuarterCourses = (droppableId, planData) => {
-  for (let i = 0; i < planData.length; i++) {
-    if (Array.isArray(planData[i][droppableId])) {
-      return planData[i][droppableId];
+import './Sorter.scss';
+import Sidebar from './Sidebar/Sidebar.jsx';
+import MainPanel from './Main/MainPanel.jsx';
+
+const getPartnerInstructors = (droppableId, sorterData) => {
+  for (let i = 0; i < sorterData.length; i++) {
+    if (Array.isArray(sorterData[i][droppableId])) {
+      return sorterData[i][droppableId];
     }
   }
 }
 
 const Sorter = () => {
-  const { planData, setPlanData } = createContext();
-  const { searchedCourses } = createContext();
+  const { sorterData, setsorterData } = useContext(AppContext);
+  const { searchedInstructors } = useContext(AppContext);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -24,35 +25,35 @@ const Sorter = () => {
     if (destination.droppableId === 'search-result') return;
 
     if (source.droppableId === 'search-result') {
-        // moved from search result to one of the quarters
-        const newPlanData = [...planData];
-        const newSearchedCourses = [...searchedCourses];
-        const quarterCourses = getQuarterCourses(destination.droppableId, newPlanData);
+        // moved from search result to one of the partners
+        const newSorterData = [...sorterData];
+        const newSearchedInstructors = [...searchedInstructors];
+        const partnerInstructors = getPartnerInstructors(destination.droppableId, newSorterData);
 
-        const [removed] = newSearchedCourses.splice(source.index, 1);
-        quarterCourses.splice(destination.index, 0, removed);
+        const [removed] = newSearchedInstructors.splice(source.index, 1);
+        partnerInstructors.splice(destination.index, 0, removed);
 
-        setPlanData(newPlanData);
+        setsorterData(newSorterData);
     } else if (source.droppableId !== 'search-result' && source.droppableId !== destination.droppableId) {
-        // moved from one quarter to the other
+        // moved from one partner to the other
         
-        const newPlanData = [...planData];
-        const fromQuarterCourses = getQuarterCourses(source.droppableId, newPlanData);
-        const toQuarterCourses = getQuarterCourses(destination.droppableId, newPlanData);
+        const newSorterData = [...sorterData];
+        const fromPartnerInstructors = getPartnerInstructors(source.droppableId, newSorterData);
+        const toPartnerInstructors = getPartnerInstructors(destination.droppableId, newSorterData);
 
-        const [removed] = fromQuarterCourses.splice(source.index, 1);
-        toQuarterCourses.splice(destination.index, 0, removed);
+        const [removed] = fromPartnerInstructors.splice(source.index, 1);
+        toPartnerInstructors.splice(destination.index, 0, removed);
 
-        setPlanData(newPlanData);
+        setsorterData(newSorterData);
     } else if (source.droppableId === destination.droppableId) {
-        // moved to the same quarter -> reorder
-        const newPlanData = [...planData];
-        const quarterCourses = getQuarterCourses(source.droppableId, newPlanData);
+        // moved to the same partner -> reorder
+        const newSorterData = [...sorterData];
+        const partnerInstructors = getPartnerInstructors(source.droppableId, newSorterData);
 
-        const [removed] = quarterCourses.splice(source.index, 1);
-        quarterCourses.splice(destination.index, 0, removed);
+        const [removed] = partnerInstructors.splice(source.index, 1);
+        partnerInstructors.splice(destination.index, 0, removed);
 
-        setPlanData(newPlanData);
+        setsorterData(newSorterData);
     }
   };
 
@@ -62,34 +63,14 @@ const Sorter = () => {
         onDragEnd={onDragEnd}
       >
         <div className="main-wrapper">
-          {/* <MainPanel /> */}
-          <ProgramModule
-            name="AppJam"
-            color="#BB6BD9"
-          />
-          <ProgramModule
-            name="LESTEM"
-            color="#F2994A"
-          />
-          <ProgramModule
-            name="Scratch"
-            color="#F2C94C"
-          />
-          <ProgramModule
-            name="WebJam"
-            color="#40CCC8"
-          />
-          <ProgramModule
-            name="Engineering Inventors"
-            color="#4B4B92"
-          />
+          <MainPanel />
         </div>
         <div className="sidebar-wrapper">
           <Sidebar />
         </div>
       </DragDropContext>
     </div>
-
   );
 }
+
 export default Sorter;
