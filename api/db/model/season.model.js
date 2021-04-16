@@ -4,7 +4,9 @@ var db = require('../db.config');
 
 var Season = function(season) {
     this.name = season.name;
-    this.is_current = season.is_current;
+    this.isCurrent = season.isCurrent;
+    this.startDate = season.startDate;
+    this.endDate = season.endDate;
 };
 
 Season.create = function (newSeason, result) {
@@ -15,7 +17,7 @@ Season.create = function (newSeason, result) {
 }
 
 Season.deleteById = function (id, result) {
-    db.query("DELETE FROM seasons WHERE season_id = ?", id,
+    db.query("DELETE FROM seasons WHERE seasonId = ?", id,
         function (err, res) {
             if (err) result(err, null);
             else result(null, res);
@@ -31,15 +33,15 @@ Season.findAll = function (result) {
 
 
 Season.findById = function (id, result) {
-    db.query("SELECT * from seasons where season_id = ?", id, function (err, res) {
+    db.query("SELECT * from seasons where seasonId = ?", id, function (err, res) {
         if(err) result(err, null);
         else result(null, res);
     });
 }
 
 Season.updateById = function (id, season, result) {
-    db.query("UPDATE seasons SET name = ?, is_current = ? WHERE season_id = ?",
-        [season.name, season.is_current, id],
+    db.query("UPDATE seasons SET name = ?, isCurrent = ?, startDate = ?, endDate = ?  WHERE seasonId = ?",
+        [season.name, season.isCurrent, season.startDate, season.endDate, id],
         function(err, res) {
             if (err) result(err, null);
             else result(null, res);
@@ -47,7 +49,7 @@ Season.updateById = function (id, season, result) {
 }
 
 Season.getCurrent = function (result) {
-    db.query("SELECT * from seasons ORDER BY season_id DESC LIMIT 1", function (err, res) {
+    db.query("SELECT * from seasons ORDER BY seasonId DESC LIMIT 1", function (err, res) {
         if(err) result(err, null);
         else result(null, res);
     });
