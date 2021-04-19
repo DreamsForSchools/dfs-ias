@@ -6,7 +6,7 @@ import { CaretRightFill, LockFill, UnlockFill, Calendar4, People } from 'react-b
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
-import Dot from "../../components/Dot";
+import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
 
 const dragReducer = produce((draft, action) => {

@@ -2,7 +2,7 @@ import React from "react";
 import Fade from 'react-reveal/Fade';
 import { PencilSquare, CalendarWeek, TelephoneFill, X, Check } from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
-import Dot from "../../components/Dot";
+import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
 
@@ -44,7 +44,7 @@ const InstructorsSideInfo = (props) => {
                                     <Popover.Title as="h3">{`Program Preferences`}</Popover.Title>
                                     <Popover.Content>
                                         {
-                                            instructor.pref.map((el, idx) =>
+                                            [instructor.firstPref, instructor.secondPref, instructor.thirdPref, instructor.fourthPref].map((el, idx) =>
                                                 <h6 key={idx}>
                                                     <Dot color={programsColorKey[el]} />
                                                     <span style={{
@@ -58,7 +58,7 @@ const InstructorsSideInfo = (props) => {
                             }
                         >
                             <div>
-                                {instructor.pref.map((el, idx) =>
+                                {[instructor.firstPref, instructor.secondPref, instructor.thirdPref, instructor.fourthPref].map((el, idx) =>
                                     <Dot color={programsColorKey[el]} key={idx}/>
                                 )}
                             </div>
@@ -74,14 +74,14 @@ const InstructorsSideInfo = (props) => {
                                 <X /> Car
                             </Badge>
                         }
-                        {instructor.seasonsTaught > 1
-                            ? <Badge pill variant="success">
-                                <Check /> Returnee
-                            </Badge>
-                            : <Badge pill variant="danger">
-                                <X /> Returnee
-                            </Badge>
-                        }
+                        {/*{instructor.seasonsTaught > 1*/}
+                        {/*    ? <Badge pill variant="success">*/}
+                        {/*        <Check /> Returnee*/}
+                        {/*    </Badge>*/}
+                        {/*    : <Badge pill variant="danger">*/}
+                        {/*        <X /> Returnee*/}
+                        {/*    </Badge>*/}
+                        {/*}*/}
                         {instructor.isASL
                             ? <Badge pill variant="success">
                                 <Check /> ASL
@@ -98,7 +98,7 @@ const InstructorsSideInfo = (props) => {
                                 Year
                             </h6>
                             <h5>
-                                {instructor.year}
+                                {instructor.schoolYear}
                             </h5>
                         </div>
 
@@ -111,14 +111,14 @@ const InstructorsSideInfo = (props) => {
                             </h5>
                         </div>
 
-                        <div className={"info"} style={{width: "75%"}}>
-                            <h6>
-                                Previously Taught
-                            </h6>
-                            <h5>
-                                {instructor.previouslyTaught}
-                            </h5>
-                        </div>
+                        {/*<div className={"info"} style={{width: "75%"}}>*/}
+                        {/*    <h6>*/}
+                        {/*        Previously Taught*/}
+                        {/*    </h6>*/}
+                        {/*    <h5>*/}
+                        {/*        {instructor.previouslyTaught}*/}
+                        {/*    </h5>*/}
+                        {/*</div>*/}
                     </div>
 
                     <div className={"grouped-info_container"}>

@@ -10,7 +10,9 @@ const solid = {
 const neutral = {
     EGGSHELL: '#F2F5FF',
     GRAY: '#54595F',
+    MIDGRAY: '#B5B8BF',
     LIGHTGRAY: '#F5F7FB'
 }
 
 export const color = {solid, neutral}
+

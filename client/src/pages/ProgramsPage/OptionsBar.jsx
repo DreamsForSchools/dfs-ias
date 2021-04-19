@@ -18,7 +18,7 @@ const OptionBar = (props) => {
     }
 
     return (
-        <div className={"option-bar-container"}>
+        <div className={"option-bar-components"}>
 
             <Container fluid>
                 <Row>

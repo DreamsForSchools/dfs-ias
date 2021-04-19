@@ -3,7 +3,7 @@ import OptionsBar from './OptionsBar';
 import './OptionsBar.scss';
 import { Page, SideInfoWrapper, Wrapper, GalleryWrapper } from '../../design-system/layout/Styled';
 
-import { PartnerCard, ProgramCard } from '../../design-system/container/Cards';
+import { PartnerCard, ProgramCard } from '../../design-system/components/Cards';
 
 //dummy data: to be removed once connect to backend
 import { PROGRAM_COLOR_KEYS as program_color_keys, PROGRAMS as programs_data }  from '../../data/PROGRAMS';
