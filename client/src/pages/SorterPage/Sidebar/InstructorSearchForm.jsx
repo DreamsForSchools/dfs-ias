@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AppContext } from '../AppContextProvider';
 import { getRandomInstructorSet } from "../../../util/sampleData";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
-import { Search, PlusCircle } from 'react-bootstrap-icons';
+import { Search } from 'react-bootstrap-icons';
 
 const InstructorSearchForm = ({setIsLoading}) => {
   const { setSearchedInstructors } = useContext(AppContext);
@@ -28,7 +28,7 @@ const InstructorSearchForm = ({setIsLoading}) => {
         </InputGroup.Append>
       </InputGroup>
       <Button className="filter-btn">Filter</Button>
-      <Button className="add-instructor-btn"><PlusCircle /> Add Instructor</Button>
+      <Button className="auto-assign-btn">Auto-assign</Button>
     </div>
   );
 }

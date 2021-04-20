@@ -37,9 +37,9 @@
     color: #4B4B92;
     border-radius: 10px;
     padding: 10px 15px;
-    width: 6.5rem;
+    width: 40%;
     height: 40px;
-    margin-right: 1rem;
+    margin-right: 1.5rem;
     margin-bottom: 1rem;
     font-size: 14px;
     font-weight: 600;
@@ -50,11 +50,11 @@
     color: #FFFFFF;
   }
   
-  .add-instructor-btn {
+  .auto-assign-btn {
     background-color: #4B4B92;
     border-radius: 10px;
     padding: 10px 15px;
-    width: 11rem;
+    width: 50%;
     height: 40px;
     font-size: 14px;
     font-weight: 600;
@@ -62,10 +62,9 @@
     border: none;
   }
 
-  .add-instructor-btn:hover {
+  .auto-assign-btn:hover {
     background-color: #FFFFFF;
-    border-color: #4B4B92;
-    border-width: 2px;
+    border: 2px solid #4B4B92;
     color: #4B4B92;
   }
   

@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { AppContext } from '../AppContextProvider';
+// import React, { useContext } from "react";
+// import { AppContext } from '../AppContextProvider';
 
 import Instructor from '../Instructor.jsx';
 
-const SearchResult = ({ isLoading }) => {
-  const { searchedInstructors } = useContext(AppContext);
+const SearchResult = ({ isLoading, state }) => {
+  // const { searchedInstructors } = useContext(AppContext);
+  const searchedInstructors = state["search"];
 
   let resultList;
   let searchResultMessage;
@@ -52,7 +54,7 @@ const SearchResult = ({ isLoading }) => {
   return (
     <div className="search-result">
       {searchResultMessage}
-      <Droppable droppableId="search-result">
+      <Droppable droppableId="search" type="INSTRUCTOR">
         {(provided) => (
           <div
             ref={provided.innerRef}

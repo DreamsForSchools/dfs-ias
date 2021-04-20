@@ -9,28 +9,52 @@ const AppContextProvider = ({ children }) => {
   const [programs, setPrograms] = useState(
     [
       {
+        index: 1,
         name: "AppJam",
         color: "#BB6BD9"
       },
       {
+        index: 2,
         name: "WebJam",
         color: "#40CCC8"
       },
       {
+        index: 3,
         name: "LESTEM",
         color: "#F2994A"
       },
       {
+        index: 4,
         name: "Scratch",
         color: "#F2C94C"
       },
       {
+        index: 5,
         name: "Engineering Inventors",
         color: "#4B4B92"
       }
     ]
   );
-  const [partners, setPartners] = useState(["Villa Fundamental", "Carr Intermediate", "Fremont Fundamental", "Edison Elementary"])
+  const [partners, setPartners] = useState(
+    [
+      {
+        index: 1,
+        name: "Villa Fundamental",
+      },
+      {
+        index: 2,
+        name: "Carr Intermediate",
+      },
+      {
+        index: 3,
+        name: "Fremont Fundamental",
+      },
+      {
+        index: 4,
+        name: "Edison Elementary",
+      }
+    ]
+  );
     
   return (
     <AppContext.Provider 
