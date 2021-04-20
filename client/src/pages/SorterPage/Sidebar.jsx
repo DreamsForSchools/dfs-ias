@@ -1,10 +1,13 @@
 import React, { useCallback, useReducer } from "react";
 import "./Sidebar.scss";
+import Instructor from './Instructor.jsx';
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import { Search, PlusCircle } from 'react-bootstrap-icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { data } from './data';
+import { getRandomInstructorSet } from "../../util/sampleData";
 import produce from "immer";
+import Dot from '../../design-system/dots';
+import { formatAvailability } from "../../util/formatData";
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
@@ -17,8 +20,16 @@ const dragReducer = produce((draft, action) => {
   }
 });
 
-const Sidebar = () => {
-  const [state, dispatch] = useReducer(dragReducer, { items: data, });
+function Sidebar() {
+  const [state, dispatch] = useReducer(dragReducer, { items: getRandomInstructorSet(10), });
+
+  const programsColorKey = {
+    "AppJam": "#BB6BD9",
+    "WebJam": "#40CCC8",
+    "LESTEM": "#F2994A",
+    "Engineering Inventors": "#4B4B92",
+    "Scratch": "#F2C94C"
+  };
 
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
@@ -72,12 +83,26 @@ const Sidebar = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className="instructor_container"
                           >
-                            <div>
-                              <span>
-                                {instructor.name}
-                              </span>
+                            <div className="instructor">
+                              <div className="name">
+                                {instructor.firstName} {instructor.lastName}
+                              </div>
+                              <div className="tags">
+                                {instructor.hasCar ? <div className="tag">Car</div> : null}
+                                {instructor.previouslyTaught ? <div className="tag">Returnee</div> : null}
+                                {instructor.isASL ? <div className="tag">ASL</div> : null}
+                              </div>
+                              <div className="pref">
+                                {instructor.pref.map((el, idx) =>
+                                    <Dot color={programsColorKey[el]} key={idx}/>
+                                )}
+                              </div>
+                              <div className="availability">
+                                {formatAvailability(instructor.availability).map((e) =>
+                                  <h5>{e}</h5>
+                                )}
+                              </div>
                             </div>
                           </div>
                         );

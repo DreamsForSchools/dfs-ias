@@ -9,9 +9,16 @@
     background-color: #FFFFFF00;
     border: 0;
   }
-  .icon {
+  .caret-down {
     color: #FFF;
     height: 20px;
+    transform: rotate(90deg);
+    transition: all 0.3s;
+  }
+  .caret-right {
+    color: #FFF;
+    height: 20px;
+    transition: all 0.3s;
   }
 }
 
@@ -34,6 +41,7 @@
 
 .program-right {
   z-index: 10;
+  visibility: hidden;
 }
 
 .program-body {
@@ -41,32 +49,3 @@
   border: none !important;
   display: flex;
 }
-
-.partner_container {
-  background-color: #FFFFFF;
-  margin: 1rem;
-  border-radius: 10px;
-  padding-bottom: 1rem;
-  width: 20vw;
-
-  .partner-name {
-    color: #202E47;
-    font-weight: bold;
-    font-size: 22px;
-    padding: 2rem;
-  }
-
-  .instructor_container {
-    background-color: #F2F5F7;
-    margin: 0rem 2rem 1rem 2rem;
-    border-radius: 10px;
-    height: 5vh;
-    color: #202E47;
-    font-weight: 600;
-    font-size: 18px;
-    padding: 10px 20px;
-  }
-}
-
-
-

@@ -12,5 +12,5 @@ const Dot = (props) => {
         }}/>
     )
 }
-export default Dot;
 
+export default Dot;

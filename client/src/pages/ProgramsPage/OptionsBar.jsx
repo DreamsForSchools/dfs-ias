@@ -18,57 +18,57 @@ const OptionBar = (props) => {
     }
 
     return (
-            <div className={"option-bar-container"}>
+        <div className={"option-bar-components"}>
 
-                <Container fluid>
-                    <Row>
-                        <Col xs={6} s={6} md={4} >
-                            <Dropdown className={"dropdown-view"}>
-                                <label className="dropdown-label-view">View By:</label>
-                                <Dropdown.Toggle id="selector">
-                                    {viewValue}
-                                </Dropdown.Toggle>
+            <Container fluid>
+                <Row>
+                    <Col xs={6} s={6} md={4} >
+                        <Dropdown className={"dropdown-view"}>
+                            <label className="dropdown-label-view">View By:</label>
+                            <Dropdown.Toggle id="selector">
+                                {viewValue}
+                            </Dropdown.Toggle>
 
-                                <Dropdown.Menu className="selector-menu">
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleView(e.target.textContent, props)}>Programs</Dropdown.Item>
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleView(e.target.textContent, props)}>Partners</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Col>
+                            <Dropdown.Menu className="selector-menu">
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleView(e.target.textContent, props)}>Programs</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleView(e.target.textContent, props)}>Partners</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
 
-                        <Col xs={6} s={6} md={5}>
-                            <Dropdown className={"dropdown-filter"}>
-                                <label className="dropdown-label-filter">Filter By:</label>
-                                <Dropdown.Toggle id="selector">
-                                    {filterValue}
-                                </Dropdown.Toggle>
+                    <Col xs={6} s={6} md={5}>
+                        <Dropdown className={"dropdown-filter"}>
+                            <label className="dropdown-label-filter">Filter By:</label>
+                            <Dropdown.Toggle id="selector">
+                                {filterValue}
+                            </Dropdown.Toggle>
 
-                                <Dropdown.Menu className="selector-menu">
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleFilter(e.target.textContent, props)}>All</Dropdown.Item>
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleFilter(e.target.textContent, props)}>DFS Programs</Dropdown.Item>
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleFilter(e.target.textContent, props)}>Housing Community</Dropdown.Item>
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleFilter(e.target.textContent, props)}>Non-profit Partners</Dropdown.Item>
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleFilter(e.target.textContent, props)}>Public Schools</Dropdown.Item>
-                                    <Dropdown.Item as="button"
-                                                   onClick={(e) => handleFilter(e.target.textContent, props)}>Private Schools</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Col>
+                            <Dropdown.Menu className="selector-menu">
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleFilter(e.target.textContent, props)}>All</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleFilter(e.target.textContent, props)}>DFS Programs</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleFilter(e.target.textContent, props)}>Housing Community</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleFilter(e.target.textContent, props)}>Non-profit Partners</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleFilter(e.target.textContent, props)}>Public Schools</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={(e) => handleFilter(e.target.textContent, props)}>Private Schools</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
 
-                        <Col xs={6} s={6} md={1} >
-                            <Button className={"add-button"}>Add Program <MdAddCircleOutline size={25} /></Button>
-                        </Col>
+                    <Col xs={6} s={6} md={1} >
+                        <Button className={"add-button"}>Add Program <MdAddCircleOutline size={25} /></Button>
+                    </Col>
 
-                    </Row>
-                </Container>
-            </div>
+                </Row>
+            </Container>
+        </div>
     )
 }
 
