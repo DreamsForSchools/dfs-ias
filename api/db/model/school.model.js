@@ -7,7 +7,7 @@ var School = function(school) {
     this.city = school.city;
     this.state = school.state;
     this.zip = school.zip;
-    this.lang_request = school.lang_request;
+    this.langRequest = school.langRequest;
 };
 
 School.create = function (newSchool, result) {
@@ -25,14 +25,14 @@ School.findAll = function (result) {
 };
 
 School.findById = function (id, result) {
-    db.query("SELECT * from schools where school_id = ?", id, function (err, res) {
+    db.query("SELECT * from schools where schoolId = ?", id, function (err, res) {
         if(err) result(err, null);
         else result(null, res);
     });
 }
 
 School.deleteById = function (id, result) {
-    db.query("DELETE FROM schools WHERE school_id = ?", id,
+    db.query("DELETE FROM schools WHERE schoolId = ?", id,
         function (err, res) {
             if (err) result(err, null);
             else result(null, res);
@@ -40,8 +40,8 @@ School.deleteById = function (id, result) {
 }
 
 School.updateById = function (id, school, result) {
-    db.query("UPDATE schools SET name = ?, city = ?, state = ?, zip = ?,lang_request = ? WHERE school_id = ?",
-        [school.name, school.city, school.state, school.zip, school.lang_request, id],
+    db.query("UPDATE schools SET name = ?, city = ?, state = ?, zip = ?,langRequest = ? WHERE schoolId = ?",
+        [school.name, school.city, school.state, school.zip, school.langRequest, id],
         function(err, res) {
             if (err) result(err, null);
             else result(null, res);

@@ -1,6 +1,6 @@
 import React from "react";
 import './Instructor.scss';
-import Dot from "../../components/Dot";
+import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
 
 function Instructor({ instructorInfo }) {

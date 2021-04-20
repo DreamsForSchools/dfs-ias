@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
-import Dot from '../../components/Dot';
+import Dot from '../../design-system/dots';
 
 const InstructorsRow = (props) => {
     const {
@@ -9,6 +9,7 @@ const InstructorsRow = (props) => {
         instructor
     } = props;
 
+
     const {
         firstName,
         lastName,
@@ -16,8 +17,13 @@ const InstructorsRow = (props) => {
         year,
         major,
         university,
-        pref
+        firstPref,
+        secondPref,
+        thirdPref,
+        fourthPref,
+        schoolYear
     } = instructor;
+
 
     return (
         <tr className={"instructor_row"} onClick={() => onClick(instructor)}>
@@ -26,7 +32,7 @@ const InstructorsRow = (props) => {
                 : <Dot color={"#EB5757"}/>}
             </td>
             <td>{firstName + " " + lastName}</td>
-            <td>{year}</td>
+            <td>{schoolYear}</td>
             <td>{major}</td>
             <td>{university}</td>
             <td>
@@ -39,7 +45,7 @@ const InstructorsRow = (props) => {
                                 <Popover.Title as="h3">{`Program Preferences`}</Popover.Title>
                                 <Popover.Content>
                                     {
-                                        pref.map((el, idx) =>
+                                        [firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
                                             <h6 key={idx}>
                                                 <Dot color={programsColorKey[el]} />
                                                 <span style={{
@@ -53,7 +59,7 @@ const InstructorsRow = (props) => {
                         }
                     >
                         <div style={{padding: "0 1rem"}}>
-                            {pref.map((el, idx) =>
+                            {[firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
                                 <Dot color={programsColorKey[el]} key={idx}/>
                             )}
                         </div>
@@ -66,7 +72,7 @@ const InstructorsRow = (props) => {
 
 const InstructorsTable = (props) => {
     return (
-        <div className={"instructor_table"}>
+        <div className={"instructor_table"} style={{ overflowY: 'scroll', height: '80vh'}}>
             <Badge pill variant="success"></Badge>
             <Table borderless>
                 <thead>
