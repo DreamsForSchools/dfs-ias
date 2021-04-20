@@ -1,0 +1,44 @@
+.filter {
+  float: right;
+  top: -2rem;
+  height: 100%;
+  
+  h5 {
+    padding-top: 1rem;
+  }
+
+  .filter-group {
+    padding-left: 1rem;
+  }
+
+  .filter-btns {
+    margin-top: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .apply-btn {
+    margin-bottom: 2rem;
+    font-size: 18px;
+    width: 10rem;
+    height: 40px;
+    background-color: #0099FF;
+    border: none;
+    border-radius: 10px;
+  }
+
+  .apply-btn:hover {
+    background-color: white;
+    color: #0099FF;
+    border: 2px solid #0099FF;
+  }
+
+  .reset-btn {
+    margin-bottom: 3rem;
+    font-size: 18px;
+    color: #0099FF;
+  }
+}
