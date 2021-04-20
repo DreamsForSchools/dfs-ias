@@ -3,7 +3,7 @@ import './Instructor.scss';
 import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
 
-function Instructor({ instructorInfo }) {
+function Instructor({ instructor }) {
   const programsColorKey = {
     "AppJam": "#BB6BD9",
     "WebJam": "#40CCC8",
@@ -15,20 +15,20 @@ function Instructor({ instructorInfo }) {
   return (
     <div className="instructor">
       <div className="name">
-        {instructorInfo.firstName} {instructorInfo.lastName}
+        {instructor.firstName} {instructor.lastName}
       </div>
       <div className="tags">
-        {instructorInfo.hasCar ? <div className="tag">Car</div> : null}
-        {instructorInfo.previouslyTaught ? <div className="tag">Returnee</div> : null}
-        {instructorInfo.isASL ? <div className="tag">ASL</div> : null}
+        {instructor.hasCar ? <div className="tag">Car</div> : null}
+        {instructor.previouslyTaught ? <div className="tag">Returnee</div> : null}
+        {instructor.isASL ? <div className="tag">ASL</div> : null}
       </div>
       <div className="pref">
-        {instructorInfo.pref.map((el, idx) =>
+        {[instructor.firstPref, instructor.secondPref, instructor.thirdPref, instructor.fourthPref].map((el, idx) =>
           <Dot color={programsColorKey[el]} key={idx}/>
         )}
       </div>
       <div className="availability">
-        {formatAvailability(instructorInfo.availability).map((e) =>
+        {formatAvailability(instructor.availability).map((e) =>
           <h5>{e}</h5>
         )}
       </div>

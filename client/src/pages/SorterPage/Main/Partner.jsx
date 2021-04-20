@@ -17,7 +17,7 @@ const Partner = ({ name, index, instructors }) => {
   return (
     <div className="partner">
       <h1 className="partner-name">{name}</h1>
-      <div className="info">
+      <div className="partner-info">
         <Calendar4 /> Schedule <People /> {numInstructors} Instructors
       </div>
       <Droppable droppableId={"partner" + index} type="INSTRUCTOR">
@@ -43,7 +43,7 @@ const Partner = ({ name, index, instructors }) => {
                         >
                           <Instructor
                             className="instructor"
-                            instructorInfo={instructor}
+                            instructor={instructor}
                           />
                         </div>
                       );

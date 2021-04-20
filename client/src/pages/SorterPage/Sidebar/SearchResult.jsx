@@ -42,7 +42,7 @@ const SearchResult = ({ isLoading, state }) => {
               ref={provided.innerRef}
             >
               <Instructor
-                instructorInfo={instructor}
+                instructor={instructor}
               />
             </div>
           )}
