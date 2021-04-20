@@ -3,10 +3,10 @@
 var db = require('../db.config');
 
 var Section = function(section) {
-    this.instructors_needed = section.instructors_needed;
-    this.season_id = section.season_id;
-    this.school_id = section.school_id;
-    this.program_id = section.program_id;
+    this.instructorsNeeded = section.instructorsNeeded;
+    this.seasonId = section.seasonId;
+    this.schoolId = section.schoolId;
+    this.programId = section.programId;
     this.timings = section.timings;
 };
 
@@ -25,45 +25,45 @@ Section.findAll = function (result) {
 };
 
 Section.findById = function (id, result) {
-    db.query("SELECT * from sections where section_id = ?", id, function (err, res) {
+    db.query("SELECT * from sections where sectionId = ?", id, function (err, res) {
         if(err) result(err, null);
         else result(null, res);
     });
 }
 
 Section.deleteById = function (id, result) {
-    db.query("DELETE FROM sections WHERE section_id = ?", id,
+    db.query("DELETE FROM sections WHERE sectionId = ?", id,
         function (err, res) {
             if (err) result(err, null);
             else result(null, res);
-    })
+        })
 }
 
 Section.updateById = function (id, section, result) {
-    db.query("UPDATE sections SET instructors_needed = ?, timings = ?, season_id = ?, school_id = ?, program_id = ?  WHERE section_id = ?",
-        [section.instructors_needed, section.timings, section.season_id, section.school_id, section.program_id, id],
+    db.query("UPDATE sections SET instructorsNeeded = ?, timings = ?, seasonId = ?, schoolId = ?, programId = ?  WHERE sectionId = ?",
+        [section.instructorsNeeded, section.timings, section.seasonId, section.schoolId, section.programId, id],
         function(err, res) {
             if (err) result(err, null);
             else result(null, res);
-    })
+        })
 }
 
 Section.allProgramSections = function (id, result) {
-    db.query("SELECT * from sections where program_id = ?", id, function (err, res) {
+    db.query("SELECT * from sections where programId = ?", id, function (err, res) {
         if(err) result(err, null);
         else result(null, res);
     });
 }
 
 Section.allSchoolSections = function (id, result) {
-    db.query("SELECT * from sections where school_id = ?", id, function (err, res) {
+    db.query("SELECT * from sections where schoolId = ?", id, function (err, res) {
         if(err) result(err, null);
         else result(null, res);
     });
 }
 
 Section.allSeasonSections = function (id, result) {
-    db.query("SELECT * from sections where season_id = ?", id, function (err, res) {
+    db.query("SELECT * from sections where seasonId = ?", id, function (err, res) {
         if(err) result(err, null);
         else result(null, res);
     });

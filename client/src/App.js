@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Redirect, Route } from "react-router-dom";
 
-import NavigationBar from './components/Navbar.jsx';
+import NavigationBar from './design-system/navbar';
 import Programs from "./pages/ProgramsPage/Programs";
 import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Wrapper, Title, Image, DotWrapper } from './Styled';
-import Dot from "../../../../components/Dot";
+import Dot from '../../../dots';
 
 // dummy data
 import { PROGRAM_COLOR_KEYS } from "../../../../data/PROGRAMS";
