@@ -17,7 +17,7 @@ var Instructor = function(instructor) {
     this.otherLanguages  = instructor.otherLanguages;
     this.programmingLanguages  = instructor.programmingLanguages;
     this.hasCar  = instructor.hasCar;
-    this.shirtsize = instructor.shirtsize;
+    this.shirtSize = instructor.shirtSize;
     this.firstPref = instructor.firstPref;
     this.secondPref = instructor.secondPref;
     this.thirdPref = instructor.thirdPref;
@@ -247,8 +247,8 @@ Instructor.deleteById = function (id, result) {
 }
 
 Instructor.updateById = function (id, instructor, result) {
-    db.query("UPDATE instructors SET email = ?, phoneNumber = ?, firstName = ?, lastName = ?, gender = ?, ethnicity = ?, university = ?,  major = ?, schoolYear  = ?, graduationDate = ?, otherLanguages = ?, programmingLanguages = ?, hasCar = ?, shirtsize = ?, firstPref = ?, secondPref = ?, thirdPref = ?, fourthPref = ?, isASL = ?  WHERE instructorId = ?",
-        [instructor.email, instructor.phoneNumber, instructor.firstName, instructor.lastName, instructor.gender, instructor.ethnicity, instructor.university, instructor.major, instructor.schoolYear, instructor.graduationDate, instructor.otherLanguages, instructor.programmingLanguages, instructor.hasCar, instructor.shirtsize, instructor.firstPref, instructor.secondPref, instructor.thirdPref,instructor.fourthPref, instructor.isASL, id],
+    db.query("UPDATE instructors SET email = ?, phoneNumber = ?, firstName = ?, lastName = ?, gender = ?, ethnicity = ?, university = ?,  major = ?, schoolYear  = ?, graduationDate = ?, otherLanguages = ?, programmingLanguages = ?, hasCar = ?, shirtSize = ?, firstPref = ?, secondPref = ?, thirdPref = ?, fourthPref = ?, isASL = ?  WHERE instructorId = ?",
+        [instructor.email, instructor.phoneNumber, instructor.firstName, instructor.lastName, instructor.gender, instructor.ethnicity, instructor.university, instructor.major, instructor.schoolYear, instructor.graduationDate, instructor.otherLanguages, instructor.programmingLanguages, instructor.hasCar, instructor.shirtSize, instructor.firstPref, instructor.secondPref, instructor.thirdPref,instructor.fourthPref, instructor.isASL, id],
         function(err, res) {
             if (err) result(err, null);
             else {
