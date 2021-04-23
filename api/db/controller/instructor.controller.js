@@ -39,7 +39,6 @@ exports.createCSV = function(req, res) {
 };
 
 exports.findById = function(req, res) {
-    console.log("findbyid1");
     Instructor.findById(req.params.id, function(err, instructor) {
         if (err) res.send(err);
         else res.send(instructor);

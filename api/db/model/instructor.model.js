@@ -208,10 +208,8 @@ Instructor.findAll = function (result) {
 };
 
 Instructor.findById = function (id, result) {
-    console.log("findbyid22");
     let rtn = {};
     db.query("SELECT * FROM instructors JOIN locationCache ON instructors.instructorId = locationCache.instructorId JOIN seasonInstructors on instructors.instructorId = seasonInstructors.instructorId WHERE instructors.instructorId  = ?", id, function (err, res) {
-        console.log("selct");
         if(err) result(err, null);
         else if(res.length >=1) {
             rtn = res[0];
