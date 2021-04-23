@@ -38,10 +38,10 @@ Instructor.createSingle = function (newInstructor, result) {
     console.log(newInstructor);
     delete newInstructor['approve'];
 
-    db.query("SELECT * FROM instructors WHERE email = ?",newInstructor.email,function(err,res) {
+    db.query("SELECT * FROM instructors WHERE email = ? OR phoneNumber = ? ",[newInstructor.email, newInstructor.phoneNumber],function(err,res) {
         if (err) result(err, null);
          //if email already exitsts, update instructor
-        else if(res.length ==1){
+        else if(res.length >= 1){
             let instructorID = res[0].instructorId
             Instructor.updateById(instructorID,newInstructor, result);
         }
@@ -89,49 +89,6 @@ Instructor.createCSV = function (requestBody, result) {
     });
     result(null, responseReturn);
 }
-
-// Instructor.createSingle = function (newInstructor,result){
-//     let availability = JSON.parse(newInstructor.availability);
-//     delete newInstructor['availability'];
-
-//     db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
-//         if (err) result(err, null);
-//         else {
-//             db.query("SELECT instructorId from instructors WHERE email = ?", newInstructor.email, function (err, res) {
-//                 if(err) result(err, null);
-//                 else {
-//                     let insertedInstructorID = res[0].instructorId;
-//                     //insert all availability
-//                     insertAvailability(availability, insertedInstructorID, result);
-
-//                     //check if locaction cache has same name
-//                     locationCacheCheck(newInstructor.university, insertedInstructorID, result);
-
-//                     result(null,res);
-//                 }
-//             });
-//         }
-//     });
-
-// }
-
-// Instructor.createCSV = function (requestBody, result) {
-    
-
-//     let CSVjson = JSON.parse(requestBody.CSVraw);
-//     let responseReturn;
-//     CSVjson.forEach( el => {
-//         el.availability = JSON.stringify(el.availability);
-//         axios.post('http://localhost:5000/api/instructor',el).then((response) => {
-//             responseReturn = response;
-//         }, (error) => {
-//             responseReturn = error;       
-//             result(error,null);     //TODO unsure what to put here
-//         });
-
-//     });
-//     // result(null,responseReturn);
-// }
 
 //check if location exists (and insert)
 function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
@@ -182,9 +139,9 @@ function insertLocation(insertedInstructorID,location,result)
     db.query("SELECT * FROM locationCache WHERE instructorId = ?",insertedInstructorID,function(err,res){
         if(err) result(err,null);
         else{
-            if(res.length > 0 ){    //instructor already exists, update
-                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, school_id = ? WHERE instructorId = ?",
-                [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.school_id, insertedInstructorID],
+            if(res.length > 0 && res.name != location.name){    //instructor already exists, update
+                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, schoolId = ? WHERE instructorId = ?",
+                [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.schoolId, insertedInstructorID],
                 function(err,res){
                     if(err) result(err,null);
                 });
@@ -212,10 +169,11 @@ function insertAvailability(availability, insertedInstructorID,result)
 
 Instructor.findAll = function (result) {
 
-    db.query("SELECT *, instructorAvailability.id as availabilityId, locationCache.id as locationId\
+    db.query("SELECT *, instructorAvailability.id as availabilityId\
         FROM instructors\
         JOIN instructorAvailability ON instructors.instructorId = instructorAvailability.instructorId\
-        JOIN locationCache ON instructors.instructorId = locationCache.instructorId;",function(err,res){
+        JOIN locationCache ON instructors.instructorId = locationCache.instructorId\
+        JOIN seasonInstructors on instructors.instructorId = seasonInstructors.instructorId;",function(err,res){
             if(err) result(err,null);
             else{
                 let rtn = {};
@@ -225,7 +183,7 @@ Instructor.findAll = function (result) {
                     var id = item.instructorId;
         
                     var avaiability = {
-                        'availabilityId' : item['availabilityId:'],
+                        'availabilityId' : item['availabilityId'],
                         'weekday' : item['weekday'],
                         'startTime' : item['startTime'],
                         'endTime' : item['endTime']
@@ -237,7 +195,7 @@ Instructor.findAll = function (result) {
                         rtn[id]['avaiability'] = [avaiability];
                     }
 
-                    delete instruct['availabilityId:'];
+                    delete instruct['availabilityId'];
                     delete instruct['weekday'];
                     delete instruct['startTime'];
                     delete instruct['endTime'];
@@ -250,8 +208,10 @@ Instructor.findAll = function (result) {
 };
 
 Instructor.findById = function (id, result) {
+    console.log("findbyid22");
     let rtn = {};
-    db.query("SELECT * FROM instructors JOIN locationCache ON instructors.instructorId = locationCache.instructorId WHERE instructors.instructorId  = ?", id, function (err, res) {
+    db.query("SELECT * FROM instructors JOIN locationCache ON instructors.instructorId = locationCache.instructorId JOIN seasonInstructors on instructors.instructorId = seasonInstructors.instructorId WHERE instructors.instructorId  = ?", id, function (err, res) {
+        console.log("selct");
         if(err) result(err, null);
         else if(res.length >=1) {
             rtn = res[0];
