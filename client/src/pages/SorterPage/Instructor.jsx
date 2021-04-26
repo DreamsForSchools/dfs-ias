@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import './Instructor.scss';
 import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
+import { Modal } from "react-bootstrap";
+import { PencilSquare} from 'react-bootstrap-icons';
+import InstructorPopUp from './InstructorPopUp';
 
-function Instructor({ instructor }) {
+const Instructor = ({ instructor }) => {
+  const [showInstructorPopUp, setShowInstructorPopUp] = useState();
+
   const programsColorKey = {
     "AppJam": "#BB6BD9",
     "WebJam": "#40CCC8",
@@ -11,6 +16,9 @@ function Instructor({ instructor }) {
     "Engineering Inventors": "#4B4B92",
     "Scratch": "#F2C94C"
   };
+
+  const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
+  const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
 
   return (
     <div className="instructor">
@@ -32,6 +40,10 @@ function Instructor({ instructor }) {
           <h5>{e}</h5>
         )}
       </div>
+      <div className="edit-icon"><PencilSquare onClick={handleShowInstructorPopUp}/></div>
+      <Modal size="xl" show={showInstructorPopUp} onHide={handleCloseInstructorPopUp} onExited={handleCloseInstructorPopUp}>
+        <InstructorPopUp instructor={instructor} />
+      </Modal>
     </div>
   );
 }
