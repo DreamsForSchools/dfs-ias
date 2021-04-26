@@ -1,6 +1,7 @@
 .filter {
   float: right;
   top: -2rem;
+  right: -0.5rem;
   height: 100%;
   
   h5 {
@@ -40,5 +41,12 @@
     margin-bottom: 3rem;
     font-size: 18px;
     color: #0099FF;
+    background-color: white;
+    border: none;
+  }
+
+  .reset-btn:hover {
+    background-color: white;
+    color: #E82029;
   }
 }

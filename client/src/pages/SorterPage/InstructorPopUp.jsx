@@ -107,11 +107,11 @@ const InstructorPopUp = ({ instructor }) => {
                 <h6>Major</h6>
                 <h5>{instructor.major}</h5>
               </div>
-              <div className={"info"} style={{textAlign: "left"}}>
+              <div className={"info"} style={{marginBottom: "1rem", textAlign: "left"}}>
                 <h6>Programming Languages</h6>
-                <h5>1. Python - Proficient</h5>
-                <h5>2. JavaScript - Beginner</h5>
-                <h5>3. Java - Novice</h5>
+                <h5>1. Python - Expert</h5>
+                <h5>2. JavaScript - Intermediate</h5>
+                <h5>3. Java - Beginner</h5>
               </div>
             </div>
           </Col>
@@ -132,7 +132,7 @@ const InstructorPopUp = ({ instructor }) => {
                 <h6>Shirt Size</h6>
                 <h5>{instructor.shirtSize}</h5>
               </div>
-              <div className={"info"} style={{textAlign: "left"}}>
+              <div className={"info"} style={{marginBottom: "1rem", textAlign: "left"}}>
                 <h6>Languages Other Than English</h6>
                 <h5>Japanese</h5>
                 <h5>Korean</h5>
@@ -142,9 +142,9 @@ const InstructorPopUp = ({ instructor }) => {
           </Col>               
         </Row>
       </Modal.Body>
-      <Modal.Footer>
+      {/* <Modal.Footer>
         <Button>Edit</Button>
-      </Modal.Footer>
+      </Modal.Footer> */}
     </>
   );
 }

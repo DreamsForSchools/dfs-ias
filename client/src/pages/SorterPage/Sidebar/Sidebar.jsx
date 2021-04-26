@@ -9,7 +9,10 @@ const Sidebar = ({ state }) => {
   return (
     <div className="sidebar">
       <h1 className="title">Unassigned Instructors</h1>
-      <InstructorSearchForm setIsLoading={setIsLoading}/>
+      <InstructorSearchForm 
+        setIsLoading={setIsLoading}
+        state={state}
+      />
       <SearchResult 
         isLoading={isLoading}
         state={state}

@@ -5,10 +5,15 @@ import { getRandomInstructorSet } from "../../../util/sampleData";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import { Search } from 'react-bootstrap-icons';
 
-const InstructorSearchForm = ({setIsLoading}) => {
+const InstructorSearchForm = ({ setIsLoading, state }) => {
   const { setSearchedInstructors } = useContext(AppContext);
   const [showFilter, setShowFilter] = useState();
   const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
+  const [filteredInstructors, setFilteredInstructors] = useState([]);
+
+  const [isReturnee, setIsReturnee] = useState();
+  const [hasCar, setHasCar] = useState();
+
 
   const onSearchSubmit = async (e) => {
     e.preventDefault();
@@ -20,8 +25,21 @@ const InstructorSearchForm = ({setIsLoading}) => {
 
   const handleShowFilter = () => setShowFilter(true);
   const handleCloseFilter = () => setShowFilter(false);
+
   const handleShowAutoAssignConfirmation = () => setShowAutoAssignConfirmation(true);
   const handleCloseAutoAssignConfirmation = () => setShowAutoAssignConfirmation(false);
+
+  const applyFilters = () => {
+    setFilteredInstructors(state["search"].filter(instructor => instructor.hasCar === hasCar));
+  }
+
+  const resetFilters = () => {
+    handleCloseFilter();
+  }
+
+  const handleCarFilter = e => {
+    setHasCar("True" ? e.target.id === "Yes" : "False")
+  }
 
   return (
     <div className="instructor-search-form">
@@ -50,8 +68,18 @@ const InstructorSearchForm = ({setIsLoading}) => {
             </Form.Group>
             <h5>Owns a car</h5>
             <Form.Group className="filter-group">
-              <Form.Check type="checkbox" label="Yes" />
-              <Form.Check type="checkbox" label="No" />
+              <Form.Check 
+                type="checkbox" 
+                label="Yes" 
+                id="Yes" 
+                onChange={handleCarFilter}
+              />
+              <Form.Check 
+                type="checkbox" 
+                label="No" 
+                id="No" 
+                onChange={handleCarFilter}
+              />
             </Form.Group>
             <h5>American Sign Language</h5>
             <Form.Group className="filter-group">
@@ -75,12 +103,31 @@ const InstructorSearchForm = ({setIsLoading}) => {
               <Form.Check type="checkbox" label="Engineering Inventors" />
             </Form.Group>
             <h5>Programming Language</h5>
+            <Form.Group className="filter-group">
+              <Form.Check type="checkbox" label="Python" />
+              <Form.Check type="checkbox" label="Java" />
+              <Form.Check type="checkbox" label="JavaScript" />
+              <Form.Check type="checkbox" label="C/C++" />
+            </Form.Group>
             <h5>Spoken Language</h5>
+            <Form.Group className="filter-group">
+              <Form.Check type="checkbox" label="Spanish" />
+              <Form.Check type="checkbox" label="Vietnamese" />
+              <Form.Check type="checkbox" label="Mandarin" />
+              <Form.Check type="checkbox" label="Tagalog" />
+              <Form.Check type="checkbox" label="Korean" />
+            </Form.Group>
             <h5>Year</h5>
-            <h5>Major</h5>
+            <Form.Group className="filter-group">
+              <Form.Check type="checkbox" label="1st" />
+              <Form.Check type="checkbox" label="2nd" />
+              <Form.Check type="checkbox" label="3rd" />
+              <Form.Check type="checkbox" label="4th+" />
+              <Form.Check type="checkbox" label="Graduate" />
+            </Form.Group>
             <div className="filter-btns">
-              <Button className="apply-btn" onClick={handleCloseFilter}>Apply Filters</Button>
-              <span className="reset-btn">Reset Filters</span>
+              <Button className="apply-btn" onClick={applyFilters}>Apply Filters</Button>
+              <Button className="reset-btn" onClick={resetFilters}>Reset Filters</Button>
             </div>
           </Modal.Body>
       </Modal>
