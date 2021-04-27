@@ -6,7 +6,7 @@ const seasonController = require('../db/controller/season.controller')
 const instructorController = require('../db/controller/instructor.controller')
 const instructorAvailabilityController = require('../db/controller/instructoravailability.controller')
 const locationController = require('../db/controller/locationCache.controller')
-const sectionController = require('../db/controller/section.controller')
+const classController = require('../db/controller/class.controller')
 
 /* GET home page. */
 router.post('/program', programController.create);
@@ -49,14 +49,14 @@ router.get('/location/:name', locationController.findByName);
 router.delete('/location/:id', locationController.deleteById);
 router.put('/location/:id', locationController.updateById);
 
-router.get('/program/section/:id', sectionController.allProgramSections);
-router.get('/school/section/:id', sectionController.allSchoolSections);
-router.get('/season/section/:id', sectionController.allSeasonSections);
-router.post('/section', sectionController.create);
-router.get('/section', sectionController.findAll);
-router.get('/section/:id', sectionController.findById);
-router.delete('/section/:id', sectionController.deleteById);
-router.put('/section/:id', sectionController.updateById)
+router.get('/program/class/:id', classController.allProgramClasses);
+router.get('/school/class/:id', classController.allSchoolClasses);
+router.get('/season/class/:id', classController.allSeasonClasses);
+router.post('/class', classController.create);
+router.get('/class', classController.findAll);
+router.get('/class/:id', classController.findById);
+router.delete('/class/:id', classController.deleteById);
+router.put('/class/:id', classController.updateById)
 
 
 module.exports = router;
