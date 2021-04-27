@@ -54,6 +54,7 @@ const Program = ({ name, color, state }) => {
               return (
                 <div>
                   <Partner
+                    key={partner.index}
                     name={partner.name}
                     index={partner.index}
                     instructors={state["partner" + partner.index]}

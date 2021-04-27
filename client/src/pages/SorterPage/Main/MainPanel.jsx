@@ -11,6 +11,7 @@ const MainPanel = ({ state }) => {
       { programs.map(program => {             
           return (
             <Program
+              key={program.index}
               name={program.name}
               color={program.color}
               state={state}

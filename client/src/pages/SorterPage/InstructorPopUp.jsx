@@ -109,9 +109,9 @@ const InstructorPopUp = ({ instructor }) => {
               </div>
               <div className={"info"} style={{marginBottom: "1rem", textAlign: "left"}}>
                 <h6>Programming Languages</h6>
-                <h5>1. Python - Expert</h5>
-                <h5>2. JavaScript - Intermediate</h5>
-                <h5>3. Java - Beginner</h5>
+                {instructor.programmingLanguages.map(e =>
+                  <h5>{e}</h5>
+                )}
               </div>
             </div>
           </Col>
@@ -134,9 +134,9 @@ const InstructorPopUp = ({ instructor }) => {
               </div>
               <div className={"info"} style={{marginBottom: "1rem", textAlign: "left"}}>
                 <h6>Languages Other Than English</h6>
-                <h5>Japanese</h5>
-                <h5>Korean</h5>
-                <h5>Spanish</h5>
+                {instructor.languages.map(e =>
+                  <h5>{e}</h5>
+                )}
               </div>              
             </div>
           </Col>               

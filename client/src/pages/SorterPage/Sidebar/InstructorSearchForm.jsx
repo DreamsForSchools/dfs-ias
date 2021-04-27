@@ -31,6 +31,7 @@ const InstructorSearchForm = ({ setIsLoading, state }) => {
 
   const applyFilters = () => {
     setFilteredInstructors(state["search"].filter(instructor => instructor.hasCar === hasCar));
+    handleCloseFilter();
   }
 
   const resetFilters = () => {
