@@ -77,7 +77,7 @@ const InstructorPopUp = ({ instructor }) => {
             <div style={{display: "flex", margin: "1rem 0rem"}}>
               <div className={"info"} style={{width: "30%"}}>
                 <h6>Year</h6>
-                <h5>{instructor.year}</h5>
+                <h5>{instructor.schoolYear}</h5>
               </div>
               <div className={"info"} style={{width: "30%"}}>
                 <h6>Gender</h6>

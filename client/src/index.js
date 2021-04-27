@@ -4,10 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
+import "react-datepicker/dist/react-datepicker.css";
+import {BrowserRouter as Router} from "react-router-dom";
+import GlobalContextProvider from "./context/GlobalContextProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <Router>
+          <GlobalContextProvider>
+            <App />
+          </GlobalContextProvider>
+      </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -4,7 +4,6 @@ var db = require('../db.config');
 
 var Season = function(season) {
     this.name = season.name;
-    this.isCurrent = season.isCurrent;
     this.startDate = season.startDate;
     this.endDate = season.endDate;
 };
@@ -40,8 +39,8 @@ Season.findById = function (id, result) {
 }
 
 Season.updateById = function (id, season, result) {
-    db.query("UPDATE seasons SET name = ?, isCurrent = ?, startDate = ?, endDate = ?  WHERE seasonId = ?",
-        [season.name, season.isCurrent, season.startDate, season.endDate, id],
+    db.query("UPDATE seasons SET name = ?, startDate = ?, endDate = ?  WHERE seasonId = ?",
+        [season.name, season.startDate, season.endDate, id],
         function(err, res) {
             if (err) result(err, null);
             else result(null, res);

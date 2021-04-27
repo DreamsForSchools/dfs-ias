@@ -45,7 +45,7 @@ export const getRandomInstructor = () => {
             thirdPref: chance.pickone(prefPool),
             fourthPref: chance.pickone(prefPool),
             gender: chance.gender(),
-            year: chance.pickone(yearPool),
+            schoolYear: chance.pickone(yearPool),
             // previouslyTaught: chance.pickone(graduationPool),
             isASL: chance.bool(),
             phoneNumber: chance.phone({ formatted: false }),
