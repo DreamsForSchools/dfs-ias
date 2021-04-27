@@ -3,7 +3,7 @@
   margin: 1rem;
   border-radius: 10px;
   padding-bottom: 1rem;
-  width: 20vw;
+  width: 20rem;
 
   .partner-name {
     color: #202E47;
@@ -12,7 +12,7 @@
     padding: 2rem 2rem 0rem;
   }
 
-  .info {
+  .partner-info {
     padding-bottom: 1rem;
     margin-left: 2rem;
   }
@@ -26,5 +26,9 @@
     font-weight: 600;
     font-size: 18px;
     padding: 10px 20px;
+  }
+
+  .instructor:hover {
+    background-color: #e7e9eb;
   }
 }

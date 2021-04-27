@@ -24,6 +24,8 @@ export const getRandomInstructor = () => {
     let ethnictyPool = ['Asian', 'White', 'Hispanic', 'Black'];
     let startTimePool = ['08:00:00', '09:00:00', '10:00:00', '11:00:00','12:00:00'];
     let endTimePool = ['14:00:00', '15:00:00', '16:00:00', '17:00:00','18:00:00','19:00:00'];
+    let languagesPool = ['Spanish', 'Vietnamese', 'Mandarin', 'Tagalog', 'Korean', 'Japanese'];
+    let programmingLanguagesPool = ['Java', 'Python', 'JavaScript', 'C/C++'];
     count+=1;
 
     const DUMMY_DATA =
@@ -49,6 +51,8 @@ export const getRandomInstructor = () => {
             phoneNumber: chance.phone({ formatted: false }),
             ethnicity: chance.pickone(ethnictyPool),
             hasCar: chance.bool(),
+            languages: chance.pickset(languagesPool, Math.floor(Math.random() * (3 - 1) + 1)),
+            programmingLanguages: chance.pickset(programmingLanguagesPool, Math.floor(Math.random() * (4 - 2) + 2)),
             availability: [
                 {
                     weekday: 1,
