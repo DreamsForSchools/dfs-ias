@@ -78,11 +78,12 @@ Instructor.createSingle = function (newInstructor, result) {
 
 Instructor.createCSV = function (requestBody, result) {
     let newInstructorArray = requestBody.newInstructorArray;
+    let seasonId = requestBody.seasonId
+
     let responseReturn;
 
     newInstructorArray.forEach(instructor => {
-        //TODO IF EMAIL EXISTS CALL UPDATE FUNCTION, ELSE DO REGULAR INSERT FUNCTION
-        Instructor.createSingle(instructor, function (err, res) {
+        Instructor.createSingle({...instructor, seasonId}, function (err, res) {
             if (err) result(err, null);
             else responseReturn = res;
         });
