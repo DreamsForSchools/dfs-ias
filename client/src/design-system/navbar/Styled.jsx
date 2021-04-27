@@ -1,1 +1,0 @@
-export const NAVBAR_HEIGHT = '85px';

@@ -6,20 +6,20 @@ exports.create = function(req, res) {
     const new_season = new Season(req.body);
     //handles null error
     if (req.body.constructor === Object && Object.keys(req.body).length === 0){
-        res.status(400).send({error:true, message: 'Please provide all required fields'});
+        res.status(400).send({error:true, sqlMessage: 'Please provide all required fields'});
     }
     else {
         Season.create(new_season, function(err, season) {
             if (err)
-                res.send({error:true,err});
-            else res.json({error:false, message:"Season added successfully!", data:season});
+                res.status(400).send({error:true, err});
+            else res.send({error:false, sqlMessage:"Season added successfully!", data:season});
         });
     }
 };
 
 exports.findAll = function(req, res) {
     Season.findAll(function(err, season) {
-      if (err) res.send({error:true,err});
+      if (err) res.status(400).send({error:true,err});
       else res.send(season);
     });
 };

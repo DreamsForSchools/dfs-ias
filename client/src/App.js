@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Redirect, Route, useLocation } from "react-router-dom";
 
-import NavigationBar from './design-system/navbar';
+import { Toast, Badge } from "react-bootstrap";
+
+import GlobalContextProvider, {GlobalContext} from "./context/GlobalContextProvider";
+
+import NavigationBar from './components/NavBar';
 import Programs from "./pages/ProgramsPage/Programs";
 import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";
@@ -10,10 +14,7 @@ import InstructorOnboardingPage from "./pages/InstructorOnboardingPage";
 
 function App() {
   let location = useLocation();
-
-  React.useEffect(() => {
-    console.log(location);
-  }, [location]);
+  const { toastShow, setToastShow, toastText } = useContext(GlobalContext);
 
   return (
     <>
@@ -35,6 +36,20 @@ function App() {
           <InstructorOnboardingPage />
         </Route>
       </Switch>
+
+      {/* Toast styling is in index.css */}
+      <Toast onClose={() => setToastShow(false)} show={toastShow} delay={6000} autohide>
+        <Toast.Header>
+          {toastText.status === 'Success' && <Badge pill variant="success" className={"mr-auto"}>
+            Success
+          </Badge>}
+          {toastText.status === 'Failed' && <Badge pill variant="danger" className={"mr-auto"}>
+            Failed
+          </Badge>}
+        </Toast.Header>
+        <Toast.Body>{toastText.message}</Toast.Body>
+      </Toast>
+
     </>
   );
 }

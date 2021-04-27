@@ -8,7 +8,7 @@ export const Select = ({options, label, handler, modal, state}) => {
     }
 
     return (
-        <Wrapper modal>
+        <Wrapper modal={modal}>
             <label htmlFor="basic-url">{label}</label>
             <Form.Group controlId="exampleForm.SelectCustomSizeSm">
                 <Form.Control as="select" value={state} custom onChange={(event) => handleChange(label, event)}>

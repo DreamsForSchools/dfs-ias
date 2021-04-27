@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.toast {
+  position: absolute;
+  bottom: 0;
+  z-index: 100;
+  right: 0;
+  margin: 2rem;
+}

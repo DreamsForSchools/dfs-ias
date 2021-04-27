@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { color } from '../style';
-import { NAVBAR_HEIGHT } from "../navbar/Styled";
+import { NAVBAR_HEIGHT } from "../../components/NavBar/Styled";
 
 export const Page = styled.div`
   display: flex;
