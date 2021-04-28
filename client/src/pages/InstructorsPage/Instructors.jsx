@@ -1,16 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import './Instructors.scss';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
 import {Page, SideInfoWrapper, Wrapper} from '../../design-system/layout/Styled';
 import {getRandomInstructorSet} from "../../util/sampleData";
-import {FormControl, InputGroup, Button} from "react-bootstrap";
-import {PlusCircle, Filter, Search, FileEarmarkTextFill, CloudUploadFill} from 'react-bootstrap-icons';
+import {FormControl, InputGroup, Button, OverlayTrigger, Popover} from "react-bootstrap";
+import {PlusCircle, Filter, Search, FileEarmarkTextFill, CloudUploadFill, Link45deg} from 'react-bootstrap-icons';
 import AddInstructorManuallyModal from "../../components/AddInstructorManuallyModal";
 import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {Modal} from "react-bootstrap";
+import {GlobalContext} from "../../context/GlobalContextProvider";
 
 function Instructors() {
+    const {seasonNameSelected, seasonIdSelected} = useContext(GlobalContext);
+
     const [instructorFocus, setInstructorFocus] = useState();
     const [instructorData, setInstructorData] = useState(null);
     const [showInputModal, setShowInputModal] = useState();
@@ -116,11 +119,32 @@ function Instructors() {
                                 <Button variant="primary"><Search/></Button>
                             </InputGroup.Append>
                         </InputGroup>
+
                         <InputGroup>
                             <Button variant="outline-primary" style={{marginLeft: 'auto'}}>
                                 <Filter style={{marginRight: '0.5rem'}}/>Filter</Button>
                             <Button variant="primary" style={{marginLeft: '2rem'}} onClick={handleShowInputModal}>
                                 <PlusCircle style={{marginRight: '0.5rem'}}/><span>Add Instructor</span></Button>
+                            <OverlayTrigger
+                                trigger="click"
+                                placement={'bottom'}
+                                overlay={
+                                    <Popover>
+                                        <Popover.Title as="h3">Onboarding URL</Popover.Title>
+                                        <Popover.Content>
+                                            <p>Share this URL with instructors to self-onboard
+                                                for the <strong>{seasonNameSelected}</strong> season.</p>
+                                            <FormControl
+                                                aria-label="Default"
+                                                aria-describedby="inputGroup-sizing-default"
+                                                value={`${window.location.hostname}/onboarding/${seasonIdSelected}/${encodeURI(seasonNameSelected)}`}
+                                            />
+                                        </Popover.Content>
+                                    </Popover>
+                                }
+                            >
+                                <Button variant="secondary" style={{marginLeft: '2rem'}}><Link45deg style={{marginRight: '0.5rem'}}/>Self-Onboarding</Button>
+                            </OverlayTrigger>
                         </InputGroup>
                     </div>
 

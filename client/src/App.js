@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      {location.pathname !== '/onboarding' && <NavigationBar />}
+      {!location.pathname.includes('/onboarding') && <NavigationBar />}
       <Switch>
         <Route exact path="/">
           <Redirect to="/programs" />
@@ -35,7 +35,7 @@ function App() {
             <Sorter />
           </AppContextProvider>
         </Route>
-        <Route path="/onboarding">
+        <Route path="/onboarding/:id/:name">
           <InstructorOnboardingPage />
         </Route>
       </Switch>

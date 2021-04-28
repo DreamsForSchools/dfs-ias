@@ -4,7 +4,7 @@ import { color } from '../../style';
 export const Wrapper = styled.div`
   ${props => !props.modal && `display: flex; align-items: center;`};
   & > label {
-    ${props => !props.modal && `margin-right: 1rem;`};
+    ${props => !props.modal && `margin-right: 1rem; margin-bottom: 0;`};
   }
 
   & > div {

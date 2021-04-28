@@ -13,6 +13,10 @@ const GlobalContextProvider = ({ children }) => {
             setToastShow(true);
     }, [toastText]);
 
+    // useEffect(() => {
+    //     setToastText({status: 'Success', message: `Switched season to ${seasonNameSelected}`});
+    // }, [seasonNameSelected])
+
     return (
         <GlobalContext.Provider value={{
             seasonNameSelected, setSeasonNameSelected,

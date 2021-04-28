@@ -9,24 +9,16 @@ import { Link } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import Lottie from "lottie-react";
 import { DatePickerWrapper } from "./Styled";
-import { StatusCodes } from 'http-status-codes';
 
+import CreateNewSeasonModal from "../CreateNewSeasonModal";
 import { loadSeason, saveSeason } from '../../api/season';
-
-import seasonAnimation from "../../assets/season-animation.json";
+import {StatusCodes} from "http-status-codes";
 
 const NavigationBar = () => {
     const { seasonNameSelected, setSeasonNameSelected, setSeasonIdSelected, setToastText } = useContext(GlobalContext);
 
     const [seasonList, setSeasonList] = useState([]);
     const [showNewSeasonModal, setShowNewSeasonModal] = useState(false);
-    const [newSeasonInput, setNewSeasonInput] = useState(
-        {
-            name: null,
-            startDate: new Date(),
-            endDate: new Date(),
-        }
-    )
 
     useEffect(() => {
         if (seasonList.length > 0) {
@@ -40,8 +32,13 @@ const NavigationBar = () => {
     }, [])
 
     const fetchSeason = async () => {
-        const seasonList = await loadSeason();
-        setSeasonList(seasonList.sort((a, b) => {return new Date(b.startDate) - new Date(a.startDate)}));
+        try {
+            const seasonList = await loadSeason();
+            setSeasonList(seasonList.data.sort((a, b) => {return new Date(b.startDate) - new Date(a.startDate)}));
+        } catch (e) {
+            setToastText({status: 'Failed', message: `${e.response.data}`});
+        }
+
     }
 
     const handleSeasonChange = (e, id) => {
@@ -57,26 +54,12 @@ const NavigationBar = () => {
         setShowNewSeasonModal(false);
     }
 
-    const handleFormInput = (input = null, field) => {
-        switch(field) {
-            case "Season Name":
-                setNewSeasonInput({...newSeasonInput, name: input})
-                break;
-            case "Start Date":
-                setNewSeasonInput({...newSeasonInput, startDate: input})
-                break;
-            case "End Date":
-                setNewSeasonInput({...newSeasonInput, endDate: input})
-                break;
-        }
-    }
-
-    const handleSubmit = async () => {
+    const handleSubmit = async (seasonData) => {
         try {
             const request = await saveSeason({
-                name: newSeasonInput.name,
-                startDate: newSeasonInput.startDate.toISOString().split('T')[0],
-                endDate: newSeasonInput.endDate.toISOString().split('T')[0],
+                name: seasonData.name,
+                startDate: seasonData.startDate.toISOString().split('T')[0],
+                endDate: seasonData.endDate.toISOString().split('T')[0],
             });
             if (request.status === StatusCodes.OK) {
                 setToastText({status: 'Success', message: `${request.data.sqlMessage}`});
@@ -87,56 +70,7 @@ const NavigationBar = () => {
             setToastText({status: 'Failed', message: `${e.response.data.err.sqlMessage} -- Season added unsuccessfully.`});
             setShowNewSeasonModal(false);
         }
-        setNewSeasonInput({
-            name: null,
-            startDate: new Date(),
-            endDate: new Date(),
-        });
     }
-
-    const renderModal = (
-        <>
-            <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
-                <Modal.Title>Create a new season</Modal.Title>
-            </Modal.Header>
-            <>
-                <Modal.Body>
-                    <div style={{padding: '2rem 4rem 0 4rem', display: 'flex', flexDirection: 'row'}}>
-                        <div style={{width: '50%', marginRight: '1.5rem'}}>
-                            <Lottie animationData={seasonAnimation}/>
-                        </div>
-                        <div style={{width: '50%', marginRight: '1.5rem'}}>
-                            <Input label={'Season Name'} handler={handleFormInput} state={newSeasonInput.name} modal/>
-                            <DatePickerWrapper>
-                                <label>Start Date</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    startDate={newSeasonInput.startDate}
-                                    endDate={newSeasonInput.endDate}
-                                />
-                            </DatePickerWrapper>
-                            <DatePickerWrapper>
-                                <label>End Date</label>
-                                <DatePicker
-                                    selected={newSeasonInput.endDate}
-                                    onChange={date => handleFormInput(date, "End Date")}
-                                    selectsEnd
-                                    startDate={newSeasonInput.startDate}
-                                    endDate={newSeasonInput.endDate}
-                                    minDate={newSeasonInput.startDate}
-                                />
-                            </DatePickerWrapper>
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer style={{border: '0', padding: '0 3rem 2rem 3rem'}}>
-                    <Button variant="primary" onClick={handleSubmit}>Submit</Button>
-                </Modal.Footer>
-            </>
-        </>
-    );
 
     return (
         <>
@@ -159,10 +93,8 @@ const NavigationBar = () => {
             </Navbar>
 
             <Modal size="lg" show={showNewSeasonModal} onHide={handleCloseNewSeasonModal}>
-                {renderModal}
+                <CreateNewSeasonModal handleSubmit={handleSubmit} />
             </Modal>
-
-
         </>
     )
 }
