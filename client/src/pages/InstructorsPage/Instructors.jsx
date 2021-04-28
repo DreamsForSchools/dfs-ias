@@ -9,7 +9,9 @@ import {PlusCircle, Filter, Search, FileEarmarkTextFill, CloudUploadFill, Link45
 import AddInstructorManuallyModal from "../../components/AddInstructorManuallyModal";
 import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {Modal} from "react-bootstrap";
+import {parseCSV} from "../../util/csvParse.js";
 import {GlobalContext} from "../../context/GlobalContextProvider";
+
 
 function Instructors() {
     const {seasonNameSelected, seasonIdSelected} = useContext(GlobalContext);
@@ -18,6 +20,7 @@ function Instructors() {
     const [instructorData, setInstructorData] = useState(null);
     const [showInputModal, setShowInputModal] = useState();
     const [addInstructorMethod, setAddInstructorMethod] = useState(null);
+    const [csvHighlighted, setCsvHighlighted] = React.useState(false);
 
     const handleCloseInputModal = () => {
         setShowInputModal(false);
@@ -88,7 +91,48 @@ function Instructors() {
             { addInstructorMethod === 'CSV' && (
                 <>
                     <Modal.Body>
-                        Hello World CSV
+                        <div
+                            style={{
+                                borderRadius: '6px',
+                                border: '4px dashed #B5B8BF',
+                                backgroundColor: csvHighlighted ? '#F5F7FB' : '#FFFFFF',
+                                height: '300px',
+                                width: '300px',
+                                textAlign: 'center',
+                                margin: '40px 230px 0px',
+                                hover: 'scale(1.1)'
+                            }}
+                            onDragEnter={() => {
+                                setCsvHighlighted(true);
+                            }}
+                            onDragLeave={() => {
+                                setCsvHighlighted(false);
+                            }}
+                            onDragOver={(e) => {
+                                e.preventDefault();
+                            }}
+                            onDrop={(e) => {
+                                e.preventDefault();
+                                setCsvHighlighted(false);
+
+                                Array.from(e.dataTransfer.files)
+                                    .filter((file) => file.type === "text/csv")
+                                    .forEach(async (file) => {
+                                        const text = await file.text();
+                                        console.log(text);
+                                        let instructors = parseCSV(text, instructorData, setInstructorData, seasonIdSelected);
+                                        console.log(instructors);
+                                        // setInstructorData([...instructors, ...instructorData])
+                                        setShowInputModal(false);
+                                    });
+                            }}
+                        >
+                            <div style={{ marginTop: '70px'}}>
+                                <CloudUploadFill size={95} color={'#0099FF'}/>
+                                <h5 style={{marginTop: '1rem'}}>Drag and Drop .CSV</h5>
+                            </div>
+
+                        </div>
                     </Modal.Body>
                     <Modal.Footer style={{border: '0', padding: '2rem 3rem'}}>
 

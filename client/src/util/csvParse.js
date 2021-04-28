@@ -1,10 +1,12 @@
+import {useContext} from "react";
+import {GlobalContext} from "../context/GlobalContextProvider";
+
 const csv = require('csvtojson')
 const axios = require('axios');
 
-// USAGE:
-// node /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/csvParse.js /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/instructorData.csv
 
 const filePath = process.argv.slice(2)[0];
+
 const weekdays = {
     mondays: 1,
     tuesdays: 2,
@@ -15,30 +17,36 @@ const weekdays = {
     sundays: 7
 }
 
-csv({
-    noheader: false,
-    headers: ['omit', 'email', 'firstName', 'lastName', 'phoneNumber', 'gender', 'omit' , 'ethnicity', 'university', 'major', 'omit', 'omit', 'schoolYear', 'graduationDate', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'programmingLanguages', 'omit', 'firstPref', 'secondPref', 'thirdPref', 'fourthPref', 'avail_09_10', 'avail_10_11', 'avail_11_12', 'avail_12_13', 'avail_13_14', 'avail_14_15', 'avail_15_16', 'avail_16_17', 'avail_17_18', 'omit', 'hasCar', 'shirtSize', 'isASL', 'omit', 'omit', 'omit', 'otherLanguages', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit'],
-    colParser: {
-        "omit": "omit"
-    },
-    checkType: false
-}).fromFile(filePath)
-    .then(instructors => {
+export const parseCSV = (fileText,instructorData, setInstructorData, seasonIdSelected) => {
+    let data;
+    csv({
+        noheader: false,
+        headers: ['omit', 'email', 'firstName', 'lastName', 'phoneNumber', 'gender', 'omit' , 'ethnicity', 'university', 'major', 'omit', 'omit', 'schoolYear', 'graduationDate', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'programmingLanguages', 'omit', 'firstPref', 'secondPref', 'thirdPref', 'fourthPref', 'avail_09_10', 'avail_10_11', 'avail_11_12', 'avail_12_13', 'avail_13_14', 'avail_14_15', 'avail_15_16', 'avail_16_17', 'avail_17_18', 'omit', 'hasCar', 'shirtSize', 'isASL', 'omit', 'omit', 'omit', 'otherLanguages', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit'],
+        colParser: {
+            "omit": "omit"
+        },
+        checkType: false
+    }).fromString(fileText)
+        .then(instructors => {
+            parseAvailability(instructors);
+            // console.log(instructors);
+            data = instructors;
+            let payload = {newInstructorArray: instructors, seasonId:seasonIdSelected};
+            axios.post('/api/instructor/CSV',
+                payload).then((response) => {
+                console.log(response);
+                setInstructorData([...instructors, ...instructorData]);
+            }, (error) => {
+                console.log(error);
+            });
 
-        parseAvailability(instructors);
+        }).catch(err => {
+        // log error if any
+        console.log(err);
+    });
 
-        let payload = {newInstructorArray: instructors}
-        axios.post('http://localhost:5000/api/instructor/CSV',
-            payload).then((response) => {
-            console.log(response);
-        }, (error) => {
-            console.log(error);
-        });
+}
 
-    }).catch(err => {
-    // log error if any
-    console.log(err);
-});
 
 
 const parseAvailability = (instructorData) => {
@@ -61,6 +69,7 @@ const parseAvailability = (instructorData) => {
             }
         });
         obj['availability'] = availability;
+        obj['approve'] = true;
     });
 }
 

@@ -1,0 +1,43 @@
+.gradient-border:active {
+  transition: transform 300ms ease;
+  transition: all 300ms ease-out;
+}
+
+.gradient-border:hover{
+  z-index: 1;
+  transform: scale(1.07) perspective(90px) rotateX(0.25deg);
+  cursor: pointer;
+}
+//.gradient-border {
+//    --border-width: 3px;
+//
+//    border-radius: var(--border-width);
+//
+//&::after {
+//     position: absolute;
+//     content: "";
+//     top: calc(-1 * var(--border-width));
+//     left: calc(-1 * var(--border-width));
+//     z-index: -1;
+//     width: calc(100% + var(--border-width) * 2);
+//     height: calc(100% + var(--border-width) * 2);
+//     background-size: 400% 400%;
+//     background: linear-gradient(
+//             70deg,
+//                     hsl(224, 85%, 66%),
+//             hsl(269, 85%, 66%),
+//
+//             hsl(179, 85%, 66%)
+//     ) 0 50%;
+//     border-radius: calc(2 * var(--border-width));
+//     animation: moveGradient 4s alternate infinite;
+// }
+//}
+//
+//@keyframes moveGradient {
+//    50% {
+//        background-position: 100% 50%;
+//    }
+//}
+
+

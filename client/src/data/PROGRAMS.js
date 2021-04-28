@@ -231,5 +231,9 @@ export const PROGRAM_COLOR_KEYS = {
     "WebJam": "#40CCC8",
     "LESTEM": "#F2994A",
     "Engineering Inventors": "#4B4B92",
-    "Scratch": "#F2C94C"
+    "Scratch": "#F2C94C",
+    "Mobile App Development (AppJam+)": "#BB6BD9",
+    "Website Development": "#40CCC8",
+    "Let's Explore STEM": "#F2994A",
+    "Coding Games with Scratch": "#F2C94C",
 };
