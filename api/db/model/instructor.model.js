@@ -148,6 +148,7 @@ function insertLocation(insertedInstructorID,location,result)
                 });
             }else{
                  //inserting location with instructor id
+                 delete location["locationCacheId"];
                 db.query("INSERT INTO locationCache set ?",location,function(err,res){
                     if(err) result(err,null);                    
                 });
