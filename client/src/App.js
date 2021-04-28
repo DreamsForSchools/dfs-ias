@@ -59,6 +59,9 @@ function App() {
                 <Route path="/onboarding/:id/:name">
                     <InstructorOnboardingPage/>
                 </Route>
+                <Route path="/">
+                    <Redirect to="/programs"/>
+                </Route>
             </Switch>
         )}
 
