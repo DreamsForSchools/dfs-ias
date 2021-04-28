@@ -11,6 +11,7 @@ import Programs from "./pages/ProgramsPage/Programs";
 import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";
 import InstructorOnboardingPage from "./pages/InstructorOnboardingPage";
+import AppContextProvider from './pages/SorterPage/AppContextProvider';
 
 function App() {
   let location = useLocation();
@@ -30,7 +31,9 @@ function App() {
           <Instructors />
         </Route>
         <Route path="/sorter">
-          <Sorter />
+          <AppContextProvider>
+            <Sorter />
+          </AppContextProvider>
         </Route>
         <Route path="/onboarding">
           <InstructorOnboardingPage />
