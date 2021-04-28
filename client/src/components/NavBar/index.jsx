@@ -5,7 +5,7 @@ import DFS_Logo from "../../assets/DFS_Logo.png";
 import {PlusCircle} from "react-bootstrap-icons";
 import { GlobalContext } from "../../context/GlobalContextProvider";
 import {Input, Select} from "../../design-system/form";
-import { Link } from "react-router-dom";
+import {Link, Switch} from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import Lottie from "lottie-react";
 import { DatePickerWrapper } from "./Styled";
@@ -14,8 +14,10 @@ import { StatusCodes } from 'http-status-codes';
 import { loadSeason, saveSeason } from '../../api/season';
 
 import seasonAnimation from "../../assets/season-animation.json";
+import fire from "../../fire";
 
 const NavigationBar = () => {
+    const [signOut, setSignOut] = useState();
     const { seasonNameSelected, setSeasonNameSelected, setSeasonIdSelected, setToastText } = useContext(GlobalContext);
 
     const [seasonList, setSeasonList] = useState([]);
@@ -94,6 +96,25 @@ const NavigationBar = () => {
         });
     }
 
+
+    function handleSignOut() {
+        fire.auth().signOut();
+    }
+
+
+    // fire.auth().onAuthStateChanged((user) => {
+    //     // fire.auth().signOut();
+    //     if(user) {
+    //         setSignOut(
+    //             <Button variant="outline-primary" style={{marginLeft: '1rem'}} size="sm"
+    //                     onClick={handleSignOut}>Sign Out</Button>
+    //         );
+    //     } else{
+    //         setSignOut("");
+    //     }
+    // });
+
+
     const renderModal = (
         <>
             <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
@@ -141,7 +162,10 @@ const NavigationBar = () => {
     return (
         <>
             <Navbar collapseOnSelect className="navbar" expand="lg" sticky="top">
-                <Navbar.Brand className="nav-brand" href="/"><img className="nav-logo" src={DFS_Logo} alt="Dreams for Schools IAS Logo" /></Navbar.Brand>
+                <Navbar.Brand className="nav-brand" href="/"><img className="nav-logo" src={DFS_Logo} alt="Dreams for Schools IAS Logo" />
+                </Navbar.Brand>
+                <Button variant="outline-primary" style={{marginLeft: '1rem'}} size="sm"
+                        onClick={handleSignOut}>Sign Out</Button>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto">
