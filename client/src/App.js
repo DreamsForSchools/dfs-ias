@@ -30,11 +30,14 @@ function App() {
       {!isLoggedIn
         ? (
             <Switch>
-                <Route path="/">
-                  <Redirect to="/login"/>
+                <Route exact path="/">
+                    <Redirect to="/login"/>
                 </Route>
                 <Route path="/login">
                     <LoginPage/>
+                </Route>
+                <Route path="/onboarding/:id/:name">
+                    <InstructorOnboardingPage/>
                 </Route>
             </Switch>
         ) : (

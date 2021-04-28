@@ -4,16 +4,12 @@ import {Navbar, Nav, Dropdown, DropdownButton, Modal, Button} from 'react-bootst
 import DFS_Logo from "../../assets/DFS_Logo.png";
 import {PlusCircle} from "react-bootstrap-icons";
 import { GlobalContext } from "../../context/GlobalContextProvider";
-import {Input, Select} from "../../design-system/form";
+import { StatusCodes} from "http-status-codes";
 import {Link, Switch} from "react-router-dom";
-import DatePicker from 'react-datepicker';
-import Lottie from "lottie-react";
-import { DatePickerWrapper } from "./Styled";
 
 import CreateNewSeasonModal from "../CreateNewSeasonModal";
 import { loadSeason, saveSeason } from '../../api/season';
 
-import seasonAnimation from "../../assets/season-animation.json";
 import fire from "../../fire";
 
 const NavigationBar = () => {
