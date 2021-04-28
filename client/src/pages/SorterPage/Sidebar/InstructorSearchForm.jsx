@@ -5,15 +5,11 @@ import { getRandomInstructorSet } from "../../../util/sampleData";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import { Search } from 'react-bootstrap-icons';
 
-const InstructorSearchForm = ({ setIsLoading, state }) => {
+const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, setShowFilter }) => {
   const { setSearchedInstructors } = useContext(AppContext);
-  const [showFilter, setShowFilter] = useState();
   const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
   const [filteredInstructors, setFilteredInstructors] = useState([]);
-
-  const [isReturnee, setIsReturnee] = useState();
   const [hasCar, setHasCar] = useState();
-
 
   const onSearchSubmit = async (e) => {
     e.preventDefault();
@@ -28,11 +24,6 @@ const InstructorSearchForm = ({ setIsLoading, state }) => {
 
   const handleShowAutoAssignConfirmation = () => setShowAutoAssignConfirmation(true);
   const handleCloseAutoAssignConfirmation = () => setShowAutoAssignConfirmation(false);
-
-  const applyFilters = () => {
-    setFilteredInstructors(state["search"].filter(instructor => instructor.hasCar === hasCar));
-    handleCloseFilter();
-  }
 
   const resetFilters = () => {
     handleCloseFilter();

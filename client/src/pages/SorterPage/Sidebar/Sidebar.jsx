@@ -5,6 +5,12 @@ import SearchResult from './SearchResult.jsx';
 
 const Sidebar = ({ state }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+
+  const applyFilters = () => {
+    state["search"] = state["search"].filter(instructor => instructor.hasCar)
+    setShowFilter(false);
+  }
 
   return (
     <div className="sidebar">
@@ -12,6 +18,9 @@ const Sidebar = ({ state }) => {
       <InstructorSearchForm 
         setIsLoading={setIsLoading}
         state={state}
+        applyFilters={applyFilters}
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
       />
       <SearchResult 
         isLoading={isLoading}
