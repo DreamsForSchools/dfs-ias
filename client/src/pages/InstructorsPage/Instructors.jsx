@@ -116,7 +116,6 @@ function Instructors() {
                                 setCsvHighlighted(false);
 
                                 Array.from(e.dataTransfer.files)
-                                    .filter((file) => file.type === "text/csv")
                                     .forEach(async (file) => {
                                         const text = await file.text();
                                         console.log(text);
