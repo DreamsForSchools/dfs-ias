@@ -29,13 +29,13 @@ export const parseCSV = (fileText,instructorData, setInstructorData, seasonIdSel
     }).fromString(fileText)
         .then(instructors => {
             parseAvailability(instructors);
+            setInstructorData([...instructors, ...instructorData]);
             // console.log(instructors);
             data = instructors;
             let payload = {newInstructorArray: instructors, seasonId:seasonIdSelected};
             axios.post('/api/instructor/CSV',
                 payload).then((response) => {
                 console.log(response);
-                setInstructorData([...instructors, ...instructorData]);
             }, (error) => {
                 console.log(error);
             });
