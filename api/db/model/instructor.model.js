@@ -34,13 +34,13 @@ Instructor.createSingle = function (newInstructor, result) {
     if(!newInstructor.approve){
         result("missing approve or is not approved",null);
     }
-    
+
     console.log(newInstructor);
     delete newInstructor['approve'];
 
     db.query("SELECT * FROM instructors WHERE email = ? OR phoneNumber = ? ",[newInstructor.email, newInstructor.phoneNumber],function(err,res) {
         if (err) result(err, null);
-         //if email already exitsts, update instructor
+        //if email already exitsts, update instructor
         else if(res.length >= 1){
             let instructorID = res[0].instructorId
             Instructor.updateById(instructorID,newInstructor, result);
@@ -104,32 +104,32 @@ function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
             let location = {};
             location.name = instructorUniversity;
             axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${instructorUniversity}&inputtype=textquery&fields=geometry,photos,name,formatted_address`)
-            .then((response) => {
-                if(response.data.status == 'OK' && response.data.candidates.length >= 1){
-                    location.address = response.data.candidates[0].formatted_address;
-                    location.latitude = response.data.candidates[0].geometry.location.lat; 
-                    location.longititude = response.data.candidates[0].geometry.location.lng;
-                    if(response.data.candidates[0].photos.length >= 1)
-                        location.image = response.data.candidates[0].photos[0].photo_reference;                        
-                    let date = new Date();
-                    axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`)
-                    .then((response) => {
-                        location.rawOffset = response.data.rawOffset;
-                        location.dstOffset = response.data.dstOffset;
-                        db.query("INSERT INTO locationCache set ?",location,function(err,res){ //insert location cache w/o instructor id
-                            if(err) result(err,null);
-                            else{
-                                //insert into location cache WITH instructor ID
-                                location.instructorId = insertedInstructorID;
-                                insertLocation(insertedInstructorID,location,result);
-                            }
-                        });
-                        
-                    });
-                }else{
-                    result(err,null);
-                }
-            });
+                .then((response) => {
+                    if(response.data.status == 'OK' && response.data.candidates.length >= 1){
+                        location.address = response.data.candidates[0].formatted_address;
+                        location.latitude = response.data.candidates[0].geometry.location.lat;
+                        location.longititude = response.data.candidates[0].geometry.location.lng;
+                        if(response.data.candidates[0].photos.length >= 1)
+                            location.image = response.data.candidates[0].photos[0].photo_reference;
+                        let date = new Date();
+                        axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`)
+                            .then((response) => {
+                                location.rawOffset = response.data.rawOffset;
+                                location.dstOffset = response.data.dstOffset;
+                                db.query("INSERT INTO locationCache set ?",location,function(err,res){ //insert location cache w/o instructor id
+                                    if(err) result(err,null);
+                                    else{
+                                        //insert into location cache WITH instructor ID
+                                        location.instructorId = insertedInstructorID;
+                                        insertLocation(insertedInstructorID,location,result);
+                                    }
+                                });
+
+                            });
+                    }else{
+                        result(err,null);
+                    }
+                });
         }
     });
 }
@@ -141,18 +141,18 @@ function insertLocation(insertedInstructorID,location,result)
         if(err) result(err,null);
         else{
             if(res.length > 0 && res.name != location.name){    //instructor already exists, update
-                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, schoolId = ? WHERE instructorId = ?",
-                [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.schoolId, insertedInstructorID],
-                function(err,res){
+                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, partnerId = ? WHERE instructorId = ?",
+                    [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.partnerId, insertedInstructorID],
+                    function(err,res){
+                        if(err) result(err,null);
+                    });
+            }else{
+                //inserting location with instructor id
+                delete location["locationCacheId"];
+                db.query("INSERT INTO locationCache set ?",location,function(err,res){
                     if(err) result(err,null);
                 });
-            }else{
-                 //inserting location with instructor id
-                 delete location["locationCacheId"];
-                db.query("INSERT INTO locationCache set ?",location,function(err,res){
-                    if(err) result(err,null);                    
-                });
- 
+
             }
         }
 
@@ -176,37 +176,37 @@ Instructor.findAll = function (result) {
         JOIN instructorAvailability ON instructors.instructorId = instructorAvailability.instructorId\
         JOIN locationCache ON instructors.instructorId = locationCache.instructorId\
         JOIN seasonInstructors on instructors.instructorId = seasonInstructors.instructorId;",function(err,res){
-            if(err) result(err,null);
-            else{
-                let rtn = {};
+        if(err) result(err,null);
+        else{
+            let rtn = {};
 
-                res.forEach(function(item){
-                    var instruct = item;
-                    var id = item.instructorId;
-        
-                    var avaiability = {
-                        'availabilityId' : item['availabilityId'],
-                        'weekday' : item['weekday'],
-                        'startTime' : item['startTime'],
-                        'endTime' : item['endTime']
-                    };
-                    if(id in rtn){
-                        rtn[id]['avaiability'].push(avaiability);
-                    }else{
-                        rtn[id] = instruct;
-                        rtn[id]['avaiability'] = [avaiability];
-                    }
+            res.forEach(function(item){
+                var instruct = item;
+                var id = item.instructorId;
 
-                    delete instruct['availabilityId'];
-                    delete instruct['weekday'];
-                    delete instruct['startTime'];
-                    delete instruct['endTime'];
-                    delete instruct['id'];
+                var avaiability = {
+                    'availabilityId' : item['availabilityId'],
+                    'weekday' : item['weekday'],
+                    'startTime' : item['startTime'],
+                    'endTime' : item['endTime']
+                };
+                if(id in rtn){
+                    rtn[id]['avaiability'].push(avaiability);
+                }else{
+                    rtn[id] = instruct;
+                    rtn[id]['avaiability'] = [avaiability];
+                }
 
-                });
-                result(null,Object.values(rtn));
-            }
-        });
+                delete instruct['availabilityId'];
+                delete instruct['weekday'];
+                delete instruct['startTime'];
+                delete instruct['endTime'];
+                delete instruct['id'];
+
+            });
+            result(null,Object.values(rtn));
+        }
+    });
 };
 
 Instructor.findById = function (id, result) {
@@ -221,8 +221,8 @@ Instructor.findById = function (id, result) {
                     rtn['availability'] = res;
                     result(null, rtn);
                 }
-            });            
-        } 
+            });
+        }
     });
 }
 
@@ -231,7 +231,7 @@ Instructor.deleteById = function (id, result) {
         function (err, res) {
             if (err) result(err, null);
             else result(null, res);
-    })
+        })
 }
 
 Instructor.updateById = function (id, instructor, result) {
@@ -249,12 +249,12 @@ Instructor.updateById = function (id, instructor, result) {
                 db.query("DELETE FROM instructorAvailability WHERE instructorId = ?", id, function(err,res){
                     if(err) result(err, null);
                     let availability = instructor.availability;
-                    insertAvailability(availability, id, result);                    
-                    
+                    insertAvailability(availability, id, result);
+
                 });
                 result(null,res);
             }
-    });
+        });
 }
 
-module.exports = Instructor;
+module.exports = Instructor

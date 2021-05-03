@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const programController = require('../db/controller/program.controller')
-const schoolController = require('../db/controller/school.controller')
+const partnerController = require('../db/controller/partner.controller')
 const seasonController = require('../db/controller/season.controller')
 const instructorController = require('../db/controller/instructor.controller')
 const instructorAvailabilityController = require('../db/controller/instructoravailability.controller')
@@ -15,11 +15,11 @@ router.get('/program/:id', programController.findById);
 router.delete('/program/:id', programController.deleteById);
 router.put('/program/:id', programController.updateById);
 
-router.post('/school', schoolController.create);
-router.get('/school', schoolController.findAll);
-router.get('/school/:id', schoolController.findById);
-router.delete('/school/:id', schoolController.deleteById);
-router.put('/school/:id', schoolController.updateById)
+router.post('/partner', partnerController.create);
+router.get('/partner', partnerController.findAll);
+router.get('/partner/:id', partnerController.findById);
+router.delete('/partner/:id', partnerController.deleteById);
+router.put('/partner/:id', partnerController.updateById)
 
 router.post('/season', seasonController.create);
 router.get('/season', seasonController.findAll);
@@ -50,7 +50,7 @@ router.delete('/location/:id', locationController.deleteById);
 router.put('/location/:id', locationController.updateById);
 
 router.get('/program/class/:id', classController.allProgramClasses);
-router.get('/school/class/:id', classController.allSchoolClasses);
+router.get('/partner/class/:id', classController.allPartnerClasses);
 router.get('/season/class/:id', classController.allSeasonClasses);
 router.post('/class', classController.create);
 router.get('/class', classController.findAll);

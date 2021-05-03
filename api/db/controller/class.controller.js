@@ -11,6 +11,7 @@ exports.create = function(req, res) {
     }
     else {
         Class.create(new_class, function(err, mClass) {
+            console.log(err);
             if (err) res.status(400).send({error:true, message: 'Failed to create class'});
             else res.json({error:false, message:"class added successfully!", data:mClass});
         });
@@ -59,8 +60,8 @@ exports.allProgramClasses = function(req, res) {
     });
 }
 
-exports.allSchoolClasses = function(req, res) {
-    Class.allSchoolClasses(req.params.id, function(err, mClass) {
+exports.allPartnerClasses = function(req, res) {
+    Class.allPartnerClasses(req.params.id, function(err, mClass) {
         console.log(mClass);
         if (err) res.status(400).send({error:true, message: 'Failed to get all classes'});
         else if (mClass == "") res.send({error:true, message: "No classes found!"});

@@ -12,7 +12,7 @@ var LocationCache = function(locationCache) {
     this.rawOffset  = locationCache.rawOffset;
     this.dstOffset = locationCache.dstOffset;
     this.instructorId  = locationCache.instructorId;
-    this.schoolId  = locationCache.schoolId;
+    this.partnerId  = locationCache.partnerId;
 };
 
 LocationCache.create = function (newlocationCache, result) {
@@ -52,8 +52,8 @@ LocationCache.deleteById = function (id, result) {
 }
 
 LocationCache.updateById = function (id, locationCache, result) {
-    db.query("UPDATE locationCache SET name = ?, address = ?, image = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, instructorId = ?, schoolId=? WHERE id = ?",
-        [locationCache.name, locationCache.address, locationCache.image, locationCache.district, locationCache.longititude, locationCache.longititude, locationCache.rawOffset, locationCache.dstOffset, locationCache.instructorId, locationCache.schoolId, id],
+    db.query("UPDATE locationCache SET name = ?, address = ?, image = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, instructorId = ?, partnerId=? WHERE id = ?",
+        [locationCache.name, locationCache.address, locationCache.image, locationCache.district, locationCache.longititude, locationCache.longititude, locationCache.rawOffset, locationCache.dstOffset, locationCache.instructorId, locationCache.partnerId, id],
         function(err, res) {
             if (err) result(err, null);
             else result(null, res);
