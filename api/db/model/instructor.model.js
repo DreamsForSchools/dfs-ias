@@ -147,8 +147,10 @@ function insertLocation(insertedInstructorID,location,result)
                         if(err) result(err,null);
                     });
             }else{
-                //inserting location with instructor id
-                delete location["locationCacheId"];
+                 //inserting location with instructor id
+                 
+                 delete location["locationCacheId"];
+                 console.log(location);
                 db.query("INSERT INTO locationCache set ?",location,function(err,res){
                     if(err) result(err,null);
                 });
