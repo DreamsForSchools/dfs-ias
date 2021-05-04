@@ -3,7 +3,7 @@ import './Instructor.scss';
 import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
 import { Modal } from "react-bootstrap";
-import { PencilSquare} from 'react-bootstrap-icons';
+import { InfoCircle } from 'react-bootstrap-icons';
 import InstructorPopUp from './InstructorPopUp';
 
 const Instructor = ({ instructor }) => {
@@ -40,7 +40,7 @@ const Instructor = ({ instructor }) => {
           <h5>{e}</h5>
         )}
       </div>
-      <div className="edit-icon"><PencilSquare onClick={handleShowInstructorPopUp}/></div>
+      <div className="edit-icon"><InfoCircle onClick={handleShowInstructorPopUp}/></div>
       <Modal size="xl" show={showInstructorPopUp} onHide={handleCloseInstructorPopUp} onExited={handleCloseInstructorPopUp}>
         <InstructorPopUp instructor={instructor} />
       </Modal>

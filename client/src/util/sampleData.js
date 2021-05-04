@@ -19,8 +19,8 @@ export const getRandomInstructor = () => {
     let universityPool = ['UC Irvine', 'UCLA', 'UC Berkeley', 'UC Davis', 'UC San Diego'];
     let majorPool =  ['Software Engineer', 'Computer Science', 'Informatics', 'Physics', 'Biology'];
     let graduationPool =  ['Winter 2020', 'Spring 2020', 'Fall 2020', 'Winter 2021', 'Spring 2021', 'Fall 2021'];
-    let prefPool =  ["WebJam", "AppJam", "LESTEM", "Scratch"];
-    let yearPool = ['1st','2nd','3rd','4th'];
+    let prefPool =  ["WebJam", "AppJam", "LESTEM", "Scratch", "Engineering Inventors"];
+    let yearPool = ['1st','2nd','3rd','4th+', 'Graduate'];
     let ethnictyPool = ['Asian', 'White', 'Hispanic', 'Black'];
     let startTimePool = ['08:00:00', '09:00:00', '10:00:00', '11:00:00','12:00:00'];
     let endTimePool = ['14:00:00', '15:00:00', '16:00:00', '17:00:00','18:00:00','19:00:00'];
