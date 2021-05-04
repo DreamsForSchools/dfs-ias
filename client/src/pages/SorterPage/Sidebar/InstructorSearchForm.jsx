@@ -8,8 +8,32 @@ import { Search } from 'react-bootstrap-icons';
 const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, setShowFilter }) => {
   const { setSearchedInstructors } = useContext(AppContext);
   const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
-  const [filteredInstructors, setFilteredInstructors] = useState([]);
+  const [checkedItems, setCheckedItems] = useState();
   const [hasCar, setHasCar] = useState();
+
+  const availabilityOptions = [
+    {value: "Monday"},
+    {value: "Tuesday"},
+    {value: "Wednesday"},
+    {value: "Thursday"},
+    {value: "Friday"},
+  ]
+
+  const preferenceOptions = [
+    {value: "AppJam"},
+    {value: "WebJam"},
+    {value: "LESTEM"},
+    {value: "Scratch"},
+    {value: "Engineering Inventors"},
+  ]
+
+  const yearOptions = [
+    {value: "1st"},
+    {value: "2nd"},
+    {value: "3rd"},
+    {value: "4th+"},
+    {value: "Graduate"},
+  ]
 
   const onSearchSubmit = async (e) => {
     e.preventDefault();
@@ -25,12 +49,21 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
   const handleShowAutoAssignConfirmation = () => setShowAutoAssignConfirmation(true);
   const handleCloseAutoAssignConfirmation = () => setShowAutoAssignConfirmation(false);
 
+  const handleApplyFilters = () => {
+    applyFilters(state["search"].filter(instructor => instructor.hasCar));
+  }
+
   const resetFilters = () => {
     handleCloseFilter();
   }
 
-  const handleCarFilter = e => {
-    setHasCar("True" ? e.target.id === "Yes" : "False")
+  const handleCarChange = e => {
+    setHasCar(true ? e.target.id === "Yes" && e.target.checked : false)
+  }
+
+  const handleCheckboxChange = e => {
+    console.log(e.target.id)
+    console.log(e.target.checked)
   }
 
   return (
@@ -64,61 +97,72 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
                 type="checkbox" 
                 label="Yes" 
                 id="Yes" 
-                onChange={handleCarFilter}
+                onChange={handleCarChange}
+                checked={checkedItems}
               />
               <Form.Check 
                 type="checkbox" 
                 label="No" 
                 id="No" 
-                onChange={handleCarFilter}
+                onChange={handleCarChange}
+                checked={checkedItems}
               />
-            </Form.Group>
-            <h5>American Sign Language</h5>
-            <Form.Group className="filter-group">
-              <Form.Check type="checkbox" label="Yes" />
-              <Form.Check type="checkbox" label="No" />
             </Form.Group>
             <h5>Availability</h5>
             <Form.Group className="filter-group">
-              <Form.Check type="checkbox" label="Monday" />
-              <Form.Check type="checkbox" label="Tuesday" />
-              <Form.Check type="checkbox" label="Wednesday" />
-              <Form.Check type="checkbox" label="Thursday" />
-              <Form.Check type="checkbox" label="Friday" />
+              {availabilityOptions.map(day =>
+                <Form.Check 
+                  type="checkbox" 
+                  label={day.value}
+                  id={day.value} 
+                  onChange={handleCheckboxChange}
+                  checked={checkedItems}
+                />
+              )}
             </Form.Group>
-            <h5>Preferences</h5>
+            <h5>Preference</h5>
             <Form.Group className="filter-group">
-              <Form.Check type="checkbox" label="AppJam" />
-              <Form.Check type="checkbox" label="WebJam" />
-              <Form.Check type="checkbox" label="LESTEM" />
-              <Form.Check type="checkbox" label="Scratch" />
-              <Form.Check type="checkbox" label="Engineering Inventors" />
-            </Form.Group>
-            <h5>Programming Language</h5>
-            <Form.Group className="filter-group">
-              <Form.Check type="checkbox" label="Python" />
-              <Form.Check type="checkbox" label="Java" />
-              <Form.Check type="checkbox" label="JavaScript" />
-              <Form.Check type="checkbox" label="C/C++" />
-            </Form.Group>
-            <h5>Spoken Language</h5>
-            <Form.Group className="filter-group">
-              <Form.Check type="checkbox" label="Spanish" />
-              <Form.Check type="checkbox" label="Vietnamese" />
-              <Form.Check type="checkbox" label="Mandarin" />
-              <Form.Check type="checkbox" label="Tagalog" />
-              <Form.Check type="checkbox" label="Korean" />
+              {preferenceOptions.map(pref =>
+                <Form.Check 
+                  type="checkbox" 
+                  label={pref.value}
+                  id={pref.value} 
+                  onChange={handleCheckboxChange}
+                  checked={checkedItems}
+                />
+              )}
             </Form.Group>
             <h5>Year</h5>
             <Form.Group className="filter-group">
-              <Form.Check type="checkbox" label="1st" />
-              <Form.Check type="checkbox" label="2nd" />
-              <Form.Check type="checkbox" label="3rd" />
-              <Form.Check type="checkbox" label="4th+" />
-              <Form.Check type="checkbox" label="Graduate" />
+              {yearOptions.map(year =>
+                <Form.Check 
+                  type="checkbox" 
+                  label={year.value}
+                  id={year.value} 
+                  onChange={handleCheckboxChange}
+                  checked={checkedItems}
+                />
+              )}
+            </Form.Group>
+            <h5>ASL</h5>
+            <Form.Group className="filter-group">
+              <Form.Check 
+                type="checkbox" 
+                label="Yes" 
+                id="Yes" 
+                onChange={handleCheckboxChange}
+                checked={checkedItems}
+              />
+              <Form.Check 
+                type="checkbox" 
+                label="No" 
+                id="No" 
+                onChange={handleCheckboxChange}
+                checked={checkedItems}
+              />
             </Form.Group>
             <div className="filter-btns">
-              <Button className="apply-btn" onClick={applyFilters}>Apply Filters</Button>
+              <Button className="apply-btn" onClick={handleApplyFilters}>Apply Filters</Button>
               <Button className="reset-btn" onClick={resetFilters}>Reset Filters</Button>
             </div>
           </Modal.Body>

@@ -29,7 +29,14 @@ const dragReducer = produce((draft, action) => {
       //   draft["programs"][toProgram][action.to] || [];
       // const [removed] = start[action.from].splice(action.fromIndex, 1);
       // draft["programs"][toProgram][action.to].splice(action.toIndex, 0, removed);
+      break;
     }
+    case "FILTER": {
+      draft["search"] = action.filteredInstructors;
+      break;
+    }
+    default: 
+      return;
   }
 });
 
@@ -42,6 +49,13 @@ const Sorter = () => {
     "partner4": getRandomInstructorSet(4), 
     "search": getRandomInstructorSet(10),
   });
+
+  const handleFilter = (instructors) => {
+    dispatch({
+      type: "FILTER",
+      filteredInstructors: instructors,
+    });
+  }
 
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
@@ -73,7 +87,10 @@ const Sorter = () => {
           <MainPanel state={state} />
         </div>
         <div className="sidebar-wrapper">
-          <Sidebar state={state} />
+          <Sidebar 
+            state={state} 
+            handleFilter={handleFilter}
+          />
         </div>
       </DragDropContext>
     </div>

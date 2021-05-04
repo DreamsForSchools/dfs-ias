@@ -3,12 +3,12 @@ import "./Sidebar.scss";
 import InstructorSearchForm from './InstructorSearchForm.jsx';
 import SearchResult from './SearchResult.jsx';
 
-const Sidebar = ({ state }) => {
+const Sidebar = ({ state, handleFilter }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
-  const applyFilters = () => {
-    state["search"] = state["search"].filter(instructor => instructor.hasCar)
+  const applyFilters = (instructors) => {
+    handleFilter(instructors);
     setShowFilter(false);
   }
 
