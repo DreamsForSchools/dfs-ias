@@ -8,6 +8,7 @@ var Partner = function(partner) {
     this.state = partner.state;
     this.street = partner.street;
     this.zip = partner.zip;
+    this.district = partner.district;
     this.partnerType = partner.partnerType;
     this.langRequest = partner.langRequest;
 };
@@ -42,8 +43,8 @@ Partner.deleteById = function (id, result) {
 }
 
 Partner.updateById = function (id, partner, result) {
-    db.query("UPDATE partners SET name = ?, city = ?, state = ?, street = ?, zip = ?, partnerType= ? langRequest = ? WHERE partnerId = ?",
-        [partner.name, partner.city, partner.state, partner.zip, partner.partnerType, partner.langRequest, id],
+    db.query("UPDATE partners SET name = ?, city = ?, state = ?, street = ?, zip = ?, district = ?, partnerType= ?, langRequest = ? WHERE partnerId = ?",
+        [partner.name, partner.city, partner.state, partner.zip, partner.district, partner.partnerType, partner.langRequest, id],
         function(err, res) {
             if (err) result(err, null);
             else result(null, res);
