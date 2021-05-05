@@ -111,7 +111,8 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
             <h5>Availability</h5>
             <Form.Group className="filter-group">
               {availabilityOptions.map(day =>
-                <Form.Check 
+                <Form.Check
+                  key={day.value} 
                   type="checkbox" 
                   label={day.value}
                   id={day.value} 
@@ -124,6 +125,7 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
             <Form.Group className="filter-group">
               {preferenceOptions.map(pref =>
                 <Form.Check 
+                  key={pref.value} 
                   type="checkbox" 
                   label={pref.value}
                   id={pref.value} 
@@ -136,6 +138,7 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
             <Form.Group className="filter-group">
               {yearOptions.map(year =>
                 <Form.Check 
+                  key={year.value} 
                   type="checkbox" 
                   label={year.value}
                   id={year.value} 

@@ -43,6 +43,7 @@ const SearchResult = ({ isLoading, state }) => {
             >
               <Instructor
                 instructor={instructor}
+                key={instructor.id}
               />
             </div>
           )}

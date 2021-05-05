@@ -5,6 +5,8 @@ import './Sorter.scss';
 import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
 import { getRandomInstructorSet } from "../../util/sampleData";
+import { PROGRAMS as programs_data }  from '../../data/PROGRAMS';
+import { INSTRUCTORS as instructors_data } from '../../data/INSTRUCTORS';
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
@@ -42,11 +44,11 @@ const dragReducer = produce((draft, action) => {
 
 const Sorter = () => {
   const [state, dispatch] = useReducer(dragReducer, { 
-    "programs": {},
-    "partner1": getRandomInstructorSet(4), 
-    "partner2": getRandomInstructorSet(4), 
-    "partner3": getRandomInstructorSet(4), 
-    "partner4": getRandomInstructorSet(4), 
+    "programs": programs_data, 
+    "partner1": [], 
+    "partner2": [], 
+    "partner3": [], 
+    "partner4": [], 
     "search": getRandomInstructorSet(10),
   });
 

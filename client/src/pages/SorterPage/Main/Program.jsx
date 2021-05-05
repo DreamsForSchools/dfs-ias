@@ -1,63 +1,28 @@
-import React, { useContext, useState } from "react";
-import { AppContext } from '../AppContextProvider';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-
+import React from "react";
 import './Program.scss';
-import Partner from './Partner.jsx';
+import Class from './Class.jsx';
 // import { CaretRightFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
+import { getRandomInstructorSet } from "../../../util/sampleData";
 
-const Program = ({ name, color, state }) => {
+
+const Program = ({ name, color, classes, state }) => {
   // const [showContent, setShowContent] = useState(false);
   // const [lock, setLock] = useState(false);
-  const { partners } = useContext(AppContext);
 
   return (
     <div className="program">
       <div className="program-module" style={{ backgroundColor: color }}>
         <div className="program-name">{name}</div>
         <div className="partners-container">
-            {/* <Droppable droppableId={"partner1"} type="INSTRUCTOR">
-              {(provided) => {
-                return (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    {state["partner1"]?.map((instructor, index) => {
-                      return (
-                        <Draggable
-                          key={instructor.id}
-                          draggableId={instructor.id}
-                          index={index}
-                        >
-                          {(provided) => {
-                            return (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                {instructor.id}
-                              </div>
-                            );
-                          }}
-                        </Draggable>
-                      );
-                    })}
-                    {provided.placeholder}
-                  </div>
-                );
-              }}
-            </Droppable> */}
           {
-            partners.map(partner => {             
+            classes.map(c => {             
               return (
                 <div>
-                  <Partner
-                    key={partner.index}
-                    name={partner.name}
-                    index={partner.index}
-                    instructors={state["partner" + partner.index]}
+                  <Class
+                    key={c.index}
+                    name={c.partner}
+                    index={c.index}
+                    instructors={getRandomInstructorSet(2)}
                   />
                 </div>
               )

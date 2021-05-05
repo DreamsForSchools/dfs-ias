@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-// import { AppContext } from '../AppContextProvider';
-
-import './Partner.scss';
+import './Class.scss';
 import Instructor from '../Instructor.jsx';
 import { Calendar4, People } from 'react-bootstrap-icons';
 
 const Partner = ({ name, index, instructors }) => {
-  // const { sorterData, setSorterData } = useContext(AppContext);
   const [numInstructors, setNumInstructors] = useState(0);
 
   useEffect(() => {
@@ -18,7 +15,8 @@ const Partner = ({ name, index, instructors }) => {
     <div className="partner">
       <h1 className="partner-name">{name}</h1>
       <div className="partner-info">
-        <Calendar4 /> Schedule <People /> {numInstructors} Instructors
+        <div sclassName="schedule-info"><Calendar4 /> MW 2:00 pm - 3:00 pm </div>
+        <div className="instructors-info"><People /> {numInstructors}/5 Instructors </div>
       </div>
       <Droppable droppableId={"partner" + index} type="INSTRUCTOR">
         {(provided) => {
@@ -44,6 +42,7 @@ const Partner = ({ name, index, instructors }) => {
                           <Instructor
                             className="instructor"
                             instructor={instructor}
+                            key={instructor.id}
                           />
                         </div>
                       );
