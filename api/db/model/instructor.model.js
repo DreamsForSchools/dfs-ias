@@ -142,10 +142,11 @@ function insertLocation(insertedInstructorID,location,result)
         if(err) result(err,null);
         else{
             if(res.length > 0 && res.name != location.name){    //instructor already exists, update
-                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, partnerId = ?, placeId = ?, WHERE instructorId = ?",
+                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, partnerId = ?, placeId = ? WHERE instructorId = ?",
                     [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.partnerId, location.placeId, insertedInstructorID],
                     function(err,res){
-                        if(err) result(err,null);
+                        if(err){ console.log(err); result(err,null);}
+                        else{ result(null,res); }
                     });
             }else{
                  //inserting location with instructor id
