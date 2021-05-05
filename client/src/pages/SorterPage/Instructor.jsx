@@ -5,17 +5,10 @@ import { formatAvailability } from "../../util/formatData";
 import { Modal } from "react-bootstrap";
 import { InfoCircle } from 'react-bootstrap-icons';
 import InstructorPopUp from './InstructorPopUp';
+import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 
 const Instructor = ({ instructor }) => {
   const [showInstructorPopUp, setShowInstructorPopUp] = useState();
-
-  const programsColorKey = {
-    "AppJam": "#BB6BD9",
-    "WebJam": "#40CCC8",
-    "LESTEM": "#F2994A",
-    "Engineering Inventors": "#4B4B92",
-    "Scratch": "#F2C94C"
-  };
 
   const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
   const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
@@ -32,7 +25,7 @@ const Instructor = ({ instructor }) => {
       </div>
       <div className="pref">
         {[instructor.firstPref, instructor.secondPref, instructor.thirdPref, instructor.fourthPref].map((el, idx) =>
-          <Dot color={programsColorKey[el]} key={idx}/>
+          <Dot color={program_color_keys[el]} key={idx}/>
         )}
       </div>
       <div className="availability">

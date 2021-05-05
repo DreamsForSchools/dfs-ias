@@ -12,7 +12,6 @@ import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";
 import InstructorOnboardingPage from "./pages/InstructorOnboardingPage";
 import LoginPage from "./pages/LoginPage";
-import AppContextProvider from './pages/SorterPage/AppContextProvider';
 import fire from './fire.js';
 
 function App() {
@@ -52,9 +51,7 @@ function App() {
                     <Instructors/>
                 </Route>
                 <Route path="/sorter">
-                    <AppContextProvider>
-                        <Sorter/>
-                    </AppContextProvider>
+                    <Sorter/>
                 </Route>
                 <Route path="/onboarding/:id/:name">
                     <InstructorOnboardingPage/>
