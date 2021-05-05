@@ -13,15 +13,17 @@ const Program = ({ name, color, classes, state }) => {
     <div className="program">
       <div className="program-module" style={{ backgroundColor: color }}>
         <div className="program-name">{name}</div>
-        <div className="partners-container">
+        <div className="classes-container">
           {
             classes.map(c => {             
               return (
                 <div>
                   <Class
                     key={c.index}
-                    name={c.partner}
                     index={c.index}
+                    partner={c.partner}
+                    time={c.time}
+                    slotCount={c.slotCount}
                     instructors={getRandomInstructorSet(2)}
                   />
                 </div>

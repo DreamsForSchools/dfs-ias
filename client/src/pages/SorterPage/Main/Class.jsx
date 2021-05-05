@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Class.scss';
 import Instructor from '../Instructor.jsx';
-import { Calendar4, People } from 'react-bootstrap-icons';
+import { CalendarWeek, People } from 'react-bootstrap-icons';
+import { formatAvailability } from "../../../util/formatData";
 
-const Partner = ({ name, index, instructors }) => {
+const Class = ({ index, partner, time, slotCount, instructors }) => {
   const [numInstructors, setNumInstructors] = useState(0);
 
   useEffect(() => {
@@ -12,13 +13,13 @@ const Partner = ({ name, index, instructors }) => {
   }, [setNumInstructors, instructors])
 
   return (
-    <div className="partner">
-      <h1 className="partner-name">{name}</h1>
-      <div className="partner-info">
-        <div sclassName="schedule-info"><Calendar4 /> MW 2:00 pm - 3:00 pm </div>
-        <div className="instructors-info"><People /> {numInstructors}/5 Instructors </div>
+    <div className="class">
+      <h1 className="partner-name">{partner}</h1>
+      <div className="class-info">
+        <div sclassName="schedule-info"><CalendarWeek /> {formatAvailability(time)} </div>
+        <div className="instructors-info"><People /> {numInstructors}/{slotCount} </div>
       </div>
-      <Droppable droppableId={"partner" + index} type="INSTRUCTOR">
+      <Droppable droppableId={"class" + index} type="INSTRUCTOR">
         {(provided) => {
           return (
             <div
@@ -59,4 +60,4 @@ const Partner = ({ name, index, instructors }) => {
   );
 }
 
-export default Partner;
+export default Class;
