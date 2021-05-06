@@ -7,6 +7,8 @@ const instructorController = require('../db/controller/instructor.controller')
 const instructorAvailabilityController = require('../db/controller/instructoravailability.controller')
 const locationController = require('../db/controller/locationCache.controller')
 const classController = require('../db/controller/class.controller')
+const seasonAssignmentController = require('../db/controller/seasonAssignment.controller')
+
 
 /* GET home page. */
 router.post('/program', programController.create);
@@ -58,5 +60,6 @@ router.get('/class/:id', classController.findById);
 router.delete('/class/:id', classController.deleteById);
 router.put('/class/:id', classController.updateById)
 
+router.post('/sort', seasonAssignmentController.sort);
 
 module.exports = router;
