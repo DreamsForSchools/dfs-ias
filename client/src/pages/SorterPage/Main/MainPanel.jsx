@@ -12,7 +12,6 @@ const MainPanel = ({ state }) => {
               name={program.name}
               color={program.color}
               classes={program.classes}
-              state={state}
             />
           )
         })

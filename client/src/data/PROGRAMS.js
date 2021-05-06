@@ -1,10 +1,14 @@
+import { getRandomInstructorSet } from "../util/sampleData";
+
 export const PROGRAMS = [
     {
+        id: "1",
         name: "WebJam",
         color: "#40CCC8",
         logo: "https://i.ibb.co/T8kL0pM/Web-Dev-Logo.png",
         classes: [
             {
+                id: "1",
                 partner: "Villa Fundamental",
                 type: "Private",
                 time: [
@@ -21,8 +25,10 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 10,
                 slotCount: 10,
+                instructors: getRandomInstructorSet(2),
             },
             {
+                id: "2",
                 partner: "Villa Fundamental",
                 type: "Private",
                 time: [
@@ -39,8 +45,10 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 10,
+                instructors: getRandomInstructorSet(2),
             },
             {
+                id: "3",
                 partner: "Fremont Fundamental",
                 type: "Public",
                 district: "SAUSD",
@@ -58,15 +66,18 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 8,
                 slotCount: 10,
+                instructors: getRandomInstructorSet(2),
             }
         ]
     },
     {
+        id: "2",
         name: "AppJam",
         color: "#BB6BD9",
         logo: "https://i.ibb.co/fHqN0fD/Mobile-Dev-Logo.png",
         classes: [
             {
+                id: "4",
                 partner: "Villa Fundamental",
                 type: "Private",
                 time: [
@@ -78,8 +89,10 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 3,
                 slotCount: 5,
+                instructors: getRandomInstructorSet(2),
             },
             {
+                id: "5",
                 partner: "Peter The Anteater High School",
                 type: "Public",
                 district: "LBUSD",
@@ -96,16 +109,19 @@ export const PROGRAMS = [
                     }
                 ],
                 instructorCount: 5,
-                slotCount: 5
+                slotCount: 5,
+                instructors: getRandomInstructorSet(2),
             }
         ]
     },
     {
+        id: "3",
         name: "Engineering Inventors",
         color: "#4B4B92",
         logo: "https://i.ibb.co/Pwt1yG3/EFKLogo.png",
         classes: [
             {
+                id: "6",
                 partner: "Edison Elementary School",
                 type: "Public",
                 district: "LBUSD",
@@ -122,9 +138,11 @@ export const PROGRAMS = [
                     }
                 ],
                 instructorCount: 5,
-                slotCount: 5
+                slotCount: 5,
+                instructors: getRandomInstructorSet(2),
             },
             {
+                id: "7",
                 partner: "Irvine Community Center",
                 type: "Housing",
                 time: [
@@ -140,9 +158,11 @@ export const PROGRAMS = [
                     }
                 ],
                 instructorCount: 5,
-                slotCount: 5
+                slotCount: 5,
+                instructors: getRandomInstructorSet(2),
             },
             {
+                id: "8",
                 partner: "Gerald P. Carr Intermediate",
                 type: "Non-profit",
                 time: [
@@ -158,16 +178,19 @@ export const PROGRAMS = [
                     }
                 ],
                 instructorCount: 5,
-                slotCount: 5
+                slotCount: 5,
+                instructors: getRandomInstructorSet(2),
             }
         ]
     },
     {
+        id: "4",
         name: "LESTEM",
         color: "#F2994A",
         logo: "https://i.ibb.co/Jng1xMw/LESTEMLogo.png",
         classes: [
             {
+                id: "9",
                 partner: "Edison Elementary School",
                 type: "Public",
                 district: "LBUSD",
@@ -189,16 +212,19 @@ export const PROGRAMS = [
                     }
                 ],
                 instructorCount: 5,
-                slotCount: 5
+                slotCount: 5,
+                instructors: getRandomInstructorSet(2),
             }
         ]
     },
     {
+        id: "5",
         name: "Scratch",
         color: "#F2C94C",
         logo: "https://i.ibb.co/bFW9VZW/Scratch-Logo.png",
         classes: [
             {
+                id: "10",
                 partner: "Edison Elementary School",
                 type: "Public",
                 district: "LBUSD",
@@ -220,7 +246,8 @@ export const PROGRAMS = [
                     }
                 ],
                 instructorCount: 5,
-                slotCount: 8
+                slotCount: 8,
+                instructors: getRandomInstructorSet(2),
             }
         ]
     },

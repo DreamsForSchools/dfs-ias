@@ -2,10 +2,8 @@ import React from "react";
 import './Program.scss';
 import Class from './Class.jsx';
 // import { CaretRightFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
-import { getRandomInstructorSet } from "../../../util/sampleData";
 
-
-const Program = ({ name, color, classes, state }) => {
+const Program = ({ name, color, classes }) => {
   // const [showContent, setShowContent] = useState(false);
   // const [lock, setLock] = useState(false);
 
@@ -19,12 +17,13 @@ const Program = ({ name, color, classes, state }) => {
               return (
                 <div>
                   <Class
-                    key={c.index}
-                    index={c.index}
+                    key={c.id}
+                    index={c.id}
                     partner={c.partner}
                     time={c.time}
                     slotCount={c.slotCount}
-                    instructors={getRandomInstructorSet(2)}
+                    instructors={c.instructors}
+                    programName={name}
                   />
                 </div>
               )
