@@ -1,12 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import './InstructorSearchForm.scss';
-import { AppContext } from '../AppContextProvider';
-import { getRandomInstructorSet } from "../../../util/sampleData";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import { Search } from 'react-bootstrap-icons';
 
 const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, setShowFilter }) => {
-  const { setSearchedInstructors } = useContext(AppContext);
   const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
   const [checkedItems, setCheckedItems] = useState();
   const [hasCar, setHasCar] = useState();
@@ -37,10 +34,10 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
 
   const onSearchSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    let result = getRandomInstructorSet(10);
-    setIsLoading(false);
-    setSearchedInstructors(result);
+    // setIsLoading(true);
+    // let result = getRandomInstructorSet(10);
+    // setIsLoading(false);
+    // setSearchedInstructors(result);
   }
 
   const handleShowFilter = () => setShowFilter(true);
@@ -111,7 +108,8 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
             <h5>Availability</h5>
             <Form.Group className="filter-group">
               {availabilityOptions.map(day =>
-                <Form.Check 
+                <Form.Check
+                  key={day.value} 
                   type="checkbox" 
                   label={day.value}
                   id={day.value} 
@@ -124,6 +122,7 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
             <Form.Group className="filter-group">
               {preferenceOptions.map(pref =>
                 <Form.Check 
+                  key={pref.value} 
                   type="checkbox" 
                   label={pref.value}
                   id={pref.value} 
@@ -136,6 +135,7 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
             <Form.Group className="filter-group">
               {yearOptions.map(year =>
                 <Form.Check 
+                  key={year.value} 
                   type="checkbox" 
                   label={year.value}
                   id={year.value} 

@@ -1,7 +1,7 @@
 import React from "react";
 import Dot from '../../design-system/dots';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
-import { Modal, Row, Col, OverlayTrigger, Popover, Badge, Button } from "react-bootstrap";
+import { Modal, Row, Col, OverlayTrigger, Popover, Badge } from "react-bootstrap";
 import { TelephoneFill, CalendarWeek, X, Check } from 'react-bootstrap-icons';
 import avatar from '../../assets/avatar.png';
 

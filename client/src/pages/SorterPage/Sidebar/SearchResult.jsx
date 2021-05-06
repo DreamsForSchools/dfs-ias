@@ -1,12 +1,9 @@
 import React from "react";
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-// import React, { useContext } from "react";
-// import { AppContext } from '../AppContextProvider';
 
 import Instructor from '../Instructor.jsx';
 
 const SearchResult = ({ isLoading, state }) => {
-  // const { searchedInstructors } = useContext(AppContext);
   const searchedInstructors = state["search"];
 
   let resultList;
@@ -43,6 +40,7 @@ const SearchResult = ({ isLoading, state }) => {
             >
               <Instructor
                 instructor={instructor}
+                key={instructor.id}
               />
             </div>
           )}
