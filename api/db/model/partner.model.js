@@ -49,7 +49,6 @@ Partner.deleteById = function (id, result) {
 }
 
 Partner.updateById = function (id, partner, result) {
-    console.log("i[date");
     db.query("UPDATE partners SET name = ?, city = ?, state = ?, street = ?, zip = ?, district = ?, partnerType= ?, langRequest = ? WHERE partnerId = ?",
         [partner.name, partner.city, partner.state, partner.street, partner.zip, partner.district, partner.partnerType, partner.langRequest, id],
         function(err, res) {
@@ -68,12 +67,12 @@ function locationCacheCheck(partnerName, partnerLocation, insertedPartnerID,resu
         if(res.length >=1 ){    //if location cache exists, copy data over with new instructorId
             let location = res[0];
             location.partnerId = insertedPartnerID;
-            location.district = partnerLocation.district; //keep if locationCache is keeping district
             delete location['id'];
             insertLocation(insertedPartnerID,location,result);
         }else{                  //new gmap
             let location = {};
             location.name = partnerName;
+            location.district = partnerLocation.district; //keep if locationCache is keeping district
             axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${partnerLocation}&inputtype=textquery&fields=geometry,photos,name,formatted_address,place_id`)
                 .then((response) => {
                     if(response.data.status == 'OK' && response.data.candidates.length >= 1){
@@ -93,7 +92,7 @@ function locationCacheCheck(partnerName, partnerLocation, insertedPartnerID,resu
                                     else{
                                         //insert into location cache WITH instructor ID
                                         location.partnerId = insertedPartnerID;
-                                        console.log("location====",location);
+   
                                         insertLocation(insertedPartnerID,location,result);
                                     }
                                 });
@@ -110,24 +109,20 @@ function locationCacheCheck(partnerName, partnerLocation, insertedPartnerID,resu
 //insert location with partnerID
 function insertLocation(insertedPartnerID,location,result)
 {
-    console.log(insertedPartnerID, "=========\n",location);
     db.query("SELECT * FROM locationCache WHERE partnerId = ?",insertedPartnerID,function(err,res){
-        if(err) {console.log(err);result(err,null);
+        if(err) {result(err,null);
         }
         else{
-            console.log("res==",res);
             if(res.length > 0 && res.name != location.name){    //instructor already exists, update
                 db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, placeId = ? WHERE partnerId = ?",
                     [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.placeId, insertedPartnerID],
                     function(err,res){
-                        console.log(err);  
                         if(err) result(err,null);
                     });
             }else{
-                 //inserting location with instructor id
+                 //inserting location 
                  
-                 delete location["locationCacheId"];
-                 console.log(location);
+                delete location["locationCacheId"];
                 db.query("INSERT INTO locationCache set ?",location,function(err,res){
                     if(err) result(err,null);
                 });
