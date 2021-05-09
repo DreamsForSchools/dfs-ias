@@ -11,7 +11,6 @@ exports.create = function(req, res) {
     }
     else {
         Class.create(new_class, function(err, mClass) {
-            console.log(err);
             if (err) res.status(400).send({error:true, message: 'Failed to create class'});
             else res.json({error:false, message:"class added successfully!", data:mClass});
         });
