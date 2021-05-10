@@ -42,42 +42,67 @@ SeasonAssignment.sort = async function (result) {
     let sortResults;
 
     try {
+        // Populates distance between instructor and partners for pairings that have not been calculated yet
         await populateDistanceCache();
+
+        // returns a mapping of each classId (that still needs assignments) with it available instructor array
+        // {classId: {"classObj": classObj, "availableInstructors": sortResult}}
         let sortData = await getSortData(currentSeason);
+
+        console.log("Data Set for available instructors for each class:");
         console.log(JSON.stringify(sortData, null, 2));
+
+        // Applies stable matching algorithm to our data set, returns classId's paired with array of soft assigned instructors.
         sortResults = await executeSort(sortData);
-    } catch (err){
+
+        console.log("Sort Complete, final sort data is: ");
+        console.log(sortResults);
+        return result(null, sortResults);
+
+    } catch (err) {
+        await db.close();
         return result(err, null);
-    } finally{
+    } finally {
         await db.close();
     }
-    console.log("Sort Complete, final sort data is: ");
-    console.log(sortResults);
-    return result(null, sortResults);
+
 }
 
 async function executeSort(sortData) {
+    let assignI2C = {}; // (holds soft assignments of Instructor to Classes)
+    let assignC2I = {}; // (holds soft assignments of Class to Instructor)
 
-    let assignI2C = {};
-    let assignC2I = {};
-    let loopMore = true
+    let loopMore = true;
+
     while (loopMore) {
+        // Break from while loop when an iteration does not result in reassignment of an instructor. (No instructor can be matched with a better class)
         loopMore = false;
+
         for (const classId of Object.keys(sortData)) {
             let classObj = sortData[classId]["classObj"];
             let currentClassProgramId = classObj.programId;
             let availableInstructors = sortData[classId]["availableInstructors"];
             let instructorRemaining = classObj.instructorRemaining;
             let softAssignedCount = 0;
+
+            // Check to see how many soft assignments the class has in our map
             if (assignC2I[classId]) {
                 softAssignedCount = assignC2I[classId].length;
             }
+
+            // if class still needs more instructors
             if (softAssignedCount < instructorRemaining) {
+
+                // loop over availableInstructors for that class in order of closest distance
                 for (const instructor of availableInstructors) {
-                    if (instructor.assignmentCount !== 0) {// already hard assigned/locked
+
+                    // if instructor is hard assigned (locked) they are skipped
+                    if (instructor.assignmentCount !== 0) {
                         continue;
                     }
-                    if (!assignI2C[instructor.instructorId]) { // not soft assigned yet
+
+                    // if instructor is not soft assigned in our map yet we assign them to this class
+                    if (!assignI2C[instructor.instructorId]) {
                         assignI2C[instructor.instructorId] = classId;
                         if (!assignC2I[classId]) {
                             assignC2I[classId] = [instructor.instructorId];
@@ -85,14 +110,19 @@ async function executeSort(sortData) {
                             assignC2I[classId].push(instructor.instructorId);
                         }
                         softAssignedCount++;
-                    } else { //already soft assigned by this function
+                    }
+
+                    //  else the instructor is already soft assigned to another class
+                    else {
                         let otherClassProgramId = sortData[assignI2C[instructor.instructorId]]["classObj"].programId;
                         let prefArray = JSON.parse(instructor.prefArray);
                         let currentAssignmentRank = prefArray.indexOf(otherClassProgramId) + 1;
                         let currentClassProgramRank = prefArray.indexOf(currentClassProgramId) + 1;
 
+                        // if instructor prefers this new class over the class he is already assigned to, reassign him to this new class
                         if (currentAssignmentRank < currentClassProgramRank) {
                             loopMore = true;
+
                             let currentSoftAssignedClassId = assignI2C[instructor.instructorId];
                             assignI2C[instructor.instructorId] = classId;
                             if (!assignC2I[classId]) {
@@ -101,9 +131,11 @@ async function executeSort(sortData) {
                                 assignC2I[classId].push(instructor.instructorId);
                             }
                             softAssignedCount++;
+                            // delete previous instructor assignment from our mapping
                             assignC2I[currentSoftAssignedClassId].splice(assignC2I[currentSoftAssignedClassId].indexOf(instructor.instructorId), 1);
                         }
                     }
+                    // Move to next class if the instructor requirement is met
                     if (softAssignedCount === instructorRemaining) {
                         break;
                     }
@@ -118,6 +150,7 @@ async function getSortData(currentSeasonId) {
     let sortData = {};
     let classObj;
 
+    // Will get all classes that still need instructor assignments
     let unassignedClasses = await db.query("select classes.classId,(classes.instructorsNeeded - (select count(*) from seasonAssignments where seasonAssignments.classId = classes.classId)) as instructorRemaining, instructorsNeeded, timings, partnerId, programId, classes.seasonId\n" +
         "from classes\n" +
         "         left join seasonAssignments on classes.classId = seasonAssignments.classId\n" +
@@ -125,7 +158,8 @@ async function getSortData(currentSeasonId) {
         "  and ((select count(*) from seasonAssignments where seasonAssignments.classId = classes.classId) <\n" +
         "       classes.instructorsNeeded);", currentSeasonId);
 
-
+    // Will get instructors who are available in the given time slots, in sorted order of distance for a given class
+    // Query is dynamically built with the current seasonId, each class timings, and its partnerId for distance
     let sortQueryFragStart = "select distinct instructors.instructorId,\n" +
         "                instructors.university,\n" +
         "                distanceCache.distance,\n" +
@@ -170,7 +204,7 @@ async function getSortData(currentSeasonId) {
         fullQuery = sortQueryFragStart;
         for (const time in classObj.timings) {
             fullQuery = fullQuery + sortQueryFragTimings;
-            if (time != (classObj.timings).length - 1) {
+            if (time !== (classObj.timings).length - 1) {
                 fullQuery = fullQuery + " or ";
             }
             queryArray.push(classObj.timings[time].weekday);
@@ -180,18 +214,17 @@ async function getSortData(currentSeasonId) {
         fullQuery = fullQuery + sortQueryFragEnd;
         queryArray.push((classObj.timings).length);
 
+        // Will get available instructors in order of distance for a given class
+        // Query is dynamically built with the current seasonId, each class timings, and its partnerId for distance
         let sortResult = await db.query(fullQuery, queryArray);
 
+        // Query results are stored into a mapping of each classId with it available instructor array
+        // {classId: {"classObj": classObj, "availableInstructors": sortResult}}
         let classInstructors = {"classObj": classObj, "availableInstructors": sortResult}
         sortData[classObj["classId"]] = classInstructors;
-        // console.log("CLASS IS: ");
-        // console.log(classObj);
-        // console.log("INSTRUCTORS FOUND: ");
-        // console.log(sortResult);
 
     }
-    // console.log("Sort Data is: ");
-    // console.log(JSON.stringify(sortData, null, 2));
+
     return sortData;
 
 }
@@ -201,21 +234,19 @@ async function populateDistanceCache() {
     let partnerPlaceId;
     let distance;
     // Gets unique university/partner combinations that do not yet have an entry in distanceCache
-    let universityPartnerSet = await db.query("select distinct university, partnerId from instructors  cross join partners where (university, partnerId)\n" +
+    let universityPartnerSet = await db.query("select distinct university, partnerId from instructors cross join partners where (university, partnerId)\n" +
         "NOT IN  (select university, partnerId from distanceCache)");
-    console.log(universityPartnerSet);
 
-
-    for (const pair in universityPartnerSet) {
+    for (const pairIndex in universityPartnerSet) {
 
         // For each unique university/partner pair, get placeId for both university and partner and calculate distance between them using GMAP api
-        universityPlaceId = await getUniversityPlaceId(universityPartnerSet[pair].university);
-        partnerPlaceId = await getPartnerPlaceId(universityPartnerSet[pair].partnerId);
+        universityPlaceId = await getUniversityPlaceId(universityPartnerSet[pairIndex].university);
+        partnerPlaceId = await getPartnerPlaceId(universityPartnerSet[pairIndex].partnerId);
 
         distance = await calculateDistance(universityPlaceId, partnerPlaceId);
 
         // Insert distance into table
-        await insertDistance(distance, universityPartnerSet[pair].university, universityPartnerSet[pair].partnerId);
+        await insertDistance(distance, universityPartnerSet[pairIndex].university, universityPartnerSet[pairIndex].partnerId);
     }
 
 }

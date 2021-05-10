@@ -11,9 +11,9 @@ exports.sort = function(req, res) {
     // } else {
     SeasonAssignment.sort(function (err, data) {
             if (err)
-                res.send({error: true, err});
+                res.status(400).send({error: true, err});
             else
-                res.json({error: false, message: "Sort finished!", data:data});
+                res.send({error: false, message: "Sort finished!", data:data});
         });
     // }
 };
