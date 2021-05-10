@@ -3,7 +3,6 @@
 const util = require('util');
 const mysql = require('mysql2');
 var axios = require('axios');
-const Class = require("./class.model");
 
 const config = {
     connectionLimit: 100,
@@ -36,9 +35,28 @@ var SeasonAssignment = function (assignment) {
     this.classId = assignment.classId;
 };
 
+SeasonAssignment.lock = async function (newAssignment,result) {
+    try{
+        await db.query("INSERT INTO seasonAssignments set ?", newAssignment);
+        return result(null, newAssignment);
+    } catch(err) {
+        return result(err, null);
+    }
+}
 
-SeasonAssignment.sort = async function (result) {
-    let currentSeason = 1;
+SeasonAssignment.unlock = async function (assignmentToDelete,result) {
+    try{
+        await db.query("DELETE FROM seasonAssignments WHERE seasonId = ? and instructorId = ? and classId = ?", [assignmentToDelete.seasonId,assignmentToDelete.instructorId, assignmentToDelete.classId]);
+        return result(null, assignmentToDelete);
+    } catch(err) {
+        return result(err, null);
+    }
+}
+
+
+// Sort logic is based on the Stable Matching/ Gale–Shapley algorithm
+// https://www.geeksforgeeks.org/stable-marriage-problem/
+SeasonAssignment.sort = async function (seasonId,result) {
     let sortResults;
 
     try {
@@ -47,7 +65,7 @@ SeasonAssignment.sort = async function (result) {
 
         // returns a mapping of each classId (that still needs assignments) with it available instructor array
         // {classId: {"classObj": classObj, "availableInstructors": sortResult}}
-        let sortData = await getSortData(currentSeason);
+        let sortData = await getSortData(seasonId);
 
         console.log("Data Set for available instructors for each class:");
         console.log(JSON.stringify(sortData, null, 2));
@@ -58,12 +76,8 @@ SeasonAssignment.sort = async function (result) {
         console.log("Sort Complete, final sort data is: ");
         console.log(sortResults);
         return result(null, sortResults);
-
     } catch (err) {
-        await db.close();
         return result(err, null);
-    } finally {
-        await db.close();
     }
 
 }

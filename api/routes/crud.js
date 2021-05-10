@@ -61,5 +61,7 @@ router.delete('/class/:id', classController.deleteById);
 router.put('/class/:id', classController.updateById)
 
 router.post('/sort', seasonAssignmentController.sort);
+router.post('/lock', seasonAssignmentController.lock);
+router.delete('/unlock', seasonAssignmentController.unlock);
 
 module.exports = router;
