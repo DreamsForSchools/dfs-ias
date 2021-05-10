@@ -204,7 +204,7 @@ async function getSortData(currentSeasonId) {
         fullQuery = sortQueryFragStart;
         for (const time in classObj.timings) {
             fullQuery = fullQuery + sortQueryFragTimings;
-            if (time !== (classObj.timings).length - 1) {
+            if (time != (classObj.timings).length - 1) {
                 fullQuery = fullQuery + " or ";
             }
             queryArray.push(classObj.timings[time].weekday);
