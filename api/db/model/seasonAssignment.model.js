@@ -118,6 +118,11 @@ async function executeSort(sortData) {
                     // if instructor is not soft assigned in our map yet we assign them to this class
                     if (!assignI2C[instructor.instructorId]) {
                         assignI2C[instructor.instructorId] = classId;
+                        console.log("---------------------------");
+                        console.log("Assigning Instructor: ");
+                        console.log(instructor.instructorId);
+                        console.log("To class: ");
+                        console.log(classId);
                         if (!assignC2I[classId]) {
                             assignC2I[classId] = [instructor.instructorId];
                         } else {
@@ -130,12 +135,19 @@ async function executeSort(sortData) {
                     else {
                         let otherClassProgramId = sortData[assignI2C[instructor.instructorId]]["classObj"].programId;
                         let prefArray = JSON.parse(instructor.prefArray);
-                        let currentAssignmentRank = prefArray.indexOf(otherClassProgramId) + 1;
+                        let otherAssignmentRank = prefArray.indexOf(otherClassProgramId) + 1;
                         let currentClassProgramRank = prefArray.indexOf(currentClassProgramId) + 1;
 
-                        // if instructor prefers this new class over the class he is already assigned to, reassign him to this new class
-                        if (currentAssignmentRank < currentClassProgramRank) {
+                        // if instructor prefers this new class over the class he is already assigned to, reassign him to this new class (higher index means less preference)
+                        if (otherAssignmentRank > currentClassProgramRank) {
                             loopMore = true;
+                            console.log("---------------------------");
+                            console.log("Already assigned Instructor: ");
+                            console.log(instructor.instructorId);
+                            console.log("Prefers class: ");
+                            console.log(classId);
+                            console.log("Over the old class: ");
+                            console.log(otherClassProgramId);
 
                             let currentSoftAssignedClassId = assignI2C[instructor.instructorId];
                             assignI2C[instructor.instructorId] = classId;
@@ -144,6 +156,9 @@ async function executeSort(sortData) {
                             } else {
                                 assignC2I[classId].push(instructor.instructorId);
                             }
+
+
+
                             softAssignedCount++;
                             // delete previous instructor assignment from our mapping
                             assignC2I[currentSoftAssignedClassId].splice(assignC2I[currentSoftAssignedClassId].indexOf(instructor.instructorId), 1);
