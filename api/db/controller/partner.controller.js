@@ -12,8 +12,8 @@ exports.create = function(req, res) {
     else {
         Partner.create(new_partner, function(err, partner) {
             if (err)
-                res.send({error:true,err});
-            else res.json({error:false, message:"Partner added successfully!", data:partner});
+                res.status(400).send(err);
+            else res.json({error:false, sqlMessage:"Partner added successfully!", data:partner});
         });
     }
 };

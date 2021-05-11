@@ -1,13 +1,13 @@
 import React, {useContext, useState} from 'react';
 import './App.css';
-import {BrowserRouter as Router, Switch, Redirect, Route, useLocation} from "react-router-dom";
+import {Switch, Redirect, Route, useLocation} from "react-router-dom";
 
 import {Toast, Badge} from "react-bootstrap";
 
-import GlobalContextProvider, {GlobalContext} from "./context/GlobalContextProvider";
+import {GlobalContext} from "./context/GlobalContextProvider";
 
 import NavigationBar from './components/NavBar';
-import Programs from "./pages/ProgramsPage/Programs";
+import ProgramsPartners from "./pages/ProgramsPartnersPage";
 import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";
 import InstructorOnboardingPage from "./pages/InstructorOnboardingPage";
@@ -17,7 +17,7 @@ import fire from './fire.js';
 function App() {
   let location = useLocation();
   const { toastShow, setToastShow, toastText } = useContext(GlobalContext);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   fire.auth().onAuthStateChanged((user) => {
       return user ? setIsLoggedIn(true) : setIsLoggedIn(false);
@@ -25,12 +25,17 @@ function App() {
 
   return (
     <>
-      {!location.pathname.includes('/onboarding') && !location.pathname.includes('/login') && <NavigationBar />}
+      {
+          !location.pathname.includes('/onboarding') &&
+          !location.pathname.includes('/login') &&
+            <NavigationBar />
+      }
+
       {!isLoggedIn
         ? (
             <Switch>
                 <Route path="/login">
-                    <LoginPage/>
+                    <LoginPage authState={isLoggedIn}/>
                 </Route>
                 <Route path="/onboarding/:id/:name">
                     <InstructorOnboardingPage/>
@@ -45,7 +50,7 @@ function App() {
                     <Redirect to="/programs"/>
                 </Route>
                 <Route path="/programs">
-                    <Programs/>
+                    <ProgramsPartners/>
                 </Route>
                 <Route path="/instructors">
                     <Instructors/>

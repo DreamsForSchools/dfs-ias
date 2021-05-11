@@ -31,11 +31,6 @@ const CreateNewSeasonModal = ({ handleSubmit }) => {
 
     const handleSubmitButtonPress = () => {
         handleSubmit(newSeasonInput);
-        setNewSeasonInput({
-            name: null,
-            startDate: new Date(),
-            endDate: new Date(),
-        });
     }
 
     return (

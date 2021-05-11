@@ -223,9 +223,9 @@ data['schools'].forEach(item => {
   newRef.set(item).catch((e)=>console.log("Error Found: +++++++++++++++++++++++++",e));
 });
 // for(const program in programs){
-//   db1.ref('/Fall 2020/Programs/'+program+'/assigned_schools').set(programs[program]['assigned_schools']);
-//   db1.ref('/Fall 2020/Programs/'+program+'/needed_instructors').set(programs[program]['needed_instructors']);
+//   db1.ref('/Fall 2020/Index/'+program+'/assigned_schools').set(programs[program]['assigned_schools']);
+//   db1.ref('/Fall 2020/Index/'+program+'/needed_instructors').set(programs[program]['needed_instructors']);
 // }
 // db1.ref('/Winter 2021/programs/').set(programs2);
-// db1.ref('/Winter 2021/Programs/').set(programs);
+// db1.ref('/Winter 2021/Index/').set(programs);
 // db1.ref('/Seasons/').update({'Winter 2021':'Winter 2021'});
