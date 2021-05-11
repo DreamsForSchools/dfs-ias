@@ -3,25 +3,22 @@ import './Instructor.scss';
 import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
 import { Modal } from "react-bootstrap";
-import { InfoCircle } from 'react-bootstrap-icons';
+import { InfoCircle, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import InstructorPopUp from './InstructorPopUp';
+import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 
 const Instructor = ({ instructor }) => {
   const [showInstructorPopUp, setShowInstructorPopUp] = useState();
-
-  const programsColorKey = {
-    "AppJam": "#BB6BD9",
-    "WebJam": "#40CCC8",
-    "LESTEM": "#F2994A",
-    "Engineering Inventors": "#4B4B92",
-    "Scratch": "#F2C94C"
-  };
+  const [lock, setLock] = useState(false);
 
   const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
   const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
 
   return (
     <div className="instructor">
+      <div className="lock" onClick={() => { setLock(!lock) }}>
+        {lock ? <LockFill className="icon" size={16} /> : <UnlockFill className="icon" size={16} />}
+      </div>
       <div className="name">
         {instructor.firstName} {instructor.lastName}
       </div>
@@ -32,7 +29,7 @@ const Instructor = ({ instructor }) => {
       </div>
       <div className="pref">
         {[instructor.firstPref, instructor.secondPref, instructor.thirdPref, instructor.fourthPref].map((el, idx) =>
-          <Dot color={programsColorKey[el]} key={idx}/>
+          <Dot color={program_color_keys[el]} key={idx}/>
         )}
       </div>
       <div className="availability">

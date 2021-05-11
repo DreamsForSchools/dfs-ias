@@ -1,5 +1,6 @@
 import {useContext} from "react";
 import {GlobalContext} from "../context/GlobalContextProvider";
+import {createToken} from "../fire";
 
 const csv = require('csvtojson')
 const axios = require('axios');
@@ -18,7 +19,6 @@ const weekdays = {
 }
 
 export const parseCSV = (fileText,instructorData, setInstructorData, seasonIdSelected) => {
-    let data;
     csv({
         noheader: false,
         headers: ['omit', 'email', 'firstName', 'lastName', 'phoneNumber', 'gender', 'omit' , 'ethnicity', 'university', 'major', 'omit', 'omit', 'schoolYear', 'graduationDate', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'programmingLanguages', 'omit', 'firstPref', 'secondPref', 'thirdPref', 'fourthPref', 'avail_09_10', 'avail_10_11', 'avail_11_12', 'avail_12_13', 'avail_13_14', 'avail_14_15', 'avail_15_16', 'avail_16_17', 'avail_17_18', 'omit', 'hasCar', 'shirtSize', 'isASL', 'omit', 'omit', 'omit', 'otherLanguages', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit'],
@@ -27,21 +27,23 @@ export const parseCSV = (fileText,instructorData, setInstructorData, seasonIdSel
         },
         checkType: false
     }).fromString(fileText)
-        .then(instructors => {
+        .then(async instructors => {
             parseAvailability(instructors);
             setInstructorData([...instructors, ...instructorData]);
-            // console.log(instructors);
-            data = instructors;
+            const header =  await createToken();
+
             let payload = {newInstructorArray: instructors, seasonId:seasonIdSelected};
             axios.post('/api/instructor/CSV',
-                payload).then((response) => {
+                payload,header).then((response) => {
                 console.log(response);
             }, (error) => {
+                console.log("Axios call failed, error:");
                 console.log(error);
             });
 
         }).catch(err => {
         // log error if any
+        console.log("Error in csv parse:");
         console.log(err);
     });
 
@@ -84,11 +86,8 @@ const insertAvailability = (start, end, availableDays, availability) => {
                 return (obj.weekday === weekdays[day] && obj.endTime === startTime)
             });
             if (result && result[0]) {
-                console.log("result found: ");
-                console.log(result);
                 result[0].endTime = endTime
             } else {
-                console.log("no matching result found: " + result);
                 availability.push({
                     weekday: weekdays[day],
                     startTime: startTime,

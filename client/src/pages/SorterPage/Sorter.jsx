@@ -5,30 +5,35 @@ import './Sorter.scss';
 import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
 import { getRandomInstructorSet } from "../../util/sampleData";
+import { PROGRAMS as programs_data }  from '../../data/PROGRAMS';
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
     case "MOVE": {
-      draft[action.from] = draft[action.from] || [];
-      draft[action.to] = draft[action.to] || [];
-      const [removed] = draft[action.from].splice(action.fromIndex, 1);
-      draft[action.to].splice(action.toIndex, 0, removed);
-
-      // let toProgram = parseInt(action.to.split("-")[0]);
-      // let fromProgram = null;
-      // let start = null;
-      // if (action.from !== "search") {
-      //   fromProgram = parseInt(action.from.split("-")[0]);
-      //   start = draft["programs"][fromProgram];
-      // } else {
-      //   start = draft;
-      // }
-
-      // start[action.from] = start[action.from] || [];
-      // draft["programs"][toProgram][action.to] =
-      //   draft["programs"][toProgram][action.to] || [];
-      // const [removed] = start[action.from].splice(action.fromIndex, 1);
-      // draft["programs"][toProgram][action.to].splice(action.toIndex, 0, removed);
+      if ( action.from === "search" && action.to === "search") {
+        draft[action.from] = draft[action.from] || [];
+        draft[action.to] = draft[action.to] || [];
+        const [removed] = draft[action.from].splice(action.fromIndex, 1);
+        draft[action.to].splice(action.toIndex, 0, removed); 
+      } else if ( action.from === "search" && action.to !== "search") {
+        let toProgram = action.state["programs"].find(program => program.name === action.to.split("-")[0]);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] 
+          = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] || [];
+        const [removed] = draft[action.from].splice(action.fromIndex, 1);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
+      } else if ( action.from !== "search" && action.to === "search") {
+        let fromProgram = action.state["programs"].find(program => program.name === action.from.split("-")[0]);
+        draft[action.to] = draft[action.to] || [];
+        const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.id === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
+        draft[action.to].splice(action.toIndex, 0, removed);
+      } else {
+        let toProgram = action.state["programs"].find(program => program.name === action.to.split("-")[0]);
+        let fromProgram = action.state["programs"].find(program => program.name === action.from.split("-")[0]);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] 
+          = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] || [];
+        const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.id === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
+      }
       break;
     }
     case "FILTER": {
@@ -42,11 +47,7 @@ const dragReducer = produce((draft, action) => {
 
 const Sorter = () => {
   const [state, dispatch] = useReducer(dragReducer, { 
-    "programs": {},
-    "partner1": getRandomInstructorSet(4), 
-    "partner2": getRandomInstructorSet(4), 
-    "partner3": getRandomInstructorSet(4), 
-    "partner4": getRandomInstructorSet(4), 
+    "programs": programs_data, 
     "search": getRandomInstructorSet(10),
   });
 
@@ -62,21 +63,16 @@ const Sorter = () => {
       if (!result.destination) {
         return;
       }
-      if (
-        result.destination.droppableId === "search" &&
-        result.source.droppableId !== "search"
-      ) {
-        return;
-      }
       dispatch({
         type: "MOVE",
         from: result.source.droppableId,
         to: result.destination.droppableId,
         fromIndex: result.source.index,
         toIndex: result.destination.index,
+        state: state,
       });
     }
-  }, []);
+  }, [state]);
 
   return (
     <div className="sorter">

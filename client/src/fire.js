@@ -29,6 +29,21 @@ const firebaseConfig = {
     messagingSenderId: "579295975229",
     appId: "1:579295975229:web:61f1c7be7f39ffecf39754"
 };
+
+
+
+export const createToken = async () => {
+    const user = fire.auth().currentUser;
+    const token = user && (await user.getIdToken());
+    const payloadHeader = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    return payloadHeader;
+}
+
 try {
     firebase.initializeApp(firebaseConfig);
 } catch (err) {
@@ -36,5 +51,8 @@ try {
         console.error('Firebase initialization error', err.stack);
     }
 }
+
+
+
 const fire = firebase;
 export default fire;

@@ -103,12 +103,13 @@ function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
         }else{                  //new gmap
             let location = {};
             location.name = instructorUniversity;
-            axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${instructorUniversity}&inputtype=textquery&fields=geometry,photos,name,formatted_address`)
+            axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${instructorUniversity}&inputtype=textquery&fields=geometry,photos,name,formatted_address,place_id`)
                 .then((response) => {
                     if(response.data.status == 'OK' && response.data.candidates.length >= 1){
                         location.address = response.data.candidates[0].formatted_address;
                         location.latitude = response.data.candidates[0].geometry.location.lat;
                         location.longititude = response.data.candidates[0].geometry.location.lng;
+                        location.placeId = response.data.candidates[0].place_id;
                         if(response.data.candidates[0].photos.length >= 1)
                             location.image = response.data.candidates[0].photos[0].photo_reference;
                         let date = new Date();
@@ -141,14 +142,17 @@ function insertLocation(insertedInstructorID,location,result)
         if(err) result(err,null);
         else{
             if(res.length > 0 && res.name != location.name){    //instructor already exists, update
-                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, partnerId = ? WHERE instructorId = ?",
-                    [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.partnerId, insertedInstructorID],
+                db.query("UPDATE locationCache SET name = ?, image = ?, address = ?, district = ?, longititude = ?, latitude = ?, rawOffset = ?, dstOffset = ?, partnerId = ?, placeId = ? WHERE instructorId = ?",
+                    [location.name, location.image, location.address, location.district, location.longititude, location.latitude, location.rawOffset, location.dstOffset, location.partnerId, location.placeId, insertedInstructorID],
                     function(err,res){
-                        if(err) result(err,null);
+                        if(err){ console.log(err); result(err,null);}
+                        else{ result(null,res); }
                     });
             }else{
-                //inserting location with instructor id
-                delete location["locationCacheId"];
+                 //inserting location with instructor id
+                 
+                 delete location["locationCacheId"];
+                 console.log(location);
                 db.query("INSERT INTO locationCache set ?",location,function(err,res){
                     if(err) result(err,null);
                 });
