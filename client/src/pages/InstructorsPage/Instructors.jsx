@@ -180,7 +180,7 @@ function Instructors() {
                                             <FormControl
                                                 aria-label="Default"
                                                 aria-describedby="inputGroup-sizing-default"
-                                                value={`${window.location.hostname}/onboarding/${seasonIdSelected}/${encodeURI(seasonNameSelected)}`}
+                                                value={`localhost:3000/onboarding/${seasonIdSelected}/${encodeURI(seasonNameSelected)}`}
                                             />
                                         </Popover.Content>
                                     </Popover>

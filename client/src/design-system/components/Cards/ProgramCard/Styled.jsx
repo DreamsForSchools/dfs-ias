@@ -16,12 +16,13 @@ export const Wrapper = styled.div`
   height: 200px;
   width: 250px;
   background-color: #ffffff;
-  margin: 2rem;
+  margin: 1rem;
   border-radius: 10px;
   box-shadow:  20px 20px 60px #d9d9d9,
   -20px -20px 60px #ffffff;
   transition: transform 300ms ease;
   transition: all 300ms ease-out;
+  ${props => props.color && `border-bottom: 6px solid ${props.color}`};
 `;
 
 export const Image= styled.img`

@@ -230,7 +230,7 @@ export function AddInstructor({
                           </Select>
                     </FormControl>
                     <FormControl style={{gridColumn:'3 / span 1', gridRow:'2 / span 1', placeSelf:'center stretch', padding:'0.5vh', margin:'0.5vh'}}>
-                          <InputLabel children='Programs'/>
+                          <InputLabel children='Index'/>
                           <Select name="programs_teaching" value={state.programs_teaching} onChange={handleChange} input={<Input/>} multiple>
                               {Object.keys(programData).map(program => program!='unassigned_instructors'?(<MenuItem  value={program} key={"programs_teaching_"+program+'Inst'}>{program}</MenuItem >):null)}
                           </Select>
@@ -499,7 +499,7 @@ export function EditInstructor({
                           </Select>
                     </FormControl>
                     <FormControl style={{gridColumn:'3 / span 1', gridRow:'2 / span 1', placeSelf:'center stretch', padding:'0.5vh', margin:'0.5vh'}}>
-                          <InputLabel children='Programs'/>
+                          <InputLabel children='Index'/>
                           <Select name="programs_teaching" value={state.programs_teaching} onChange={handleChange} input={<Input/>} multiple>
                               {Object.keys(programData).map(program => program!='unassigned_instructors'?(<MenuItem  value={program} key={"programs_teaching_"+program}>{program}</MenuItem >):null)}
                           </Select>

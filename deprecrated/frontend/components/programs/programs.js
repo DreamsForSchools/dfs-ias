@@ -21,7 +21,7 @@
     schoolRows, 
     error,sortPageToggle,setSortPageToggle
   }){
-    console.log('2. Programs Component');
+    console.log('2. Index Component');
 
     const {currentSeason} = useAuth();  
     
@@ -174,7 +174,7 @@
       }
       if(mutateProgramData){
         programData['unassigned_instructors'] = Object.keys(unassignedInstructors).length;
-        firebase.database().ref(currentSeason+'/Programs').set(programData);
+        firebase.database().ref(currentSeason+'/Index').set(programData);
         mutate(['Programs', currentSeason], programData, false);
       }
       
