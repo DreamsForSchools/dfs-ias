@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Class.scss';
 import Instructor from '../Instructor.jsx';
-import { CalendarWeek, People } from 'react-bootstrap-icons';
+import { CalendarWeek, People, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 
 const Class = ({ index, partner, time, slotCount, instructors, programName }) => {
   const [numInstructors, setNumInstructors] = useState(0);
+  const [lock, setLock] = useState(false);
 
   useEffect(() => {
     setNumInstructors(instructors.length);
@@ -14,10 +15,15 @@ const Class = ({ index, partner, time, slotCount, instructors, programName }) =>
 
   return (
     <div className="class">
-      <h1 className="partner-name">{partner}</h1>
+      <div className="header">
+        <h1 className="partner-name">{partner}</h1>
+        <div className="lock" onClick={() => { setLock(!lock) }}>
+          {lock ? <LockFill className="icon" size={18} /> : <UnlockFill className="icon" size={18} />}
+        </div>
+      </div>
       <div className="class-info">
-        <div sclassName="schedule-info"><CalendarWeek /> {formatAvailability(time)} </div>
-        <div className="instructors-info"><People /> {numInstructors}/{slotCount}</div>
+        <div><CalendarWeek /> {formatAvailability(time)} </div>
+        <div><People /> {numInstructors}/{slotCount}</div>
       </div>
       <Droppable droppableId={programName + "-" + partner + "-" + index} type="INSTRUCTOR">
         {(provided) => {
@@ -41,9 +47,8 @@ const Class = ({ index, partner, time, slotCount, instructors, programName }) =>
                           {...provided.dragHandleProps}                        
                         >
                           <Instructor
-                            className="instructor"
-                            instructor={instructor}
                             key={instructor.id}
+                            instructor={instructor}
                           />
                         </div>
                       );

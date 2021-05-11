@@ -39,8 +39,8 @@ const SearchResult = ({ isLoading, state }) => {
               ref={provided.innerRef}
             >
               <Instructor
-                instructor={instructor}
                 key={instructor.id}
+                instructor={instructor}
               />
             </div>
           )}

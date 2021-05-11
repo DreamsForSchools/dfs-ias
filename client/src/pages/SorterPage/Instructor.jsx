@@ -3,18 +3,22 @@ import './Instructor.scss';
 import Dot from '../../design-system/dots';
 import { formatAvailability } from "../../util/formatData";
 import { Modal } from "react-bootstrap";
-import { InfoCircle } from 'react-bootstrap-icons';
+import { InfoCircle, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import InstructorPopUp from './InstructorPopUp';
 import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 
 const Instructor = ({ instructor }) => {
   const [showInstructorPopUp, setShowInstructorPopUp] = useState();
+  const [lock, setLock] = useState(false);
 
   const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
   const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
 
   return (
     <div className="instructor">
+      <div className="lock" onClick={() => { setLock(!lock) }}>
+        {lock ? <LockFill className="icon" size={16} /> : <UnlockFill className="icon" size={16} />}
+      </div>
       <div className="name">
         {instructor.firstName} {instructor.lastName}
       </div>

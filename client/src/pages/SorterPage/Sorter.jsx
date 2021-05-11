@@ -72,7 +72,7 @@ const Sorter = () => {
         state: state,
       });
     }
-  }, []);
+  }, [state]);
 
   return (
     <div className="sorter">
