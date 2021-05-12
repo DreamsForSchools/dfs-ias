@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useReducer, useEffect } from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
 import produce from "immer";
 import './Sorter.scss';
@@ -46,10 +46,22 @@ const dragReducer = produce((draft, action) => {
 });
 
 const Sorter = () => {
-  const [state, dispatch] = useReducer(dragReducer, { 
-    "programs": programs_data, 
-    "search": getRandomInstructorSet(10),
-  });
+  let savedState = JSON.parse(localStorage.getItem("sorter-state"));
+  let defaultState = savedState;
+  if (savedState !== null) {
+    defaultState = savedState;
+  } else {
+    defaultState = {
+      "programs": programs_data,
+      "search": getRandomInstructorSet(10),
+    };
+  }
+
+  const [state, dispatch] = useReducer(dragReducer, defaultState);
+
+  useEffect(() => {
+    localStorage.setItem("sorter-state", JSON.stringify(state));
+  }, [state]);
 
   const handleFilter = (instructors) => {
     dispatch({
