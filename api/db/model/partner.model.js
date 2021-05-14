@@ -58,7 +58,6 @@ Partner.create = async function (newPartner, result) {
         let location = await getLocationCacheBy(newPartner);
         if(location.length == 0)
         {
-            console.log("===null====");
             let address = newPartner.street + ", " + newPartner.city + ", " + newPartner.state + " " + newPartner.zip;
             location = await getGmapLocation(newPartner,address);
         }
@@ -137,6 +136,9 @@ async function getLocationCacheBy(partner)
     // console.log(address);    //NOTE FOR ADDRESS MATCHING NEEDS COUNTRY
     rtn = await db.query("SELECT * FROM locationCache where name = ? OR address = ?",[partner.name,address]);
     delete rtn['locationId'];
+    delete rtn['instuctorId'];
+    delete rtn['partnerId'];
+    if(rtn.length > 0) rtn = rtn[0];
     return rtn;
 }
 
