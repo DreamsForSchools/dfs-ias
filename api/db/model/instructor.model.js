@@ -1,7 +1,43 @@
 'use strict';
 
 var axios = require('axios');
-var db = require('../db.config');
+// var db = require('../db.config');
+
+
+//=================
+
+const util = require('util');
+const mysql = require('mysql2');
+var axios = require('axios');
+
+const config = {
+    connectionLimit: 100,
+    host: process.env.CLOUD_DB_IP,
+    user: process.env.CLOUD_DB_DEV_USERNAME,
+    password: process.env.CLOUD_DB_DEV_PASSWORD,
+    database: process.env.CLOUD_DB_NAME,
+    debug: false
+}
+
+
+function makeDb() {
+    const connection = mysql.createConnection(config);
+    return {
+        query(sql, args) {
+            return util.promisify(connection.query)
+                .call(connection, sql, args);
+        },
+        close() {
+            return util.promisify(connection.end).call(connection);
+        }
+    };
+}
+
+var db = makeDb(config);
+
+
+//=================
+
 
 var Instructor = function(instructor) {
     this.firstName = instructor.firstName;
@@ -28,69 +64,109 @@ var Instructor = function(instructor) {
     this.seasonId = instructor.seasonId;
 };
 
-Instructor.createSingle = function (newInstructor, result) {
+Instructor.createSingle = async function (newInstructor, result) {
 
-    //if not approve some how
-    if(!newInstructor.approve){
-        result("missing approve or is not approved",null);
-    }
-
-    console.log(newInstructor);
-    delete newInstructor['approve'];
-
-    db.query("SELECT * FROM instructors WHERE email = ? OR phoneNumber = ? ",[newInstructor.email, newInstructor.phoneNumber],function(err,res) {
-        if (err) result(err, null);
-        //if email already exitsts, update instructor
-        else if(res.length >= 1){
-            let instructorID = res[0].instructorId
-            Instructor.updateById(instructorID,newInstructor, result);
-        }
-        //insert new instructor
-        else{
+    try{
+        console.log(newInstructor);
+        delete newInstructor['approve'];
+    
+        let exists = await db.query("SELECT * FROM instructors WHERE email = ? OR phoneNumber = ? ",[newInstructor.email, newInstructor.phoneNumber]);
+        
+        if(exists.length > 0)//update
+        {
+            Instructor.updateById(exists[0].instructorId,newInstructor,result);
+        }else
+        {
             let availability = newInstructor.availability;
             delete newInstructor['availability'];
             let seasonId = newInstructor.seasonId;
             delete newInstructor['seasonId'];
-            db.query("INSERT INTO instructors set ?", newInstructor, function (err, res) {
-                if (err) result(err, null);
-                else {
-                    let insertedInstructorID = res.insertId;
+            let insertedInstructor = await db.query("INSERT INTO instructors set ?", newInstructor);
+            let insertedInstructorID = insertedInstructor.insertId;
+            await insertAvailability(availability, insertedInstructorID);
+    
+            //location
+            let location =  await getLocationCacheBy(newInstructor.university);
+            if(location.length == 0){
+                location = await getGmapLocation(newInstructor);
+            }
+            location.instructorId = insertedInstructorID;
 
-                    //insert all availability
-                    insertAvailability(availability, insertedInstructorID, result);
-
-                    // //check if locaction cache exists + inserts location
-                    locationCacheCheck(newInstructor.university, insertedInstructorID, result);
-
-                    //add to seasonInstructors
-                    db.query("INSERT INTO seasonInstructors (instructorId,seasonId) VALUES (?,?)",[insertedInstructorID,seasonId],function(err,res){
-                        if(err) result(err,null);
-                    });
-
-                    result(null, res);
-                }
-            });
-
+            console.log(location);
+    
+            await db.query("INSERT INTO seasonInstructors (instructorId,seasonId) VALUES (?,?)",[insertedInstructorID,seasonId]);
+            let results = await db.query("INSERT INTO locationCache set ?",location);
+            result(null,results);
         }
-    });
+
+    }catch(err)
+    {
+        console.log(err);
+        result(err,null)
+    }
 
 }
 
-Instructor.createCSV = function (requestBody, result) {
+Instructor.createCSV = async function (requestBody, result) {
     let newInstructorArray = requestBody.newInstructorArray;
     let seasonId = requestBody.seasonId
 
     let responseReturn;
 
-    newInstructorArray.forEach(instructor => {
-        Instructor.createSingle({...instructor, seasonId}, function (err, res) {
-            if (err) result(err, null);
-            else responseReturn = res;
-        });
-    });
-    result(null, responseReturn);
+    try{
+        let i = 0;
+        for( i = 0; i < newInstructorArray.length; i++ )
+        {
+            responseReturn = await Instructor.createSingle({...newInstructorArray[i], seasonId});
+        }
+        // newInstructorArray.forEach(instructor => {
+        //     Instructor.createSingle({...instructor, seasonId}, function (err, res) {
+        //         if (err) result(err, null);
+        //         else responseReturn = res;
+        //     });
+        // });
+        result(null, responseReturn);
+    }catch(err)
+    {
+        console.log(err);
+        result(err,null);
+
+    }
 }
 
+async function getLocationCacheBy(name)
+{
+    let rtn;
+    rtn = await db.query("SELECT * FROM locationCache where name = ?",name);
+    delete rtn['locationId'];
+    delete rtn['instuctorId'];
+    delete rtn['partnerId'];
+    if(rtn.length > 0) rtn = rtn[0];
+    return rtn;
+}
+
+async function getGmapLocation(instructor){
+    let location = {};
+    location.name = instructor.university;
+    let gmapPlace = await axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${instructor.university}&inputtype=textquery&fields=geometry,photos,name,formatted_address,place_id`);
+    // console.log("gmap", gmapPlace);
+
+    if(gmapPlace.data.status == 'OK' && gmapPlace.data.candidates.length >= 1){
+        location.address = gmapPlace.data.candidates[0].formatted_address;
+        location.latitude = gmapPlace.data.candidates[0].geometry.location.lat;
+        location.longititude = gmapPlace.data.candidates[0].geometry.location.lng;
+        location.placeId = gmapPlace.data.candidates[0].place_id;
+
+        let date = new Date();
+        let gmapTimeZone = await axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`);
+        // console.log("gmapTimeZone", gmapTimeZone);
+        location.rawOffset = gmapTimeZone.data.rawOffset;
+        location.dstOffset = gmapTimeZone.data.dstOffset;
+    }
+    return location;
+}
+
+//#region old locationCache
 //check if location exists (and insert)
 function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
     db.query("SELECT * FROM locationCache WHERE name = ?", instructorUniversity, function(err,res){
@@ -110,7 +186,7 @@ function locationCacheCheck(instructorUniversity, insertedInstructorID,result){
                         location.latitude = response.data.candidates[0].geometry.location.lat;
                         location.longititude = response.data.candidates[0].geometry.location.lng;
                         location.placeId = response.data.candidates[0].place_id;
-                        if(response.data.candidates[0].photos.length >= 1)
+                        if(response.data.candidates[0].photos != undefined && response.data.candidates[0].photos.length >= 1)
                             location.image = response.data.candidates[0].photos[0].photo_reference;
                         let date = new Date();
                         axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`)
@@ -162,15 +238,17 @@ function insertLocation(insertedInstructorID,location,result)
 
     });
 }
+//#endregion
 
-function insertAvailability(availability, insertedInstructorID,result)
+async function insertAvailability(availability, insertedInstructorID)
 {
-    availability.forEach( el => {
+    let i = 0;
+    for( i = 0; i < availability.length; i++ )
+    {
+        let el = availability[i];
         el.instructorId = insertedInstructorID;
-        db.query("INSERT INTO instructorAvailability set ?", el, function(err, res){
-            if(err) result(err, null);
-        });
-    });
+        await db.query("INSERT INTO instructorAvailability set ?", el);
+    }
 }
 
 Instructor.findAll = function (result) {
@@ -238,27 +316,38 @@ Instructor.deleteById = function (id, result) {
         })
 }
 
-Instructor.updateById = function (id, instructor, result) {
-    db.query("UPDATE instructors SET email = ?, phoneNumber = ?, firstName = ?, lastName = ?, gender = ?, ethnicity = ?, university = ?,  major = ?, schoolYear  = ?, graduationDate = ?, otherLanguages = ?, programmingLanguages = ?, hasCar = ?, shirtSize = ?, firstPref = ?, secondPref = ?, thirdPref = ?, fourthPref = ?, isASL = ?  WHERE instructorId = ?",
-        [instructor.email, instructor.phoneNumber, instructor.firstName, instructor.lastName, instructor.gender, instructor.ethnicity, instructor.university, instructor.major, instructor.schoolYear, instructor.graduationDate, instructor.otherLanguages, instructor.programmingLanguages, instructor.hasCar, instructor.shirtSize, instructor.firstPref, instructor.secondPref, instructor.thirdPref,instructor.fourthPref, instructor.isASL, id],
-        function(err, res) {
-            if (err) result(err, null);
-            else {
-                //update seasonInstructor
-                db.query("UPDATE seasonInstructors SET seasonId = ? WHERE instructorId = ?",[instructor.seasonId, id],function(err,res){
-                    if(err) result(err,null);
-                });
+Instructor.updateById = async function (id, instructor, result) 
+{
+    
+    console.log("updating",id,"\n",instructor);
+    try
+    {
+        let oldInstructor = await db.query("SELECT * FROM instructors WHERE instructorId = ?",id);
+        
+        let updatedInstructor = await db.query("UPDATE instructors SET email = ?, phoneNumber = ?, firstName = ?, lastName = ?, gender = ?, ethnicity = ?, university = ?,  major = ?, schoolYear  = ?, graduationDate = ?, otherLanguages = ?, programmingLanguages = ?, hasCar = ?, shirtSize = ?, firstPref = ?, secondPref = ?, thirdPref = ?, fourthPref = ?, isASL = ?  WHERE instructorId = ?",
+            [instructor.email, instructor.phoneNumber, instructor.firstName, instructor.lastName, instructor.gender, instructor.ethnicity, instructor.university, instructor.major, instructor.schoolYear, instructor.graduationDate, instructor.otherLanguages, instructor.programmingLanguages, instructor.hasCar, instructor.shirtSize, instructor.firstPref, instructor.secondPref, instructor.thirdPref,instructor.fourthPref, instructor.isASL, id])
+    
 
-                locationCacheCheck(instructor.university, id,result);
-                db.query("DELETE FROM instructorAvailability WHERE instructorId = ?", id, function(err,res){
-                    if(err) result(err, null);
-                    let availability = instructor.availability;
-                    insertAvailability(availability, id, result);
-
-                });
-                result(null,res);
+        await db.query("UPDATE seasonInstructors SET seasonId = ? WHERE instructorId = ?",[instructor.seasonId, id]);
+        await db.query("DELETE FROM instructorAvailability WHERE instructorId = ?", id);
+        let results = await insertAvailability(instructor.availability, id, result);
+        if(oldInstructor[0].university != instructor.university)
+        {
+            let location =  await getLocationCacheBy(instructor.university);
+            if(location.length == 0){
+                location = getGmapLocation(instructor);
             }
-        });
+            results = await db.query("INSERT INTO locationCache set ?",location);
+        }
+
+
+        result(null,results);
+
+    }catch(err)
+    {
+        console.log(err);
+        result(err,null);
+    }
 }
 
 module.exports = Instructor
