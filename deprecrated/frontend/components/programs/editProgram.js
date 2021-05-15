@@ -46,8 +46,8 @@ export default function EditProgram({
     const handleEdit = async () =>{
         const oldLogoFile = firebase.storage().ref(currentSeason+'/'+oldProgramName+'.png');
         const newLogoFile = firebase.storage().ref(currentSeason+'/'+newProgramName+'.png');
-        const oldDataFile = firebase.database().ref(currentSeason+'/Programs/'+oldProgramName);
-        const newDataFile = firebase.database().ref(currentSeason+'/Programs/'+newProgramName);
+        const oldDataFile = firebase.database().ref(currentSeason+'/Index/'+oldProgramName);
+        const newDataFile = firebase.database().ref(currentSeason+'/Index/'+newProgramName);
         const oldDataFile2 = firebase.database().ref(currentSeason+'/programs/'+oldProgramName);
         const newDataFile2 = firebase.database().ref(currentSeason+'/programs/'+newProgramName);
         

@@ -1,55 +1,52 @@
-.program-module {
-  margin: 1rem;
-  border-radius: 10px !important;
-  border: 0 !important;
-  display: flex;
-  flex-direction: column;
-  &:hover {
-    cursor: pointer;
+.program {
+
+  .program-module {
+    margin: 1rem;
+    border-radius: 10px !important;
+    border: 0 !important;
   }
-  .card-header {
-    background-color: #FFFFFF00;
-    border: 0;
+
+  .program-header {
+    color: #FFFFFF;
+    height: 4rem;
+    display: block;
+    &:hover {
+      cursor: pointer;
+    }
   }
+
   .caret-down {
     color: #FFF;
-    height: 20px;
     transform: rotate(90deg);
     transition: all 0.3s;
   }
+
   .caret-right {
     color: #FFF;
-    height: 20px;
     transition: all 0.3s;
   }
-}
 
-.program_accordion {
-  display: inline-block !important;
-  width: 98% !important;
-}
+  .program-name {
+    font-weight: 600;
+    font-size: 24px;
+    padding-left: 1rem;
+    display: inline-block;
+    vertical-align: middle;
+    color: #FFFFFF;
+  }
 
-.program-header {
-  color: #FFFFFF;
-}
+  .lock {
+    z-index: 5;
+    float: right;
+    padding-top: 0.5rem;
+  }
 
-.program-name {
-  font-weight: 600;
-  font-size: 20px;
-  padding: 1rem;
-  display: inline-block;
-  vertical-align: middle;
-  color: #FFFFFF;
-}
+  .classes-container {
+    background-color: rgba(221, 223, 226, 0.80);;
+    border: none !important;
+  }
 
-.program-right {
-  z-index: 10;
-  visibility: hidden;
-}
-
-.partners-container {
-  background-color: rgba(221, 223, 226, 0.80);;
-  border: none !important;
-  display: flex;
-  padding: 0.5rem;
+  .class {
+    margin: 0.5rem 1rem;
+  }
 }

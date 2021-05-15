@@ -99,7 +99,7 @@ export default OptionBar;
 //
 //             <Dropdown.Menu className="view-selector-menu">
 //                 <Dropdown.Item as="button"
-//                                onClick={(e) => setViewValue(e.target.textContent)}>Programs</Dropdown.Item>
+//                                onClick={(e) => setViewValue(e.target.textContent)}>Index</Dropdown.Item>
 //                 <Dropdown.Item as="button"
 //                                onClick={(e) => setViewValue(e.target.textContent)}>Partners</Dropdown.Item>
 //             </Dropdown.Menu>
@@ -114,7 +114,7 @@ export default OptionBar;
 //                 <Dropdown.Item as="button"
 //                                onClick={(e) => setFilterValue(e.target.textContent)}>All</Dropdown.Item>
 //                 <Dropdown.Item as="button"
-//                                onClick={(e) => setFilterValue(e.target.textContent)}>DFS Programs</Dropdown.Item>
+//                                onClick={(e) => setFilterValue(e.target.textContent)}>DFS Index</Dropdown.Item>
 //                 <Dropdown.Item as="button"
 //                                onClick={(e) => setFilterValue(e.target.textContent)}>Housing Communities</Dropdown.Item>
 //                 <Dropdown.Item as="button"

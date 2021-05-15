@@ -52,7 +52,7 @@ export default function AddProgram({open, setOpen, programData}){
                 firebase.storage().ref().child(currentSeason+'/'+programName+'.png').getDownloadURL()
                     .then(function(url){
                         newProgramData[programName]['logo']=url;
-                        firebase.database().ref(currentSeason+'/Programs/'+programName).set(newProgramData[programName]);
+                        firebase.database().ref(currentSeason+'/Index/'+programName).set(newProgramData[programName]);
                         mutate(['Programs',currentSeason],newProgramData,false);
                         setProgramLogo('');
                         setProgramName('');

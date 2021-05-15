@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-// import { AppContext } from '../AppContextProvider';
-
-import './Partner.scss';
+import './Class.scss';
 import Instructor from '../Instructor.jsx';
-import { Calendar4, People } from 'react-bootstrap-icons';
+import { CalendarWeek, People, LockFill, UnlockFill } from 'react-bootstrap-icons';
+import { formatAvailability } from "../../../util/formatData";
 
-const Partner = ({ name, index, instructors }) => {
-  // const { sorterData, setSorterData } = useContext(AppContext);
+const Class = ({ index, partner, time, slotCount, instructors, programName }) => {
   const [numInstructors, setNumInstructors] = useState(0);
+  const [lock, setLock] = useState(false);
 
   useEffect(() => {
     setNumInstructors(instructors.length);
   }, [setNumInstructors, instructors])
 
   return (
-    <div className="partner">
-      <h1 className="partner-name">{name}</h1>
-      <div className="partner-info">
-        <Calendar4 /> Schedule <People /> {numInstructors} Instructors
+    <div className="class">
+      <div className="header">
+        <h1 className="partner-name">{partner}</h1>
+        <div className="lock" onClick={() => { setLock(!lock) }}>
+          {lock ? <LockFill className="icon" size={18} /> : <UnlockFill className="icon" size={18} />}
+        </div>
       </div>
-      <Droppable droppableId={"partner" + index} type="INSTRUCTOR">
+      <div className="class-info">
+        <div><CalendarWeek /> {formatAvailability(time)} </div>
+        <div><People /> {numInstructors}/{slotCount}</div>
+      </div>
+      <Droppable droppableId={programName + "-" + partner + "-" + index} type="INSTRUCTOR">
         {(provided) => {
           return (
             <div
@@ -42,7 +47,7 @@ const Partner = ({ name, index, instructors }) => {
                           {...provided.dragHandleProps}                        
                         >
                           <Instructor
-                            className="instructor"
+                            key={instructor.id}
                             instructor={instructor}
                           />
                         </div>
@@ -60,4 +65,4 @@ const Partner = ({ name, index, instructors }) => {
   );
 }
 
-export default Partner;
+export default Class;

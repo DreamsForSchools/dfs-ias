@@ -18,8 +18,8 @@ exports.create = function(req, res) {
     else {
         Program.create(new_program, function(err, program) {
             if (err)
-                res.send(err);
-            else res.json({error:false, message:"Program added successfully!",data:program});
+                res.status(400).send(err);
+            else res.json({error:false, sqlMessage:"Program added successfully!",data:program});
         });
     }
 };

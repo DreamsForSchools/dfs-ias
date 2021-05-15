@@ -24,7 +24,7 @@ export default function DeleteProgram({
 
     const handleDelete = () =>{
         
-        firebase.database().ref(currentSeason+'/Programs/'+oldProgramName).remove();
+        firebase.database().ref(currentSeason+'/Index/'+oldProgramName).remove();
         firebase.database().ref(currentSeason+'/programs/'+oldProgramName).remove();
         firebase.storage().ref().child(currentSeason+'/'+oldProgramName+'.png').delete();
 

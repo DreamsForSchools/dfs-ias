@@ -13,6 +13,7 @@ var LocationCache = function(locationCache) {
     this.dstOffset = locationCache.dstOffset;
     this.instructorId  = locationCache.instructorId;
     this.partnerId  = locationCache.partnerId;
+    this.placeId = locationCache.placeId;
 };
 
 LocationCache.create = function (newlocationCache, result) {

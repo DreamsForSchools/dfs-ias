@@ -13,7 +13,7 @@ A few things you can do with Instructor Assignment Sorter
 - Database
   - add/delete/edit Schools
   - add/delete/edit instructors
-  - add/delete/edit Programs
+  - add/delete/edit Index
   - add/delete      seasons 
 - Filter schools/instructors based on their attributes
 
@@ -56,7 +56,7 @@ npm install
 You can then start Coding.
 
 The pages tab contains all the pages. With Next.js the route to the pages will be set relative to their position from /pages/. Example:
-- ./pages/index.js => localhost:3000/
+- ./pages/index.jsx => localhost:3000/
 - ./pages/menu/schools.js => localhost:3000/menu/school
 <br />
 The ./pages/api, ./pages/_*.js are exceptions to these.<br />
@@ -103,7 +103,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `pages/index.jsx`. The page auto-updates as you edit the file.
 
 ### Learn More about the Frontend
 

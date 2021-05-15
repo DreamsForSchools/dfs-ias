@@ -13,19 +13,31 @@ export const Wrapper = styled.div`
   }
 
   position: relative;
-  height: 250px;
+  height: 100%;
+  min-height: 6rem;
   width: 250px;
   background-color: #ffffff;
-  margin: 2rem;
+  margin: 1rem;
   border-radius: 10px;
   box-shadow:  20px 20px 60px #d9d9d9,
   -20px -20px 60px #ffffff;
   transition: transform 300ms ease;
   transition: all 300ms ease-out;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ContentWrapper = styled.div`
+`;
+
+export const PartnerSymbol = styled.span`
+  height: 100%;
+  font-size: 3rem;
+  margin: 0 1rem;
 `;
 
 export const DotWrapper = styled.div`
-  text-align: center;
   position: relative;
 `;
 
@@ -39,11 +51,9 @@ export const Image= styled.img`
 `;
 
 export const Title = styled.h2`
-  padding: 1rem 1rem 0 1rem;
-  text-align: center;
+  text-align: left;
   font-family: Montserrat;
   font-style: normal;
   font-weight: 500;
-  font-size: 1.2rem;
-  min-height: 4rem;
+  font-size: 1rem;
 `;
