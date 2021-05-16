@@ -74,7 +74,7 @@ Instructor.createSingle = async function (newInstructor, result) {
         
         if(exists.length > 0)//update
         {
-            Instructor.updateById(exists[0].instructorId,newInstructor,result);
+             await Instructor.updateById(exists[0].instructorId,newInstructor);
         }else
         {
             let availability = newInstructor.availability;
@@ -117,7 +117,7 @@ Instructor.createCSV = async function (requestBody, result) {
         let i = 0;
         for( i = 0; i < newInstructorArray.length; i++ )
         {
-            responseReturn = await Instructor.createSingle({...newInstructorArray[i], seasonId});
+            responseReturn = await Instructor.createSingle({...newInstructorArray[i], seasonId}, result);
         }
         // newInstructorArray.forEach(instructor => {
         //     Instructor.createSingle({...instructor, seasonId}, function (err, res) {
@@ -340,13 +340,16 @@ Instructor.updateById = async function (id, instructor, result)
             results = await db.query("INSERT INTO locationCache set ?",location);
         }
 
-
-        result(null,results);
+        if(result){
+            result(null,results);
+        }
 
     }catch(err)
     {
         console.log(err);
-        result(err,null);
+        if(result){
+            result(err,null);
+        }
     }
 }
 
