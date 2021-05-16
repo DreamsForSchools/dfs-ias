@@ -28,6 +28,18 @@ function makeDb() {
         },
         close() {
             return util.promisify(connection.end).call(connection);
+        },
+        beginTransaction() {
+            return util.promisify( connection.beginTransaction )
+                .call( connection );
+        },
+        commit() {
+            return util.promisify( connection.commit )
+                .call( connection );
+        },
+        rollback() {
+            return util.promisify( connection.rollback )
+                .call( connection );
         }
     };
 }
@@ -52,9 +64,11 @@ var Partner = function(partner) {
 
 Partner.create = async function (newPartner, result) {
     try{
+        // Starting transaction
+        await db.beginTransaction();
+
         let partner = await db.query("INSERT INTO partners set ?", newPartner);
 
-        
         let location = await getLocationCacheBy(newPartner);
         if(location.length == 0)
         {
@@ -64,8 +78,16 @@ Partner.create = async function (newPartner, result) {
 
         location.partnerId = partner.insertId;
         let results = await db.query("INSERT INTO locationCache set ?",location);
+
+        // Commit changes if everything went well
+        await db.commit();
+
         result(null,results);
     }catch(err){
+        // Rollback changes if something went wrong
+        // (We dont want to add the partner if we cant find their address)
+        await db.rollback();
+
         console.log(err);
         result(err,null);
     }

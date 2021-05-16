@@ -29,6 +29,18 @@ function makeDb() {
         },
         close() {
             return util.promisify(connection.end).call(connection);
+        },
+        beginTransaction() {
+            return util.promisify( connection.beginTransaction )
+                .call( connection );
+        },
+        commit() {
+            return util.promisify( connection.commit )
+                .call( connection );
+        },
+        rollback() {
+            return util.promisify( connection.rollback )
+                .call( connection );
         }
     };
 }
@@ -67,6 +79,9 @@ var Instructor = function(instructor) {
 Instructor.createSingle = async function (newInstructor, result) {
 
     try{
+        // Starting transaction
+        await db.beginTransaction();
+
         console.log(newInstructor);
         delete newInstructor['approve'];
     
@@ -96,11 +111,18 @@ Instructor.createSingle = async function (newInstructor, result) {
     
             await db.query("INSERT INTO seasonInstructors (instructorId,seasonId) VALUES (?,?)",[insertedInstructorID,seasonId]);
             let results = await db.query("INSERT INTO locationCache set ?",location);
+
+            // Commit changes if everything went well
+            await db.commit();
+
             result(null,results);
         }
 
     }catch(err)
     {
+        // Rollback changes if something went wrong
+        await db.rollback();
+
         console.log(err);
         result(err,null)
     }
