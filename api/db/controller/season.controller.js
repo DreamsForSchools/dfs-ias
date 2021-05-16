@@ -4,8 +4,8 @@ const Season = require('../model/season.model');
 
 exports.create = function(req, res) {
 
-    const auth = req.currentUser;
-    if (auth) {
+    // const auth = req.currentUser;
+    // if (auth) {
         console.log('authenticated!', auth);
         const new_season = new Season(req.body);
         //handles null error
@@ -18,9 +18,9 @@ exports.create = function(req, res) {
                 else res.send({error: false, sqlMessage: "Season added successfully!", data: season});
             });
         }
-    } else{
-        res.status(403).send({error: true, message: "Not authorized.", data: null});
-    }
+    // } else{
+    //     res.status(403).send({error: true, message: "Not authorized.", data: null});
+    // }
 };
 
 exports.findAll = function(req, res) {
