@@ -1,14 +1,18 @@
-import React, { useCallback, useReducer, useEffect } from "react";
+import React, { useCallback, useReducer, useEffect, useContext } from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
 import produce from "immer";
 import './Sorter.scss';
 import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
-import { getRandomInstructorSet } from "../../util/sampleData";
 import { PROGRAMS as programs_data }  from '../../data/PROGRAMS';
+import {GlobalContext} from "../../context/GlobalContextProvider";
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
+    case "POPULATE": {
+      draft["search"] = action.instructors;
+      break;
+    }
     case "MOVE": {
       if ( action.from === "search" && action.to === "search") {
         draft[action.from] = draft[action.from] || [];
@@ -36,6 +40,10 @@ const dragReducer = produce((draft, action) => {
       }
       break;
     }
+    case "SORT": {
+      draft["search"] = null;
+      break;
+    }
     case "FILTER": {
       draft["search"] = action.filteredInstructors;
       break;
@@ -53,15 +61,49 @@ const Sorter = () => {
   } else {
     defaultState = {
       "programs": programs_data,
-      "search": getRandomInstructorSet(10),
+      "search": [],
     };
   }
 
-  const [state, dispatch] = useReducer(dragReducer, defaultState);
+  const {seasonIdSelected, setToastText} = useContext(GlobalContext);
+  const [state, dispatch] = useReducer(dragReducer, {
+    "programs": programs_data,
+    "search": [],
+  });
+  const axios = require('axios');
 
   useEffect(() => {
     localStorage.setItem("sorter-state", JSON.stringify(state));
-  }, [state]);
+    fetchInstructors();
+  }, []);
+
+  const fetchInstructors = async () => {
+    try {
+      axios.get('/api/instructor').then((response) => {
+        dispatch({
+          type: "POPULATE",
+          instructors: response.data,
+        });
+      }, (error) => {
+        console.log(error);
+      });
+    } catch (e) {
+      setToastText({status: 'Failed', message: `${e.response}`});
+    }
+  }
+
+  const handleAutoAssign = () => {
+    axios.post('/api/sort',
+      {seasonId: seasonIdSelected}
+    ).then((response) => {
+      console.log(response.data.data);
+    }, (error) => {
+      console.log(error);
+    });
+    dispatch({
+      type: "SORT",
+    });
+  }
 
   const handleFilter = (instructors) => {
     dispatch({
@@ -98,6 +140,7 @@ const Sorter = () => {
           <Sidebar 
             state={state} 
             handleFilter={handleFilter}
+            handleAutoAssign={handleAutoAssign}
           />
         </div>
       </DragDropContext>

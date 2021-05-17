@@ -3,10 +3,11 @@ import './InstructorSearchForm.scss';
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import { Search } from 'react-bootstrap-icons';
 
-const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, setShowFilter }) => {
+const InstructorSearchForm = ({ setIsLoading, state, handleFilter, handleAutoAssign }) => {
   const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
   const [checkedItems, setCheckedItems] = useState();
   const [hasCar, setHasCar] = useState();
+  const [showFilter, setShowFilter] = useState(false);
 
   const availabilityOptions = [
     {value: "Monday"},
@@ -36,7 +37,7 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
     e.preventDefault();
     // setIsLoading(true);
     // let result = getRandomInstructorSet(10);
-    // setIsLoading(false);
+    setIsLoading(false);
     // setSearchedInstructors(result);
   }
 
@@ -47,7 +48,8 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
   const handleCloseAutoAssignConfirmation = () => setShowAutoAssignConfirmation(false);
 
   const handleApplyFilters = () => {
-    applyFilters(state["search"].filter(instructor => instructor.hasCar));
+    handleFilter(state["search"].filter(instructor => instructor.hasCar));
+    handleCloseFilter();
   }
 
   const resetFilters = () => {
@@ -61,6 +63,11 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
   const handleCheckboxChange = e => {
     console.log(e.target.id)
     console.log(e.target.checked)
+  }
+
+  const handleConfirmAutoAssign = () => {
+    handleAutoAssign();
+    handleCloseAutoAssignConfirmation();
   }
 
   return (
@@ -177,7 +184,7 @@ const InstructorSearchForm = ({ setIsLoading, state, applyFilters, showFilter, s
         </Modal.Body>
         <Modal.Footer style={{border: '0'}}>
           <Button variant="light" onClick={handleCloseAutoAssignConfirmation}>Cancel</Button>
-          <Button variant="primary" onClick={handleCloseAutoAssignConfirmation}>Confirm</Button>
+          <Button variant="primary" onClick={handleConfirmAutoAssign}>Confirm</Button>
         </Modal.Footer>
       </Modal>
     </div>

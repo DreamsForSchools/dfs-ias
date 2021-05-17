@@ -24,13 +24,17 @@
     padding: -1rem;
     z-index: 2;
   }
-
+  
+  .pref {
+    margin-bottom: 1rem;
+  }
+  
   .tags {
     display: flex;
     font-weight: normal;
     font-size: 14px;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .tag {
@@ -41,17 +45,13 @@
     padding: 3px 10px;
     margin-right: 0.5rem;
   }
-  
-  .pref {
-    margin-bottom: 1rem;
-  }
 
-  .availability h5 {
-    color: #54595F;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 12px;
-  }
+  // .availability h5 {
+  //   color: #54595F;
+  //   font-weight: normal;
+  //   font-size: 14px;
+  //   line-height: 12px;
+  // }
 
   .edit-icon {
     float: right;

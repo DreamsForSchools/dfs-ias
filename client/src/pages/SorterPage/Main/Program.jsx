@@ -26,7 +26,7 @@ const Program = ({ name, color, classes }) => {
                     <Class
                       className="class"
                       key={c.id}
-                      index={c.id}
+                      id={c.id}
                       partner={c.partner}
                       time={c.time}
                       slotCount={c.slotCount}

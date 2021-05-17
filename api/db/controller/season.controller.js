@@ -20,9 +20,9 @@ exports.create = function(req, res) {
                 else res.send({error: false, message: "Season added successfully!", data: season});
             });
         }
-    } else{
-        res.status(403).send({error: true, message: "Not authorized.", data: null});
-    }
+    // } else{
+    //     res.status(403).send({error: true, message: "Not authorized.", data: null});
+    // }
 };
 
 exports.findAll = function(req, res) {

@@ -28,8 +28,8 @@ const SearchResult = ({ isLoading, state }) => {
     resultList = searchedInstructors.map((instructor, index) => {
       return (
         <Draggable
-          key={instructor.id}
-          draggableId={instructor.id}
+          key={instructor.instructorId}
+          draggableId={instructor.instructorId?.toString()}
           index={index}
         >
           {(provided) => (
@@ -39,7 +39,7 @@ const SearchResult = ({ isLoading, state }) => {
               ref={provided.innerRef}
             >
               <Instructor
-                key={instructor.id}
+                key={instructor.instructorId}
                 instructor={instructor}
               />
             </div>

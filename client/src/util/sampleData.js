@@ -30,7 +30,7 @@ export const getRandomInstructor = () => {
 
     const DUMMY_DATA =
         {
-            id: count.toString(),
+            instructorId: count.toString(),
             isActive: chance.bool(),
             email: email,
             firstName: firstName,
