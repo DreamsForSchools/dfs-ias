@@ -13,13 +13,11 @@ export const Wrapper = styled.div`
   }
 
   position: relative;
-  height: 200px;
+  height: 250px;
   width: 250px;
   background-color: #ffffff;
   margin: 1rem;
   border-radius: 10px;
-  box-shadow:  20px 20px 60px #d9d9d9,
-  -20px -20px 60px #ffffff;
   transition: transform 300ms ease;
   transition: all 300ms ease-out;
   ${props => props.color && `border-bottom: 6px solid ${props.color}`};
@@ -28,8 +26,8 @@ export const Wrapper = styled.div`
 export const Image= styled.img`
   border-radius:  10px 10px 0px 0px;
   width: 100%;
-  min-height: 140px;
-  max-height: 140px;
+  min-height: 150px;
+  max-height: 150px;
   overflow: hidden;
   object-fit: contain;
   padding: 1rem 0;

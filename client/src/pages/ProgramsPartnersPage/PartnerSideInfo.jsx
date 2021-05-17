@@ -1,6 +1,6 @@
 import React from "react";
 import Fade from 'react-reveal/Fade';
-import { PencilSquare, CalendarWeek, TelephoneFill, X, Check, GeoAltFill } from 'react-bootstrap-icons';
+import {PencilSquare, CalendarWeek, TelephoneFill, X, Check, GeoAltFill, PeopleFill} from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
@@ -9,12 +9,21 @@ import { Wrapper, Title, Image, Subtitle, PartnerProgramSection, Text, BadgeCont
 import {partnerSymbols} from "../../constant";
 
 const PartnerSideInfo = (props) => {
-    const { partner, programsColorKey } = props;
+    const { partner } = props;
 
     if (!partner) {
         return (
             <></>
         )
+    }
+
+    const totalAssigned = () => {
+        let instructorCount = 0;
+        partner.classes.forEach((e) => {
+            instructorCount += e.instructorsNeeded;
+        })
+
+        return instructorCount.toString();
     }
 
     return (
@@ -30,26 +39,24 @@ const PartnerSideInfo = (props) => {
                     <div style={{margin: "2rem 0"}}>
                         <PartnerSymbol>{partnerSymbols[partner.partnerType]}️</PartnerSymbol>
                     </div>
-                    <BadgeContainer>
-                        {partner.partnerType === "Private Schools" && <Badge pill variant="success">Private</Badge>}
-                        {partner.partnerType === "Public Schools" && <Badge pill variant="warning">Public</Badge>}
-                        {partner.partnerType === "DFS Programs" && <Badge pill variant="info">DFS</Badge>}
-                        {partner.partnerType === "Housing Communities" && <Badge pill variant="secondary">Housing</Badge>}
-                        {partner.partnerType === "Non-profit Partners" && <Badge pill variant="primary">Non-Profit</Badge>}
-                        {partner.district && <Badge pill variant="info">{partner.district}</Badge>}
-                    </BadgeContainer>
+                    <Subtitle>
+                        <PeopleFill/><span style={{marginLeft: '1rem'}}>{totalAssigned()} instructors</span>
+                    </Subtitle>
                     <Subtitle>
                         <GeoAltFill/><span style={{marginLeft: '1rem'}}>{partner.street}, {partner.city}, {partner.state} {partner.zip}</span>
                     </Subtitle>
                     <Button variant="info" onClick={() => props.openModal('ProgramToPartner')}>Add Classes
                         <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
                     </Button>
-                    {/*{ partner.session.map((e, idx) =>*/}
-                    {/*        <PartnerProgramSection key={idx} programColor={programsColorKey[e.program]}>*/}
-                    {/*            <Subtitle>{e.program}</Subtitle>*/}
-                    {/*            <Text><CalendarWeek/><span style={{marginLeft: '1rem'}}>{formatAvailability(e.time)}</span></Text>*/}
-                    {/*        </PartnerProgramSection>*/}
-                    {/*)}*/}
+                    { partner.classes.map((e, idx) =>
+                        <PartnerProgramSection key={idx} programColor={e.program.color}>
+                            <Subtitle>{e.program.name}</Subtitle>
+                            <Text>
+                                <PeopleFill/><span style={{marginLeft: '1rem'}}>{e.instructorsNeeded} instructors needed</span>
+                            </Text>
+                            <Text><CalendarWeek/><span style={{marginLeft: '1rem'}}>{formatAvailability(e.timings)}</span></Text>
+                        </PartnerProgramSection>
+                    )}
                 </div>
             </Fade>
         </Wrapper>

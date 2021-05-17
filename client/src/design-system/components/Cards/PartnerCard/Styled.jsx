@@ -13,14 +13,11 @@ export const Wrapper = styled.div`
   }
 
   position: relative;
-  height: 100%;
-  min-height: 6rem;
+  height: 130px;
   width: 250px;
   background-color: #ffffff;
   margin: 1rem;
   border-radius: 10px;
-  box-shadow:  20px 20px 60px #d9d9d9,
-  -20px -20px 60px #ffffff;
   transition: transform 300ms ease;
   transition: all 300ms ease-out;
   display: flex;
@@ -35,6 +32,8 @@ export const PartnerSymbol = styled.span`
   height: 100%;
   font-size: 3rem;
   margin: 0 1rem;
+  display: flex;
+  align-items: center;
 `;
 
 export const DotWrapper = styled.div`
@@ -56,4 +55,7 @@ export const Title = styled.h2`
   font-style: normal;
   font-weight: 500;
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
 `;

@@ -13,12 +13,14 @@ const seasonAssignmentController = require('../db/controller/seasonAssignment.co
 /* GET home page. */
 router.post('/program', programController.create);
 router.get('/program', programController.findAll);
+router.get('/program/aggregated/:seasonId', programController.aggregatedAll);
 router.get('/program/:id', programController.findById);
 router.delete('/program/:id', programController.deleteById);
 router.put('/program/:id', programController.updateById);
 
 router.post('/partner', partnerController.create);
 router.get('/partner', partnerController.findAll);
+router.get('/partner/aggregated/:seasonId', partnerController.aggregatedAll);
 router.get('/partner/:id', partnerController.findById);
 router.delete('/partner/:id', partnerController.deleteById);
 router.put('/partner/:id', partnerController.updateById)

@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../db.config');
+var db = require('../promiseDb.config');
 
 var Season = function(season) {
     this.name = season.name;
@@ -8,11 +8,13 @@ var Season = function(season) {
     this.endDate = season.endDate;
 };
 
-Season.create = function (newSeason, result) {
-    db.query("INSERT INTO seasons set ?", newSeason, function (err, res){
-        if (err) result(err, null);
-        else result(null, res);
-    });
+Season.create = async function (newSeason, result) {
+    try {
+        const res = await db.query("INSERT INTO seasons set ?", newSeason);
+        result(null, res);
+    } catch (e) {
+        return result(e, null);
+    }
 }
 
 Season.deleteById = function (id, result) {
@@ -23,11 +25,16 @@ Season.deleteById = function (id, result) {
         })
 }
 
-Season.findAll = function (result) {
-    db.query("SELECT * from seasons", function (err, res) {
-        if(err) result(err, null);
-        else result(null, res);
-    });
+Season.findAll = async function (result) {
+    const resultMap = {};
+
+    try {
+        const allSeasons = await db.query("SELECT * from seasons;");
+        allSeasons.forEach((e) => resultMap[e.seasonId] = {...e});
+        result(null, resultMap);
+    } catch (e) {
+        return result(e, null);
+    }
 };
 
 

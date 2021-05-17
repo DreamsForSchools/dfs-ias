@@ -19,7 +19,7 @@ exports.create = function(req, res) {
         Program.create(new_program, function(err, program) {
             if (err)
                 res.status(400).send(err);
-            else res.json({error:false, sqlMessage:"Program added successfully!",data:program});
+            else res.json({error:false, message:"Program added successfully!",data:program});
         });
     }
 };
@@ -43,4 +43,11 @@ exports.updateById = function(req, res) {
         if (err) res.send(err);
         else res.send(program);
     })
+}
+
+exports.aggregatedAll = function(req, res) {
+    Program.aggregatedAll(req.params.seasonId, function(err, partner) {
+        if (err) res.status(400).send({error:true,err});
+        else res.send(partner);
+    });
 }

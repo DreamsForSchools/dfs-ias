@@ -25,5 +25,8 @@ export const SideInfoWrapper = styled.div`
 export const GalleryWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 0 2rem;
+  padding: 0 2rem 2rem 2rem;
+  overflow: auto;
+  height: 80vh;
+  align-content: flex-start;
 `;

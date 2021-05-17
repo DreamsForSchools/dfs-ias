@@ -49,3 +49,10 @@ exports.updateById = function(req, res) {
         else res.send({error:false, message: "Update Successful!", data:partner});
     });
 }
+
+exports.aggregatedAll = function(req, res) {
+    Partner.aggregatedAll(req.params.seasonId, function(err, partner) {
+        if (err) res.status(400).send({error:true,err});
+        else res.send(partner);
+    });
+}

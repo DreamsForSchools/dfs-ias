@@ -1,48 +1,28 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import './Navbar.scss';
-import {Navbar, Nav, Dropdown, DropdownButton, Modal, Button} from 'react-bootstrap';
+import {Navbar, Nav, Dropdown, DropdownButton, Modal, Button, Badge} from 'react-bootstrap';
 import DFS_Logo from "../../assets/DFS_Logo.png";
 import {PlusCircle} from "react-bootstrap-icons";
 import { GlobalContext } from "../../context/GlobalContextProvider";
-import { StatusCodes} from "http-status-codes";
-import {Link, Switch} from "react-router-dom";
-
+import {Link} from "react-router-dom";
+import moment from 'moment';
 import CreateNewSeasonModal from "../CreateNewSeasonModal";
-import { loadSeason, saveSeason } from '../../api/season';
+import { saveSeason } from '../../api/season';
 
 import fire from "../../fire";
 
 const NavigationBar = () => {
-    const [signOut, setSignOut] = useState();
-    const { seasonNameSelected, setSeasonNameSelected, setSeasonIdSelected, setToastText } = useContext(GlobalContext);
+    const {
+        seasonSelected,
+        setSeason,
+        seasonData,
+        fetchAllSeasonData,
+    } = useContext(GlobalContext);
 
-    const [seasonList, setSeasonList] = useState([]);
     const [showNewSeasonModal, setShowNewSeasonModal] = useState(false);
 
-    useEffect(() => {
-        if (seasonList.length > 0) {
-            setSeasonNameSelected(seasonList[0].name);
-            setSeasonIdSelected(seasonList[0].seasonId);
-        };
-    }, [seasonList])
-
-    useEffect(() => {
-        fetchSeason();
-    }, [])
-
-    const fetchSeason = async () => {
-        try {
-            const seasonList = await loadSeason();
-            setSeasonList(seasonList.data.sort((a, b) => {return new Date(b.startDate) - new Date(a.startDate)}));
-        } catch (e) {
-            setToastText({status: 'Failed', message: `${e.response.data}`});
-        }
-
-    }
-
     const handleSeasonChange = (e, id) => {
-        setSeasonNameSelected(e.target.firstChild.textContent);
-        setSeasonIdSelected(id);
+        setSeason(id);
     }
 
     const handleShowNewSeasonModal = () => {
@@ -54,21 +34,14 @@ const NavigationBar = () => {
     }
 
     const handleSubmit = async (seasonData) => {
-        try {
-            const request = await saveSeason({
-                name: seasonData.name,
-                startDate: seasonData.startDate.toISOString().split('T')[0],
-                endDate: seasonData.endDate.toISOString().split('T')[0],
-            });
-            if (request.status === StatusCodes.OK) {
-                setToastText({status: 'Success', message: `${request.data.sqlMessage}`});
-                setShowNewSeasonModal(false);
-                fetchSeason();
-            }
-        } catch (e) {
-            setToastText({status: 'Failed', message: `${e.response.data.err.sqlMessage} -- Season added unsuccessfully.`});
-            setShowNewSeasonModal(false);
-        }
+        await saveSeason({
+            name: seasonData.name,
+            startDate: seasonData.startDate.toISOString().split('T')[0],
+            endDate: seasonData.endDate.toISOString().split('T')[0],
+        });
+        localStorage.removeItem("seasonSelectedId");
+        fetchAllSeasonData();
+        setShowNewSeasonModal(false);
     }
 
     function handleSignOut() {
@@ -88,11 +61,30 @@ const NavigationBar = () => {
                         <Link className="nav-link" to={"/programs"}>Programs</Link>
                         <Link className="nav-link" to={"/instructors"}>Instructors</Link>
                         <Link className="nav-link" to={"/sorter"}>Sorter</Link>
-                        <DropdownButton className="season-selector" menuAlign="right" title={seasonNameSelected}>
-                            { seasonList.map((ele, idx) => (
-                                <Dropdown.Item key={idx} onClick={(e) => handleSeasonChange(e, ele.seasonId)}>{ele.name}</Dropdown.Item>
+                        <DropdownButton
+                            className="season-selector"
+                            menuAlign="right"
+                            title={
+                                seasonSelected &&
+                                `${seasonSelected.name}`
+                            }>
+                            <Dropdown.Item onClick={handleShowNewSeasonModal}><PlusCircle/>&nbsp;&nbsp;
+                                <Badge variant="primary" >
+                                    Create a new season
+                                </Badge>
+                                </Dropdown.Item>
+                            { seasonData && Object.values(seasonData).sort((a, b) => {
+                                return new Date(b.startDate) - new Date(a.startDate);
+                            }).map((ele, idx) => (
+                                <Dropdown.Item key={idx} onClick={(e) => handleSeasonChange(e, ele.seasonId)}>
+                                    {`${ele.name}`}
+                                    <Badge
+                                        variant={seasonSelected != null && ele.seasonId === seasonSelected.seasonId ? "warning" : "secondary"}
+                                        style={{display: 'block', textAlign: 'center'}}>
+                                            {`(${moment(ele.startDate).format('l')} - ${moment(ele.endDate).format('l')})`}
+                                    </Badge>
+                                </Dropdown.Item>
                             ))}
-                            <Dropdown.Item onClick={handleShowNewSeasonModal}><PlusCircle/>Create a new season</Dropdown.Item>
                         </DropdownButton>
                     </Nav>
                 </Navbar.Collapse>

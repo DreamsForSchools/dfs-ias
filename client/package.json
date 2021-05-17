@@ -16,6 +16,7 @@
     "immer": "^8.0.1",
     "lodash": "^4.17.21",
     "lottie-react": "^2.1.0",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-bootstrap": "^1.5.0",
@@ -27,6 +28,7 @@
     "react-reveal": "^1.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
+    "react-toastify": "^7.0.4",
     "sass": "^1.32.8",
     "styled-components": "^5.2.1",
     "web-vitals": "^1.0.1"

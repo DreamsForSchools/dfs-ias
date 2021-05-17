@@ -1,55 +1,6 @@
 'use strict';
 var axios = require('axios');
-// var db = require('../db.config');
-
-
-//=================
-
-const util = require('util');
-const mysql = require('mysql2');
-var axios = require('axios');
-
-const config = {
-    connectionLimit: 100,
-    host: process.env.CLOUD_DB_IP,
-    user: process.env.CLOUD_DB_DEV_USERNAME,
-    password: process.env.CLOUD_DB_DEV_PASSWORD,
-    database: process.env.CLOUD_DB_NAME,
-    debug: false
-}
-
-
-function makeDb() {
-    const connection = mysql.createConnection(config);
-    return {
-        query(sql, args) {
-            return util.promisify(connection.query)
-                .call(connection, sql, args);
-        },
-        close() {
-            return util.promisify(connection.end).call(connection);
-        },
-        beginTransaction() {
-            return util.promisify( connection.beginTransaction )
-                .call( connection );
-        },
-        commit() {
-            return util.promisify( connection.commit )
-                .call( connection );
-        },
-        rollback() {
-            return util.promisify( connection.rollback )
-                .call( connection );
-        }
-    };
-}
-
-var db = makeDb(config);
-
-
-//=================
-
-
+var db = require('../promiseDb.config.js');
 
 var Partner = function(partner) {
     this.name = partner.name;
@@ -116,7 +67,6 @@ Partner.deleteById = function (id, result) {
 }
 
 Partner.updateById = async function (id, partner, result) {
-
     try{
         let originalPartner = await db.query("SELECT * FROM partners WHERE partnerId = ?",id);
     
@@ -262,5 +212,32 @@ function insertLocation(insertedPartnerID,location,result)
 //#endregion
 
 
+
+Partner.aggregatedAll = async function (seasonId, result) {
+    const resultMap = {};
+
+    try{
+        const allPartners = await db.query("SELECT * from partners");
+        allPartners.forEach((e) => resultMap[e.partnerId] = {...e, classes: []});
+
+        const aggregatedClasses =
+            await db.query(
+                "SELECT c.classId, c.timings, c.instructorsNeeded, p.programId, p.name, p.color, p2.partnerId\n" +
+                "FROM classes c\n" +
+                "JOIN programs p on c.programId = p.programId\n" +
+                "JOIN partners p2 on c.partnerId = p2.partnerId\n" +
+                "WHERE c.seasonId = ?", seasonId);
+
+        aggregatedClasses.forEach((e) => resultMap[e.partnerId].classes.push({
+            classId: e.classId,
+            timings: e.timings,
+            instructorsNeeded: e.instructorsNeeded,
+            program: {programId: e.programId, name: e.name, color: e.color},
+        }));
+        result(null, resultMap);
+    } catch(err) {
+        return result(err, null);
+    }
+}
 
 module.exports = Partner;

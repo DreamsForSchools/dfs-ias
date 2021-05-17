@@ -1,33 +1,7 @@
 'use strict';
-
-const util = require('util');
-const mysql = require('mysql2');
 var axios = require('axios');
 
-const config = {
-    connectionLimit: 100,
-    host: process.env.CLOUD_DB_IP,
-    user: process.env.CLOUD_DB_DEV_USERNAME,
-    password: process.env.CLOUD_DB_DEV_PASSWORD,
-    database: process.env.CLOUD_DB_NAME,
-    debug: false
-}
-
-
-function makeDb() {
-    const connection = mysql.createConnection(config);
-    return {
-        query(sql, args) {
-            return util.promisify(connection.query)
-                .call(connection, sql, args);
-        },
-        close() {
-            return util.promisify(connection.end).call(connection);
-        }
-    };
-}
-
-var db = makeDb(config);
+var db = require('../promiseDb.config.js');
 
 var SeasonAssignment = function (assignment) {
     this.seasonId = assignment.seasonId;

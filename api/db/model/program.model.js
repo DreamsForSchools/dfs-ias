@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../db.config');
+var db = require('../promiseDb.config.js');
 
 var Program = function(program) {
     this.name = program.name;
@@ -45,6 +45,33 @@ Program.updateById = function (id, program, result) {
             if (err) result(err, null);
             else result(null, res);
     })
+}
+
+Program.aggregatedAll = async function (seasonId, result) {
+    const resultMap = {};
+
+    try{
+        const allPrograms = await db.query("SELECT * from programs;");
+        allPrograms.forEach((e) => resultMap[e.programId] = {...e, classes: []});
+
+        const aggregatedClasses =
+            await db.query(
+                "SELECT c.classId, c.timings, c.instructorsNeeded, p.programId, p2.partnerId, p2.name, p2.partnerType, p2.district\n" +
+                "FROM classes c\n" +
+                "JOIN programs p on c.programId = p.programId\n" +
+                "JOIN partners p2 on c.partnerId = p2.partnerId\n" +
+                "WHERE c.seasonId = ?", seasonId);
+
+        aggregatedClasses.forEach((e) => resultMap[e.partnerId].classes.push({
+            classId: e.classId,
+            timings: e.timings,
+            instructorsNeeded: e.instructorsNeeded,
+            partner: {partnerId: e.partnerId, name: e.name, district: e.district, type: e.partnerType},
+        }));
+        result(null, resultMap);
+    } catch(err) {
+        return result(err, null);
+    }
 }
 
 module.exports = Program;

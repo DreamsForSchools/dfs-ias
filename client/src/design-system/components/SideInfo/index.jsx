@@ -35,7 +35,7 @@ export const Title = styled.h1`
 `;
 
 export const Subtitle = styled.h5`
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 `;
 
 export const Text = styled.p`
@@ -68,7 +68,8 @@ export const Image = styled.img`
 `;
 
 export const Avatar = styled.img`
-  width: 200px;    
+  width: auto;    
+  height: 150px;
 `;
 
 export const PartnerSymbol = styled.span`

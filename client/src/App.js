@@ -1,9 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import './App.css';
 import {Switch, Redirect, Route, useLocation} from "react-router-dom";
 
-import {Toast, Badge} from "react-bootstrap";
-
+import { ToastContainer } from "react-toastify";
 import {GlobalContext} from "./context/GlobalContextProvider";
 
 import NavigationBar from './components/NavBar';
@@ -16,12 +15,8 @@ import fire from './fire.js';
 
 function App() {
   let location = useLocation();
-  const { toastShow, setToastShow, toastText } = useContext(GlobalContext);
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const { isLoggedIn } = useContext(GlobalContext);
 
-  fire.auth().onAuthStateChanged((user) => {
-      return user ? setIsLoggedIn(true) : setIsLoggedIn(false);
-  });
 
   return (
     <>
@@ -67,18 +62,8 @@ function App() {
             </Switch>
         )}
 
-      {/* Toast styling is in index.css */}
-      <Toast onClose={() => setToastShow(false)} show={toastShow} delay={6000} autohide>
-        <Toast.Header>
-          {toastText.status === 'Success' && <Badge pill variant="success" className={"mr-auto"}>
-            Success
-          </Badge>}
-          {toastText.status === 'Failed' && <Badge pill variant="danger" className={"mr-auto"}>
-            Failed
-          </Badge>}
-        </Toast.Header>
-        <Toast.Body>{toastText.message}</Toast.Body>
-      </Toast>
+
+        <ToastContainer position="bottom-right"/>
 
     </>
   );

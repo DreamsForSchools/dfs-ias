@@ -1,41 +1,46 @@
 import React, {useState, useEffect, useContext} from 'react';
-import seasonAnimation from "../../assets/season-animation.json";
 import {Button, Modal, Table} from "react-bootstrap";
-import Lottie from "lottie-react";
 import {Input, Select} from "../../design-system/form";
-import {DatePickerWrapper} from "../NavBar/Styled";
 import DatePicker from "react-datepicker";
-import {loadPartner} from "../../api/partner";
-import {partnerTypes, timeSlots} from "../../constant";
+// import {loadPartner} from "../../api/partner";
 
 import {GlobalContext} from "../../context/GlobalContextProvider";
-import {Avatar} from "../../design-system/components/SideInfo";
 import {color} from "../../design-system/style";
-import {formatMilitaryTime} from "../../util/formatData";
 
 const AddPartnersToProgramModal = ({ handleSubmit, programContext }) => {
     const { seasonIdSelected, seasonNameSelected } = useContext(GlobalContext);
     const [ imageBase64, setImageBase64 ] = React.useState(null);
-    const [newSeasonInput, setNewSeasonInput] = useState(
+    const [ newClassInput, setClassInput ] = useState(
         {
-            name: null,
-            startDate: new Date(),
-            endDate: new Date(),
+            instructorsNeeded: null,
+            seasonId: seasonIdSelected,
+            partnerId: null,
+            programId: programContext.programId
         }
     )
 
+    const [ timing, setTiming ] = React.useState([
+        {active: false, startTime: null, endTime: null},
+        {active: false, startTime: null, endTime: null},
+        {active: false, startTime: null, endTime: null},
+        {active: false, startTime: null, endTime: null},
+        {active: false, startTime: null, endTime: null}
+    ])
+
     const [partnersList, setPartnersList] = useState([]);
+
+    const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
     useEffect(async () => {
         if (programContext) setImageBase64(new Buffer.from(programContext.logo.data).toString("ascii"));
 
         try {
             const partners = [];
-            const partnerList = await loadPartner();
+            // const partnerList = await loadPartner();
 
-            partnerList.data.forEach((e) => {
-                partners.push(`${e.partnerId} - ${e.district} ${e.name}`)
-            })
+            // partnerList.data.forEach((e) => {
+            //     partners.push(`${e.partnerId} - ${e.district} ${e.name}`)
+            // })
             setPartnersList(partners);
         } catch (e) {
             console.log(e);
@@ -44,26 +49,56 @@ const AddPartnersToProgramModal = ({ handleSubmit, programContext }) => {
 
     const handleFormInput = (input = null, field) => {
         switch(field) {
-            case "Season Name":
-                setNewSeasonInput({...newSeasonInput, name: input})
+            case "Instructors Needed":
+                setClassInput({...newClassInput, instructorsNeeded: input})
                 break;
-            case "Start Date":
-                setNewSeasonInput({...newSeasonInput, startDate: input})
-                break;
-            case "End Date":
-                setNewSeasonInput({...newSeasonInput, endDate: input})
+            case "Partner":
+                setClassInput({...newClassInput, partnerId: input})
                 break;
         }
     }
 
     const handleSubmitButtonPress = () => {
-        handleSubmit(newSeasonInput);
+        const timingParsed = [];
+        timing.forEach((e, idx) => {
+            if (e.active) {
+                timingParsed.push({
+                    weekday: idx + 1,
+                    startTime: e.startTime.toLocaleTimeString('en-US', { hour12: false }),
+                    endTime: e.endTime.toLocaleTimeString('en-US', { hour12: false }),
+                })
+            }
+        })
+
+        handleSubmit('CLASS' , {
+            instructorsNeeded: Number(newClassInput.instructorsNeeded),
+            seasonId: newClassInput.seasonId,
+            partnerId: Number(newClassInput.partnerId.substr(0, newClassInput.partnerId.indexOf(' '))),
+            programId: newClassInput.programId,
+            timings: timingParsed
+        })
+    }
+
+    const handleTimingChange = (type, time, index) => {
+        const temp = timing.slice();
+        switch(type) {
+            case 'active':
+                temp[index].active = !temp[index].active;
+                break;
+            case 'start':
+                temp[index].startTime = time;
+                break;
+            case 'end':
+                temp[index].endTime = time;
+                break;
+        }
+        setTiming(temp);
     }
 
     return (
         <>
             <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
-                <Modal.Title>Create a new {programContext.name} class for {seasonNameSelected}</Modal.Title>
+                <Modal.Title>Create a new class for {seasonNameSelected}</Modal.Title>
             </Modal.Header>
             <>
                 <Modal.Body>
@@ -72,209 +107,60 @@ const AddPartnersToProgramModal = ({ handleSubmit, programContext }) => {
                             <img style={{width: 250}} src={imageBase64} />
                         </div>
                         <div style={{width: '50%', marginRight: '1.5rem'}}>
-                            <Select options={partnersList} label={'Partner'} handler={handleFormInput} state={newSeasonInput.partnerType}
+                            <Input disabled label={'Program'} state={programContext.name} modal/>
+                            <Select options={partnersList} label={'Partner'} handler={handleFormInput} state={newClassInput.partnerId}
                                     modal/>
-                            <Input label={'Instructors Needed'} handler={handleFormInput} state={newSeasonInput.name} modal/>
-                            {/*<DatePickerWrapper>*/}
-                            {/*    <label>Start Date</label>*/}
-                            {/*    <DatePicker*/}
-                            {/*        selected={newSeasonInput.startDate}*/}
-                            {/*        onChange={date => handleFormInput(date, "Start Date")}*/}
-                            {/*        selectsStart*/}
-                            {/*        startDate={newSeasonInput.startDate}*/}
-                            {/*        endDate={newSeasonInput.endDate}*/}
-                            {/*    />*/}
-                            {/*</DatePickerWrapper>*/}
-                            {/*<DatePickerWrapper>*/}
-                            {/*    <label>End Date</label>*/}
-                            {/*    <DatePicker*/}
-                            {/*        selected={newSeasonInput.endDate}*/}
-                            {/*        onChange={date => handleFormInput(date, "End Date")}*/}
-                            {/*        selectsEnd*/}
-                            {/*        startDate={newSeasonInput.startDate}*/}
-                            {/*        endDate={newSeasonInput.endDate}*/}
-                            {/*        minDate={newSeasonInput.startDate}*/}
-                            {/*    />*/}
-                            {/*</DatePickerWrapper>*/}
-
+                            <Select options={Array.from({length: 10}, (_, i) => i + 1)} label={'Instructors Needed'} handler={handleFormInput} state={newClassInput.instructorsNeeded}
+                                    modal/>
                         </div>
                     </div>
-                    <Table borderless style={{borderSpacing: '0 0.4rem', borderCollapse: 'separate'}}>
-                        <thead>
-                        {/*<tr>*/}
-                        {/*    <th></th>*/}
-                        {/*    <th>Mondays</th>*/}
-                        {/*    <th>Tuedays</th>*/}
-                        {/*    <th>Wednesdays</th>*/}
-                        {/*    <th>Thursdays</th>*/}
-                        {/*    <th>Fridays</th>*/}
-                        {/*</tr>*/}
-                        </thead>
+                    <Table borderless style={{padding: '2rem 4rem 0 4rem', borderSpacing: '0 0.4rem', borderCollapse: 'separate'}}>
                         <tbody>
-                        {/*{timeSlots.map((e, idx) => (*/}
-                        {/*    <tr key={idx} style={{borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>*/}
-                        {/*        <td>*/}
-                        {/*            {formatMilitaryTime(e.startTime)} - {formatMilitaryTime(e.endTime)}*/}
-                        {/*        </td>*/}
-                        {/*        {renderTimeSlotCheckboxes(idx)}*/}
-                        {/*    </tr>*/}
-                        {/*))}*/}
-
-                        <tr style={{borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>
-                            <td>
-                                <input type={"checkbox"} /> Monday
-                            </td>
-                            <td>
-                                <label>From</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                            <td>
-                                <label>To</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                        </tr>
-                        <tr style={{borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>
-                            <td>
-                                <input type={"checkbox"} />   Tuesday
-                            </td>
-                            <td>
-                                <label>From</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                            <td>
-                                <label>To</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                        </tr>
-                        <tr style={{borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>
-                            <td>
-                                <input type={"checkbox"} />  Wednesday
-                            </td>
-                            <td>
-                                <label>From</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                            <td>
-                                <label>To</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                        </tr>
-                        <tr style={{borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>
-                            <td>
-                                <input type={"checkbox"} /> Thursday
-                            </td>
-                            <td>
-                                <label>From</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                            <td>
-                                <label>To</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                        </tr>
-                        <tr style={{borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>
-                            <td>
-                                <input type={"checkbox"} />  Friday
-                            </td>
-                            <td>
-                                <label>From</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                            <td>
-                                <label>To</label>
-                                <DatePicker
-                                    selected={newSeasonInput.startDate}
-                                    onChange={date => handleFormInput(date, "Start Date")}
-                                    selectsStart
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={15}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm aa"
-                                />
-                            </td>
-                        </tr>
+                        {dates.map((e, idx) =>
+                            <tr key={idx} style={{ borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>
+                                <td>
+                                    <input
+                                        type={"checkbox"}
+                                        value={timing[idx].active}
+                                        onClick={() => handleTimingChange("active", null, idx)}
+                                    /> {e}
+                                </td>
+                                <td>
+                                    {timing[idx].active &&
+                                        <>
+                                            <label>From</label>
+                                            <DatePicker
+                                                selected={timing[idx].startTime}
+                                                onChange={time => handleTimingChange("start", time, idx)}
+                                                selectsStart
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeIntervals={30}
+                                                timeCaption="Time"
+                                                dateFormat="h:mm aa"
+                                            />
+                                        </>
+                                    }
+                                </td>
+                                <td>
+                                    {timing[idx].active &&
+                                        <>
+                                            <label>To</label>
+                                            <DatePicker
+                                                selected={timing[idx].endTime}
+                                                onChange={time => handleTimingChange("end", time, idx)}
+                                                selectsStart
+                                                showTimeSelect
+                                                showTimeSelectOnly
+                                                timeIntervals={30}
+                                                timeCaption="Time"
+                                                dateFormat="h:mm aa"
+                                            />
+                                        </>
+                                    }
+                                </td>
+                            </tr>
+                        )}
                         </tbody>
                     </Table>
                 </Modal.Body>

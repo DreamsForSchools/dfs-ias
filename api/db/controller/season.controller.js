@@ -4,18 +4,20 @@ const Season = require('../model/season.model');
 
 exports.create = function(req, res) {
 
-    const auth = req.currentUser;
+    // const auth = req.currentUser;
+
+    const auth = true;
     if (auth) {
         console.log('authenticated!', auth);
         const new_season = new Season(req.body);
         //handles null error
         if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-            res.status(400).send({error: true, sqlMessage: 'Please provide all required fields'});
+            res.status(400).send({error: true, message: 'Please provide all required fields'});
         } else {
             Season.create(new_season, function (err, season) {
                 if (err)
                     res.status(400).send({error: true, err});
-                else res.send({error: false, sqlMessage: "Season added successfully!", data: season});
+                else res.send({error: false, message: "Season added successfully!", data: season});
             });
         }
     } else{
