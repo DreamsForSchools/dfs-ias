@@ -4,7 +4,7 @@ import Class from './Class.jsx';
 import { Accordion, Card, Row } from "react-bootstrap";
 import { CaretRightFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
 
-const Program = ({ name, color, classes }) => {
+const Program = ({ id, name, color, classes }) => {
   const [showContent, setShowContent] = useState(false);
   const [lock, setLock] = useState(false);
 
@@ -21,20 +21,20 @@ const Program = ({ name, color, classes }) => {
         <Accordion.Collapse eventKey="0">
           <Card.Body className="classes-container">
             <Row>
-              { classes.map(c => {             
+              { classes.length > 0 ? classes.map(c => {             
                   return (
                     <Class
                       className="class"
-                      key={c.id}
-                      id={c.id}
-                      partner={c.partner}
-                      time={c.time}
-                      slotCount={c.slotCount}
+                      key={c.classId}
+                      id={c.classId}
+                      partner={c.partner?.name}
+                      time={c.timings}
+                      instructorsNeeded={c.instructorsNeeded}
                       instructors={c.instructors}
-                      programName={name}
+                      programId={id}
                     />
                   )
-              })}
+              }) : null }
             </Row>
           </Card.Body>
         </Accordion.Collapse> 

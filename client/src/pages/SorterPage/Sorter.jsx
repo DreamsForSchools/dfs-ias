@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useEffect, useContext } from "react";
+import React, { useCallback, useReducer, useEffect, useState, useContext } from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
 import produce from "immer";
 import './Sorter.scss';
@@ -20,28 +20,34 @@ const dragReducer = produce((draft, action) => {
         const [removed] = draft[action.from].splice(action.fromIndex, 1);
         draft[action.to].splice(action.toIndex, 0, removed); 
       } else if ( action.from === "search" && action.to !== "search") {
-        let toProgram = action.state["programs"].find(program => program.name === action.to.split("-")[0]);
-        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] 
-          = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] || [];
+        let toProgram = action.state["programs"].find(program => program.programId === action.to.split("-")[0]);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] 
+          = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] || [];
         const [removed] = draft[action.from].splice(action.fromIndex, 1);
-        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
       } else if ( action.from !== "search" && action.to === "search") {
-        let fromProgram = action.state["programs"].find(program => program.name === action.from.split("-")[0]);
+        let fromProgram = action.state["programs"].find(program => program.programId === action.from.split("-")[0]);
         draft[action.to] = draft[action.to] || [];
-        const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.id === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
+        const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.classId.toString() === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
         draft[action.to].splice(action.toIndex, 0, removed);
       } else {
-        let toProgram = action.state["programs"].find(program => program.name === action.to.split("-")[0]);
-        let fromProgram = action.state["programs"].find(program => program.name === action.from.split("-")[0]);
-        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] 
-          = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"] || [];
-        const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.id === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
-        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.id === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
+        console.log(action)
+        let toProgram = action.state["programs"].find(program => program.programId.toString() === action.to.split("-")[0]);
+        let fromProgram = action.state["programs"].find(program => program.programId.toString() === action.from.split("-")[0]);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] 
+          = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] || [];
+        const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.classId.toString() === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
       }
       break;
     }
     case "SORT": {
-      draft["search"] = null;
+      action.assignments.forEach(assignment => {
+        let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
+        draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] 
+          = action.instructors.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0);
+        draft["search"] = [];
+      }); 
       break;
     }
     case "FILTER": {
@@ -65,9 +71,10 @@ const Sorter = () => {
     };
   }
 
-  const {seasonIdSelected, setToastText} = useContext(GlobalContext);
+  const {seasonSelected, programData, setToastText} = useContext(GlobalContext);
+  const [instructors, setInstructors] = useState([]);
   const [state, dispatch] = useReducer(dragReducer, {
-    "programs": programs_data,
+    "programs": Object.values(programData),
     "search": [],
   });
   const axios = require('axios');
@@ -80,6 +87,7 @@ const Sorter = () => {
   const fetchInstructors = async () => {
     try {
       axios.get('/api/instructor').then((response) => {
+        setInstructors(response.data)
         dispatch({
           type: "POPULATE",
           instructors: response.data,
@@ -94,14 +102,16 @@ const Sorter = () => {
 
   const handleAutoAssign = () => {
     axios.post('/api/sort',
-      {seasonId: seasonIdSelected}
+      {seasonId: seasonSelected.seasonId}
     ).then((response) => {
-      console.log(response.data.data);
+      dispatch({
+        type: "SORT",
+        assignments: Object.entries(response.data.data),
+        instructors: instructors,
+        state: state,
+      });
     }, (error) => {
       console.log(error);
-    });
-    dispatch({
-      type: "SORT",
     });
   }
 

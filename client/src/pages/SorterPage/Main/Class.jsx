@@ -5,12 +5,12 @@ import Instructor from '../Instructor.jsx';
 import { CalendarWeek, People, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 
-const Class = ({ id, partner, time, slotCount, instructors, programName }) => {
+const Class = ({ id, partner, time, instructorsNeeded, instructors, programId }) => {
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
 
   useEffect(() => {
-    setNumInstructors(instructors.length);
+    setNumInstructors(instructors ? instructors.length : 0);
   }, [setNumInstructors, instructors])
 
   return (
@@ -23,16 +23,16 @@ const Class = ({ id, partner, time, slotCount, instructors, programName }) => {
       </div>
       <div className="class-info">
         <div><CalendarWeek /> {formatAvailability(time)} </div>
-        <div><People /> {numInstructors}/{slotCount}</div>
+        <div><People /> {numInstructors}/{instructorsNeeded}</div>
       </div>
-      <Droppable droppableId={programName + "-" + partner + "-" + id} type="INSTRUCTOR">
+      <Droppable droppableId={programId + "-" + partner + "-" + id} type="INSTRUCTOR">
         {(provided) => {
           return (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              { instructors.map((instructor, index) => {
+              { instructors?.map((instructor, index) => {
                 return (
                   <Draggable
                     key={instructor.instructorId}

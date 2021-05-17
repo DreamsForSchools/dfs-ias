@@ -11,7 +11,7 @@ import {GlobalContext} from "../../context/GlobalContextProvider";
 const Instructor = ({ instructor, classId }) => {
   const [showInstructorPopUp, setShowInstructorPopUp] = useState();
   const [lock, setLock] = useState(false);
-  const {seasonIdSelected} = useContext(GlobalContext);
+  const {seasonSelected} = useContext(GlobalContext);
   const axios = require('axios');
 
   const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
@@ -20,7 +20,7 @@ const Instructor = ({ instructor, classId }) => {
   const handleLock = () => {
     console.log('lock')
     axios.post('/api/lock',
-      {seasonId: seasonIdSelected, instructorId: instructor.id, classId: classId}
+      {seasonId: seasonSelected.seasonId, instructorId: instructor.id, classId: classId}
     ).then((response) => {
       console.log(response);
     }, (error) => {
@@ -31,7 +31,7 @@ const Instructor = ({ instructor, classId }) => {
   const handleUnlock = () => {
     console.log('unlock')
     axios.delete('/api/unlock',
-      {seasonId: seasonIdSelected, instructorId: instructor.id, classId: classId}
+      {seasonId: seasonSelected.seasonId, instructorId: instructor.id, classId: classId}
     ).then((response) => {
       console.log(response);
     }, (error) => {

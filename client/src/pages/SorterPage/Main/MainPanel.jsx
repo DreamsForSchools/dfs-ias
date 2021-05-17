@@ -8,7 +8,8 @@ const MainPanel = ({ state }) => {
       { state["programs"].map(program => {             
           return (
             <Program
-              key={program.id}
+              key={program.programId}
+              id={program.programId}
               name={program.name}
               color={program.color}
               classes={program.classes}
