@@ -10,7 +10,8 @@ var gmapRouter = require('./routes/gmap');
 var crudRouter = require('./routes/crud');
 
 var app = express();
-
+app.use(express.json({limit: '10mb'}));
+app.use(express.urlencoded({limit: '10mb',extended: true}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

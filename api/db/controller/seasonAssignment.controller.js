@@ -44,7 +44,7 @@ exports.sort = function (req, res) {
         let seasonId = req.body.seasonId;
         SeasonAssignment.sort(seasonId, function (err, data) {
             if (err)
-                res.status(400).send({error: true, err});
+                res.status(500).send({error: true, err});
             else
                 res.send({error: false, message: "Sort finished!", data: data});
         });

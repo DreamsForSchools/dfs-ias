@@ -106,8 +106,6 @@ Instructor.createSingle = async function (newInstructor, result) {
                 location = await getGmapLocation(newInstructor);
             }
             location.instructorId = insertedInstructorID;
-
-            console.log(location);
     
             await db.query("INSERT INTO seasonInstructors (instructorId,seasonId) VALUES (?,?)",[insertedInstructorID,seasonId]);
             let results = await db.query("INSERT INTO locationCache set ?",location);
@@ -115,7 +113,9 @@ Instructor.createSingle = async function (newInstructor, result) {
             // Commit changes if everything went well
             await db.commit();
 
-            result(null,results);
+            if(result){
+                result(null,results);
+            }
         }
 
     }catch(err)
@@ -124,7 +124,9 @@ Instructor.createSingle = async function (newInstructor, result) {
         await db.rollback();
 
         console.log(err);
-        result(err,null)
+        if(result){
+            result(null,err);
+        }
     }
 
 }
@@ -139,7 +141,7 @@ Instructor.createCSV = async function (requestBody, result) {
         let i = 0;
         for( i = 0; i < newInstructorArray.length; i++ )
         {
-            responseReturn = await Instructor.createSingle({...newInstructorArray[i], seasonId}, result);
+            responseReturn = await Instructor.createSingle({...newInstructorArray[i], seasonId});
         }
         // newInstructorArray.forEach(instructor => {
         //     Instructor.createSingle({...instructor, seasonId}, function (err, res) {
@@ -160,14 +162,15 @@ async function getLocationCacheBy(name)
 {
     let rtn;
     rtn = await db.query("SELECT * FROM locationCache where name = ?",name);
-    delete rtn['locationId'];
-    delete rtn['instuctorId'];
-    delete rtn['partnerId'];
     if(rtn.length > 0) rtn = rtn[0];
+    delete rtn['locationCacheId'];
+    delete rtn['instructorId'];
+    delete rtn['partnerId'];
     return rtn;
 }
 
 async function getGmapLocation(instructor){
+
     let location = {};
     location.name = instructor.university;
     let gmapPlace = await axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${instructor.university}&inputtype=textquery&fields=geometry,photos,name,formatted_address,place_id`);
@@ -178,7 +181,6 @@ async function getGmapLocation(instructor){
         location.latitude = gmapPlace.data.candidates[0].geometry.location.lat;
         location.longititude = gmapPlace.data.candidates[0].geometry.location.lng;
         location.placeId = gmapPlace.data.candidates[0].place_id;
-
         let date = new Date();
         let gmapTimeZone = await axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`);
         // console.log("gmapTimeZone", gmapTimeZone);
@@ -250,7 +252,6 @@ function insertLocation(insertedInstructorID,location,result)
                  //inserting location with instructor id
                  
                  delete location["locationCacheId"];
-                 console.log(location);
                 db.query("INSERT INTO locationCache set ?",location,function(err,res){
                     if(err) result(err,null);
                 });
@@ -348,7 +349,7 @@ Instructor.updateById = async function (id, instructor, result)
         
         let updatedInstructor = await db.query("UPDATE instructors SET email = ?, phoneNumber = ?, firstName = ?, lastName = ?, gender = ?, ethnicity = ?, university = ?,  major = ?, schoolYear  = ?, graduationDate = ?, otherLanguages = ?, programmingLanguages = ?, hasCar = ?, shirtSize = ?, firstPref = ?, secondPref = ?, thirdPref = ?, fourthPref = ?, isASL = ?  WHERE instructorId = ?",
             [instructor.email, instructor.phoneNumber, instructor.firstName, instructor.lastName, instructor.gender, instructor.ethnicity, instructor.university, instructor.major, instructor.schoolYear, instructor.graduationDate, instructor.otherLanguages, instructor.programmingLanguages, instructor.hasCar, instructor.shirtSize, instructor.firstPref, instructor.secondPref, instructor.thirdPref,instructor.fourthPref, instructor.isASL, id])
-    
+
 
         await db.query("UPDATE seasonInstructors SET seasonId = ? WHERE instructorId = ?",[instructor.seasonId, id]);
         await db.query("DELETE FROM instructorAvailability WHERE instructorId = ?", id);
@@ -357,7 +358,7 @@ Instructor.updateById = async function (id, instructor, result)
         {
             let location =  await getLocationCacheBy(instructor.university);
             if(location.length == 0){
-                location = getGmapLocation(instructor);
+                location = await getGmapLocation(instructor);
             }
             results = await db.query("INSERT INTO locationCache set ?",location);
         }
