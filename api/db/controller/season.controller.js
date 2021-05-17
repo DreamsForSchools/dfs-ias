@@ -6,7 +6,7 @@ exports.create = function(req, res) {
 
     // const auth = req.currentUser;
     // if (auth) {
-        console.log('authenticated!', auth);
+    //     console.log('authenticated!', auth);
         const new_season = new Season(req.body);
         //handles null error
         if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
