@@ -58,11 +58,11 @@ const Instructor = ({ instructor, classId }) => {
           <Dot color={program_color_keys[el]} key={idx}/>
         )}
       </div>
-      <div className="availability">
+      {/* <div className="availability">
         {formatAvailability(instructor.availability).map((e) =>
           <h5>{e}</h5>
         )}
-      </div>
+      </div> */}
       <div className="edit-icon"><InfoCircle onClick={handleShowInstructorPopUp}/></div>
       <Modal size="xl" show={showInstructorPopUp} onHide={handleCloseInstructorPopUp} onExited={handleCloseInstructorPopUp}>
         <InstructorPopUp instructor={instructor} />
