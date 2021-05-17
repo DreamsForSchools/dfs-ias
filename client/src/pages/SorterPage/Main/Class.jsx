@@ -35,8 +35,8 @@ const Class = ({ id, partner, time, slotCount, instructors, programName }) => {
               { instructors.map((instructor, index) => {
                 return (
                   <Draggable
-                    key={instructor.id}
-                    draggableId={instructor.id}
+                    key={instructor.instructorId}
+                    draggableId={instructor.instructorId?.toString()}
                     index={index}
                   >
                     {(provided) => {
@@ -47,7 +47,7 @@ const Class = ({ id, partner, time, slotCount, instructors, programName }) => {
                           {...provided.dragHandleProps}                        
                         >
                           <Instructor
-                            key={instructor.id}
+                            key={instructor.instructorId}
                             instructor={instructor}
                             classId={id}
                           />

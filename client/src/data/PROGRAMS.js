@@ -25,7 +25,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 10,
                 slotCount: 10,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             },
             {
                 id: "2",
@@ -45,7 +45,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 10,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             },
             {
                 id: "3",
@@ -66,7 +66,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 8,
                 slotCount: 10,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             }
         ]
     },
@@ -89,7 +89,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 3,
                 slotCount: 5,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             },
             {
                 id: "5",
@@ -110,7 +110,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 5,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             }
         ]
     },
@@ -139,7 +139,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 5,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             },
             {
                 id: "7",
@@ -159,7 +159,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 5,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             },
             {
                 id: "8",
@@ -179,7 +179,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 5,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             }
         ]
     },
@@ -213,7 +213,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 5,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             }
         ]
     },
@@ -247,7 +247,7 @@ export const PROGRAMS = [
                 ],
                 instructorCount: 5,
                 slotCount: 8,
-                instructors: getRandomInstructorSet(2),
+                instructors: [],
             }
         ]
     },
