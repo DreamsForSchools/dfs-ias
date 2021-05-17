@@ -39,7 +39,10 @@ const dragReducer = produce((draft, action) => {
     }
     case "SORT": {
       // draft["search"] = 
-      draft["programs"][0].classes[0].instructors = draft["search"]
+      draft["programs"][0].classes[0].instructors = draft["search"].slice(0,3)
+      draft["programs"][0].classes[1].instructors = draft["search"].slice(3,6)
+      draft["programs"][0].classes[2].instructors = draft["search"].slice(6,8)
+      draft["programs"][1].classes[1].instructors = draft["search"].slice(8,10)
       draft["search"] = null;
       break;
     }
@@ -80,7 +83,8 @@ const Sorter = () => {
     }, (error) => {
       console.log(error);
     });
-    console.log(instructors)
+    console.log(state["programs"][0].classes[0].instructors)
+    console.log(state["search"])
 
   }, [state]);
 
