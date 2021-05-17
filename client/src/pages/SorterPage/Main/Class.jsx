@@ -5,7 +5,7 @@ import Instructor from '../Instructor.jsx';
 import { CalendarWeek, People, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 
-const Class = ({ index, partner, time, slotCount, instructors, programName }) => {
+const Class = ({ id, partner, time, slotCount, instructors, programName }) => {
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
 
@@ -25,7 +25,7 @@ const Class = ({ index, partner, time, slotCount, instructors, programName }) =>
         <div><CalendarWeek /> {formatAvailability(time)} </div>
         <div><People /> {numInstructors}/{slotCount}</div>
       </div>
-      <Droppable droppableId={programName + "-" + partner + "-" + index} type="INSTRUCTOR">
+      <Droppable droppableId={programName + "-" + partner + "-" + id} type="INSTRUCTOR">
         {(provided) => {
           return (
             <div
@@ -49,6 +49,7 @@ const Class = ({ index, partner, time, slotCount, instructors, programName }) =>
                           <Instructor
                             key={instructor.id}
                             instructor={instructor}
+                            classId={id}
                           />
                         </div>
                       );

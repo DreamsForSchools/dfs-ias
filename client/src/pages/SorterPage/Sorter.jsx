@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useEffect } from "react";
+import React, { useCallback, useReducer, useEffect, useState, useContext } from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
 import produce from "immer";
 import './Sorter.scss';
@@ -6,6 +6,7 @@ import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
 import { getRandomInstructorSet } from "../../util/sampleData";
 import { PROGRAMS as programs_data }  from '../../data/PROGRAMS';
+import {GlobalContext} from "../../context/GlobalContextProvider";
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
@@ -36,6 +37,15 @@ const dragReducer = produce((draft, action) => {
       }
       break;
     }
+    case "SORT": {
+      // draft["search"] = 
+      draft["programs"][0].classes[0].instructors = draft["search"].slice(0,3)
+      draft["programs"][0].classes[1].instructors = draft["search"].slice(3,6)
+      draft["programs"][0].classes[2].instructors = draft["search"].slice(6,8)
+      draft["programs"][1].classes[1].instructors = draft["search"].slice(8,10)
+      draft["search"] = null;
+      break;
+    }
     case "FILTER": {
       draft["search"] = action.filteredInstructors;
       break;
@@ -57,11 +67,41 @@ const Sorter = () => {
     };
   }
 
-  const [state, dispatch] = useReducer(dragReducer, defaultState);
+  const [state, dispatch] = useReducer(dragReducer, {
+    "programs": programs_data,
+    "search": getRandomInstructorSet(10),
+  });
+  const {seasonIdSelected} = useContext(GlobalContext);
+  const [instructors, setInstructors] = useState([]);
+  const axios = require('axios');
 
   useEffect(() => {
     localStorage.setItem("sorter-state", JSON.stringify(state));
+
+    axios.get('/api/instructor').then((response) => {
+      setInstructors(response);
+    }, (error) => {
+      console.log(error);
+    });
+    console.log(state["programs"][0].classes[0].instructors)
+    console.log(state["search"])
+
   }, [state]);
+
+  const handleAutoAssign = () => {
+    console.log(state["programs"][0].classes[0].instructors)
+    axios.post('/api/sort',
+      {seasonId: seasonIdSelected}
+    ).then((response) => {
+      console.log(response);
+      console.log(response.data.data);
+    }, (error) => {
+      console.log(error);
+    });
+    dispatch({
+      type: "SORT",
+    });
+  }
 
   const handleFilter = (instructors) => {
     dispatch({
@@ -98,6 +138,7 @@ const Sorter = () => {
           <Sidebar 
             state={state} 
             handleFilter={handleFilter}
+            handleAutoAssign={handleAutoAssign}
           />
         </div>
       </DragDropContext>
