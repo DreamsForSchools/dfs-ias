@@ -36,6 +36,19 @@ exports.unlock = function(req, res) {
     }
 };
 
+exports.getLockedInstructors =  function(req, res) {
+    if (!req.params.seasonId) {
+        res.status(400).send({error: true, message: "No seasonId provided."});
+    } else {
+        let seasonId = req.params.seasonId;
+        SeasonAssignment.getLockedInstructors(seasonId, function(err, data) {
+            if (err)
+                res.status(500).send({error: true, err});
+            else
+                res.send({error: false, message: "Assigned instructors found for season.", data: data});
+        });
+    }
+};
 
 exports.sort = function (req, res) {
     if (!req.body.seasonId) {

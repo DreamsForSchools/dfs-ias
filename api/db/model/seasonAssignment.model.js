@@ -53,6 +53,23 @@ SeasonAssignment.unlock = async function (assignmentToDelete,result) {
     }
 }
 
+SeasonAssignment.getLockedInstructors = async function (seasonId,result) {
+    try{
+        let lockedInstructors = await db.query("SELECT * FROM seasonAssignments where seasonId = ?",seasonId);
+        let dataMap = {};
+
+        for(const instructor of lockedInstructors){
+            if(!dataMap[instructor.classId]) {
+                dataMap[instructor.classId] = [instructor.instructorId];
+            }else{
+                dataMap[instructor.classId].push(instructor.instructorId);
+            }
+        }
+        return result(null, dataMap);
+    } catch(err) {
+        return result(err, null);
+    }
+}
 
 // Sort logic is based on the Stable Matching/ Gale–Shapley algorithm
 // https://www.geeksforgeeks.org/stable-marriage-problem/

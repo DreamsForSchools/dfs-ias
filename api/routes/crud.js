@@ -60,8 +60,8 @@ router.get('/class/:id', classController.findById);
 router.delete('/class/:id', classController.deleteById);
 router.put('/class/:id', classController.updateById)
 
-router.post('/sort', seasonAssignmentController.sort);
+router.get('/lock/:seasonId', seasonAssignmentController.getLockedInstructors);
 router.post('/lock', seasonAssignmentController.lock);
 router.delete('/unlock', seasonAssignmentController.unlock);
-
+router.post('/sort', seasonAssignmentController.sort);
 module.exports = router;
