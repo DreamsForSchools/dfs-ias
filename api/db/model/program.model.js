@@ -62,7 +62,7 @@ Program.aggregatedAll = async function (seasonId, result) {
                 "JOIN partners p2 on c.partnerId = p2.partnerId\n" +
                 "WHERE c.seasonId = ?", seasonId);
 
-        aggregatedClasses.forEach((e) => resultMap[e.partnerId].classes.push({
+        aggregatedClasses.forEach((e) => resultMap[e.programId].classes.push({
             classId: e.classId,
             timings: e.timings,
             instructorsNeeded: e.instructorsNeeded,
