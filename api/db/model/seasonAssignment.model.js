@@ -27,9 +27,27 @@ SeasonAssignment.unlock = async function (assignmentToDelete,result) {
     }
 }
 
+SeasonAssignment.getLockedInstructors = async function (seasonId,result) {
+    try{
+        let lockedInstructors = await db.query("SELECT * FROM seasonAssignments where seasonId = ?",seasonId);
+        let dataMap = {};
+
+        for(const instructor of lockedInstructors){
+            if(!dataMap[instructor.classId]) {
+                dataMap[instructor.classId] = [instructor.instructorId];
+            }else{
+                dataMap[instructor.classId].push(instructor.instructorId);
+            }
+        }
+        return result(null, dataMap);
+    } catch(err) {
+        return result(err, null);
+    }
+}
 
 // Sort logic is based on the Stable Matching/ Gale–Shapley algorithm
 // https://www.geeksforgeeks.org/stable-marriage-problem/
+// pairs classes and instructors together such that there are no combinations who would both rather have each other than their current partners
 SeasonAssignment.sort = async function (seasonId,result) {
     let sortResults;
 
@@ -131,8 +149,6 @@ async function executeSort(sortData) {
                                 assignC2I[classId].push(instructor.instructorId);
                             }
 
-
-
                             softAssignedCount++;
                             // delete previous instructor assignment from our mapping
                             assignC2I[currentSoftAssignedClassId].splice(assignC2I[currentSoftAssignedClassId].indexOf(instructor.instructorId), 1);
@@ -215,6 +231,10 @@ async function getSortData(currentSeasonId) {
             queryArray.push(classObj.timings[time].endTime);
         }
         fullQuery = fullQuery + sortQueryFragEnd;
+        console.log("---------------------------------------------------------------------------------------")
+        console.log("Full query to get all available instructors for a given class sorted by distance: ");
+        console.log(fullQuery);
+        console.log("---------------------------------------------------------------------------------------")
         queryArray.push((classObj.timings).length);
 
         // Will get available instructors in order of distance for a given class
