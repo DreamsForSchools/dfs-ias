@@ -11,29 +11,27 @@ import {GlobalContext} from "../../context/GlobalContextProvider";
 const Instructor = ({ instructor, classId, state }) => {
   const [showInstructorPopUp, setShowInstructorPopUp] = useState();
   const [lock, setLock] = useState(state && state["lockedInstructors"].includes(instructor.instructorId));
-  const {seasonSelected} = useContext(GlobalContext);
+  const {seasonSelected, setToastText} = useContext(GlobalContext);
   const axios = require('axios');
 
   const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
   const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
 
   const handleLock = () => {
-    console.log("locked")
     axios.post('/api/lock',
       {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
     ).then((response) => {
-      console.log(response);
+      setToastText({status: 'Success', message: `Locked ${instructor.firstName} ${instructor.lastName}`});
     }, (error) => {
       console.log(error);
     });
   }
 
   const handleUnlock = () => {
-    console.log("unlocked")
-    axios.delete('/api/unlock',
+    axios.put('/api/unlock',
       {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
     ).then((response) => {
-      console.log(response);
+      setToastText({status: 'Success', message: `Unlocked ${instructor.firstName} ${instructor.lastName}`});
     }, (error) => {
       console.log(error);
     });

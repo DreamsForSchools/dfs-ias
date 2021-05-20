@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import {loadAllSeason, loadProgramsAggregated, loadPartnersAggregated} from "../api";
+import {loadAllSeason, loadProgramsAggregated, loadPartnersAggregated, loadAllInstructors} from "../api";
 import { toast } from "react-toastify";
 import fire from "../fire";
 export const GlobalContext = createContext();
@@ -14,6 +14,7 @@ const GlobalContextProvider = ({ children }) => {
 
     const [programData, setProgramData] = useState(null);
     const [partnerData, setPartnerData] = useState(null);
+    const [instructorData, setInstructorData] = useState(null);
 
     const [toastShow, setToastShow] = useState(false);
     const [toastText, setToastText] = useState({status: '', message: ''});
@@ -31,6 +32,7 @@ const GlobalContextProvider = ({ children }) => {
             setSeasonSelected(null);
             setPartnerData(null);
             setProgramData(null);
+            setInstructorData(null);
         }
     }, [isLoggedIn])
 
@@ -40,6 +42,7 @@ const GlobalContextProvider = ({ children }) => {
             toast(`🙌 ${seasonSelected.name} season selected!`)
             fetchProgramsAggregatedForCurrentSeason();
             fetchPartnersAggregatedForCurrentSeason();
+            fetchAllInstructorData();
         }
     }, [seasonSelected])
 
@@ -68,6 +71,11 @@ const GlobalContextProvider = ({ children }) => {
         setPartnerData(allPartners);
     }
 
+    const fetchAllInstructorData = async () => {
+        const allInstructors = await loadAllInstructors();
+        setInstructorData(allInstructors);
+    }
+
     const setSeason = (id, map = seasonData) => {
         setSeasonSelected(map[id]);
     }
@@ -83,6 +91,7 @@ const GlobalContextProvider = ({ children }) => {
             seasonData, fetchAllSeasonData: fetchAllSeasonData,
             programData, fetchProgramsAggregatedForCurrentSeason: fetchProgramsAggregatedForCurrentSeason,
             partnerData, fetchPartnersAggregatedForCurrentSeason: fetchPartnersAggregatedForCurrentSeason,
+            instructorData, fetchAllInstructorData: fetchAllInstructorData,
             toastShow, setToastShow,
             toastText, setToastText
         }}>
