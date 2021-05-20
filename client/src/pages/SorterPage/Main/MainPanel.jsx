@@ -5,7 +5,7 @@ const MainPanel = ({ state }) => {
 
   return (
     <div className="main-panel">
-      { state["programs"].map(program => {             
+      { state["programs"].length > 0 ? state["programs"].map(program => {             
           return (
             <Program
               key={program.programId}
@@ -13,10 +13,11 @@ const MainPanel = ({ state }) => {
               name={program.name}
               color={program.color}
               classes={program.classes}
+              state={state}
             />
           )
-        })
-      }
+        }) 
+      : null }
     </div>
   );
 }

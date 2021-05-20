@@ -8,9 +8,9 @@ import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {GlobalContext} from "../../context/GlobalContextProvider";
 
 
-const Instructor = ({ instructor, classId }) => {
+const Instructor = ({ instructor, classId, state }) => {
   const [showInstructorPopUp, setShowInstructorPopUp] = useState();
-  const [lock, setLock] = useState(false);
+  const [lock, setLock] = useState(state && state["lockedInstructors"].includes(instructor.instructorId));
   const {seasonSelected} = useContext(GlobalContext);
   const axios = require('axios');
 
@@ -18,9 +18,9 @@ const Instructor = ({ instructor, classId }) => {
   const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
 
   const handleLock = () => {
-    console.log('lock')
+    console.log("locked")
     axios.post('/api/lock',
-      {seasonId: seasonSelected.seasonId, instructorId: instructor.id, classId: classId}
+      {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
     ).then((response) => {
       console.log(response);
     }, (error) => {
@@ -29,9 +29,9 @@ const Instructor = ({ instructor, classId }) => {
   }
 
   const handleUnlock = () => {
-    console.log('unlock')
+    console.log("unlocked")
     axios.delete('/api/unlock',
-      {seasonId: seasonSelected.seasonId, instructorId: instructor.id, classId: classId}
+      {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
     ).then((response) => {
       console.log(response);
     }, (error) => {
@@ -41,9 +41,11 @@ const Instructor = ({ instructor, classId }) => {
 
   return (
     <div className="instructor">
-      <div className="lock" onClick={() => { setLock(!lock) }}>
-        {lock ? <LockFill onClick={handleUnlock} className="icon" size={16} /> : <UnlockFill onClick={handleLock} className="icon" size={16} />}
-      </div>
+      { state &&
+        <div className="lock" onClick={() => { setLock(!lock) }}>
+          {lock ? <LockFill onClick={handleUnlock} className="icon" size={16} /> : <UnlockFill onClick={handleLock} className="icon" size={16} />}
+        </div>
+      }
       <div className="name">
         {instructor.firstName} {instructor.lastName}
       </div>

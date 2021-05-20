@@ -9,8 +9,26 @@ import {GlobalContext} from "../../context/GlobalContextProvider";
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
-    case "POPULATE": {
+    case "POPULATE_INSTRUCTORS": {
       draft["search"] = action.instructors;
+      break;
+    }
+    case "POPULATE_LOCKED": {
+      draft["lockedInstructors"] = action.lockedInstructors;
+      action.assignments.forEach(assignment => {
+        let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
+        draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] 
+          = action.instructors.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0);
+      }); 
+      break;
+    }
+    case "SORT": {
+      action.assignments.forEach(assignment => {
+        let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
+        draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
+          = action.instructors.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0);
+        draft["search"] = [];
+      }); 
       break;
     }
     case "MOVE": {
@@ -31,7 +49,6 @@ const dragReducer = produce((draft, action) => {
         const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.classId.toString() === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
         draft[action.to].splice(action.toIndex, 0, removed);
       } else {
-        console.log(action)
         let toProgram = action.state["programs"].find(program => program.programId.toString() === action.to.split("-")[0]);
         let fromProgram = action.state["programs"].find(program => program.programId.toString() === action.from.split("-")[0]);
         draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] 
@@ -39,15 +56,6 @@ const dragReducer = produce((draft, action) => {
         const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.classId.toString() === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
         draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
       }
-      break;
-    }
-    case "SORT": {
-      action.assignments.forEach(assignment => {
-        let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
-        draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] 
-          = action.instructors.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0);
-        draft["search"] = [];
-      }); 
       break;
     }
     case "FILTER": {
@@ -73,9 +81,11 @@ const Sorter = () => {
 
   const {seasonSelected, programData, setToastText} = useContext(GlobalContext);
   const [instructors, setInstructors] = useState([]);
+  const [lockedInstructors, setLockedInstructors] = useState([]);
   const [state, dispatch] = useReducer(dragReducer, {
-    "programs": Object.values(programData),
-    "search": [],
+    "programs": programData ? Object.values(programData) : [],
+    "search": instructors,
+    "lockedInstructors": lockedInstructors,
   });
   const axios = require('axios');
 
@@ -84,13 +94,25 @@ const Sorter = () => {
     fetchInstructors();
   }, []);
 
-  const fetchInstructors = async () => {
+  const fetchInstructors = () => {
     try {
       axios.get('/api/instructor').then((response) => {
         setInstructors(response.data)
         dispatch({
-          type: "POPULATE",
+          type: "POPULATE_INSTRUCTORS",
           instructors: response.data,
+        });
+      }, (error) => {
+        console.log(error);
+      });
+      axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
+        setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
+        dispatch({
+          type: "POPULATE_LOCKED",
+          assignments: Object.entries(response.data.data),
+          lockedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
+          instructors: instructors,
+          state: state,
         });
       }, (error) => {
         console.log(error);

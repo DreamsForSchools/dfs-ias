@@ -5,7 +5,7 @@ import Instructor from '../Instructor.jsx';
 import { CalendarWeek, People, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 
-const Class = ({ id, partner, time, instructorsNeeded, instructors, programId }) => {
+const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state }) => {
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
 
@@ -36,7 +36,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId })
                 return (
                   <Draggable
                     key={instructor.instructorId}
-                    draggableId={instructor.instructorId?.toString()}
+                    draggableId={instructor.instructorId.toString()}
                     index={index}
                   >
                     {(provided) => {
@@ -50,6 +50,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId })
                             key={instructor.instructorId}
                             instructor={instructor}
                             classId={id}
+                            state={state}
                           />
                         </div>
                       );
