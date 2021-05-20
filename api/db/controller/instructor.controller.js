@@ -36,6 +36,21 @@ exports.createCSV = function(req, res) {
     }
 };
 
+exports.allSeasonInstructors =  function(req, res) {
+    if (!req.params.seasonId) {
+        res.status(400).send({error: true, message: "No seasonId provided."});
+    } else {
+        let seasonId = req.params.seasonId;
+        Instructor.allSeasonInstructors(seasonId, function(err, data) {
+            if (err)
+                res.status(500).send({error: true, err});
+            else
+                res.send({error: false, message: "Instructors found for season.", data: data});
+        });
+    }
+};
+
+
 exports.findById = function(req, res) {
     Instructor.findById(req.params.id, function(err, instructor) {
         if (err) res.status(400).send({error:true, message: 'Failed find by id'});

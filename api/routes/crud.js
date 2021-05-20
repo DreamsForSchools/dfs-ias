@@ -32,6 +32,7 @@ router.delete('/season/:id', seasonController.deleteById);
 router.get('/season/:id', seasonController.findById);
 router.put('/season/:id', seasonController.updateById)
 
+router.get('/instructor/season/:seasonId', instructorController.allSeasonInstructors)
 router.post('/instructor', instructorController.createSingle);
 router.post('/instructor/CSV', instructorController.createCSV);
 router.get('/instructor', instructorController.findAll);
@@ -44,7 +45,6 @@ router.get('/instructor/availability', instructorAvailabilityController.findAll)
 router.get('/instructor/availability/:id', instructorAvailabilityController.findById);
 router.delete('/instructor/availability/:id', instructorAvailabilityController.deleteById);
 router.put('/instructor/availability/:id', instructorAvailabilityController.updateById);
-
 
 router.post('/location', locationController.create);
 router.get('/location', locationController.findAll);
@@ -66,4 +66,5 @@ router.get('/lock/:seasonId', seasonAssignmentController.getLockedInstructors);
 router.post('/lock', seasonAssignmentController.lock);
 router.put('/unlock', seasonAssignmentController.unlock);
 router.post('/sort', seasonAssignmentController.sort);
+
 module.exports = router;
