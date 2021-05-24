@@ -109,9 +109,7 @@ const InstructorPopUp = ({ instructor }) => {
               </div>
               <div className={"info"} style={{marginBottom: "1rem", textAlign: "left"}}>
                 <h6>Programming Languages</h6>
-                {instructor.programmingLanguages.map(e =>
-                  <h5>{e}</h5>
-                )}
+                <h5>{instructor.programmingLanguages}</h5>
               </div>
             </div>
           </Col>
@@ -134,17 +132,12 @@ const InstructorPopUp = ({ instructor }) => {
               </div>
               <div className={"info"} style={{marginBottom: "1rem", textAlign: "left"}}>
                 <h6>Languages Other Than English</h6>
-                {instructor.languages.map(e =>
-                  <h5>{e}</h5>
-                )}
+                <h5>{instructor.languages}</h5>
               </div>              
             </div>
           </Col>               
         </Row>
       </Modal.Body>
-      {/* <Modal.Footer>
-        <Button>Edit</Button>
-      </Modal.Footer> */}
     </>
   );
 }

@@ -13,20 +13,30 @@ const dragReducer = produce((draft, action) => {
       draft["lockedInstructors"] = action.lockedInstructors;
       action.assignments.forEach(assignment => {
         let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
-        draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] 
-          = action.instructors.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0);
-        // const [removed] = draft["search"].splice(action.fromIndex, 1);
-        // draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
+        action.instructors?.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0).forEach(
+          instructor => {
+            draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
+             = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
+            draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].splice(0, 0, instructor);                      
+          }
+        )
       }); 
+      draft["search"] = action.state["search"]?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId))
       break;
     }
     case "SORT": {
       action.assignments.forEach(assignment => {
         let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
-        draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
-          = action.instructors.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0);
-        draft["search"] = [];
+        action.instructors?.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0).forEach(
+          instructor => {
+            draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
+             = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
+            draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
+              .splice(draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].length, 0, instructor);         
+          }
+        )
       }); 
+      draft["search"] = [];
       break;
     }
     case "MOVE": {
@@ -77,7 +87,7 @@ const Sorter = () => {
     };
   }
 
-  const {seasonSelected, programData, instructorData, setToastText} = useContext(GlobalContext);
+  const {seasonSelected, programData, instructorData} = useContext(GlobalContext);
   const [lockedInstructors, setLockedInstructors] = useState([]);
   const [state, dispatch] = useReducer(dragReducer, {
     "programs": programData ? Object.values(programData) : [],
@@ -92,22 +102,18 @@ const Sorter = () => {
   }, []);
 
   const fetchInstructors = () => {
-    try {
-      axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
-        setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
-        dispatch({
-          type: "POPULATE",
-          assignments: Object.entries(response.data.data),
-          lockedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
-          instructors: instructorData,
-          state: state,
-        });
-      }, (error) => {
-        console.log(error);
+    axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
+      setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
+      dispatch({
+        type: "POPULATE",
+        assignments: Object.entries(response.data.data),
+        lockedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
+        instructors: instructorData,
+        state: state,
       });
-    } catch (e) {
-      setToastText({status: 'Failed', message: `${e.response}`});
-    }
+    }, (error) => {
+      console.log(error);
+    });
   }
 
   const handleAutoAssign = () => {

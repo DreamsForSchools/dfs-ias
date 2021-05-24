@@ -18,6 +18,7 @@ const Instructor = ({ instructor, classId, state }) => {
   const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
 
   const handleLock = () => {
+    setLock(true);
     axios.post('/api/lock',
       {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
     ).then((response) => {
@@ -28,6 +29,7 @@ const Instructor = ({ instructor, classId, state }) => {
   }
 
   const handleUnlock = () => {
+    setLock(false);
     axios.put('/api/unlock',
       {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
     ).then((response) => {
@@ -40,7 +42,7 @@ const Instructor = ({ instructor, classId, state }) => {
   return (
     <div className="instructor">
       { state &&
-        <div className="lock" onClick={() => { setLock(!lock) }}>
+        <div className="lock">
           {lock ? <LockFill onClick={handleUnlock} className="icon" size={16} /> : <UnlockFill onClick={handleLock} className="icon" size={16} />}
         </div>
       }
