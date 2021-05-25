@@ -11,16 +11,20 @@ import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {Modal} from "react-bootstrap";
 import {parseCSV} from "../../util/csvParse.js";
 import {GlobalContext} from "../../context/GlobalContextProvider";
+import {toast} from 'react-toastify';
+import Lottie from "lottie-react";
+import csvLoadingAnimation from '../../assets/idea-into-book-machine.json';
 
 
 function Instructors() {
-    const {seasonNameSelected, seasonIdSelected} = useContext(GlobalContext);
+    const {seasonNameSelected, seasonIdSelected, seasonSelected} = useContext(GlobalContext);
 
     const [instructorFocus, setInstructorFocus] = useState();
     const [instructorData, setInstructorData] = useState(null);
     const [showInputModal, setShowInputModal] = useState();
     const [addInstructorMethod, setAddInstructorMethod] = useState(null);
     const [csvHighlighted, setCsvHighlighted] = React.useState(false);
+    const [csvAnimation, setCsvAnimation] = React.useState(false);
 
     const handleCloseInputModal = () => {
         setShowInputModal(false);
@@ -88,16 +92,16 @@ function Instructors() {
                 </>
             )
             }
-            { addInstructorMethod === 'CSV' && (
+            {addInstructorMethod === 'CSV' && (
                 <>
                     <Modal.Body>
                         <div
                             style={{
                                 borderRadius: '6px',
-                                border: '4px dashed #B5B8BF',
+                                border: csvAnimation ?  '':'4px dashed #B5B8BF',
                                 backgroundColor: csvHighlighted ? '#F5F7FB' : '#FFFFFF',
-                                height: '300px',
-                                width: '300px',
+                                height: csvAnimation ?  '':'300px',
+                                width: csvAnimation ?  '':'300px',
                                 textAlign: 'center',
                                 margin: '40px 230px 0px',
                                 hover: 'scale(1.1)'
@@ -114,22 +118,33 @@ function Instructors() {
                             onDrop={(e) => {
                                 e.preventDefault();
                                 setCsvHighlighted(false);
+                                setCsvAnimation(true);
 
                                 Array.from(e.dataTransfer.files)
                                     .forEach(async (file) => {
                                         const text = await file.text();
-                                        console.log(text);
-                                        let instructors = parseCSV(text, instructorData, setInstructorData, seasonIdSelected);
-                                        console.log(instructors);
-                                        // setInstructorData([...instructors, ...instructorData])
-                                        setShowInputModal(false);
+                                        // console.log(text);
+                                        let result = await parseCSV(text, instructorData, setInstructorData, seasonSelected.seasonId);
+                                        console.log(result);
+                                        if (result.error) {
+                                            toast(`❌ Error parsing csv, please check for empty columns or rows.`);
+                                        } else {
+                                            setShowInputModal(false);
+                                            toast(`🙌 Csv file parsed successfully!`);
+                                            setCsvAnimation(false);
+                                        }
                                     });
                             }}
                         >
-                            <div style={{ marginTop: '70px'}}>
-                                <CloudUploadFill size={95} color={'#0099FF'}/>
-                                <h5 style={{marginTop: '1rem'}}>Drag and Drop .CSV</h5>
-                            </div>
+                            {csvAnimation ? (<Lottie style={{
+                                width: '500px',
+                                height: '300px',
+                                marginLeft:'-100px'
+                            }} animationData={csvLoadingAnimation}/>) : (
+                                <div style={{marginTop: '70px'}}>
+                                    <CloudUploadFill size={95} color={'#0099FF'}/>
+                                    <h5 style={{marginTop: '1rem'}}>Drag and Drop .CSV</h5>
+                                </div>)}
 
                         </div>
                     </Modal.Body>
@@ -139,12 +154,13 @@ function Instructors() {
                 </>
             )
             }
-            { addInstructorMethod === 'MANUAL' && (
+            {addInstructorMethod === 'MANUAL' && (
                 <>
                     <AddInstructorManuallyModal handleSubmit={handleAddNewInstructorManually}/>
                 </>
             )
             }
+
         </>
     );
 
@@ -186,7 +202,8 @@ function Instructors() {
                                     </Popover>
                                 }
                             >
-                                <Button variant="secondary" style={{marginLeft: '2rem'}}><Link45deg style={{marginRight: '0.5rem'}}/>Self-Onboarding</Button>
+                                <Button variant="secondary" style={{marginLeft: '2rem'}}><Link45deg
+                                    style={{marginRight: '0.5rem'}}/>Self-Onboarding</Button>
                             </OverlayTrigger>
                         </InputGroup>
                     </div>
@@ -204,7 +221,8 @@ function Instructors() {
                     />
                 </SideInfoWrapper>
 
-                <Modal size="lg" show={showInputModal} onHide={handleCloseInputModal} onExited={handleAddInstructorReset}>
+                <Modal size="lg" show={showInputModal} onHide={handleCloseInputModal}
+                       onExited={handleAddInstructorReset}>
                     {renderModal}
                 </Modal>
             </Page>
