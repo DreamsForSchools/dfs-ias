@@ -36,6 +36,7 @@ const PartnerSideInfo = (props) => {
                     {/*<Button variant="info">Edit Partner*/}
                     {/*    <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>*/}
                     {/*</Button>*/}
+                    <Badge style={{marginTop: '1rem'}} variant="secondary">{partner.district}</Badge>
                     <div style={{margin: "2rem 0"}}>
                         <PartnerSymbol>{partnerSymbols[partner.partnerType]}️</PartnerSymbol>
                     </div>
@@ -45,7 +46,7 @@ const PartnerSideInfo = (props) => {
                     <Subtitle>
                         <GeoAltFill/><span style={{marginLeft: '1rem'}}>{partner.street}, {partner.city}, {partner.state} {partner.zip}</span>
                     </Subtitle>
-                    <Button variant="info" onClick={() => props.openModal('ProgramToPartner')}>Add Classes
+                    <Button variant="info" onClick={() => props.openModal('ClassToPartner')}>Add Classes
                         <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
                     </Button>
                     { partner.classes.map((e, idx) =>
@@ -54,7 +55,12 @@ const PartnerSideInfo = (props) => {
                             <Text>
                                 <PeopleFill/><span style={{marginLeft: '1rem'}}>{e.instructorsNeeded} instructors needed</span>
                             </Text>
-                            <Text><CalendarWeek/><span style={{marginLeft: '1rem'}}>{formatAvailability(e.timings)}</span></Text>
+                            <Text><CalendarWeek/>
+
+                                { formatAvailability(e.timings).map((e, idx) => {
+                                    return (<><span key={idx} style={{marginLeft: '1rem'}}>{e}</span><br/></>)
+                                })}
+                                </Text>
                         </PartnerProgramSection>
                     )}
                 </div>

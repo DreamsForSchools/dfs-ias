@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../db.config');
+var db = require('../promiseDb.config');
 
 var Class = function(mClass) {
     this.instructorsNeeded = mClass.instructorsNeeded;
@@ -10,11 +10,15 @@ var Class = function(mClass) {
     this.timings = mClass.timings;
 };
 
-Class.create = function (mClass, result) {
-    db.query("INSERT INTO classes (instructorsNeeded, seasonId, partnerId, programId, timings) VALUES (?,?,?,?,?)",[mClass.instructorsNeeded, mClass.seasonId, mClass.partnerId, mClass.programId, JSON.stringify(mClass.timings)], function (err, res){
-        if (err) result(err, null);
-        else result(null, res);
-    })
+Class.create =  async function (mClass, result) {
+    try {
+        const res = await db.query(
+            "INSERT INTO classes (instructorsNeeded, seasonId, partnerId, programId, timings) VALUES (?,?,?,?,?)",
+            [mClass.instructorsNeeded, mClass.seasonId, mClass.partnerId, mClass.programId, JSON.stringify(mClass.timings)]);
+        result(null, res);
+    } catch (e) {
+        return result(e, null);
+    }
 }
 
 Class.findAll = function (result) {

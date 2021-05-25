@@ -4,7 +4,7 @@ const programController = require('../db/controller/program.controller')
 const partnerController = require('../db/controller/partner.controller')
 const seasonController = require('../db/controller/season.controller')
 const instructorController = require('../db/controller/instructor.controller')
-const instructorAvailabilityController = require('../db/controller/instructoravailability.controller')
+// const instructorAvailabilityController = require('../db/controller/instructoravailability.controller')
 const locationController = require('../db/controller/locationCache.controller')
 const classController = require('../db/controller/class.controller')
 const seasonAssignmentController = require('../db/controller/seasonAssignment.controller')
@@ -40,11 +40,11 @@ router.get('/instructor/:id', instructorController.findById);
 router.delete('/instructor/:id', instructorController.deleteById);
 router.put('/instructor/:id', instructorController.updateById);
 
-router.post('/instructor/availability', instructorAvailabilityController.create);
-router.get('/instructor/availability', instructorAvailabilityController.findAll);
-router.get('/instructor/availability/:id', instructorAvailabilityController.findById);
-router.delete('/instructor/availability/:id', instructorAvailabilityController.deleteById);
-router.put('/instructor/availability/:id', instructorAvailabilityController.updateById);
+// router.post('/instructor/availability', instructorAvailabilityController.create);
+// router.get('/instructor/availability', instructorAvailabilityController.findAll);
+// router.get('/instructor/availability/:id', instructorAvailabilityController.findById);
+// router.delete('/instructor/availability/:id', instructorAvailabilityController.deleteById);
+// router.put('/instructor/availability/:id', instructorAvailabilityController.updateById);
 
 router.post('/location', locationController.create);
 router.get('/location', locationController.findAll);

@@ -1,8 +1,15 @@
 import axios from 'axios';
 import {toast} from "react-toastify";
 
-export const savePartner = (partnerData) => {
-    return axios.post('/api/partner', partnerData);
+export const savePartner = async (partnerData) => {
+    try {
+        await axios.post('/api/partner', partnerData);
+        toast(`👍 ${partnerData.name} added successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
+    // return axios.post('/api/partner', partnerData);
 }
 
 export const loadPartnersAggregated =  async (seasonId) => {

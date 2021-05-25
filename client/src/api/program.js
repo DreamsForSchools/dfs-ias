@@ -1,8 +1,14 @@
 import axios from 'axios';
 import {toast} from "react-toastify";
 
-export const saveProgram = (programData) => {
-    return axios.post('/api/program', programData);
+export const saveProgram = async (programData) => {
+    try {
+        await axios.post('/api/program', programData);
+        toast(`👍 ${programData.name} added successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
 }
 
 export const loadProgramsAggregated =  async (seasonId) => {

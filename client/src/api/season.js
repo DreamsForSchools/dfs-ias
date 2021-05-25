@@ -16,7 +16,7 @@ export const saveSeason = async (seasonData) => {
         await axios.post('/api/season', seasonData);
         toast(`👍 ${seasonData.name} added successfully!`)
     } catch (e) {
-        console.log()
+        console.log(e);
         toast(`❌ ${e}`);
     }
 }

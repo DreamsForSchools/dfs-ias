@@ -1,5 +1,12 @@
 import axios from 'axios';
+import {toast} from "react-toastify";
 
-export const saveClass = (classData) => {
-    return axios.post('/api/class', classData);
+export const saveClass = async (classData) => {
+    try {
+        await axios.post('/api/class', classData);
+        toast(`👍 Class added successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
 }

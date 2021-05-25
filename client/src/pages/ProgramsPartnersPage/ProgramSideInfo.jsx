@@ -50,15 +50,24 @@ const ProgramSideInfo = (props) => {
                     <Subtitle>
                         <PeopleFill/><span style={{marginLeft: '1rem'}}>{totalAssigned()} instructors</span>
                     </Subtitle>
-                    <Button variant="info" onClick={() => props.openModal('PartnerToProgram')}>Add Classes
+                    <Button variant="info" onClick={() => props.openModal('ClassToProgram')}>Add Classes
                         <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
                     </Button>
                     { program.classes.map((e, idx) =>
                         <ProgramSection key={idx}>
                             <Subtitle>{partnerSymbols[e.partner.type]} {e.partner.name}</Subtitle>
-                            <Text><CalendarWeek/><span style={{marginLeft: '1rem'}}>{formatAvailability(e.timings)}</span></Text>
                             <Text>
                                 <PeopleFill/><span style={{marginLeft: '1rem'}}>{e.instructorsNeeded} instructors needed</span>
+                            </Text>
+                            <Text><CalendarWeek/>
+                                { formatAvailability(e.timings).map((e, idx) => {
+                                    return (
+                                        <>
+                                            <span key={idx} style={{marginLeft: '1rem'}}>
+                                                {e}
+                                            </span><br/>
+                                        </>)
+                                })}
                             </Text>
                             <Badge style={{marginTop: '1rem'}} variant="secondary">{e.partner.district}</Badge>
                         </ProgramSection>

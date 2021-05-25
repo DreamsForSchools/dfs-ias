@@ -8,11 +8,13 @@ var Program = function(program) {
     this.logo = program.logo;
 };
 
-Program.create = function (newProgram, result) {
-    db.query("INSERT INTO programs set ?", newProgram, function (err, res){
-        if (err) result(err, null);
-        else result(null, res);
-    })
+Program.create = async function (newProgram, result) {
+    try {
+        const res = await db.query("INSERT INTO programs set ?", newProgram);
+        result(null, res);
+    } catch (e) {
+        return result(e, null);
+    }
 }
 
 Program.findAll = function (result) {

@@ -5,7 +5,7 @@ import {Select} from '../../design-system/form';
 import { Page, SideInfoWrapper, Wrapper, GalleryWrapper } from '../../design-system/layout/Styled';
 import AddNewProgramModal from '../../components/AddNewProgramModal';
 import AddNewPartnerModal from '../../components/AddNewPartnerModal';
-import AddPartnersToProgramModal from "../../components/AddPartnerToProgramModal";
+import AddClassToProgramModal from "../../components/AddClassToProgramModal";
 import {saveProgram, loadPrograms, savePartner} from '../../api';
 import {saveClass} from "../../api/class";
 import { PartnerCard, ProgramCard } from '../../design-system/components/Cards';
@@ -18,6 +18,7 @@ import PartnerSideInfo from "./PartnerSideInfo";
 import ProgramSideInfo from "./ProgramSideInfo";
 import {Button, FormControl, InputGroup, Modal} from "react-bootstrap";
 import {Filter, PlusCircle, Search} from "react-bootstrap-icons";
+import AddClassToPartnerModal from "../../components/AddClassToPartnerModal";
 
 let ProgramsPartners;
 export default ProgramsPartners = () => {
@@ -35,6 +36,7 @@ export default ProgramsPartners = () => {
     const [showInputModal, setShowInputModal] = useState(false);
 
     const handleCloseInputModal = () => {
+        console.log('hey you');
         setModalType(null);
         setShowInputModal(false);
     }
@@ -78,38 +80,21 @@ export default ProgramsPartners = () => {
     }
 
     const handleSubmit = async (type, data) => {
-        try {
-            let request;
-            switch(type) {
-                case 'PROGRAM':
-                    request = await saveProgram(data);
-                    if (request.status === StatusCodes.OK) {
-                        setToastText({status: 'Success', message: `${request.data.message}`});
-                        handleCloseInputModal();
-                        // fetchPrograms();
-                    }
-                    break;
-                case 'PARTNER':
-                    request = await savePartner(data);
-                    if (request.status === StatusCodes.OK) {
-                        setToastText({status: 'Success', message: `${request.data.message}`});
-                        handleCloseInputModal();
-                        // fetchPartners();
-                    }
-                    break;
-                case 'CLASS':
-                    request = await saveClass(data);
-                    if (request.status === StatusCodes.OK) {
-                        setToastText({status: 'Success', message: `${request.data.message}`});
-                        handleCloseInputModal();
-                    }
-                    break;
-            }
-
-        } catch (e) {
-            setToastText({status: 'Failed', message: `${e.response.data.message} -- Program added unsuccessfully.`});
-            handleCloseInputModal();
+        switch(type) {
+            case 'PROGRAM':
+                await saveProgram(data);
+                break;
+            case 'PARTNER':
+                await savePartner(data);
+                break;
+            case 'CLASS':
+                await saveClass(data);
+                break;
         }
+
+        handleCloseInputModal();
+        fetchPartnersAggregatedForCurrentSeason();
+        fetchProgramsAggregatedForCurrentSeason();
     }
 
     const renderPrograms = () => {
@@ -176,8 +161,8 @@ export default ProgramsPartners = () => {
             <Modal size="lg" show={showInputModal && modalType !== null} onHide={handleCloseInputModal}>
                 { modalType === "Programs" && <AddNewProgramModal handleSubmit={handleSubmit}/>}
                 { modalType === "Partners" && <AddNewPartnerModal handleSubmit={handleSubmit}/>}
-                { modalType === "PartnerToProgram" && <AddPartnersToProgramModal handleSubmit={handleSubmit} programContext={dataIdFocus}/>}
-                {/*{ modalType === "ProgramToPartner" && <AddNewPartnerModal handleSubmit={handleSubmit}/>}*/}
+                { modalType === "ClassToProgram" && <AddClassToProgramModal handleSubmit={handleSubmit} programContext={programData[dataIdFocus]}/>}
+                { modalType === "ClassToPartner" && <AddClassToPartnerModal handleSubmit={handleSubmit} partnerContext={partnerData[dataIdFocus]}/>}
             </Modal>
         </Page>
     );
