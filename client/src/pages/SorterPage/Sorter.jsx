@@ -6,6 +6,8 @@ import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
 import { PROGRAMS as programs_data }  from '../../data/PROGRAMS';
 import {GlobalContext} from "../../context/GlobalContextProvider";
+import { Lottie } from "lottie-react";
+import csvLoadingAnimation from '../../assets/idea-into-book-machine.json';
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
@@ -21,7 +23,7 @@ const dragReducer = produce((draft, action) => {
           }
         )
       }); 
-      draft["search"] = action.state["search"]?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId))
+      draft["search"] = action.state["search"]?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId));
       break;
     }
     case "SORT": {
@@ -36,7 +38,7 @@ const dragReducer = produce((draft, action) => {
           }
         )
       }); 
-      draft["search"] = [];
+      draft["search"] = action.state["search"]?.filter(instructor => !action.assignedInstructors.includes(instructor.instructorId));
       break;
     }
     case "MOVE": {
@@ -46,13 +48,13 @@ const dragReducer = produce((draft, action) => {
         const [removed] = draft[action.from].splice(action.fromIndex, 1);
         draft[action.to].splice(action.toIndex, 0, removed); 
       } else if ( action.from === "search" && action.to !== "search") {
-        let toProgram = action.state["programs"].find(program => program.programId === action.to.split("-")[0]);
+        let toProgram = action.state["programs"].find(program => program.programId.toString() === action.to.split("-")[0]);
         draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] 
           = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] || [];
         const [removed] = draft[action.from].splice(action.fromIndex, 1);
         draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
       } else if ( action.from !== "search" && action.to === "search") {
-        let fromProgram = action.state["programs"].find(program => program.programId === action.from.split("-")[0]);
+        let fromProgram = action.state["programs"].find(program => program.programId.toString() === action.from.split("-")[0]);
         draft[action.to] = draft[action.to] || [];
         const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.classId.toString() === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
         draft[action.to].splice(action.toIndex, 0, removed);
@@ -89,6 +91,7 @@ const Sorter = () => {
 
   const {seasonSelected, programData, instructorData} = useContext(GlobalContext);
   const [lockedInstructors, setLockedInstructors] = useState([]);
+  const [showLoadingAnimation, setShowLoadingAnimation] = useState();
   const [state, dispatch] = useReducer(dragReducer, {
     "programs": programData ? Object.values(programData) : [],
     "search": instructorData,
@@ -123,6 +126,7 @@ const Sorter = () => {
       dispatch({
         type: "SORT",
         assignments: Object.entries(response.data.data),
+        assignedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
         instructors: instructorData,
         state: state,
       });
