@@ -6,8 +6,6 @@ import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
 import { PROGRAMS as programs_data }  from '../../data/PROGRAMS';
 import {GlobalContext} from "../../context/GlobalContextProvider";
-import { Lottie } from "lottie-react";
-import csvLoadingAnimation from '../../assets/idea-into-book-machine.json';
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
@@ -119,10 +117,11 @@ const Sorter = () => {
     });
   }
 
-  const handleAutoAssign = () => {
-    axios.post('/api/sort',
-      {seasonId: seasonSelected.seasonId}
-    ).then((response) => {
+  const handleAutoAssign = async () => {
+    try {
+      let response = await axios.post('/api/sort',
+          {seasonId: seasonSelected.seasonId}
+      );
       dispatch({
         type: "SORT",
         assignments: Object.entries(response.data.data),
@@ -130,9 +129,12 @@ const Sorter = () => {
         instructors: instructorData,
         state: state,
       });
-    }, (error) => {
-      console.log(error);
-    });
+    } catch (e) {
+      console.log("Error in sort: ");
+      console.log(e);
+    }
+
+
   }
 
   const handleFilter = (instructors) => {
