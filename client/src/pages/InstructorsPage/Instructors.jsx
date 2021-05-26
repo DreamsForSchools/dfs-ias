@@ -55,7 +55,11 @@ function Instructors() {
     const renderModal = (
         <>
             <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
-                <Modal.Title>Add Instructor</Modal.Title>
+                {csvAnimation ?
+                    (<Modal.Title style={{fontSize: '24px'}}>Parsing CSV data. Please
+                        wait... </Modal.Title>) : (<Modal.Title>Add Instructor</Modal.Title>)}
+
+
             </Modal.Header>
             {!addInstructorMethod && (
                 <>
@@ -98,10 +102,10 @@ function Instructors() {
                         <div
                             style={{
                                 borderRadius: '6px',
-                                border: csvAnimation ?  '':'4px dashed #B5B8BF',
+                                border: csvAnimation ? '' : '4px dashed #B5B8BF',
                                 backgroundColor: csvHighlighted ? '#F5F7FB' : '#FFFFFF',
-                                height: csvAnimation ?  '':'300px',
-                                width: csvAnimation ?  '':'300px',
+                                height: csvAnimation ? '' : '300px',
+                                width: csvAnimation ? '' : '300px',
                                 textAlign: 'center',
                                 margin: '40px 230px 0px',
                                 hover: 'scale(1.1)'
@@ -136,15 +140,22 @@ function Instructors() {
                                     });
                             }}
                         >
-                            {csvAnimation ? (<Lottie style={{
-                                width: '500px',
-                                height: '300px',
-                                marginLeft:'-100px'
-                            }} animationData={csvLoadingAnimation}/>) : (
-                                <div style={{marginTop: '70px'}}>
-                                    <CloudUploadFill size={95} color={'#0099FF'}/>
-                                    <h5 style={{marginTop: '1rem'}}>Drag and Drop .CSV</h5>
-                                </div>)}
+                            {csvAnimation ?
+                                (
+                                    <div>
+                                        <Lottie style={{
+                                            width: '700px',
+                                            height: '300px',
+                                            marginLeft: '-210px'
+                                        }} animationData={csvLoadingAnimation}/>
+                                    </div>
+                                ) :
+                                (
+                                    <div style={{marginTop: '70px'}}>
+                                        <CloudUploadFill size={95} color={'#0099FF'}/>
+                                        <h5 style={{marginTop: '1rem'}}>Drag and Drop .CSV</h5>
+                                    </div>
+                                )}
 
                         </div>
                     </Modal.Body>
