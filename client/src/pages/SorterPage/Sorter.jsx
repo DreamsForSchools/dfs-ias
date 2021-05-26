@@ -144,6 +144,13 @@ const Sorter = () => {
     });
   }
 
+  const handleSearch = (instructors) => {
+    dispatch({
+      type: "FILTER",
+      filteredInstructors: instructors,
+    });
+  }
+
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
       if (!result.destination) {
@@ -172,7 +179,9 @@ const Sorter = () => {
           <Sidebar 
             state={state} 
             handleFilter={handleFilter}
+            handleSearch={handleSearch}
             handleAutoAssign={handleAutoAssign}
+            fetchInstructors={fetchInstructors}
           />
         </div>
       </DragDropContext>

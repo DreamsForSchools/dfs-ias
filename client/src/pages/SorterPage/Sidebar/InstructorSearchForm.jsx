@@ -6,12 +6,13 @@ import Lottie from "lottie-react";
 import sortLoadingAnimation from '../../../assets/triangle-loading.json';
 
 
-const InstructorSearchForm = ({setIsLoading, state, handleFilter, handleAutoAssign}) => {
+const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, handleAutoAssign}) => {
     const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
     const [checkedItems, setCheckedItems] = useState();
     const [hasCar, setHasCar] = useState();
     const [showFilter, setShowFilter] = useState(false);
     const [sortAnimation, setSortAnimation] = React.useState(false);
+    const [searchText, setSearchText] = React.useState("");
 
     const availabilityOptions = [
         {value: "Monday"},
@@ -38,11 +39,25 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter, handleAutoAssi
     ]
 
     const onSearchSubmit = async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         // setIsLoading(true);
         // let result = getRandomInstructorSet(10);
-        setIsLoading(false);
+        // setIsLoading(false);
         // setSearchedInstructors(result);
+
+        if(!searchText || searchText.trim()  === ""){
+            handleSearch(state["search"]);
+        }else{
+            const filteredInstructors = state["search"].filter(instructor => {
+                let fullName = instructor.firstName + " " + instructor.lastName;
+                return(
+                    fullName.includes(searchText.trim()) || instructor.email.includes(searchText.trim())
+                    || instructor.university.includes(searchText.trim()) || instructor.firstPref.includes(searchText.trim())
+                );
+            });
+            handleSearch(filteredInstructors);
+        }
+
     }
 
     const handleShowFilter = () => setShowFilter(true);
@@ -64,6 +79,13 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter, handleAutoAssi
         setHasCar(true ? e.target.id === "Yes" && e.target.checked : false)
     }
 
+    const handleSearchChange = e => {
+        if(e.key === 'Enter'){
+            onSearchSubmit();
+        }
+        setSearchText(e.target.value);
+    }
+
     const handleCheckboxChange = e => {
         console.log(e.target.id)
         console.log(e.target.checked)
@@ -83,6 +105,9 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter, handleAutoAssi
                     placeholder="Search"
                     aria-label="Search"
                     className="search-bar"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    onKeyPress={handleSearchChange}
                 />
                 <InputGroup.Append>
                     <Button variant="primary" className="search-btn" onClick={onSearchSubmit}><Search/></Button>
