@@ -3,7 +3,7 @@ import "./Sidebar.scss";
 import InstructorSearchForm from './InstructorSearchForm.jsx';
 import SearchResult from './SearchResult.jsx';
 
-const Sidebar = ({ state, handleFilter, handleSearch, handleAutoAssign, fetchInstructors}) => {
+const Sidebar = ({ state, handleFilter, handleSearch, handleAutoAssign, instructorData}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -15,7 +15,7 @@ const Sidebar = ({ state, handleFilter, handleSearch, handleAutoAssign, fetchIns
         handleFilter={handleFilter}
         handleSearch={handleSearch}
         handleAutoAssign={handleAutoAssign}
-        fetchInstructors={fetchInstructors}
+        instructorData={instructorData}
       />
       <SearchResult 
         isLoading={isLoading}

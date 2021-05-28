@@ -6,7 +6,7 @@ import Lottie from "lottie-react";
 import sortLoadingAnimation from '../../../assets/triangle-loading.json';
 
 
-const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, handleAutoAssign}) => {
+const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, handleAutoAssign, instructorData}) => {
     const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
     const [checkedItems, setCheckedItems] = useState();
     const [hasCar, setHasCar] = useState();
@@ -45,14 +45,16 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
         // setIsLoading(false);
         // setSearchedInstructors(result);
 
-        if(!searchText || searchText.trim()  === ""){
-            handleSearch(state["search"]);
+        let formattedText = searchText.trim().toLowerCase();
+
+        if(!formattedText || formattedText  === ""){
+            handleSearch(instructorData);
         }else{
-            const filteredInstructors = state["search"].filter(instructor => {
+            const filteredInstructors = instructorData.filter(instructor => {
                 let fullName = instructor.firstName + " " + instructor.lastName;
                 return(
-                    fullName.includes(searchText.trim()) || instructor.email.includes(searchText.trim())
-                    || instructor.university.includes(searchText.trim()) || instructor.firstPref.includes(searchText.trim())
+                    fullName.toLowerCase().includes(formattedText) || instructor.email.toLowerCase().includes(formattedText)
+                    || instructor.university.toLowerCase().includes(formattedText) || instructor.firstPref.toLowerCase().includes(formattedText)
                 );
             });
             handleSearch(filteredInstructors);

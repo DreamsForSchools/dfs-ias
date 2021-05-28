@@ -181,7 +181,7 @@ const Sorter = () => {
             handleFilter={handleFilter}
             handleSearch={handleSearch}
             handleAutoAssign={handleAutoAssign}
-            fetchInstructors={fetchInstructors}
+            instructorData={instructorData}
           />
         </div>
       </DragDropContext>
