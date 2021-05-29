@@ -6,7 +6,7 @@ import Lottie from "lottie-react";
 import sortLoadingAnimation from '../../../assets/triangle-loading.json';
 
 
-const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, handleAutoAssign, instructorData}) => {
+const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, handleAutoAssign, instructorData, lockedInstructors}) => {
     const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
     const [checkedItems, setCheckedItems] = useState();
     const [hasCar, setHasCar] = useState();
@@ -46,11 +46,16 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
         // setSearchedInstructors(result);
 
         let formattedText = searchText.trim().toLowerCase();
+        let unassignedInstructors = instructorData.filter(instructor => {
+            return(
+                !lockedInstructors.includes(instructor.instructorId)
+            );
+        });
 
         if(!formattedText || formattedText  === ""){
-            handleSearch(instructorData);
+            handleSearch(unassignedInstructors);
         }else{
-            const filteredInstructors = instructorData.filter(instructor => {
+            const filteredInstructors = unassignedInstructors.filter(instructor => {
                 let fullName = instructor.firstName + " " + instructor.lastName;
                 return(
                     fullName.toLowerCase().includes(formattedText) || instructor.email.toLowerCase().includes(formattedText)

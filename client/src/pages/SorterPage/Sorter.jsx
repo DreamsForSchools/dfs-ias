@@ -182,6 +182,7 @@ const Sorter = () => {
             handleSearch={handleSearch}
             handleAutoAssign={handleAutoAssign}
             instructorData={instructorData}
+            lockedInstructors={lockedInstructors}
           />
         </div>
       </DragDropContext>
