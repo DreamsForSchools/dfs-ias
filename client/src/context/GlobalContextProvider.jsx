@@ -72,7 +72,7 @@ const GlobalContextProvider = ({ children }) => {
     }
 
     const fetchAllInstructorData = async () => {
-        const allInstructors = await loadAllInstructors();
+        const allInstructors = await loadAllInstructors(seasonSelected.seasonId);
         setInstructorData(allInstructors);
     }
 

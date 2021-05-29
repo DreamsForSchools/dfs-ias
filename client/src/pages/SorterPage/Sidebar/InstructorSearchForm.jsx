@@ -6,36 +6,45 @@ import Lottie from "lottie-react";
 import sortLoadingAnimation from '../../../assets/triangle-loading.json';
 
 
-const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, handleAutoAssign, instructorData, lockedInstructors}) => {
+const InstructorSearchForm = ({
+                                  setIsLoading,
+                                  state,
+                                  handleFilter,
+                                  handleSearch,
+                                  handleAutoAssign,
+                                  instructorData,
+                                  lockedInstructors
+                              }) => {
     const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
     const [checkedItems, setCheckedItems] = useState();
     const [hasCar, setHasCar] = useState();
     const [showFilter, setShowFilter] = useState(false);
     const [sortAnimation, setSortAnimation] = React.useState(false);
     const [searchText, setSearchText] = React.useState("");
+    const [selectedFilters, setSelectedFilters] = React.useState("");
 
     const availabilityOptions = [
-        {value: "Monday"},
-        {value: "Tuesday"},
-        {value: "Wednesday"},
-        {value: "Thursday"},
-        {value: "Friday"},
+        {value: "Monday", name: "day:1"},
+        {value: "Tuesday", name: "day:2"},
+        {value: "Wednesday", name: "day:3"},
+        {value: "Thursday", name: "day:4"},
+        {value: "Friday", name: "day:5"},
     ]
 
     const preferenceOptions = [
-        {value: "AppJam"},
-        {value: "WebJam"},
-        {value: "LESTEM"},
-        {value: "Scratch"},
-        {value: "Engineering Inventors"},
+        {value: "AppJam", name: "pref:Mobile App Development (AppJam+)"},
+        {value: "WebJam", name: "pref:Website Development"},
+        {value: "LESTEM", name: "pref:Let's Explore STEM"},
+        {value: "Scratch", name: "pref:Coding Games with Scratch"},
+        {value: "Engineering Inventors", name: "pref:Engineering Inventors"}
     ]
 
     const yearOptions = [
-        {value: "1st"},
-        {value: "2nd"},
-        {value: "3rd"},
-        {value: "4th+"},
-        {value: "Graduate"},
+        {value: "1st", name: "year:1st"},
+        {value: "2nd", name: "year:2nd"},
+        {value: "3rd", name: "year:3rd"},
+        {value: "4th+", name: "year:4th+"},
+        {value: "Graduate", name: "year:Graduate"},
     ]
 
     const onSearchSubmit = async (e) => {
@@ -47,17 +56,17 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
 
         let formattedText = searchText.trim().toLowerCase();
         let unassignedInstructors = instructorData.filter(instructor => {
-            return(
+            return (
                 !lockedInstructors.includes(instructor.instructorId)
             );
         });
 
-        if(!formattedText || formattedText  === ""){
+        if (!formattedText || formattedText === "") {
             handleSearch(unassignedInstructors);
-        }else{
+        } else {
             const filteredInstructors = unassignedInstructors.filter(instructor => {
                 let fullName = instructor.firstName + " " + instructor.lastName;
-                return(
+                return (
                     fullName.toLowerCase().includes(formattedText) || instructor.email.toLowerCase().includes(formattedText)
                     || instructor.university.toLowerCase().includes(formattedText) || instructor.firstPref.toLowerCase().includes(formattedText)
                 );
@@ -67,18 +76,89 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
 
     }
 
-    const handleShowFilter = () => setShowFilter(true);
+    const handleShowFilter = () => {
+        setSelectedFilters("");
+        setShowFilter(true);
+    }
     const handleCloseFilter = () => setShowFilter(false);
 
     const handleShowAutoAssignConfirmation = () => setShowAutoAssignConfirmation(true);
     const handleCloseAutoAssignConfirmation = () => setShowAutoAssignConfirmation(false);
 
     const handleApplyFilters = () => {
-        handleFilter(state["search"].filter(instructor => instructor.hasCar));
-        handleCloseFilter();
+
+        let allFilters = selectedFilters.toLowerCase().split(",");
+        let unassignedInstructors = instructorData.filter(instructor => {
+            return (
+                !lockedInstructors.includes(instructor.instructorId)
+            );
+        });
+
+        if (!allFilters || allFilters[0] === "") {
+            handleSearch(unassignedInstructors);
+            setShowFilter(false);
+        } else {
+            const filteredInstructors = unassignedInstructors.filter(instructor => {
+
+                let queryResults = [];
+
+                for (const aFilter of allFilters) {
+                    let data = aFilter.split(":");
+                    if (data[0].includes("car")) {
+                        queryResults.push(instructor.hasCar.toString().includes(data[1]));
+
+                    } else if (data[0].includes("year")) {
+                        queryResults.push(instructor.schoolYear.includes(data[1]));
+
+                    } else if (data[0].includes("asl")) {
+                        queryResults.push(instructor.isASL.toString().includes(data[1]));
+
+                    } else if (data[0].includes("day")) {
+                        let days = instructor.availability.map(a => a.weekday);
+                        if (days.toString().includes(data[1])) {
+                            queryResults.push(true);
+                        } else {
+                            queryResults.push(false);
+                        }
+                    } else if (data[0].includes("pref")) {
+                        let preferences = [instructor.firstPref.toLowerCase(), instructor.secondPref.toLowerCase(), instructor.thirdPref.toLowerCase(), instructor.fourthPref.toLowerCase()];
+                        if (preferences.includes(data[1])) {
+                            queryResults.push(true);
+                        } else {
+                            queryResults.push(false);
+                        }
+                    }
+                }
+
+                let result
+                if (queryResults.length === 0) {
+                    result = false;
+                } else {
+                    let checker = arr => arr.every(Boolean);
+                    result = checker(queryResults);
+                }
+
+
+                setSelectedFilters("");
+                return (
+                    result
+                );
+            });
+            handleSearch(filteredInstructors);
+            handleCloseFilter();
+        }
     }
 
     const resetFilters = () => {
+        setSelectedFilters("");
+        let unassignedInstructors = instructorData.filter(instructor => {
+            return (
+                !lockedInstructors.includes(instructor.instructorId)
+            );
+        });
+
+        handleSearch(unassignedInstructors);
+
         handleCloseFilter();
     }
 
@@ -87,15 +167,19 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
     }
 
     const handleSearchChange = e => {
-        if(e.key === 'Enter'){
+        if (e.key === 'Enter') {
             onSearchSubmit();
         }
         setSearchText(e.target.value);
     }
 
     const handleCheckboxChange = e => {
-        console.log(e.target.id)
-        console.log(e.target.checked)
+        if (e.target.checked === true && selectedFilters !== "") {
+            setSelectedFilters(selectedFilters + ',' + e.target.id);
+        } else {
+            setSelectedFilters(e.target.id);
+        }
+
     }
 
     const handleConfirmAutoAssign = async () => {
@@ -128,25 +212,25 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
                     <Modal.Title style={{fontSize: '36px', fontWeight: 'bold'}}>Filters</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{padding: '1rem 3rem'}}>
-                    <h5>Returnee</h5>
-                    <Form.Group className="filter-group">
-                        <Form.Check type="checkbox" label="Yes"/>
-                        <Form.Check type="checkbox" label="No"/>
-                    </Form.Group>
+                    {/*<h5>Returnee</h5>*/}
+                    {/*<Form.Group className="filter-group">*/}
+                    {/*    <Form.Check type="checkbox" label="Yes"/>*/}
+                    {/*    <Form.Check type="checkbox" label="No"/>*/}
+                    {/*</Form.Group>*/}
                     <h5>Owns a car</h5>
                     <Form.Group className="filter-group">
                         <Form.Check
                             type="checkbox"
                             label="Yes"
-                            id="Yes"
-                            onChange={handleCarChange}
+                            id="car:1"
+                            onChange={handleCheckboxChange}
                             checked={checkedItems}
                         />
                         <Form.Check
                             type="checkbox"
                             label="No"
-                            id="No"
-                            onChange={handleCarChange}
+                            id="car:0"
+                            onChange={handleCheckboxChange}
                             checked={checkedItems}
                         />
                     </Form.Group>
@@ -157,7 +241,7 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
                                 key={day.value}
                                 type="checkbox"
                                 label={day.value}
-                                id={day.value}
+                                id={day.name}
                                 onChange={handleCheckboxChange}
                                 checked={checkedItems}
                             />
@@ -170,7 +254,7 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
                                 key={pref.value}
                                 type="checkbox"
                                 label={pref.value}
-                                id={pref.value}
+                                id={pref.name}
                                 onChange={handleCheckboxChange}
                                 checked={checkedItems}
                             />
@@ -183,7 +267,7 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
                                 key={year.value}
                                 type="checkbox"
                                 label={year.value}
-                                id={year.value}
+                                id={year.name}
                                 onChange={handleCheckboxChange}
                                 checked={checkedItems}
                             />
@@ -194,18 +278,21 @@ const InstructorSearchForm = ({setIsLoading, state, handleFilter,handleSearch, h
                         <Form.Check
                             type="checkbox"
                             label="Yes"
-                            id="Yes"
+                            id="asl:1"
                             onChange={handleCheckboxChange}
                             checked={checkedItems}
                         />
                         <Form.Check
                             type="checkbox"
                             label="No"
-                            id="No"
+                            id="asl:0"
                             onChange={handleCheckboxChange}
                             checked={checkedItems}
                         />
                     </Form.Group>
+                    <div style={{height: "30px"}}>
+
+                    </div>
                     <div className="filter-btns">
                         <Button className="apply-btn" onClick={handleApplyFilters}>Apply Filters</Button>
                         <Button className="reset-btn" onClick={resetFilters}>Reset Filters</Button>
