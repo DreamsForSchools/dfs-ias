@@ -28,7 +28,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
       <Droppable droppableId={programId + "-" + partner + "-" + id} type="INSTRUCTOR">
         {(provided) => {
           return (
-            <div
+            <div className={"spacer"}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
