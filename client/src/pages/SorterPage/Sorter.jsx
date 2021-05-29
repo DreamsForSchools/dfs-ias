@@ -10,6 +10,11 @@ import {GlobalContext} from "../../context/GlobalContextProvider";
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
     case "POPULATE": {
+      action.state["programs"].forEach(program => {
+        program.classes.forEach(c1 => {
+          draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"] = [];
+        })
+      })
       draft["lockedInstructors"] = action.lockedInstructors;
       action.assignments.forEach(assignment => {
         let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
@@ -25,6 +30,13 @@ const dragReducer = produce((draft, action) => {
       break;
     }
     case "SORT": {
+      action.state["programs"].forEach(program => {
+        program.classes.forEach(c1 => {
+          draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"] 
+          = action.state["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"]
+            .filter(instructor => !action.assignedInstructors.includes(instructor.instructorId))
+        })
+      })
       action.assignments.forEach(assignment => {
         let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
         action.instructors?.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0).forEach(
@@ -89,7 +101,6 @@ const Sorter = () => {
 
   const {seasonSelected, programData, instructorData} = useContext(GlobalContext);
   const [lockedInstructors, setLockedInstructors] = useState([]);
-  const [showLoadingAnimation, setShowLoadingAnimation] = useState();
   const [state, dispatch] = useReducer(dragReducer, {
     "programs": programData ? Object.values(programData) : [],
     "search": instructorData,
@@ -120,21 +131,20 @@ const Sorter = () => {
   const handleAutoAssign = async () => {
     try {
       let response = await axios.post('/api/sort',
-          {seasonId: seasonSelected.seasonId}
+        {seasonId: seasonSelected.seasonId}
       );
       dispatch({
         type: "SORT",
         assignments: Object.entries(response.data.data),
         assignedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
         instructors: instructorData,
+        lockedInstructors: lockedInstructors,
         state: state,
       });
     } catch (e) {
       console.log("Error in sort: ");
       console.log(e);
     }
-
-
   }
 
   const handleFilter = (instructors) => {

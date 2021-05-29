@@ -1,23 +1,21 @@
 import React, {useState} from 'react';
 import './InstructorSearchForm.scss';
 import {InputGroup, FormControl, Button, Modal, Form} from "react-bootstrap";
-import {CloudUploadFill, Search} from 'react-bootstrap-icons';
+import { Search } from 'react-bootstrap-icons';
 import Lottie from "lottie-react";
 import sortLoadingAnimation from '../../../assets/triangle-loading.json';
 
-
 const InstructorSearchForm = ({
-                                  setIsLoading,
-                                  state,
-                                  handleFilter,
-                                  handleSearch,
-                                  handleAutoAssign,
-                                  instructorData,
-                                  lockedInstructors
-                              }) => {
+        setIsLoading,
+        state,
+        handleFilter,
+        handleSearch,
+        handleAutoAssign,
+        instructorData,
+        lockedInstructors
+    }) => {
     const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
     const [checkedItems, setCheckedItems] = useState();
-    const [hasCar, setHasCar] = useState();
     const [showFilter, setShowFilter] = useState(false);
     const [sortAnimation, setSortAnimation] = React.useState(false);
     const [searchText, setSearchText] = React.useState("");
@@ -48,12 +46,6 @@ const InstructorSearchForm = ({
     ]
 
     const onSearchSubmit = async (e) => {
-        // e.preventDefault();
-        // setIsLoading(true);
-        // let result = getRandomInstructorSet(10);
-        // setIsLoading(false);
-        // setSearchedInstructors(result);
-
         let formattedText = searchText.trim().toLowerCase();
         let unassignedInstructors = instructorData.filter(instructor => {
             return (
@@ -73,7 +65,6 @@ const InstructorSearchForm = ({
             });
             handleSearch(filteredInstructors);
         }
-
     }
 
     const handleShowFilter = () => {
@@ -138,7 +129,6 @@ const InstructorSearchForm = ({
                     result = checker(queryResults);
                 }
 
-
                 setSelectedFilters("");
                 return (
                     result
@@ -162,10 +152,6 @@ const InstructorSearchForm = ({
         handleCloseFilter();
     }
 
-    const handleCarChange = e => {
-        setHasCar(true ? e.target.id === "Yes" && e.target.checked : false)
-    }
-
     const handleSearchChange = e => {
         if (e.key === 'Enter') {
             onSearchSubmit();
@@ -179,7 +165,6 @@ const InstructorSearchForm = ({
         } else {
             setSelectedFilters(e.target.id);
         }
-
     }
 
     const handleConfirmAutoAssign = async () => {
@@ -303,7 +288,6 @@ const InstructorSearchForm = ({
             <Modal centered show={showAutoAssignConfirmation} onHide={handleCloseAutoAssignConfirmation}
                    onExited={handleCloseAutoAssignConfirmation} backdrop={'static'}>
 
-
                 {sortAnimation ? (
                         <div>
                             <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
@@ -336,10 +320,7 @@ const InstructorSearchForm = ({
                             </Modal.Footer>
                         </div>
                     )}
-
-
             </Modal>
-
         </div>
     );
 }

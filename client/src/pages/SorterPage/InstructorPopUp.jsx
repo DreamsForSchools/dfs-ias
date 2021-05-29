@@ -100,7 +100,7 @@ const InstructorPopUp = ({ instructor }) => {
                   <CalendarWeek/><span style={{marginLeft: "0.5rem"}}>Availability</span>
                 </h6>
                 {formatAvailability(instructor.availability).map((e) =>
-                  <h5>{e}</h5>
+                  <h5 key={e}>{e}</h5>
                 )}
               </div>
               <div className={"info"} style={{marginBottom: "1rem", textAlign: "left"}}>
