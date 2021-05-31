@@ -1,205 +1,105 @@
 ![dfs_logo_fullcolor](https://user-images.githubusercontent.com/33084827/101976572-4d9e9280-3bfb-11eb-86e7-03513b2e8dca.png)
 
 # Basic Overview
-This app is designed to be used by Dreams for Schools administratiors. It automatically assigns instructors to schools based on several heuristics. 
+This app is designed to be used by Dreams for Schools administrators. It automatically assigns instructors to partners/sessions based on availability, distance, and instructor preference.
 
 # Features
-A few things you can do with Instructor Assignment Sorter
+- Database : add/delete/edit of
+    - Partners & locations
+    - Instructors
+    - Seasons
+    - Programs
+    - Program sessions
 - Sorting
-  - Automatically sort instructors to Schools
-  - Re-sort instructors
-  - Manually assign instructors to schools
-  - Saving sorted rosters
-- Database
-  - add/delete/edit Schools
-  - add/delete/edit instructors
-  - add/delete/edit Index
-  - add/delete      seasons 
-- Filter schools/instructors based on their attributes
-
-![dfs_homepage](https://user-images.githubusercontent.com/33084827/101977200-a45a9b00-3c00-11eb-9a90-2fcad39e9b32.jpg)
+    - Manual assignment of instructors to sessions
+    - Instructors can be lock or unlocked in a class
+    - If the user wants to save an assignment they can lock the instructor to a class
+    - Automatically assigns all unlocked (unassigned) instructors to class
 
 # Run on local machine
-To clone and run this application on your machine. From the command line:  
-## Backend
-Follow this video: [How to set up Backend](https://www.youtube.com/watch?v=bEGUAf6vNo4&list=PL4gnaB7L8JuaXDi6JPs8h_ytlf7IEhWI3&index=2)
-<br />
-or follow the steps below
-1. `git clone https://github.com/DreamsForSchools/dfs-ias`
-2. `cd dfs-ias/server`
-3. `python3 -m venv .`
-4. `source bin/activate`
-5. `pip install -r requirements.txt`
-6. `cd src`
-7. Add GMAP_API_KEY key to dfsgmap.py
-8. `flask run`
-
-## Frontend
-
-Follow this video: [How to set up Frontend](https://www.youtube.com/watch?v=1YsMWV4g2eI&list=PL4gnaB7L8JuaXDi6JPs8h_ytlf7IEhWI3&index=1)
-<br />
-or follow the steps below
-- Clone repo into local directory.
-
+Create an `.env` file in the api folder
 ```
-git clone https://github.com/DreamForSchools/Instructor-Assignment-Sorter.git
-cd ./Instructor-Assignment-Sorter
-git remote add origin https://github.com/DreamForSchools/Instructor-Assignment-Sorter.git
+GMAP_API_KEY=
+CLOUD_DB_IP=
+CLOUD_DB_PORT=
+CLOUD_DB_NAME=
+CLOUD_DB_DEV_USERNAME=
+CLOUD_DB_DEV_PASSWORD=
 ```
 
-- Install required packages not cached on the github repo.
-
+Run 2 consoles and run these commands:
+## API (backend)
 ```
+cd api
 npm install
+npm start
 ```
-
-You can then start Coding.
-
-The pages tab contains all the pages. With Next.js the route to the pages will be set relative to their position from /pages/. Example:
-- ./pages/index.jsx => localhost:3000/
-- ./pages/menu/schools.js => localhost:3000/menu/school
-<br />
-The ./pages/api, ./pages/_*.js are exceptions to these.<br />
-Whenever refrecing a file/path from within a jsx object Next.js will assume 
-./public as root. Example:
+## Client (frontend)
 ```
-const addIcon = <link rel="icon" href="/dfslogo.svg" />
-```
-Where the file dfslogo.svg is located in ./public/dfslogo.svg.<br /><br />
-
-The ./pages/api/ folder will contain APIs that will be deployed as serverless 
-functions and wont be included in the client package. All the server code goes
-there.
-
-### Testing
-
-To test the app you run:
-```
-npm run dev
-```
-
-This will run the app locally on localhost:3000
-
-### Deploying Frontend
-
-To deploy the app to vercel simply commit all the changes and push to the master
-branch of the github repo.
-```
-git push origin master
-```
-
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-### Getting Started with Frontend
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.jsx`. The page auto-updates as you edit the file.
-
-### Learn More about the Frontend
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-### Deploy Frontend on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-# Hosting
-The back end is hosted on [pythonanywhere.com](https://www.pythonanywhere.com/)<br />
-The front end is hosted on [vercel.com](https://vercel.com/)<br />
-Data is stored in Google's [Firebase database](https://firebase.google.com/)<br />
-To gain access to accounts related to these websites please contact admins
-
-# Tech Stacks
-The front end is written in Next.js which is React front-end development web framework. It heavily relies on [Material-UI](https://material-ui.com/) React UI framework<br />
-The back end is written in Python 3.7
-
-# Important Facts
-- The back end hosting website Python Anywhere hosts the website for free but it requires a log in at least once every three months and click the "Run until 3 months from today" button. Otherwise Python Anywhere will stop hosting the backend 
-  - Steps: Login to python anywhere -> Click "Web" -> Click "Run until 3 months from today"
-
-# Outstanding items
-- Ability to save sorted roster as a pdf
-- Ability to save multiple version of sorted roster
-- Make show sort button bigger (more intuitive to use) 
-- Add a warning before attempting resort
-
-# Future improve
-- In the sorted roster have MWF and TuTh have different color
-- General front-end design changes to make the website more intuitive
-  - Change the season text (located at upper-right corner) color to white
-- Add carpool button 
-
-
-# Contribution Rules
-
-Never directly push requests to master branch in this repo. Make a branch and work on that with others and only push that from your local repo to this remote.After it is finally complete make a pull request here to merge it with the master branch.
-
-## Old Branches Explained
-
-Currently all the deployed code is in the master branch. The various mereged-finals and old-master branches make up all the experimental code from the previous team. This includes locally testing the backend. With the master branch the only way to do that is by directly uploading it and testing it live.
-<br /><br />
-Workflow Example: I wanted to improve the Save as PDF function. So first from my local repo I made a new local branch.
-```
-git clone https://github.com/DreamsForSchools/dfs-ias
-cd dfs-ias
-git checkout -b better-pdf
-```
-Then I pushed it up to remote and made a pull request(on GitHub).
-```
-git push origin better-pdf
-```
-Now in the pull request I mentioned several goals. As soon as these goals are met I will merge that branch into master.<br />
-So while the request exists I will be working locally on the problem and pushing my changes to the new branch.
-Other people can also contribute towards that goal. They only have to push to the better-pdf branch not master.
-```
-... some work ...
-git commit -a 
-git push origin better-pdf
-```
-
-### `Dependencies`
-
-* Node.js, npm
-* firebase-tools
-* Works on Windows, Linux and MacOS 
-
-Before starting you should log in to your firebase account in your firebase cli. cd into the root directory and execute the following commands.
-
-```
+cd client
 npm install
+npm start
 ```
-```
-npm run build
-```
-```
-firebase deploy --only hosting
-```
+[http://localhost:3000](http://localhost:3000) should open in the browser.
 
-If you are having problem installing firebase follow this [link](https://firebase.google.com/docs/cli#install_the_firebase_cli) or do the folowing while inside the root directory. 
-```
-npm install firebase-tools
-```
-```
-./node_modules/.bin/firebase login
-```
-Test if login was successful by performing the following. And checking your account's project list.
-```
-firebase projects:list
-```
+# Login Authentication
+- Uses firebase for authentication 
+- In order to create more accounts:
+  1. Login to the firebase console using DFS account: technology@dreamsforschools.org (Login details found in GDrive)
+  2. Navigate to IAS-DFS project
+  3. Select authentication from the left side bar
+  4. Click add user
+- Dummy account for testing:
+  - Username: ias-demo@gmail.com
+  - Password: ias123
+
+# Tech Stacks 
+## Frontend: 
+- Made with React framework 
+## Backend: 
+- Data is saved using MySQL 
+- API runs using Express framework running on Node.js
+![image](https://user-images.githubusercontent.com/43232318/120137181-9554ae80-c188-11eb-99b3-27544f7626e9.png)
+
+# Application Usage
+1. Create a season in the Navbar
+![image](https://user-images.githubusercontent.com/43232318/120136976-3131ea80-c188-11eb-8e82-834144de6891.png)
+
+2. Create a program/partner in the Programs page
+![image](https://user-images.githubusercontent.com/43232318/120136988-355e0800-c188-11eb-985d-195d314cc5d6.png)
+
+3. Create a class within program/partner
+![image](https://user-images.githubusercontent.com/43232318/120137002-3b53e900-c188-11eb-84f4-f9728128da33.png)
+
+4. Add instructors in the Instructors page
+![image](https://user-images.githubusercontent.com/43232318/120137008-3ee77000-c188-11eb-8ccb-d9df3228297b.png)
+
+5. Assign instructors in the Sorter page
+ ![image](https://user-images.githubusercontent.com/43232318/120137034-4d358c00-c188-11eb-8489-c8ceb036d7f8.png)
+
+
+# Future Areas of Improvement
+## Sorting / Auto-assign
+- After completing the sort, the instructor pop up modal could provide more detail about why an instructor was assigned. For example it should provide details about the assignment and the instructor's distance to that particular school. The aggregated instructor endpoint for getting all the instructors in a season can be modified to include this information.
+- Sorting logic can be altered to provide more variability in assignment results. Currently there is no tie breaking in a set of instructors who have the same preference for and distance to a particular class. The getSortData() function can be altered to shuffle instructors for a set of instructors with the same distance/preference.
+- Currently the sorting logic tries to find the closest instructor while still honoring their preferences. Sorter page should allow DFS to modify sorting heuristics of auto sort from the front end. For example DFS could specify that auto-sort should only consider instructors who are within a certain distance radius.
+- (DFS may not require this) Unable to assign one instructor to multiple classes due to limitations with UX. Current implementation removes the instructor from the sidebar once placed into a class. Sorting logic also assumes one instructor will only be teaching one class.
+
+## Bulk Upload Partners
+- Users should be able to drop a csv with all of their partner information to easily bulk add the school they would like.
+
+## Other Frontend Nice to haves
+- Confirmation and look up modals while adding instrucctors/partners
+
+## Hosting
+- Move hosting to google cloud to lessen communication time between app and database
+
+## Variable & Frontend Renaming
+- Program —> Classes
+
+##Classes —> Sections
+- Adding images in SQL
+
+## Save images for school locations (low priority)
+- Add past instructor search
+
