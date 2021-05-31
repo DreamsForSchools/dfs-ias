@@ -67,7 +67,7 @@ const parseAvailability = async (instructorData) => {
         Object.entries(obj).forEach(([key, value]) => {
             if (`${key}`.startsWith('avail')) {
                 let timeSlot = `${key}`.split('_');
-                let availableDays = `${value}`.split(';');
+                let availableDays = `${value}`.split(/;|,/);
                  insertAvailability(timeSlot[1], timeSlot[2], availableDays, availability);
                 delete obj[key];
             } else if (`${key}`.startsWith('isASL') || `${key}`.startsWith('hasCar')) {
