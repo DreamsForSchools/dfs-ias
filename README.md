@@ -4,7 +4,7 @@
 This app is designed to be used by Dreams for Schools administrators. It automatically assigns instructors to partners/sessions based on availability, distance, and instructor preference.
 
 # Features
-- Database : add/delete/edit of
+- Database: add/delete/edit
     - Partners & locations
     - Instructors
     - Seasons
@@ -68,9 +68,9 @@ npm start
 # Tech Stacks 
 
 ## Frontend: 
-- Made with [React](https://reactjs.org/) framework 
+- Made with the [React](https://reactjs.org/) framework 
 - Styled with [React Bootstrap](https://react-bootstrap.github.io/), [Sass](https://sass-lang.com/), and [Styled Components](https://styled-components.com/)
-- 
+
 ## Backend: 
 - Data is saved using MySQL 
 - API runs using Express framework running on Node.js
@@ -79,25 +79,25 @@ npm start
 # Application Usage
 1. Create a season in the Navbar
 
-![image](https://user-images.githubusercontent.com/43232318/120136976-3131ea80-c188-11eb-8e82-834144de6891.png)
+	![image](https://user-images.githubusercontent.com/43232318/120136976-3131ea80-c188-11eb-8e82-834144de6891.png)
 
 2. Create a program/partner in the Programs page
 
-![image](https://user-images.githubusercontent.com/43232318/120136988-355e0800-c188-11eb-985d-195d314cc5d6.png)
+	![image](https://user-images.githubusercontent.com/43232318/120136988-355e0800-c188-11eb-985d-195d314cc5d6.png)
 
 3. Create a class within program/partner
 
-![image](https://user-images.githubusercontent.com/43232318/120137002-3b53e900-c188-11eb-84f4-f9728128da33.png)
+	![image](https://user-images.githubusercontent.com/43232318/120137002-3b53e900-c188-11eb-84f4-f9728128da33.png)
 
 4. Add instructors in the Instructors page
 
-![image](https://user-images.githubusercontent.com/43232318/120137008-3ee77000-c188-11eb-8ccb-d9df3228297b.png)
+	![image](https://user-images.githubusercontent.com/43232318/120137008-3ee77000-c188-11eb-8ccb-d9df3228297b.png)
 
 5. Assign instructors in the Sorter page
 
- ![image](https://user-images.githubusercontent.com/43232318/120137034-4d358c00-c188-11eb-8489-c8ceb036d7f8.png)
+	![image](https://user-images.githubusercontent.com/43232318/120137034-4d358c00-c188-11eb-8489-c8ceb036d7f8.png)
  
-#CSV Parser
+# CSV Parser
 The csv is parsed on the front end (client/src/util/csvParse.js) and sends an axios post call to /api/instructor/CSV to bulk add all the instructor data to the database.
 
 In order to parse DFS google form data we use the ['csvtojson' parser library](https://www.npmjs.com/package/csvtojson).
@@ -109,9 +109,8 @@ In order to parse DFS google form data we use the ['csvtojson' parser library](h
 csv({
 	noheader: false,
 	headers: ['omit', 'email', 'firstName', 'lastName', 'phoneNumber',      'gender', 'omit' , 'ethnicity', 'university', 'major','omit', 'omit', 'schoolYear', 'graduationDate', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit','omit', 'omit', 'omit', 'programmingLanguages', 'omit', 'firstPref', 'secondPref', 'thirdPref', 'fourthPref', 'avail_09_10', 'avail_10_11', 'avail_11_12', 'avail_12_13', 'avail_13_14', 'avail_14_15', 'avail_15_16', 'avail_16_17', 'avail_17_18', 'omit', 'hasCar', 'shirtSize', 'isASL', 'omit', 'omit', 'omit', 'otherLanguages', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit'],// 10 extra 'omit' values in the end, in case DFS add questions.
-     
        colParser: { "omit": "omit"},
-	 checkType: false
+	checkType: false
 })
 ```
 
@@ -145,10 +144,10 @@ while there exist a free class c who still needs an instructor assignment
         (c, i) become paired
     else some pair (c', i) already exists 
         if i prefers c to c' 
-        (c, i) become paired
-        c' becomes free 
-    else 
-        (c', i) remain paired 
+        	(c, i) become paired
+        	c' becomes free 
+    	else 
+        	(c', i) remain paired 
 }
 ```
 - Search Bar: Users can search by instructor name, email, university, or first preference.
