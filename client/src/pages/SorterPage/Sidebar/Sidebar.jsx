@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import "./Sidebar.scss";
 import InstructorSearchForm from './InstructorSearchForm.jsx';
 import SearchResult from './SearchResult.jsx';
+import Lottie from 'lottie-react';
+import emptyAnimation from '../../../assets/empty-animation.json';
 
 const Sidebar = ({ state, handleFilter, handleSearch, handleAutoAssign, instructorData, lockedInstructors}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,10 +20,16 @@ const Sidebar = ({ state, handleFilter, handleSearch, handleAutoAssign, instruct
         instructorData={instructorData}
         lockedInstructors={lockedInstructors}
       />
-      <SearchResult 
-        isLoading={isLoading}
-        state={state}
-      />
+      { instructorData === null || instructorData.length === 0 ? 
+        <div style={{textAlign: 'center'}}>
+          <Lottie animationData={emptyAnimation} style={{width: 200, height: 200, margin: 'auto'}} />
+        </div>
+      : 
+        <SearchResult 
+          isLoading={isLoading}
+          state={state}
+        />
+      }
     </div>
   );
 }

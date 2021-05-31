@@ -5,9 +5,10 @@ import './Sorter.scss';
 import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
 import {GlobalContext} from "../../context/GlobalContextProvider";
+import Lottie from 'lottie-react';
+import emptyAnimation from '../../assets/empty-animation.json';
 
 const dragReducer = produce((draft, action) => {
-  console.log(action)
   switch (action.type) {
     case "POPULATE": {
       draft["programs"] = action.programs ? Object.values(action.programs) : [];
@@ -33,7 +34,7 @@ const dragReducer = produce((draft, action) => {
           }
         )
       }); 
-      draft["search"] = action.state["search"].filter(instructor => !action.lockedInstructors.includes(instructor.instructorId));
+      draft["search"] = action.instructors?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId));
       break;
     }
     case "SORT": {
@@ -108,7 +109,6 @@ const Sorter = () => {
 
   const {seasonSelected, programData, instructorData} = useContext(GlobalContext);
   const [lockedInstructors, setLockedInstructors] = useState([]);
-  // const [lockedAssignments, setLockedAssignments] = useState([]);
   const [state, dispatch] = useReducer(dragReducer, {
     "programs": programData ? Object.values(programData) : [],
     "search": instructorData ? instructorData : [],
@@ -129,7 +129,6 @@ const Sorter = () => {
   const fetchLocked = () => {
     axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
       setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
-      // setLockedAssignments(Object.entries(response.data.data))
       dispatch({
         type: "POPULATE_LOCKED",
         assignments: Object.entries(response.data.data),
@@ -197,7 +196,11 @@ const Sorter = () => {
         onDragEnd={onDragEnd}
       >
         <div className="main-wrapper">
-          <MainPanel state={state} />
+          { programData === null || programData.length === 0 ? 
+            <div style={{textAlign: 'center'}}>
+              <Lottie animationData={emptyAnimation} style={{width: 400, height: 400, margin: 'auto'}} />
+            </div>
+          : <MainPanel state={state} /> }
         </div>
         <div className="sidebar-wrapper">
           <Sidebar 

@@ -7,7 +7,6 @@ import InstructorPopUp from './InstructorPopUp';
 import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {GlobalContext} from "../../context/GlobalContextProvider";
 
-
 const Instructor = ({ instructor, classId, state }) => {
   const [showInstructorPopUp, setShowInstructorPopUp] = useState();
   const [lock, setLock] = useState(state && state["lockedInstructors"].includes(instructor.instructorId));
@@ -42,7 +41,7 @@ const Instructor = ({ instructor, classId, state }) => {
   return (
     <div className="instructor">
       { state &&
-        <div className="lock">
+        <div className="instructor-lock">
           {lock ? <LockFill onClick={handleUnlock} className="icon" size={16} /> : <UnlockFill onClick={handleLock} className="icon" size={16} />}
         </div>
       }
