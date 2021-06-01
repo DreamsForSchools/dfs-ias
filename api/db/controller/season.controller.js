@@ -36,7 +36,7 @@ exports.findAll = function(req, res) {
 exports.deleteById = function(req, res) {
     Season.deleteById(req.params.id, function(err, season) {
         if (err) res.send({error:true,err});
-        else if(season.affectedRows === 0) res.send({error:true, message: "Deletion Failed!"})
+        else if(season.affectedRows === 0) res.send({error:true, message: "Deletion Failed, no rows affected!"})
         else res.send({error:false, message: "Deletion Successful!", data:season});
     });
 }

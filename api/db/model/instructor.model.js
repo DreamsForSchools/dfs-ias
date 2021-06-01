@@ -353,12 +353,14 @@ Instructor.findById = function (id, result) {
     });
 }
 
-Instructor.deleteById = function (id, result) {
-    db.query("DELETE FROM instructors WHERE instructorId = ?", id,
-        function (err, res) {
-            if (err) result(err, null);
-            else result(null, res);
-        })
+Instructor.deleteById = async function (id, result) {
+    try {
+        let data = await db.query("DELETE FROM instructors WHERE instructorId = ?", id);
+        result(null, data);
+    } catch (err) {
+        console.log(err);
+        result(err, null);
+    }
 }
 
 Instructor.updateById = async function (id, instructor, result) {

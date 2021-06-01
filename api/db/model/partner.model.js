@@ -58,12 +58,14 @@ Partner.findById = function (id, result) {
     });
 }
 
-Partner.deleteById = function (id, result) {
-    db.query("DELETE FROM partners WHERE partnerId = ?", id,
-        function (err, res) {
-            if (err) result(err, null);
-            else result(null, res);
-    })
+Partner.deleteById = async function (id, result) {
+    try {
+        let data = await db.query("DELETE FROM partners WHERE partnerId = ?", id);
+        result(null, data);
+    } catch (err) {
+        console.log(err);
+        result(err, null);
+    }
 }
 
 Partner.updateById = async function (id, partner, result) {

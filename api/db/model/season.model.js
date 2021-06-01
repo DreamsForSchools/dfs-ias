@@ -17,12 +17,14 @@ Season.create = async function (newSeason, result) {
     }
 }
 
-Season.deleteById = function (id, result) {
-    db.query("DELETE FROM seasons WHERE seasonId = ?", id,
-        function (err, res) {
-            if (err) result(err, null);
-            else result(null, res);
-        })
+Season.deleteById = async function (id, result) {
+    try {
+        let data = await db.query("DELETE FROM seasons WHERE seasonId = ?");
+        result(null, data);
+    } catch (err) {
+        console.log(err);
+        result(err, null);
+    }
 }
 
 Season.findAll = async function (result) {
