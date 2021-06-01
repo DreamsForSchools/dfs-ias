@@ -17,7 +17,7 @@ This app is designed to be used by Dreams for Schools administrators. It automat
     - Automatically assigns all unlocked (unassigned) instructors to class
 
 # Run on Local Machine
-Create an `.env` file in the api folder
+Create an `.env` file in the api folder (See shared Google Drive for keys).
 ```
 GMAP_API_KEY=
 CLOUD_DB_IP=
@@ -45,13 +45,13 @@ npm start
 # Login Authentication
 - Uses firebase for authentication 
 - In order to create more accounts:
-  1. Login to the firebase console using DFS account: technology@dreamsforschools.org (Login details found in GDrive)
+  1. Login to the firebase console using DFS account: technology@dreamsforschools.org (Login details found in hared Google Drive)
   2. Navigate to IAS-DFS project
   3. Select authentication from the left side bar
   4. Click add user
 - Dummy account for testing:
   - Username: ias-demo@gmail.com
-  - Password: ias123
+  - Password: (See shared Google Drive)
  
 # Hosting
 **SQL** - Google Cloud
@@ -61,7 +61,7 @@ npm start
 - There is a CI/CD pipeline set up on GitHub Action which triggers a build and deployment on every commit to the main branch.
 - Heroku account: 
     - Email: technology@dreamsforschool.org
-    - Password: DFSTech9!
+    - Password: (See shared Google Drive)
 **Others:**
 - Uses Google Maps API
 
