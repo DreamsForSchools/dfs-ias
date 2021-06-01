@@ -54,9 +54,9 @@ npm start
   - Password: (See shared Google Drive)
  
 # Hosting
-**SQL** - Google Cloud
-**Admin Login** - Google Firebase
-**Application** - Heroku
+- **SQL** - Google Cloud
+- **Admin Login** - Google Firebase
+- **Application** - Heroku
 - The API is hosted on Heroku, which serves the front-end of the application on the root URL.
 - There is a CI/CD pipeline set up on GitHub Action which triggers a build and deployment on every commit to the main branch.
 - Heroku account: 
@@ -109,7 +109,7 @@ In order to parse DFS google form data we use the ['csvtojson' parser library](h
 csv({
 	noheader: false,
 	headers: ['omit', 'email', 'firstName', 'lastName', 'phoneNumber',      'gender', 'omit' , 'ethnicity', 'university', 'major','omit', 'omit', 'schoolYear', 'graduationDate', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit','omit', 'omit', 'omit', 'programmingLanguages', 'omit', 'firstPref', 'secondPref', 'thirdPref', 'fourthPref', 'avail_09_10', 'avail_10_11', 'avail_11_12', 'avail_12_13', 'avail_13_14', 'avail_14_15', 'avail_15_16', 'avail_16_17', 'avail_17_18', 'omit', 'hasCar', 'shirtSize', 'isASL', 'omit', 'omit', 'omit', 'otherLanguages', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit', 'omit'],// 10 extra 'omit' values in the end, in case DFS add questions.
-       colParser: { "omit": "omit"},
+        colParser: { "omit": "omit"},
 	checkType: false
 })
 ```
@@ -172,9 +172,8 @@ while there exist a free class c who still needs an instructor assignment
 ## Variable & Frontend Renaming
 - Program —> Classes
 
-##Classes —> Sections
+## Classes —> Sections
 - Adding images in SQL
 
 ## Save images for school locations (low priority)
 - Add past instructor search
-
