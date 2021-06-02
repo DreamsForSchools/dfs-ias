@@ -38,6 +38,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                     key={instructor.instructorId}
                     draggableId={instructor.instructorId.toString()}
                     index={index}
+                    isDragDisabled={state["lockedInstructors"].includes(instructor.instructorId)}
                   >
                     {(provided) => {
                       return (

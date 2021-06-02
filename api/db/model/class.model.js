@@ -35,12 +35,14 @@ Class.findById = function (id, result) {
     });
 }
 
-Class.deleteById = function (id, result) {
-    db.query("DELETE FROM classes WHERE classId = ?", id,
-        function (err, res) {
-            if (err) result(err, null);
-            else result(null, res);
-        })
+Class.deleteById = async function (id, result) {
+    try {
+        let data = await db.query("DELETE FROM classes WHERE classId = ?", id);
+        result(null, data);
+    } catch (err) {
+        console.log(err);
+        result(err, null);
+    }
 }
 
 Class.updateById = function (id, mClass, result) {

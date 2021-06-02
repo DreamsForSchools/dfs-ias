@@ -4,12 +4,18 @@ import produce from "immer";
 import './Sorter.scss';
 import Sidebar from './Sidebar/Sidebar.jsx';
 import MainPanel from './Main/MainPanel.jsx';
-import { PROGRAMS as programs_data }  from '../../data/PROGRAMS';
 import {GlobalContext} from "../../context/GlobalContextProvider";
+import Lottie from 'lottie-react';
+import emptyAnimation from '../../assets/empty-animation.json';
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
     case "POPULATE": {
+      draft["programs"] = action.programs ? Object.values(action.programs) : [];
+      draft["search"] = action.instructors ? action.instructors : [];
+      break;
+    }
+    case "POPULATE_LOCKED": {
       action.state["programs"].forEach(program => {
         program.classes.forEach(c1 => {
           draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"] = [];
@@ -20,13 +26,15 @@ const dragReducer = produce((draft, action) => {
         let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
         action.instructors?.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0).forEach(
           instructor => {
-            draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
-             = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
-            draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].splice(0, 0, instructor);                      
+            if (program) {
+              draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
+              = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
+              draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].splice(0, 0, instructor);                      
+            }
           }
         )
       }); 
-      draft["search"] = action.state["search"]?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId));
+      draft["search"] = action.instructors?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId));
       break;
     }
     case "SORT": {
@@ -94,7 +102,7 @@ const Sorter = () => {
     defaultState = savedState;
   } else {
     defaultState = {
-      "programs": programs_data,
+      "programs": [],
       "search": [],
     };
   }
@@ -103,21 +111,26 @@ const Sorter = () => {
   const [lockedInstructors, setLockedInstructors] = useState([]);
   const [state, dispatch] = useReducer(dragReducer, {
     "programs": programData ? Object.values(programData) : [],
-    "search": instructorData,
+    "search": instructorData ? instructorData : [],
     "lockedInstructors": lockedInstructors,
   });
   const axios = require('axios');
 
   useEffect(() => {
     localStorage.setItem("sorter-state", JSON.stringify(state));
-    fetchInstructors();
-  }, []);
+    dispatch({
+      type: "POPULATE",
+      programs: programData,
+      instructors: instructorData,
+    });
+    fetchLocked();
+  }, [programData, instructorData]);
 
-  const fetchInstructors = () => {
+  const fetchLocked = () => {
     axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
       setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
       dispatch({
-        type: "POPULATE",
+        type: "POPULATE_LOCKED",
         assignments: Object.entries(response.data.data),
         lockedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
         instructors: instructorData,
@@ -183,7 +196,11 @@ const Sorter = () => {
         onDragEnd={onDragEnd}
       >
         <div className="main-wrapper">
-          <MainPanel state={state} />
+          { programData === null || programData.length === 0 ? 
+            <div style={{textAlign: 'center'}}>
+              <Lottie animationData={emptyAnimation} style={{width: 400, height: 400, margin: 'auto'}} />
+            </div>
+          : <MainPanel state={state} /> }
         </div>
         <div className="sidebar-wrapper">
           <Sidebar 

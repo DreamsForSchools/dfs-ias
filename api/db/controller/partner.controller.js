@@ -37,7 +37,7 @@ exports.findById = function(req, res) {
 exports.deleteById = function(req, res) {
     Partner.deleteById(req.params.id, function(err, partner) {
         if (err) res.status(400).send({error:true,err});
-        else if(partner.affectedRows === 0) res.status(400).send({error:true, message: "Deletion Failed!"})
+        else if(partner.affectedRows === 0) res.status(400).send({error:true, message: "Deletion Failed, no rows affected!"})
         else res.send({error:false, message: "Deletion Successful!", data:partner});
     });
 }

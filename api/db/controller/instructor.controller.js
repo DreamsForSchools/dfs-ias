@@ -61,7 +61,8 @@ exports.findById = function(req, res) {
 exports.deleteById = function(req, res) {
     Instructor.deleteById(req.params.id, function(err, instructor) {
         if (err) res.status(400).send({error:true, message: 'Failed to delete'});
-        else res.send(instructor);
+        else if(instructor.affectedRows === 0) res.status(400).send({error:true, message: "Deletion Failed, no rows affected"})
+        else res.send({error:false, message:"Instructor deleted successfully!", data:instructor});
     })
 }
 
