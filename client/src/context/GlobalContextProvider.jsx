@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import {loadAllSeason, loadProgramsAggregated, loadPartnersAggregated, loadAllInstructors} from "../api";
+import {loadAllSeason, loadProgramsAggregated, loadPartnersAggregated, loadAllInstructorsAggregated} from "../api";
 import { toast } from "react-toastify";
 import fire from "../fire";
 export const GlobalContext = createContext();
@@ -42,7 +42,7 @@ const GlobalContextProvider = ({ children }) => {
             toast(`🙌 ${seasonSelected.name} season selected!`)
             fetchProgramsAggregatedForCurrentSeason();
             fetchPartnersAggregatedForCurrentSeason();
-            fetchAllInstructorData();
+            fetchAllInstructorAggregatedData();
         }
     }, [seasonSelected])
 
@@ -71,8 +71,8 @@ const GlobalContextProvider = ({ children }) => {
         setPartnerData(allPartners);
     }
 
-    const fetchAllInstructorData = async () => {
-        const allInstructors = await loadAllInstructors(seasonSelected.seasonId);
+    const fetchAllInstructorAggregatedData = async () => {
+        const allInstructors = await loadAllInstructorsAggregated(seasonSelected.seasonId);
         setInstructorData(allInstructors);
     }
 
@@ -91,7 +91,7 @@ const GlobalContextProvider = ({ children }) => {
             seasonData, fetchAllSeasonData: fetchAllSeasonData,
             programData, fetchProgramsAggregatedForCurrentSeason: fetchProgramsAggregatedForCurrentSeason,
             partnerData, fetchPartnersAggregatedForCurrentSeason: fetchPartnersAggregatedForCurrentSeason,
-            instructorData, fetchAllInstructorData: fetchAllInstructorData,
+            instructorData, fetchAllInstructorAggregatedData: fetchAllInstructorAggregatedData,
             toastShow, setToastShow,
             toastText, setToastText
         }}>

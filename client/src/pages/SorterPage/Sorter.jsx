@@ -111,7 +111,7 @@ const Sorter = () => {
   const [lockedInstructors, setLockedInstructors] = useState([]);
   const [state, dispatch] = useReducer(dragReducer, {
     "programs": programData ? Object.values(programData) : [],
-    "search": instructorData ? instructorData : [],
+    "search": instructorData ? Object.values(instructorData) : [],
     "lockedInstructors": lockedInstructors,
   });
   const axios = require('axios');
@@ -121,7 +121,7 @@ const Sorter = () => {
     dispatch({
       type: "POPULATE",
       programs: programData,
-      instructors: instructorData,
+      instructors: Object.values(instructorData),
     });
     fetchLocked();
   }, [programData, instructorData]);
@@ -133,7 +133,7 @@ const Sorter = () => {
         type: "POPULATE_LOCKED",
         assignments: Object.entries(response.data.data),
         lockedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
-        instructors: instructorData,
+        instructors: Object.values(instructorData),
         state: state,
       });
     }, (error) => {
@@ -150,7 +150,7 @@ const Sorter = () => {
         type: "SORT",
         assignments: Object.entries(response.data.data),
         assignedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
-        instructors: instructorData,
+        instructors: Object.values(instructorData),
         lockedInstructors: lockedInstructors,
         state: state,
       });
@@ -208,7 +208,7 @@ const Sorter = () => {
             handleFilter={handleFilter}
             handleSearch={handleSearch}
             handleAutoAssign={handleAutoAssign}
-            instructorData={instructorData}
+            instructorData={Object.values(instructorData)}
             lockedInstructors={lockedInstructors}
           />
         </div>

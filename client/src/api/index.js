@@ -1,7 +1,7 @@
 import { saveSeason, loadAllSeason } from "./season";
 import { savePartner, loadPartnersAggregated } from "./partner";
 import { saveProgram, loadProgramsAggregated } from "./program";
-import { loadAllInstructors } from "./instructor";
+import { loadAllInstructorsAggregated } from "./instructor";
 
 export {
     saveSeason,
@@ -10,5 +10,5 @@ export {
     loadPartnersAggregated,
     saveProgram,
     loadProgramsAggregated,
-    loadAllInstructors,
+    loadAllInstructorsAggregated,
  };

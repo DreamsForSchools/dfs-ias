@@ -101,8 +101,10 @@ Instructor.createCSV = async function (requestBody, result) {
 }
 
 Instructor.allSeasonInstructors = async function (seasonId, result) {
+    const instructorMap = {};
+
     try {
-        let allSeasonInstructors = await db.query("SELECT *,instructors.instructorId as instructorId\n" +
+        let allSeasonInstructors = await db.query("SELECT *, instructors.instructorId as instructorId\n" +
             "        FROM instructors\n" +
             "        JOIN instructorAvailability ON instructors.instructorId = instructorAvailability.instructorId\n" +
             "        JOIN locationCache ON instructors.instructorId = locationCache.instructorId\n" +
@@ -110,7 +112,6 @@ Instructor.allSeasonInstructors = async function (seasonId, result) {
             "        LEFT JOIN seasonAssignments on  instructors.instructorId = seasonAssignments.instructorId\n" +
             "        LEFT JOIN classes on  seasonAssignments.classId = classes.classId\n" +
             "        where seasonInstructors.seasonId = ?", seasonId);
-        let instructorMap = {};
 
 
         allSeasonInstructors.forEach((e) => {
@@ -172,7 +173,7 @@ Instructor.allSeasonInstructors = async function (seasonId, result) {
             }
         });
 
-        return result(null, Object.values(instructorMap));
+        result(null, instructorMap);
     } catch (err) {
         return result(err, null);
     }

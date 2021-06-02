@@ -27,10 +27,6 @@ const InstructorsRow = (props) => {
 
     return (
         <tr className={"instructor_row"} onClick={() => onClick(instructor)}>
-            <td>{isActive
-                ? <Dot color={"#40CC4E"}/>
-                : <Dot color={"#EB5757"}/>}
-            </td>
             <td>{firstName + " " + lastName}</td>
             <td>{schoolYear}</td>
             <td>{major}</td>
@@ -71,13 +67,13 @@ const InstructorsRow = (props) => {
 }
 
 const InstructorsTable = (props) => {
+    console.log(props);
     return (
         <div className={"instructor_table"} style={{ overflowY: 'scroll', height: '80vh'}}>
             <Badge pill variant="success"></Badge>
             <Table borderless>
                 <thead>
                 <tr>
-                    <th></th>
                     <th>Instructor's Name</th>
                     <th>Year</th>
                     <th>Major</th>

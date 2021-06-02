@@ -32,7 +32,7 @@ router.delete('/season/:id', seasonController.deleteById);
 router.get('/season/:id', seasonController.findById);
 router.put('/season/:id', seasonController.updateById)
 
-router.get('/instructor/season/:seasonId', instructorController.allSeasonInstructors)
+router.get('/instructor/aggregated/:seasonId', instructorController.allSeasonInstructors)
 router.post('/instructor', instructorController.createSingle);
 router.post('/instructor/CSV', instructorController.createCSV);
 router.get('/instructor', instructorController.findAll);

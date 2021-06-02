@@ -74,14 +74,6 @@ const InstructorsSideInfo = (props) => {
                                 <X /> Car
                             </Badge>
                         }
-                        {/*{instructor.seasonsTaught > 1*/}
-                        {/*    ? <Badge pill variant="success">*/}
-                        {/*        <Check /> Returnee*/}
-                        {/*    </Badge>*/}
-                        {/*    : <Badge pill variant="danger">*/}
-                        {/*        <X /> Returnee*/}
-                        {/*    </Badge>*/}
-                        {/*}*/}
                         {instructor.isASL
                             ? <Badge pill variant="success">
                                 <Check /> ASL
@@ -93,7 +85,7 @@ const InstructorsSideInfo = (props) => {
                     </div>
 
                     <div className={"grouped-info_container"}>
-                        <div className={"info"} style={{width: "25%"}}>
+                        <div className={"info"} style={{width: "50%"}}>
                             <h6>
                                 Year
                             </h6>
@@ -102,7 +94,7 @@ const InstructorsSideInfo = (props) => {
                             </h5>
                         </div>
 
-                        <div className={"info"} style={{width: "25%"}}>
+                        <div className={"info"} style={{width: "50%"}}>
                             <h6>
                                 Gender
                             </h6>

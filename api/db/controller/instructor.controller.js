@@ -45,7 +45,7 @@ exports.allSeasonInstructors =  function(req, res) {
             if (err)
                 res.status(500).send({error: true, err});
             else
-                res.send({error: false, message: "Instructors found for season.", data: data});
+                res.send(data);
         });
     }
 };

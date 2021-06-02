@@ -18,7 +18,7 @@ const weekdays = {
     sundays: 7
 }
 
-export const parseCSV =  async (fileText,instructorData, setInstructorData, seasonIdSelected) => {
+export const parseCSV =  async (fileText,instructorData, seasonIdSelected) => {
     let result = await csv({
         noheader: false,
         headers: ['omit', 'email', 'firstName', 'lastName', 'phoneNumber', 'gender', 'omit' , 'ethnicity', 'university', 'major',
@@ -34,8 +34,8 @@ export const parseCSV =  async (fileText,instructorData, setInstructorData, seas
         checkType: false
     }).fromString(fileText)
         .then(async instructors => {
+            console.log(instructors);
             await parseAvailability(instructors);
-            setInstructorData([...instructors, ...instructorData]);
             const header =  await createToken();
 
             let payload = {newInstructorArray: instructors, seasonId:seasonIdSelected};

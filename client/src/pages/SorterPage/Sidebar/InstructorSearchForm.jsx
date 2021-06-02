@@ -47,7 +47,7 @@ const InstructorSearchForm = ({
 
     const onSearchSubmit = async (e) => {
         let formattedText = searchText.trim().toLowerCase();
-        let unassignedInstructors = instructorData.filter(instructor => {
+        let unassignedInstructors = Object.values(instructorData).filter(instructor => {
             return (
                 !lockedInstructors.includes(instructor.instructorId)
             );
@@ -79,7 +79,7 @@ const InstructorSearchForm = ({
     const handleApplyFilters = () => {
 
         let allFilters = selectedFilters.toLowerCase().split(",");
-        let unassignedInstructors = instructorData.filter(instructor => {
+        let unassignedInstructors = Object.values(instructorData).filter(instructor => {
             return (
                 !lockedInstructors.includes(instructor.instructorId)
             );
@@ -141,7 +141,7 @@ const InstructorSearchForm = ({
 
     const resetFilters = () => {
         setSelectedFilters("");
-        let unassignedInstructors = instructorData.filter(instructor => {
+        let unassignedInstructors = Object.values(instructorData).filter(instructor => {
             return (
                 !lockedInstructors.includes(instructor.instructorId)
             );

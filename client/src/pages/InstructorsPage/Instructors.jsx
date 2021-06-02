@@ -17,10 +17,15 @@ import csvLoadingAnimation from '../../assets/idea-into-book-machine.json';
 
 
 function Instructors() {
-    const {seasonNameSelected, seasonIdSelected, seasonSelected} = useContext(GlobalContext);
+    const {
+        seasonNameSelected,
+        seasonIdSelected,
+        seasonSelected,
+        instructorData,
+        fetchAllInstructorAggregatedData
+    } = useContext(GlobalContext);
 
     const [instructorFocus, setInstructorFocus] = useState();
-    const [instructorData, setInstructorData] = useState(null);
     const [showInputModal, setShowInputModal] = useState();
     const [addInstructorMethod, setAddInstructorMethod] = useState(null);
     const [csvHighlighted, setCsvHighlighted] = React.useState(false);
@@ -40,17 +45,9 @@ function Instructors() {
     }
 
     const handleAddNewInstructorManually = (instructor) => {
-        setInstructorData([instructor, ...instructorData])
+        // setInstructorData([instructor, ...instructorData])
         handleCloseInputModal();
     }
-
-    React.useEffect(() => {
-        getInstructor();
-    }, [])
-
-    const getInstructor = () => {
-        setInstructorData(getRandomInstructorSet(12));
-    };
 
     const renderModal = (
         <>
@@ -128,7 +125,8 @@ function Instructors() {
                                     .forEach(async (file) => {
                                         const text = await file.text();
                                         // console.log(text);
-                                        let result = await parseCSV(text, instructorData, setInstructorData, seasonSelected.seasonId);
+                                        let result = await parseCSV(text, instructorData, seasonSelected.seasonId);
+                                        fetchAllInstructorAggregatedData();
                                         console.log(result);
                                         if (result.error) {
                                             toast(`❌ Error parsing csv, please check for empty columns or rows.`);
@@ -221,7 +219,7 @@ function Instructors() {
 
                     <InstructorsTable
                         handleInstructorRowClicked={handleInstructorRowClicked}
-                        data={instructorData}
+                        data={Object.values(instructorData).reverse()}
                         programsColorKey={program_color_keys}
                     />
                 </Wrapper>
