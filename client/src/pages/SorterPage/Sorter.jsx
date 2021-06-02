@@ -23,16 +23,18 @@ const dragReducer = produce((draft, action) => {
       })
       draft["lockedInstructors"] = action.lockedInstructors;
       action.assignments.forEach(assignment => {
-        let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
-        action.instructors?.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0).forEach(
-          instructor => {
-            if (program) {
-              draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
-              = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
-              draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].splice(0, 0, instructor);                      
+        if ( action.state["programs"] ) {
+          let program = action.state["programs"].filter(program => program.classes.filter(c => c.classId === parseInt(assignment[0])).length > 0)[0]
+          action.instructors?.filter(instructor => assignment[1].filter(a => instructor.instructorId === a).length > 0).forEach(
+            instructor => {
+              if (program) {
+                draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
+                = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
+                draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].splice(0, 0, instructor);                      
+              }
             }
-          }
-        )
+          )
+        }
       }); 
       draft["search"] = action.instructors?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId));
       break;
@@ -127,18 +129,20 @@ const Sorter = () => {
   }, [programData, instructorData]);
 
   const fetchLocked = () => {
-    axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
-      setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
-      dispatch({
-        type: "POPULATE_LOCKED",
-        assignments: Object.entries(response.data.data),
-        lockedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
-        instructors: instructorData,
-        state: state,
+    if (seasonSelected) {
+      axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
+        setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
+        dispatch({
+          type: "POPULATE_LOCKED",
+          assignments: Object.entries(response.data.data),
+          lockedInstructors: Array.prototype.concat(...Object.values(response.data.data)),
+          instructors: instructorData,
+          state: state,
+        });
+      }, (error) => {
+        console.log(error);
       });
-    }, (error) => {
-      console.log(error);
-    });
+    }
   }
 
   const handleAutoAssign = async () => {
