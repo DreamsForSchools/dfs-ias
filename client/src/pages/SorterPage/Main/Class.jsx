@@ -5,20 +5,46 @@ import Instructor from '../Instructor.jsx';
 import { CalendarWeek, People, LockFill, UnlockFill } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 
-const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state }) => {
+const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus}) => {
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
 
+
+    const handleLock = () => {
+        setLock(true);
+    }
+    const handleUnlock = () => {
+        setLock(false);
+    }
+
   useEffect(() => {
-    setNumInstructors(instructors ? instructors.length : 0);
-  }, [setNumInstructors, instructors])
+      let val = true;
+      if(instructors){
+          for(const instructor of instructors){
+              if(!state["lockedInstructors"].includes(instructor.instructorId)){
+                  val = false;
+              }
+          }
+      }
+      let count = (instructors ? instructors.length : 0);
+      setNumInstructors(count);
+      if(count === 0){
+          setLock(false);
+      } else if(parentLockStatus === true || val) {
+          setLock(true);
+      } else {
+          setLock(false);
+      }
+
+  }, [parentLockStatus,setNumInstructors, instructors])
 
   return (
     <div className="class">
       <div className="header">
         <h1 className="partner-name">{partner}</h1>
         <div className="lock" onClick={() => { setLock(!lock) }}>
-          {lock ? <LockFill className="icon" size={18} /> : <UnlockFill className="icon" size={18} />}
+            {lock ? <LockFill onClick={handleUnlock} className="icon" size={18}/> :
+                <UnlockFill onClick={handleLock} className="icon" size={18}/>}
         </div>
       </div>
       <div className="class-info">
@@ -52,6 +78,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                             instructor={instructor}
                             classId={id}
                             state={state}
+                            parentLockStatus={lock}
                           />
                         </div>
                       );

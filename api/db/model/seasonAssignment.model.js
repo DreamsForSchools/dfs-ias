@@ -9,38 +9,38 @@ var SeasonAssignment = function (assignment) {
     this.classId = assignment.classId;
 };
 
-SeasonAssignment.lock = async function (newAssignment,result) {
-    try{
+SeasonAssignment.lock = async function (newAssignment, result) {
+    try {
         await db.query("INSERT INTO seasonAssignments set ?", newAssignment);
         return result(null, newAssignment);
-    } catch(err) {
+    } catch (err) {
         return result(err, null);
     }
 }
 
-SeasonAssignment.unlock = async function (assignmentToDelete,result) {
-    try{
-        await db.query("DELETE FROM seasonAssignments WHERE seasonId = ? and instructorId = ? and classId = ?", [assignmentToDelete.seasonId,assignmentToDelete.instructorId, assignmentToDelete.classId]);
+SeasonAssignment.unlock = async function (assignmentToDelete, result) {
+    try {
+        await db.query("DELETE FROM seasonAssignments WHERE seasonId = ? and instructorId = ? and classId = ?", [assignmentToDelete.seasonId, assignmentToDelete.instructorId, assignmentToDelete.classId]);
         return result(null, assignmentToDelete);
-    } catch(err) {
+    } catch (err) {
         return result(err, null);
     }
 }
 
-SeasonAssignment.getLockedInstructors = async function (seasonId,result) {
-    try{
-        let lockedInstructors = await db.query("SELECT * FROM seasonAssignments where seasonId = ?",seasonId);
+SeasonAssignment.getLockedInstructors = async function (seasonId, result) {
+    try {
+        let lockedInstructors = await db.query("SELECT * FROM seasonAssignments where seasonId = ?", seasonId);
         let dataMap = {};
 
-        for(const instructor of lockedInstructors){
-            if(!dataMap[instructor.classId]) {
+        for (const instructor of lockedInstructors) {
+            if (!dataMap[instructor.classId]) {
                 dataMap[instructor.classId] = [instructor.instructorId];
-            }else{
+            } else {
                 dataMap[instructor.classId].push(instructor.instructorId);
             }
         }
         return result(null, dataMap);
-    } catch(err) {
+    } catch (err) {
         return result(err, null);
     }
 }
@@ -48,14 +48,14 @@ SeasonAssignment.getLockedInstructors = async function (seasonId,result) {
 // Sort logic is based on the Stable Matching/ Gale–Shapley algorithm
 // https://www.geeksforgeeks.org/stable-marriage-problem/
 // pairs classes and instructors together such that there are no combinations who would both rather have each other than their current partners
-SeasonAssignment.sort = async function (seasonId,result) {
+SeasonAssignment.sort = async function (seasonId, result) {
     let sortResults;
 
     try {
         // Populates distance between instructor and partners for pairings that have not been calculated yet
         await populateDistanceCache();
 
-        // returns a mapping of each classId (that still needs assignments) with it available instructor array
+        // returns a mapping of each classId (that still needs assignments) with it available instructor array.
         // {classId: {"classObj": classObj, "availableInstructors": sortResult}}
         let sortData = await getSortData(seasonId);
 
@@ -74,6 +74,7 @@ SeasonAssignment.sort = async function (seasonId,result) {
 
 }
 
+
 async function executeSort(sortData) {
     let assignI2C = {}; // (holds soft assignments of Instructor to Classes)
     let assignC2I = {}; // (holds soft assignments of Class to Instructor)
@@ -87,7 +88,7 @@ async function executeSort(sortData) {
         for (const classId of Object.keys(sortData)) {
             let classObj = sortData[classId]["classObj"];
             let currentClassProgramId = classObj.programId;
-            let availableInstructors = sortData[classId]["availableInstructors"];
+            let availableInstructors = sortData[classId].availableInstructors;
             let instructorRemaining = classObj.instructorRemaining;
             let softAssignedCount = 0;
 
@@ -126,9 +127,9 @@ async function executeSort(sortData) {
                     //  else the instructor is already soft assigned to another class
                     else {
                         let otherClassProgramId = sortData[assignI2C[instructor.instructorId]]["classObj"].programId;
-                        let prefArray = JSON.parse(instructor.prefArray);
-                        let otherAssignmentRank = prefArray.indexOf(otherClassProgramId) + 1;
-                        let currentClassProgramRank = prefArray.indexOf(currentClassProgramId) + 1;
+
+                        let otherAssignmentRank = instructor.prefArray.indexOf(otherClassProgramId) + 1;
+                        let currentClassProgramRank = instructor.prefArray.indexOf(currentClassProgramId) + 1;
 
                         // if instructor prefers this new class over the class he is already assigned to, reassign him to this new class (higher index means less preference)
                         if (otherAssignmentRank > currentClassProgramRank) {
@@ -165,6 +166,23 @@ async function executeSort(sortData) {
     return assignC2I;
 }
 
+// getSortData() returns the following structure
+// {classId: {"classObj": classObj, "availableInstructors": sortResult}}
+// returns a mapping of each classId (that still needs assignments) with it available instructor array.
+// {
+//     "36": {
+//         "classObj": {
+//             "classId": 36,
+//                 "instructorRemaining": 3,
+//                 "instructorsNeeded": 4,
+//                 "timings": [{"endTime": "11:00:00", "weekday": 1, "startTime": "10:00:00"}, {"endTime": "11:00:00", "weekday": 3, "startTime": "10:00:00"}],
+//                 "partnerId": 1,
+//                 "programId": 1,
+//                 "seasonId": 1
+//         },
+//         "availableInstructors": [{"instructorId": 447, "university": "California State University, Long Beach", "distance": 19127, "prefArray": [5,1,2,3], "assignmentCount": 0}
+//     }
+// }
 async function getSortData(currentSeasonId) {
     let sortData = {};
     let classObj;
@@ -241,15 +259,96 @@ async function getSortData(currentSeasonId) {
         // Query is dynamically built with the current seasonId, each class timings, and its partnerId for distance
         let sortResult = await db.query(fullQuery, queryArray);
 
+        // Perform secondary sort on preference. All instructors for a given distance should be sorted in order of
+        // preference for the program being taught
+        let sortedInstructors = await secondarySort(sortResult, classObj.programId);
+
         // Query results are stored into a mapping of each classId with it available instructor array
         // {classId: {"classObj": classObj, "availableInstructors": sortResult}}
-        let classInstructors = {"classObj": classObj, "availableInstructors": sortResult}
+        let classInstructors = {"classObj": classObj, "availableInstructors": sortedInstructors}
         sortData[classObj["classId"]] = classInstructors;
 
     }
 
     return sortData;
 
+}
+
+// Performs a secondary sort on the available instructors for each class.
+// All instructors for the same distance should be sorted in order of preference for the given programId
+async function secondarySort(availableInstructors, programId) {
+    let masterIndex = 0;
+    let chunkSize = 0;
+    let chunk;
+    let finalArray = [];
+    let tempArray = [];
+
+    if (availableInstructors.length === 0) {
+        return availableInstructors;
+    }
+
+    for (const instructor of availableInstructors) {
+        if (instructor.prefArray) {
+            let prefArray = JSON.parse(instructor.prefArray);
+            instructor.prefArray = prefArray;
+        }
+    }
+
+    // Determine size of chunk (how many instructors with the same distance) and extracts it so that we can sort it
+    chunkSize = 1;
+    let distance = availableInstructors[masterIndex]["distance"];
+
+    while (true) {
+        masterIndex = masterIndex + 1;
+        if (masterIndex >= availableInstructors.length) {
+            // extract chunk and sort it in order of preference
+            if (chunkSize > 0) {
+                chunk = availableInstructors.slice(masterIndex - chunkSize, masterIndex);
+                tempArray = await reorderChunk(chunk, programId);
+                finalArray = finalArray.concat(tempArray);
+            }
+            break;
+        } else if (distance === availableInstructors[masterIndex]["distance"]) {
+            chunkSize = chunkSize + 1;
+            continue;
+        } else {
+            distance = availableInstructors[masterIndex]["distance"]
+            // extract chunk and sort it in order of preference
+            chunk = availableInstructors.slice(masterIndex - chunkSize, masterIndex);
+            tempArray = await reorderChunk(chunk, programId);
+            finalArray = finalArray.concat(tempArray);
+            chunkSize = 1;
+        }
+    }
+    return finalArray;
+}
+
+// Receives chunk of instructors with the same distance and reorders them by preference for the given programId
+async function reorderChunk(sameDistanceInstructors, programId) {
+    let rank = 0
+    let preferenceArrayMaxSize = 4;
+    let newArray = [];
+
+    while (rank < preferenceArrayMaxSize) {
+        for (const instructor of sameDistanceInstructors) {
+            if (instructor.prefArray) {
+                let assignmentRank = instructor.prefArray.indexOf(programId);
+                if (assignmentRank === rank) {
+                    newArray.push(instructor);
+                }
+            }
+        }
+        rank = rank + 1;
+    }
+    for (const instructor of sameDistanceInstructors) {
+        if (instructor.prefArray) {
+            let assignmentRank = instructor.prefArray.indexOf(programId);
+            if (assignmentRank === -1) {
+                newArray.push(instructor);
+            }
+        }
+    }
+    return newArray;
 }
 
 async function populateDistanceCache() {
