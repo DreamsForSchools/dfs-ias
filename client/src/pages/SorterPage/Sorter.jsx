@@ -7,6 +7,7 @@ import MainPanel from './Main/MainPanel.jsx';
 import {GlobalContext} from "../../context/GlobalContextProvider";
 import Lottie from 'lottie-react';
 import emptyAnimation from '../../assets/empty-animation.json';
+import {createToken} from "../../fire";
 
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
@@ -29,18 +30,18 @@ const dragReducer = produce((draft, action) => {
             if (program) {
               draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
               = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
-              draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].splice(0, 0, instructor);                      
+              draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].splice(0, 0, instructor);
             }
           }
         )
-      }); 
+      });
       draft["search"] = action.instructors?.filter(instructor => !action.lockedInstructors.includes(instructor.instructorId));
       break;
     }
     case "SORT": {
       action.state["programs"].forEach(program => {
         program.classes.forEach(c1 => {
-          draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"] 
+          draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"]
           = action.state["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"]
             .filter(instructor => !action.assignedInstructors.includes(instructor.instructorId))
         })
@@ -52,10 +53,10 @@ const dragReducer = produce((draft, action) => {
             draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
              = draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"] || [];
             draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"]
-              .splice(draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].length, 0, instructor);         
+              .splice(draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c => c.classId === parseInt(assignment[0]))["instructors"].length, 0, instructor);
           }
         )
-      }); 
+      });
       draft["search"] = action.state["search"]?.filter(instructor => !action.assignedInstructors.includes(instructor.instructorId));
       break;
     }
@@ -64,10 +65,10 @@ const dragReducer = produce((draft, action) => {
         draft[action.from] = draft[action.from] || [];
         draft[action.to] = draft[action.to] || [];
         const [removed] = draft[action.from].splice(action.fromIndex, 1);
-        draft[action.to].splice(action.toIndex, 0, removed); 
+        draft[action.to].splice(action.toIndex, 0, removed);
       } else if ( action.from === "search" && action.to !== "search") {
         let toProgram = action.state["programs"].find(program => program.programId.toString() === action.to.split("-")[0]);
-        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] 
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"]
           = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] || [];
         const [removed] = draft[action.from].splice(action.fromIndex, 1);
         draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
@@ -79,7 +80,7 @@ const dragReducer = produce((draft, action) => {
       } else {
         let toProgram = action.state["programs"].find(program => program.programId.toString() === action.to.split("-")[0]);
         let fromProgram = action.state["programs"].find(program => program.programId.toString() === action.from.split("-")[0]);
-        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] 
+        draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"]
           = draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"] || [];
         const [removed] = draft["programs"][action.state["programs"].indexOf(fromProgram)]["classes"].find(c => c.classId.toString() === action.from.split("-")[2])["instructors"].splice(action.fromIndex, 1);
         draft["programs"][action.state["programs"].indexOf(toProgram)]["classes"].find(c => c.classId.toString() === action.to.split("-")[2])["instructors"].splice(action.toIndex, 0, removed);
@@ -90,7 +91,7 @@ const dragReducer = produce((draft, action) => {
       draft["search"] = action.filteredInstructors;
       break;
     }
-    default: 
+    default:
       return;
   }
 });
@@ -126,8 +127,9 @@ const Sorter = () => {
     fetchLocked();
   }, [programData, instructorData]);
 
-  const fetchLocked = () => {
-    axios.get('/api/lock/' + seasonSelected.seasonId).then((response) => {
+  const fetchLocked = async () => {
+    const header = await createToken();
+    axios.get('/api/lock/' + seasonSelected.seasonId, header).then((response) => {
       setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
       dispatch({
         type: "POPULATE_LOCKED",
@@ -143,8 +145,9 @@ const Sorter = () => {
 
   const handleAutoAssign = async () => {
     try {
+      const header = await createToken();
       let response = await axios.post('/api/sort',
-        {seasonId: seasonSelected.seasonId}
+        {seasonId: seasonSelected.seasonId}, header
       );
       dispatch({
         type: "SORT",
@@ -196,15 +199,15 @@ const Sorter = () => {
         onDragEnd={onDragEnd}
       >
         <div className="main-wrapper">
-          { programData === null || programData.length === 0 ? 
+          { programData === null || programData.length === 0 ?
             <div style={{textAlign: 'center'}}>
               <Lottie animationData={emptyAnimation} style={{width: 400, height: 400, margin: 'auto'}} />
             </div>
           : <MainPanel state={state} /> }
         </div>
         <div className="sidebar-wrapper">
-          <Sidebar 
-            state={state} 
+          <Sidebar
+            state={state}
             handleFilter={handleFilter}
             handleSearch={handleSearch}
             handleAutoAssign={handleAutoAssign}

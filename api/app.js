@@ -8,9 +8,11 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var gmapRouter = require('./routes/gmap');
 var crudRouter = require('./routes/crud');
+var decodeIDToken = require('./authenticateToken');
 
 var app = express();
 app.use(express.json({limit: '10mb'}));
+app.use(decodeIDToken);
 app.use(express.urlencoded({limit: '10mb',extended: true}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import {toast} from "react-toastify";
+import {createToken} from "../fire";
 
 export const saveProgram = async (programData) => {
     try {
-        await axios.post('/api/program', programData);
+        const header = await createToken();
+        await axios.post('/api/program', programData, header);
         toast(`👍 ${programData.name} added successfully!`)
     } catch (e) {
         console.log(e);
@@ -13,7 +15,8 @@ export const saveProgram = async (programData) => {
 
 export const loadProgramsAggregated =  async (seasonId) => {
     try {
-        const request = await axios.get(`/api/program/aggregated/${seasonId}`);
+        const header = await createToken();
+        const request = await axios.get(`/api/program/aggregated/${seasonId}`, header);
         return(request.data);
     } catch (e) {
         toast(`❌ Error fetching data: ${e}`);

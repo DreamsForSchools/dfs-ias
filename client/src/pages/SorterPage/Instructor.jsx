@@ -6,6 +6,7 @@ import {InfoCircle, LockFill, UnlockFill} from 'react-bootstrap-icons';
 import InstructorPopUp from './InstructorPopUp';
 import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {GlobalContext} from "../../context/GlobalContextProvider";
+import {createToken} from "../../fire";
 
 const Instructor = ({instructor, classId, state, parentLockStatus}) => {
     const [showInstructorPopUp, setShowInstructorPopUp] = useState();
@@ -16,10 +17,11 @@ const Instructor = ({instructor, classId, state, parentLockStatus}) => {
     const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
     const handleCloseInstructorPopUp = () => setShowInstructorPopUp(false);
 
-    const handleLock = () => {
+    const handleLock = async () => {
         setLock(true);
+        const header = await createToken();
         axios.post('/api/lock',
-            {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
+            {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}, header
         ).then((response) => {
             setToastText({status: 'Success', message: `Locked ${instructor.firstName} ${instructor.lastName}`});
         }, (error) => {
@@ -27,10 +29,11 @@ const Instructor = ({instructor, classId, state, parentLockStatus}) => {
         });
     }
 
-    const handleUnlock = () => {
+    const handleUnlock = async () => {
         setLock(false);
+        const header = await createToken();
         axios.put('/api/unlock',
-            {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}
+            {seasonId: seasonSelected.seasonId, instructorId: instructor.instructorId, classId: classId}, header
         ).then((response) => {
             setToastText({status: 'Success', message: `Unlocked ${instructor.firstName} ${instructor.lastName}`});
         }, (error) => {

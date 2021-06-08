@@ -1,9 +1,11 @@
 import axios from 'axios';
 import {toast} from "react-toastify";
+import {createToken} from "../fire";
 
 export const savePartner = async (partnerData) => {
     try {
-        await axios.post('/api/partner', partnerData);
+        const header = await createToken();
+        await axios.post('/api/partner', partnerData, header);
         toast(`👍 ${partnerData.name} added successfully!`)
     } catch (e) {
         console.log(e);
@@ -14,10 +16,11 @@ export const savePartner = async (partnerData) => {
 
 export const loadPartnersAggregated =  async (seasonId) => {
     try {
-        const request = await axios.get(`/api/partner/aggregated/${seasonId}`);
+        const header = await createToken();
+        const request = await axios.get(`/api/partner/aggregated/${seasonId}`, header);
         return(request.data);
     } catch (e) {
-        toast(`❌ Error fetching data: ${e}`);
+        toast(`❌ Error fetching partner data: ${e}`);
         return({});
     }
     // return axios.post(`/api/program/aggregated/${seasonId}`)

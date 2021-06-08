@@ -1,6 +1,7 @@
 const csv = require('csvtojson')
 const axios = require('axios');
 
+// DEPRECATED - SEE client>util>csvParse.js
 // USAGE:
 // node /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/csvParse.js /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/instructorData.csv
 

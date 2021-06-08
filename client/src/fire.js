@@ -1,37 +1,14 @@
-
-// <!-- The core Firebase JS SDK is always required and must be listed first -->
-// <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
-//
-// <!-- TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries -->
-//
-//     <script>
-//         // Your web app's Firebase configuration
-//         var firebaseConfig = {
-//         apiKey: "AIzaSyBxB3JDTCiSsnRUw98IhwY1mEKD4KgMixE",
-//         authDomain: "dfs-ias-71e36.firebaseapp.com",
-//         projectId: "dfs-ias-71e36",
-//         storageBucket: "dfs-ias-71e36.appspot.com",
-//         messagingSenderId: "579295975229",
-//         appId: "1:579295975229:web:61f1c7be7f39ffecf39754"
-//     };
-//         // Initialize Firebase
-//         firebase.initializeApp(firebaseConfig);
-//     </script>
-
-
 import firebase from 'firebase';
+
 const firebaseConfig = {
-    apiKey: "AIzaSyBxB3JDTCiSsnRUw98IhwY1mEKD4KgMixE",
-    authDomain: "dfs-ias-71e36.firebaseapp.com",
-    databaseURL: "https://dfs-ias-71e36-default-rtdb.firebaseio.com",
-    projectId: "dfs-ias-71e36",
-    storageBucket: "dfs-ias-71e36.appspot.com",
-    messagingSenderId: "579295975229",
-    appId: "1:579295975229:web:61f1c7be7f39ffecf39754"
+    apiKey: "AIzaSyA9m_pP2e-P-qZcFHBUtSTeLmQp582ogfQ",
+    authDomain: "dfs-ias-312603.firebaseapp.com",
+    projectId: "dfs-ias-312603",
+    storageBucket: "dfs-ias-312603.appspot.com",
+    messagingSenderId: "56681424437",
+    appId: "1:56681424437:web:9cc1069a076a21a4b7337c",
+    measurementId: "G-02CXKX6K6D"
 };
-
-
 
 export const createToken = async () => {
     const user = fire.auth().currentUser;
