@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {ChevronLeft, ChevronRight} from 'react-bootstrap-icons';
 import {color} from '../../design-system/style';
 import {Select, Input} from '../../design-system/form';
@@ -7,17 +7,15 @@ import {formatMilitaryTime} from "../../util/formatData";
 import Lottie from "lottie-react";
 import carAnimation from '../../assets/sedan-car-animation.json';
 import aslAnimation from '../../assets/asl-animation.json';
-import {timeSlots, gender, ethnicity, shirtSize, schoolYear, university} from '../../constant';
+import {timeSlots, gender, ethnicity, shirtSize, schoolYear} from '../../constant';
 import {PROGRAMS} from "../../data/PROGRAMS";
-
-var isEqual = require('lodash/isEqual');
-var includes = require('lodash/includes');
-
+import {GlobalContext} from "../../context/GlobalContextProvider";
 
 export default function AddInstructorManuallyModal({handleSubmit}) {
     const [step, setStep] = useState(0);
     const [programPreference, setProgramPreference] = useState([]);
     const [timeAvailability, setTimeAvailability] = useState([]);
+    const { programData } = useContext(GlobalContext);
 
     const [formInput, setFormInput] = useState(
         {
@@ -132,9 +130,23 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             if (Number(a.startTime.split(':')[0]) > Number(b.startTime.split(':')[0])) return 1;
         });
 
-        setFormInput({...formInput, availability: arr})
+        arr.forEach((e) => {
+            if (parsed.length === 0) {
+                parsed.push(JSON.parse(JSON.stringify(e)));
+            } else {
+                if (parsed[parsed.length - 1].weekday === e.weekday) {
+                    if (parsed[parsed.length - 1].endTime === e.startTime) {
+                        parsed[parsed.length - 1].endTime = e.endTime;
+                    } else {
+                        parsed.push(JSON.parse(JSON.stringify(e)));
+                    }
+                } else {
+                    parsed.push(JSON.parse(JSON.stringify(e)));
+                }
+            }
+        })
 
-        console.log(arr);
+        setFormInput({...formInput, availability: parsed})
     };
 
     const renderTimeSlotCheckboxes = (time) => {
@@ -218,8 +230,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     const educationBackground = (
         <div style={{padding: '2rem 4rem', display: 'flex', flexDirection: 'row'}}>
             <div style={{width: '50%', marginRight: '1.5rem'}}>
-                <Select options={university} label={'University'} handler={handleFormInput} state={formInput.university}
-                        modal/>
+                <Input label={'University'} handler={handleFormInput} state={formInput.university} modal/>
                 <Input label={'Major'} handler={handleFormInput} state={formInput.major} modal/>
                 <Input label={'Languages other than English'} handler={handleFormInput} state={formInput.otherLanguages}
                        modal/>
@@ -293,7 +304,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             justifyContent: 'center',
             alignContent: 'space-around'
         }}>
-            {PROGRAMS.map((e, idx) => (
+            {Object.values(programData).map((e, idx) => (
                 <div key={idx} onClick={() => handleProgramPreferences(e.name)} style={{
                     borderRadius: '6px',
                     backgroundColor: color.neutral.LIGHTGRAY,
@@ -308,7 +319,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                         objectFit: 'contain',
                         opacity: programPreference.length == 4 && !programPreference.includes(e.name) && '0.2'
                     }}>
-                        <img style={{height: 60, marginBottom: '1rem'}} src={e.logo}/>
+                        <img style={{height: 60, marginBottom: '1rem'}} src={new Buffer.from(e.logo.data).toString("ascii")}/>
                         <h6>{e.name}</h6>
                     </div>
                     {programPreference.includes(e.name) &&

@@ -1,13 +1,13 @@
 import React from "react";
 import Fade from 'react-reveal/Fade';
-import { PencilSquare, CalendarWeek, TelephoneFill, X, Check } from 'react-bootstrap-icons';
+import { Trash, CalendarWeek, TelephoneFill, X, Check } from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
 
 const InstructorsSideInfo = (props) => {
-    const { instructor, programsColorKey } = props;
+    const { instructor, programsColorKey, onDeletePress } = props;
 
     if (instructor) {
         formatAvailability(instructor.availability);
@@ -26,8 +26,8 @@ const InstructorsSideInfo = (props) => {
                     <h1 style={{fontWeight: "bold", textAlign: "center"}}>
                         {instructor.firstName + " " + instructor.lastName}
                     </h1>
-                    <Button variant="info">Edit Instructor
-                        <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
+                    <Button variant="danger" onClick={() => onDeletePress(instructor.instructorId)}>Delete Instructor
+                        <span style={{marginLeft: '0.5rem'}}><Trash/></span>
                     </Button>
 
                     <div style={{margin: "2rem 0"}}>

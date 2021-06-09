@@ -13,3 +13,25 @@ export const loadAllInstructorsAggregated = async (seasonId) => {
         return([]);
     }
 }
+
+export const saveInstructor = async (instructorData) => {
+    try {
+        const header = await createToken();
+        await axios.post('/api/instructor', instructorData, header);
+        toast(`👍 Instructor ${instructorData.firstName} ${instructorData.lastName} added successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
+}
+
+export const deleteInstructor = async (instructorId) => {
+    try {
+        const header = await createToken();
+        await axios.delete(`/api/instructor/${instructorId}`, header);
+        toast(`👍 Instructor deleted successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
+}

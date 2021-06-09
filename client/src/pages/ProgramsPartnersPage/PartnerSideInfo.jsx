@@ -1,6 +1,15 @@
 import React from "react";
 import Fade from 'react-reveal/Fade';
-import {PencilSquare, CalendarWeek, TelephoneFill, X, Check, GeoAltFill, PeopleFill} from 'react-bootstrap-icons';
+import {
+    PencilSquare,
+    CalendarWeek,
+    TelephoneFill,
+    X,
+    Check,
+    GeoAltFill,
+    PeopleFill,
+    Trash
+} from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
@@ -9,7 +18,7 @@ import { Wrapper, Title, Image, Subtitle, PartnerProgramSection, Text, BadgeCont
 import {partnerSymbols} from "../../constant";
 
 const PartnerSideInfo = (props) => {
-    const { partner } = props;
+    const { partner, onDeletePress } = props;
 
     if (!partner) {
         return (
@@ -30,13 +39,16 @@ const PartnerSideInfo = (props) => {
         <Wrapper>
             <Fade right duration={200}>
                 <div>
+                    <Badge style={{marginTop: '1rem', display: 'block'}} variant="secondary">{partner.district}</Badge>
                     <Title>
                         { partner.name }
                     </Title>
                     {/*<Button variant="info">Edit Partner*/}
                     {/*    <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>*/}
                     {/*</Button>*/}
-                    <Badge style={{marginTop: '1rem'}} variant="secondary">{partner.district}</Badge>
+                    <Button variant="danger" onClick={() => onDeletePress("PARTNER", partner.partnerId)}>Delete Partner
+                        <span style={{marginLeft: '0.5rem'}}><Trash/></span>
+                    </Button>
                     <div style={{margin: "2rem 0"}}>
                         <PartnerSymbol>{partnerSymbols[partner.partnerType]}️</PartnerSymbol>
                     </div>

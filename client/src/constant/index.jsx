@@ -4,7 +4,6 @@ import {
     shirtSize,
     ethnicity,
     timeSlots,
-    university,
     schoolYear
 } from "./instructorFormOptions";
 
@@ -17,4 +16,4 @@ import {
     usState
 } from "./misc.jsx";
 
-export {usState, programmingLanguages, gender, shirtSize, ethnicity, timeSlots, university, schoolYear, partnerSymbols, partnerTypes};
+export {usState, programmingLanguages, gender, shirtSize, ethnicity, timeSlots, schoolYear, partnerSymbols, partnerTypes};

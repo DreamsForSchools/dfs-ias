@@ -6,11 +6,10 @@ import { Page, SideInfoWrapper, Wrapper, GalleryWrapper } from '../../design-sys
 import AddNewProgramModal from '../../components/AddNewProgramModal';
 import AddNewPartnerModal from '../../components/AddNewPartnerModal';
 import AddClassToProgramModal from "../../components/AddClassToProgramModal";
-import {saveProgram, loadPrograms, savePartner} from '../../api';
+import {saveProgram, savePartner, deleteProgram, deletePartner} from '../../api';
 import {saveClass} from "../../api/class";
 import { PartnerCard, ProgramCard } from '../../design-system/components/Cards';
 import {GlobalContext} from "../../context/GlobalContextProvider";
-import {StatusCodes} from 'http-status-codes';
 import Lottie from 'lottie-react';
 import emptyAnimation from '../../assets/empty-animation.json';
 //dummy data: to be removed once connect to backend
@@ -65,6 +64,7 @@ export default ProgramsPartners = () => {
                     <PartnerSideInfo
                         partner={partnerData[dataIdFocus]}
                         openModal={handleOpenInputModal}
+                        onDeletePress={onDeletePress}
                     />
                 )
             }
@@ -73,6 +73,7 @@ export default ProgramsPartners = () => {
                     <ProgramSideInfo
                         program={programData[dataIdFocus]}
                         openModal={handleOpenInputModal}
+                        onDeletePress={onDeletePress}
                     />
                 )
             }
@@ -132,6 +133,16 @@ export default ProgramsPartners = () => {
             return <PartnerCard item={e} key={index} onClick={handleCardClick}/>
         })
 
+    }
+
+    const onDeletePress = async (type, id) => {
+        if (type === "PROGRAM") {
+            await deleteProgram(id);
+            fetchProgramsAggregatedForCurrentSeason();
+        } else if (type === "PARTNER") {
+            await deletePartner(id);
+            fetchPartnersAggregatedForCurrentSeason();
+        }
     }
 
     return (

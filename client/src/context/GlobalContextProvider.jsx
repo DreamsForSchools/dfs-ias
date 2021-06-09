@@ -13,6 +13,8 @@ const GlobalContextProvider = ({ children }) => {
     const [seasonData, setSeasonData] = useState({});
 
     const [programData, setProgramData] = useState(null);
+    const [programColorMap, setProgramColorMap] = useState(null);
+
     const [partnerData, setPartnerData] = useState(null);
     const [instructorData, setInstructorData] = useState(null);
 
@@ -64,6 +66,13 @@ const GlobalContextProvider = ({ children }) => {
     const fetchProgramsAggregatedForCurrentSeason = async () => {
         const allPrograms = await loadProgramsAggregated(seasonSelected.seasonId);
         setProgramData(allPrograms);
+
+        const colorMap = {};
+        Object.values(allPrograms).forEach((e) => {
+            colorMap[e.name] = e.color;
+        })
+
+        setProgramColorMap(colorMap);
     }
 
     const fetchPartnersAggregatedForCurrentSeason = async () => {
@@ -93,7 +102,8 @@ const GlobalContextProvider = ({ children }) => {
             partnerData, fetchPartnersAggregatedForCurrentSeason: fetchPartnersAggregatedForCurrentSeason,
             instructorData, fetchAllInstructorAggregatedData: fetchAllInstructorAggregatedData,
             toastShow, setToastShow,
-            toastText, setToastText
+            toastText, setToastText,
+            programColorMap
         }}>
             {children}
         </GlobalContext.Provider>

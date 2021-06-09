@@ -67,7 +67,6 @@ const InstructorsRow = (props) => {
 }
 
 const InstructorsTable = (props) => {
-    console.log(props);
     return (
         <div className={"instructor_table"} style={{ overflowY: 'scroll', height: '80vh'}}>
             <Badge pill variant="success"></Badge>

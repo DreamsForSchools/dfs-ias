@@ -1,6 +1,6 @@
 import React from "react";
 import Fade from 'react-reveal/Fade';
-import {CalendarWeek, GeoAltFill, PencilSquare, PeopleFill} from 'react-bootstrap-icons';
+import {CalendarWeek, GeoAltFill, PencilSquare, PeopleFill, Trash} from 'react-bootstrap-icons';
 import { Button, Badge } from 'react-bootstrap';
 import { formatAvailability } from "../../util/formatData";
 import {
@@ -15,7 +15,7 @@ import { partnerSymbols } from "../../constant";
 
 
 const ProgramSideInfo = (props) => {
-    const { program } = props;
+    const { program, onDeletePress } = props;
     const [ imageBase64, setImageBase64 ] = React.useState(null);
 
     React.useEffect(() => {
@@ -44,6 +44,9 @@ const ProgramSideInfo = (props) => {
                     <Title>
                         {program.name}
                     </Title>
+                    <Button variant="danger" onClick={() => onDeletePress("PROGRAM", program.programId)}>Delete Program
+                        <span style={{marginLeft: '0.5rem'}}><Trash/></span>
+                    </Button>
                     <div style={{margin: "2rem 0"}}>
                         <Avatar src={imageBase64} />
                     </div>
@@ -53,6 +56,7 @@ const ProgramSideInfo = (props) => {
                     <Button variant="info" onClick={() => props.openModal('ClassToProgram')}>Add Classes
                         <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
                     </Button>
+
                     { program.classes.map((e, idx) =>
                         <ProgramSection key={idx}>
                             <Subtitle>{partnerSymbols[e.partner.type]} {e.partner.name}</Subtitle>

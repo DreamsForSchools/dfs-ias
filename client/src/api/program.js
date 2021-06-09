@@ -24,3 +24,14 @@ export const loadProgramsAggregated =  async (seasonId) => {
     }
     // return axios.post(`/api/program/aggregated/${seasonId}`)
 }
+
+export const deleteProgram = async (programId) => {
+    try {
+        const header = await createToken();
+        await axios.delete(`/api/program/${programId}`, header);
+        toast(`👍 Program deleted successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
+}

@@ -53,28 +53,28 @@ const CreateNewSeasonModal = ({ handleSubmit }) => {
                             <Lottie animationData={seasonAnimation}/>
                         </div>
                         <div style={{width: '50%', marginRight: '1.5rem'}}>
-                                <Input required label={'Season Name'} handler={handleFormInput} state={newSeasonInput.name} modal/>
-                                <DatePickerWrapper>
-                                    <label>Start Date <span style={{color: 'red'}}>*</span></label>
-                                    <DatePicker
-                                        selected={newSeasonInput.startDate}
-                                        onChange={date => handleFormInput(date, "Start Date")}
-                                        selectsStart
-                                        startDate={newSeasonInput.startDate}
-                                        endDate={newSeasonInput.endDate}
-                                    />
-                                </DatePickerWrapper>
-                                <DatePickerWrapper>
-                                    <label>End Date <span style={{color: 'red'}}>*</span></label>
-                                    <DatePicker
-                                        selected={newSeasonInput.endDate}
-                                        onChange={date => handleFormInput(date, "End Date")}
-                                        selectsEnd
-                                        startDate={newSeasonInput.startDate}
-                                        endDate={newSeasonInput.endDate}
-                                        minDate={newSeasonInput.startDate}
-                                    />
-                                </DatePickerWrapper>
+                            <Input required label={'Season Name'} handler={handleFormInput} state={newSeasonInput.name} modal/>
+                            <DatePickerWrapper>
+                                <label>Start Date <span style={{color: 'red'}}>*</span></label>
+                                <DatePicker
+                                    selected={newSeasonInput.startDate}
+                                    onChange={date => handleFormInput(date, "Start Date")}
+                                    selectsStart
+                                    startDate={newSeasonInput.startDate}
+                                    endDate={newSeasonInput.endDate}
+                                />
+                            </DatePickerWrapper>
+                            <DatePickerWrapper>
+                                <label>End Date <span style={{color: 'red'}}>*</span></label>
+                                <DatePicker
+                                    selected={newSeasonInput.endDate}
+                                    onChange={date => handleFormInput(date, "End Date")}
+                                    selectsEnd
+                                    startDate={newSeasonInput.startDate}
+                                    endDate={newSeasonInput.endDate}
+                                    minDate={newSeasonInput.startDate}
+                                />
+                            </DatePickerWrapper>
                         </div>
                     </div>
                 </Modal.Body>

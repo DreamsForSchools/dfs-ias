@@ -3,27 +3,26 @@ import './Instructors.scss';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
 import {Page, SideInfoWrapper, Wrapper} from '../../design-system/layout/Styled';
-import {getRandomInstructorSet} from "../../util/sampleData";
 import {FormControl, InputGroup, Button, OverlayTrigger, Popover} from "react-bootstrap";
 import {PlusCircle, Filter, Search, FileEarmarkTextFill, CloudUploadFill, Link45deg} from 'react-bootstrap-icons';
 import AddInstructorManuallyModal from "../../components/AddInstructorManuallyModal";
-import {PROGRAM_COLOR_KEYS as program_color_keys} from '../../data/PROGRAMS';
 import {Modal} from "react-bootstrap";
 import {parseCSV} from "../../util/csvParse.js";
 import {GlobalContext} from "../../context/GlobalContextProvider";
 import {toast} from 'react-toastify';
 import Lottie from "lottie-react";
 import csvLoadingAnimation from '../../assets/idea-into-book-machine.json';
+import {saveInstructor, deleteInstructor} from "../../api";
 
 
 function Instructors() {
     const {
-        seasonNameSelected,
-        seasonIdSelected,
         seasonSelected,
         instructorData,
+        programColorMap,
         fetchAllInstructorAggregatedData
     } = useContext(GlobalContext);
+
 
     const [instructorFocus, setInstructorFocus] = useState();
     const [showInputModal, setShowInputModal] = useState();
@@ -44,9 +43,17 @@ function Instructors() {
         setInstructorFocus(instructor);
     }
 
-    const handleAddNewInstructorManually = (instructor) => {
+    const handleAddNewInstructorManually = async (instructor) => {
         // setInstructorData([instructor, ...instructorData])
+        await saveInstructor({...instructor, approve: true, seasonId: seasonSelected.seasonId});
         handleCloseInputModal();
+        fetchAllInstructorAggregatedData();
+
+    }
+
+    const onDeletePress = async (id) => {
+        await deleteInstructor(id);
+        fetchAllInstructorAggregatedData();
     }
 
     const renderModal = (
@@ -193,40 +200,42 @@ function Instructors() {
                                 <Filter style={{marginRight: '0.5rem'}}/>Filter</Button>
                             <Button variant="primary" style={{marginLeft: '2rem'}} onClick={handleShowInputModal}>
                                 <PlusCircle style={{marginRight: '0.5rem'}}/><span>Add Instructor</span></Button>
-                            <OverlayTrigger
-                                trigger="click"
-                                placement={'bottom'}
-                                overlay={
-                                    <Popover>
-                                        <Popover.Title as="h3">Onboarding URL</Popover.Title>
-                                        <Popover.Content>
-                                            <p>Share this URL with instructors to self-onboard
-                                                for the <strong>{seasonNameSelected}</strong> season.</p>
-                                            <FormControl
-                                                aria-label="Default"
-                                                aria-describedby="inputGroup-sizing-default"
-                                                value={`localhost:3000/onboarding/${seasonIdSelected}/${encodeURI(seasonNameSelected)}`}
-                                            />
-                                        </Popover.Content>
-                                    </Popover>
-                                }
-                            >
-                                <Button variant="secondary" style={{marginLeft: '2rem'}}><Link45deg
-                                    style={{marginRight: '0.5rem'}}/>Self-Onboarding</Button>
-                            </OverlayTrigger>
+                            {/* TODO: Self-Onboarding is not ready for production */}
+                            {/*<OverlayTrigger*/}
+                            {/*    trigger="click"*/}
+                            {/*    placement={'bottom'}*/}
+                            {/*    overlay={*/}
+                            {/*        <Popover>*/}
+                            {/*            <Popover.Title as="h3">Onboarding URL</Popover.Title>*/}
+                            {/*            <Popover.Content>*/}
+                            {/*                <p>Share this URL with instructors to self-onboard*/}
+                            {/*                    for the <strong>{seasonSelected.name}</strong> season.</p>*/}
+                            {/*                <FormControl*/}
+                            {/*                    aria-label="Default"*/}
+                            {/*                    aria-describedby="inputGroup-sizing-default"*/}
+                            {/*                    value={`localhost:3000/onboarding/${seasonSelected.seasonId}/${encodeURI(seasonSelected.name)}`}*/}
+                            {/*                />*/}
+                            {/*            </Popover.Content>*/}
+                            {/*        </Popover>*/}
+                            {/*    }*/}
+                            {/*>*/}
+                            {/*    <Button variant="secondary" style={{marginLeft: '2rem'}}><Link45deg*/}
+                            {/*        style={{marginRight: '0.5rem'}}/>Self-Onboarding</Button>*/}
+                            {/*</OverlayTrigger>*/}
                         </InputGroup>
                     </div>
 
                     <InstructorsTable
                         handleInstructorRowClicked={handleInstructorRowClicked}
                         data={Object.values(instructorData).reverse()}
-                        programsColorKey={program_color_keys}
+                        programsColorKey={programColorMap}
                     />
                 </Wrapper>
                 <SideInfoWrapper>
                     <InstructorsSideInfo
                         instructor={instructorFocus}
-                        programsColorKey={program_color_keys}
+                        programsColorKey={programColorMap}
+                        onDeletePress={onDeletePress}
                     />
                 </SideInfoWrapper>
 

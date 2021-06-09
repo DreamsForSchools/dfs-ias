@@ -25,3 +25,14 @@ export const loadPartnersAggregated =  async (seasonId) => {
     }
     // return axios.post(`/api/program/aggregated/${seasonId}`)
 }
+
+export const deletePartner = async (partnerId) => {
+    try {
+        const header = await createToken();
+        await axios.delete(`/api/partner/${partnerId}`, header);
+        toast(`👍 Partner deleted successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
+}
