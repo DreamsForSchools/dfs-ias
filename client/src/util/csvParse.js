@@ -76,6 +76,10 @@ const parseAvailability = async (instructorData) => {
                 } else {
                     obj[`${key}`] = false;
                 }
+            } else if (`${key}`.startsWith('phoneNumber')){
+                let phoneNumber = `${value}`;
+                phoneNumber = phoneNumber.replace(/\D/g,"");
+                obj[`${key}`] = phoneNumber;
             }
         });
         obj['availability'] = availability;
