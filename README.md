@@ -16,8 +16,18 @@ This app is designed to be used by Dreams for Schools administrators. It automat
     - If the user wants to save an assignment they can lock the instructor to a class
     - Automatically assigns all unlocked (unassigned) instructors to class
 
-# Run on Local Machine
-Create an `.env` file in the api folder (See shared Google Drive for keys).
+# Requirements
+- Node.js v14.0^
+
+# Deployed App
+- https://dfs-ias.herokuapp.com/
+- Login details in shared Google Drive under Operation Manual & Setup Guide
+
+# Steps for Running on a local machine
+**Step 1:** Navigate to the api folder (backend).    
+
+**Step 2:** Create .env file for API keys in the root directory of the api folder. (See shared Google Drive for keys)  
+
 ```
 GMAP_API_KEY=
 CLOUD_DB_IP=
@@ -27,43 +37,57 @@ CLOUD_DB_DEV_USERNAME=
 CLOUD_DB_DEV_PASSWORD=
 ```
 
-Run these commands in your terminal:
-## API (backend)
+**Step 3:** Create serviceAccount.json file in the root directory of the api folder. (See shared Google Drive for serviceAccount.json)  
+
+**Step 4:** Run 2 consoles and run these commands.   
+
+- **API (backend)**
 ```
 cd api
 npm install
 npm start
 ```
-## Client (frontend)
+- **Client (frontend)**
 ```
 cd client
 npm install
 npm start
 ```
-[http://localhost:3000](http://localhost:3000) should open in the browser.
+
+**Step 5:** Login to IAS app with credentials at [http://localhost:3000](http://localhost:3000)
+- Username/Password: See Operation Manual & Setup Guide in shared Google Drive
+
+**Step 6 (Optional):** Connect DataGrip to the cloudDB for direct access.  
+- See Operation Manual & Setup Guide in shared Google Drive for the exact steps
+- Relational Schema & DDL statements are also provided there
 
 # Login Authentication
 - Uses firebase for authentication 
 - In order to create more accounts:
-  1. Login to the firebase console using DFS account: technology@dreamsforschools.org (Login details found in hared Google Drive)
+  1. Login to the firebase console using DFS account: (Login details found in shared Google Drive)
   2. Navigate to IAS-DFS project
   3. Select authentication from the left side bar
   4. Click add user
-- Dummy account for testing:
-  - Username: ias-demo@gmail.com
-  - Password: (See shared Google Drive)
- 
+- IAS App Login Account for testing:
+  - Username/Password: (See shared Google Drive)
+- All axios calls from the front end must pass a token in the header
+- In the backend all incoming requests will be intercepted in api > app.js
+	- If token is validated, the decoded value will be placed back into the request
+	- All endpoints check to see if incoming requests have req.currentUser before proceeding. If not authenticated, HTTP error 403 is returned.
+
 # Hosting
 - **SQL** - Google Cloud
+	- SQL instance is running on the `DFS App` project.
+	- To log into the Google Cloud SQL dashboard, follow steps in Operation Manual & Setup Guide
 - **Admin Login** - Google Firebase
+	- SQL instance is running on the `DFS-IAS` project.
+	- To log into the Google Firebase dashboard, follow steps in Operation Manual & Setup Guide
 - **Application** - Heroku
-- The API is hosted on Heroku, which serves the front-end of the application on the root URL.
-- There is a CI/CD pipeline set up on GitHub Action which triggers a build and deployment on every commit to the main branch.
-- Heroku account: 
-    - Email: technology@dreamsforschool.org
-    - Password: (See shared Google Drive)
-**Others:**
-- Uses Google Maps API
+	- The API is hosted on Heroku, which serves the front-end of the application on the root URL.
+	- See shared Operation Manual for instructions on how to login and deploy the application.
+- **Others:**
+	- Google Maps API is running on the `DFS-IAS` project.
+	- To log into the Google Firebase dashboard, follow steps in shared Operation Manual
 
 # Tech Stacks 
 
@@ -101,6 +125,8 @@ npm start
 The csv is parsed on the front end (client/src/util/csvParse.js) and sends an axios post call to /api/instructor/CSV to bulk add all the instructor data to the database.
 
 In order to parse DFS google form data we use the ['csvtojson' parser library](https://www.npmjs.com/package/csvtojson).
+
+- If you are encountering issues with processing large csv files with 100+ instructors, try breaking the file down into chunks and drag them in that way. Sometimes the google api that fetches the instructor location can bottleneck the process and the request can time out if it takes too long. Processing 100+ instructors can take up to 2 minutes.
 - There are many questions on the google form that we want to omit while parsing the csv as we only want to extract specific fields while saving instructors to the db.
 - In order to accomplish this you need to tell the 'csvtojson' parser the exact order of columns in the csv data because they represent the order of the questions in the google form.
 - If the order of the questions is changed in the DFS Instructor onboarding google form, the csv parser config needs to reflect those changes in (client/src/util/csvParse.js) line 25.
@@ -151,7 +177,19 @@ while there exist a free class c who still needs an instructor assignment
 }
 ```
 - Search Bar: Users can search by instructor name, email, university, or first preference.
+- You can use client/util/sampleData.js to generate fake instructors.
 - The drag and drop functionality uses the [react-beautiful-dnd library](https://github.com/atlassian/react-beautiful-dnd)
+
+# Required Fixes & Bugs
+- Locked Instructors should not be draggable. It is important to unlock instructors before moving them. 
+	- Class page manages the draggable area but does not have direct access to current instructor locked states unless the page is reloaded.
+	- isDragDisabled is set to false for now so dnd still works.
+- Supporting locking at the program and class level is tricky
+	- Locked states can become bugged on page reload due to conflicting locked states at the instructor, class and program level
+- Instructor page needs search bar and filter functionality implemented
+- Reloading a page on Heroku causes Page Not Found. Does not happen while running locally
+- React Routing and Authentication
+- Unused API’s need to be refactored or removed
 
 # Future Areas of Improvement
 ## Sorting / Auto-assign
@@ -171,9 +209,10 @@ while there exist a free class c who still needs an instructor assignment
 
 ## Variable & Frontend Renaming
 - Program —> Classes
+- Classes —> Sections
 
-## Classes —> Sections
-- Adding images in SQL
+## Adding images for Partner Locations
+- Save images for school locations with gmap api (low priority)
 
-## Save images for school locations (low priority)
-- Add past instructor search
+## Add past instructor search
+
