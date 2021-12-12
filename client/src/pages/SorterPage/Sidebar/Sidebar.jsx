@@ -11,7 +11,7 @@ const Sidebar = ({ state, handleFilter, handleSearch, handleAutoAssign, instruct
   return (
     <div className="sidebar">
       <h1 className="title">Unassigned Instructors</h1>
-      <InstructorSearchForm 
+      <InstructorSearchForm
         setIsLoading={setIsLoading}
         state={state}
         handleFilter={handleFilter}
@@ -20,12 +20,12 @@ const Sidebar = ({ state, handleFilter, handleSearch, handleAutoAssign, instruct
         instructorData={instructorData}
         lockedInstructors={lockedInstructors}
       />
-      { instructorData === null || instructorData.length === 0 ? 
+      { instructorData === null || instructorData.length === 0 ?
         <div style={{textAlign: 'center'}}>
           <Lottie animationData={emptyAnimation} style={{width: 200, height: 200, margin: 'auto'}} />
         </div>
-      : 
-        <SearchResult 
+      :
+        <SearchResult
           isLoading={isLoading}
           state={state}
         />

@@ -8,9 +8,9 @@ import {
     Check,
     GeoAltFill,
     PeopleFill,
-    Trash
+    Trash, Clipboard
 } from 'react-bootstrap-icons';
-import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
+import { Button, OverlayTrigger, Popover, Badge, Modal } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
@@ -19,6 +19,7 @@ import {partnerSymbols} from "../../constant";
 
 const PartnerSideInfo = (props) => {
     const { partner, onDeletePress } = props;
+    const [ deleteShow, setDeleteShow ] = React.useState(false);
 
     if (!partner) {
         return (
@@ -35,6 +36,16 @@ const PartnerSideInfo = (props) => {
         return instructorCount.toString();
     }
 
+    const onDuplicatePartner= (data, duplicate) => {
+        const partnerData = { ...data, duplicate };
+        props.openModal('Partners', partnerData);
+    }
+
+    const onDeletePartner = () => {
+        onDeletePress("PARTNER", partner.partnerId)
+        setDeleteShow(false);
+    }
+
     return (
         <Wrapper>
             <Fade right duration={200}>
@@ -43,12 +54,21 @@ const PartnerSideInfo = (props) => {
                     <Title>
                         { partner.name }
                     </Title>
-                    {/*<Button variant="info">Edit Partner*/}
-                    {/*    <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>*/}
-                    {/*</Button>*/}
-                    <Button variant="danger" onClick={() => onDeletePress("PARTNER", partner.partnerId)}>Delete Partner
-                        <span style={{marginLeft: '0.5rem'}}><Trash/></span>
-                    </Button>
+                    <div style={{ margin: '1rem 0' }}>
+                        <Button  style={{ width: '12rem' }} onClick={() => onDuplicatePartner(partner, false)} data-testid="editPartner">Edit Partner
+                            <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
+                        </Button>
+                    </div>
+                    <div style={{ margin: '1rem 0' }}>
+                        <Button  style={{ width: '12rem' }} variant="danger" onClick={() => setDeleteShow(true)} data-testid="deletePartner">Delete Partner
+                            <span style={{marginLeft: '0.5rem'}}><Trash/></span>
+                        </Button>
+                    </div>
+                    <div style={{ margin: '1rem 0' }}>
+                        <Button style={{ width: '12rem' }} variant="success" onClick={() => onDuplicatePartner(partner, true)} data-testid="duplicatePartner">Duplicate Partner
+                            <span style={{marginLeft: '0.5rem'}}><Clipboard/></span>
+                        </Button>
+                    </div>
                     <div style={{margin: "2rem 0"}}>
                         <PartnerSymbol>{partnerSymbols[partner.partnerType]}️</PartnerSymbol>
                     </div>
@@ -75,6 +95,25 @@ const PartnerSideInfo = (props) => {
                                 </Text>
                         </PartnerProgramSection>
                     )}
+
+                    <Modal show={deleteShow}
+                           onHide={() => setDeleteShow(false)}
+                           aria-labelledby="contained-modal-title-vcenter"
+                           centered>
+                        <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
+                            <Modal.Title>Delete Confirm</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body style={{padding: '1rem 3rem'}}>Do you want to delete this partner?</Modal.Body>
+                        <Modal.Footer style={{border: '0'}}>
+                            <Button variant="light" onClick={() => setDeleteShow(false)}>
+                                Close
+                            </Button>
+                            <Button variant="danger"
+                                    onClick={() => onDeletePartner()} data-testid="deletePartnerConfirm">
+                                Confirm
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
             </Fade>
         </Wrapper>

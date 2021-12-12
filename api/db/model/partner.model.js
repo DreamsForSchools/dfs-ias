@@ -71,17 +71,17 @@ Partner.deleteById = async function (id, result) {
 Partner.updateById = async function (id, partner, result) {
     try{
         let originalPartner = await db.query("SELECT * FROM partners WHERE partnerId = ?",id);
-    
+
         let partnerAddress = partner.street + ", " + partner.city + ", " + partner.state + " " + partner.zip;
         let originalAddress = originalPartner[0].street + ", " + originalPartner[0].city + ", " + originalPartner[0].state + " " + originalPartner[0].zip;
-    
+
         //if name or address changed
-        if(originalPartner[0].name != partner.name || partnerAddress != originalAddress)
-        {
+        // if(originalPartner[0].name != partner.name || partnerAddress != originalAddress)
+        // {
             //update partner
             await db.query("UPDATE partners SET name = ?, city = ?, state = ?, street = ?, zip = ?, district = ?, partnerType= ?, langRequest = ? WHERE partnerId = ?",
             [partner.name, partner.city, partner.state, partner.street, partner.zip, partner.district, partner.partnerType, partner.langRequest, id]);
-    
+
             //update locationcache
             let results = null;
             if(partnerAddress != originalAddress)    //change address (and possibly address)
@@ -94,7 +94,7 @@ Partner.updateById = async function (id, partner, result) {
                 results = await db.query("UPDATE locationCache SET name = ? WHERE partnerId = ?",[partner.name, id]);
             }
             result(null,results);
-        }
+        // }
 
     }catch(err){
         console.log(err);
@@ -122,17 +122,17 @@ async function getGmapLocation(partner, partnerAddress){
     location.district = partner.district; //keep if locationCache is keeping district
     let gmapPlace = await axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${process.env.GMAP_API_KEY}&inputtype=textquery&input=${partnerAddress}&inputtype=textquery&fields=geometry,photos,name,formatted_address,place_id`);
     // console.log("gmap", gmapPlace);
-    
+
     if(gmapPlace.data.status == 'OK' && gmapPlace.data.candidates.length >= 1){
         location.address = gmapPlace.data.candidates[0].formatted_address;
         location.latitude = gmapPlace.data.candidates[0].geometry.location.lat;
         location.longititude = gmapPlace.data.candidates[0].geometry.location.lng;
         location.placeId = gmapPlace.data.candidates[0].place_id;
-        
+
         let date = new Date();
         let gmapTimeZone = await axios.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${location.latitude},${location.longititude}&timestamp=${Math.floor(date.getTime()/1000)}&key=${process.env.GMAP_API_KEY}`);
         // console.log("gmapTimeZone", gmapTimeZone);
-        
+
         location.rawOffset = gmapTimeZone.data.rawOffset;
         location.dstOffset = gmapTimeZone.data.dstOffset;
     }
@@ -171,7 +171,7 @@ function locationCacheCheck(partnerName, partnerLocation, insertedPartnerID,resu
                                     else{
                                         //insert into location cache WITH instructor ID
                                         location.partnerId = insertedPartnerID;
-   
+
                                         insertLocation(insertedPartnerID,location,result);
                                     }
                                 });
@@ -199,8 +199,8 @@ function insertLocation(insertedPartnerID,location,result)
                         if(err) result(err,null);
                     });
             }else{
-                 //inserting location 
-                 
+                 //inserting location
+
                 delete location["locationCacheId"];
                 db.query("INSERT INTO locationCache set ?",location,function(err,res){
                     if(err) result(err,null);

@@ -221,12 +221,11 @@ async function getSortData(currentSeasonId) {
         "\n" +
         "  and instructors.instructorId in\n" +
         "      (select instructorAvailability.instructorId\n" +
-        "       from instructorAvailability\n" +
-        "       where ("
+        "       from instructorAvailability\n"
 
     let sortQueryFragTimings = "(weekday = ? and instructorAvailability.startTime <= ? and instructorAvailability.endTime >= ?)";
 
-    let sortQueryFragEnd = ") GROUP BY instructorAvailability.instructorId\n" +
+    let sortQueryFragEnd = " GROUP BY instructorAvailability.instructorId\n" +
         "       having count(*) = ?)\n" +
         "ORDER BY distance ASC;"
 
@@ -239,14 +238,18 @@ async function getSortData(currentSeasonId) {
         queryArray.push(currentSeasonId);
         queryArray.push(classObj.partnerId);
         fullQuery = sortQueryFragStart;
-        for (const time in classObj.timings) {
-            fullQuery = fullQuery + sortQueryFragTimings;
-            if (time != (classObj.timings).length - 1) {
-                fullQuery = fullQuery + " or ";
+        if (classObj.timings && classObj.timings.length > 0) {
+            fullQuery = fullQuery + "       where (";
+            for (const time in classObj.timings) {
+                fullQuery = fullQuery + sortQueryFragTimings;
+                if (time != (classObj.timings).length - 1) {
+                    fullQuery = fullQuery + " or ";
+                }
+                queryArray.push(classObj.timings[time].weekday);
+                queryArray.push(classObj.timings[time].startTime);
+                queryArray.push(classObj.timings[time].endTime);
             }
-            queryArray.push(classObj.timings[time].weekday);
-            queryArray.push(classObj.timings[time].startTime);
-            queryArray.push(classObj.timings[time].endTime);
+            fullQuery = fullQuery + ")";
         }
         fullQuery = fullQuery + sortQueryFragEnd;
         console.log("---------------------------------------------------------------------------------------")

@@ -18,9 +18,9 @@ const AddNewProgramModal = ({ handleSubmit }) => {
     const [validated, setValidated] = useState(false);
     const [newProgramInput, setNewProgramInput] = useState(
         {
-            name: null,
-            color: null,
-            logo: null,
+            name: '',
+            color: '',
+            logo: '',
         }
     )
 
@@ -80,7 +80,7 @@ const AddNewProgramModal = ({ handleSubmit }) => {
                             <input type={"file"} onChange={(event) => handleImageUpload(event.target.files[0] || null)} />
                         </div>
                         <div style={{width: '50%', marginRight: '1.5rem'}}>
-                            <Input required label={'Program Name'} handler={handleFormInput} state={newProgramInput.name} modal/>
+                            <Input required label={'Program Name'} handler={handleFormInput} state={newProgramInput.name} modal data-testid="programName"/>
                             <label>Color <span style={{color: 'red'}}>*</span></label>
                             <CirclePicker
                                 color={ newProgramInput.color || '#000000'}
@@ -89,7 +89,7 @@ const AddNewProgramModal = ({ handleSubmit }) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer style={{border: '0', padding: '0 3rem 2rem 3rem'}}>
-                    <Button variant="primary" type="submit">Submit</Button>
+                    <Button variant="primary" type="submit" data-testid="addProgramSubmit">Submit</Button>
                 </Modal.Footer>
             </Form>
         </>

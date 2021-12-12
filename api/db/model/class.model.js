@@ -45,13 +45,14 @@ Class.deleteById = async function (id, result) {
     }
 }
 
-Class.updateById = function (id, mClass, result) {
-    db.query("UPDATE classes SET instructorsNeeded = ?, timings = ?, seasonId = ?, partnerId = ?, programId = ?  WHERE classId = ?",
-        [mClass.instructorsNeeded, mClass.timings, mClass.seasonId, mClass.partnerId, mClass.programId, id],
-        function(err, res) {
-            if (err) result(err, null);
-            else result(null, res);
-        })
+Class.updateById = async function (id, mClass, result) {
+    try {
+        const res = await db.query("UPDATE classes SET instructorsNeeded = ?, timings = ?, seasonId = ?, partnerId = ?, programId = ?  WHERE classId = ?",
+          [mClass.instructorsNeeded, JSON.stringify(mClass.timings), mClass.seasonId, mClass.partnerId, mClass.programId, id]);
+        result(null, res);
+    } catch (e) {
+        return result(e, null);
+    }
 }
 
 Class.allProgramClasses = function (id, result) {

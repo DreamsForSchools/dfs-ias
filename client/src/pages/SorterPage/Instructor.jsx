@@ -11,7 +11,7 @@ import {createToken} from "../../fire";
 const Instructor = ({instructor, classId, state, parentLockStatus}) => {
     const [showInstructorPopUp, setShowInstructorPopUp] = useState();
     const [lock, setLock] = useState(state && state["lockedInstructors"].includes(instructor.instructorId));
-    const {seasonSelected, setToastText} = useContext(GlobalContext);
+    const {seasonSelected, setToastText, programColorMap} = useContext(GlobalContext);
     const axios = require('axios');
 
     const handleShowInstructorPopUp = () => setShowInstructorPopUp(true);
@@ -65,7 +65,7 @@ const Instructor = ({instructor, classId, state, parentLockStatus}) => {
             </div>
             <div className="pref">
                 {[instructor.firstPref, instructor.secondPref, instructor.thirdPref, instructor.fourthPref].map((el, idx) =>
-                    <Dot color={program_color_keys[el]} key={idx}/>
+                  programColorMap[el] && <Dot color={programColorMap[el]} key={idx}/>
                 )}
             </div>
             <div className="tags">

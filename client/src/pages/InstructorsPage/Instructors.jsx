@@ -1,9 +1,9 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Instructors.scss';
 import InstructorsTable from "./InstructorsTable";
 import InstructorsSideInfo from "./InstructorsSideInfo";
 import {Page, SideInfoWrapper, Wrapper} from '../../design-system/layout/Styled';
-import {FormControl, InputGroup, Button, OverlayTrigger, Popover} from "react-bootstrap";
+import { FormControl, InputGroup, Button, OverlayTrigger, Popover, Form } from "react-bootstrap";
 import {PlusCircle, Filter, Search, FileEarmarkTextFill, CloudUploadFill, Link45deg} from 'react-bootstrap-icons';
 import AddInstructorManuallyModal from "../../components/AddInstructorManuallyModal";
 import {Modal} from "react-bootstrap";
@@ -13,6 +13,7 @@ import {toast} from 'react-toastify';
 import Lottie from "lottie-react";
 import csvLoadingAnimation from '../../assets/idea-into-book-machine.json';
 import {saveInstructor, deleteInstructor} from "../../api";
+import InstructorFiltersModal from "../../components/InstructorFiltersModal";
 
 
 function Instructors() {
@@ -22,13 +23,21 @@ function Instructors() {
         programColorMap,
         fetchAllInstructorAggregatedData
     } = useContext(GlobalContext);
-
+    const initialCheckedItems = { name: '', car: [], availability: [], preference: [], year: [], asl: [] };
 
     const [instructorFocus, setInstructorFocus] = useState();
     const [showInputModal, setShowInputModal] = useState();
     const [addInstructorMethod, setAddInstructorMethod] = useState(null);
     const [csvHighlighted, setCsvHighlighted] = React.useState(false);
     const [csvAnimation, setCsvAnimation] = React.useState(false);
+    const [filters, setFilters] = useState(Object.assign({}, initialCheckedItems));
+    const [searchText, setSearchText] = useState('');
+    const [showFilter, setShowFilter] = useState(false);
+    const [filteredInstructors, setFilteredInstructors] = useState([...Object.values(instructorData)]);
+
+    useEffect(() => {
+        setFilteredInstructors([...Object.values(instructorData)]);
+    }, [instructorData]);
 
     const handleCloseInputModal = () => {
         setShowInputModal(false);
@@ -51,10 +60,84 @@ function Instructors() {
 
     }
 
+    const handleCloseFilter = () => setShowFilter(false);
+
+    const handleShowFilter = () => {
+        setShowFilter(true);
+    }
+
     const onDeletePress = async (id) => {
+        setInstructorFocus(null);
         await deleteInstructor(id);
         fetchAllInstructorAggregatedData();
     }
+
+    const handleSearchChange = e => {
+        if (e.key === 'Enter') {
+            onSearchSubmit();
+        }
+        setSearchText(e.target.value.trim());
+    }
+
+    const handleApplyFilters = (checkedItems) => {
+        const { car, availability, preference, year, asl } = checkedItems;
+        setFilters({
+            name: filters.name,
+            car: [...car],
+            availability: [...availability],
+            preference: [...preference],
+            year: [...year],
+            asl: [...asl],
+        });
+        setShowFilter(false);
+    }
+
+    const onSearchSubmit = () => {
+        setFilters({ ...filters, name: searchText });
+    }
+
+    useEffect(() => {
+        const instructors = Object.values(instructorData).filter(instructor => {
+            if (filters.name) {
+                const formattedText = filters.name.toLowerCase();
+                const fullName = instructor.firstName + " " + instructor.lastName;
+                if (
+                  !fullName.toLowerCase().includes(formattedText) && !instructor.email.toLowerCase().includes(formattedText)
+                  && !instructor.university.toLowerCase().includes(formattedText) && !instructor.firstPref.toLowerCase().includes(formattedText)
+                ) {
+                    return false;
+                }
+            }
+
+            if (filters.car.length > 0 && !filters.car.includes(instructor.hasCar)) {
+                return false;
+            }
+
+            const weekdays = instructor.availability.map(ability => ability.weekday);
+            if (filters.availability.length > 0 &&
+              !filters.availability.some(ability => weekdays.includes(ability))) {
+                return false;
+            }
+
+            let preferences = [instructor.firstPref, instructor.secondPref,instructor.thirdPref, instructor.fourthPref];
+            if (filters.preference.length > 0 &&
+              !filters.preference.some(pref => preferences.includes(pref))) {
+                return false;
+            }
+
+            if (filters.year.length > 0 && !filters.year.includes(instructor.schoolYear)) {
+                return false;
+            }
+
+            if (filters.asl.length > 0 && !filters.asl.includes(instructor.isASL)) {
+                return false;
+            }
+
+            return true;
+        });
+
+        setFilteredInstructors(instructors);
+    }, [filters]);
 
     const renderModal = (
         <>
@@ -187,16 +270,20 @@ function Instructors() {
                     <div style={{padding: '2rem 5rem', display: 'flex'}}>
                         <InputGroup>
                             <FormControl
+                                placeholder="Search"
                                 aria-label="Default"
                                 aria-describedby="inputGroup-sizing-default"
+                                value={searchText}
+                                onChange={handleSearchChange}
+                                onKeyPress={handleSearchChange}
                             />
                             <InputGroup.Append>
-                                <Button variant="primary"><Search/></Button>
+                                <Button variant="primary" onClick={onSearchSubmit}><Search/></Button>
                             </InputGroup.Append>
                         </InputGroup>
 
                         <InputGroup>
-                            <Button variant="outline-primary" style={{marginLeft: 'auto'}}>
+                            <Button variant="outline-primary" style={{marginLeft: 'auto'}} onClick={handleShowFilter}>
                                 <Filter style={{marginRight: '0.5rem'}}/>Filter</Button>
                             <Button variant="primary" style={{marginLeft: '2rem'}} onClick={handleShowInputModal}>
                                 <PlusCircle style={{marginRight: '0.5rem'}}/><span>Add Instructor</span></Button>
@@ -227,7 +314,7 @@ function Instructors() {
 
                     <InstructorsTable
                         handleInstructorRowClicked={handleInstructorRowClicked}
-                        data={Object.values(instructorData).reverse()}
+                        data={filteredInstructors.reverse()}
                         programsColorKey={programColorMap}
                     />
                 </Wrapper>
@@ -243,6 +330,14 @@ function Instructors() {
                        onExited={handleAddInstructorReset}>
                     {renderModal}
                 </Modal>
+
+                <InstructorFiltersModal
+                  filters={filters}
+                  show={showFilter}
+                  onHide={handleCloseFilter}
+                  onExited={handleCloseFilter}
+                  handleApplyFilters={handleApplyFilters}
+                />
             </Page>
         );
     } else {

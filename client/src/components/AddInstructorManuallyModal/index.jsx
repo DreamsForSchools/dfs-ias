@@ -56,7 +56,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             case "Phone Number":
                 setFormInput({...formInput, phoneNumber: input})
                 break;
-            case "Gender":
+            case "Sex":
                 setFormInput({...formInput, gender: input})
                 break;
             case "Ethnicity":
@@ -191,7 +191,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal/>
             </div>
             <div style={{width: '25%', marginRight: '1.5rem'}}>
-                <Select options={gender} label={'Gender'} handler={handleFormInput} state={formInput.gender} modal/>
+                <Select options={gender} label={'Sex'} handler={handleFormInput} state={formInput.gender} modal/>
                 <Select options={ethnicity} label={'Ethnicity'} handler={handleFormInput} state={formInput.ethnicity}
                         modal/>
                 <Select options={shirtSize} label={'Shirt size'} handler={handleFormInput} state={formInput.shirtSize}
@@ -354,7 +354,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 </div>
             </Modal.Body>
             <Modal.Footer style={{border: '0', padding: '0 3rem 2rem 3rem'}}>
-                <Button variant="outline-primary" onClick={handlePrevStep} style={{marginRight: 'auto'}}><ChevronLeft/>Back</Button>
+                <Button variant="outline-primary" onClick={handlePrevStep} style={{marginRight: 'auto'}} disabled={step === 0}><ChevronLeft/>Back</Button>
                 {step != 3 ? (<Button variant="primary" onClick={handleNextStep}>Next<ChevronRight/></Button>) : (
                     <Button variant="primary" onClick={() => handleSubmit(formInput)}>Submit</Button>)}
             </Modal.Footer>

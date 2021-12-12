@@ -1,13 +1,14 @@
 import React from "react";
 import Fade from 'react-reveal/Fade';
 import { Trash, CalendarWeek, TelephoneFill, X, Check } from 'react-bootstrap-icons';
-import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
+import { Button, OverlayTrigger, Popover, Badge, Modal } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
 
 const InstructorsSideInfo = (props) => {
     const { instructor, programsColorKey, onDeletePress } = props;
+    const [ deleteShow, setDeleteShow ] = React.useState(false);
 
     if (instructor) {
         formatAvailability(instructor.availability);
@@ -19,6 +20,11 @@ const InstructorsSideInfo = (props) => {
         )
     }
 
+    const onDeleteInstructor = () => {
+        onDeletePress(instructor.instructorId)
+        setDeleteShow(false);
+    }
+
     return (
         <div className={'instructor-side-info'}>
             <Fade right duration={200}>
@@ -26,7 +32,7 @@ const InstructorsSideInfo = (props) => {
                     <h1 style={{fontWeight: "bold", textAlign: "center"}}>
                         {instructor.firstName + " " + instructor.lastName}
                     </h1>
-                    <Button variant="danger" onClick={() => onDeletePress(instructor.instructorId)}>Delete Instructor
+                    <Button variant="danger" onClick={() => setDeleteShow(true)}>Delete Instructor
                         <span style={{marginLeft: '0.5rem'}}><Trash/></span>
                     </Button>
 
@@ -119,7 +125,7 @@ const InstructorsSideInfo = (props) => {
                                 <CalendarWeek/><span style={{marginLeft: "0.5rem"}}>Availability</span>
                             </h6>
                             {formatAvailability(instructor.availability).map((e) =>
-                                <h5>{e}</h5>
+                                <h5 key={e}>{e}</h5>
                             )}
                         </div>
                     </div>
@@ -177,6 +183,25 @@ const InstructorsSideInfo = (props) => {
                             </h5>
                         </div>
                     </div>
+
+                    <Modal show={deleteShow}
+                           onHide={() => setDeleteShow(false)}
+                           aria-labelledby="contained-modal-title-vcenter"
+                           centered>
+                        <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
+                            <Modal.Title>Delete Confirm</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body style={{padding: '1rem 3rem'}}>Do you want to delete this instructor?</Modal.Body>
+                        <Modal.Footer style={{border: '0'}}>
+                            <Button variant="light" onClick={() => setDeleteShow(false)}>
+                                Close
+                            </Button>
+                            <Button variant="danger"
+                                    onClick={() => onDeleteInstructor()}>
+                                Confirm
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
             </Fade>
         </div>

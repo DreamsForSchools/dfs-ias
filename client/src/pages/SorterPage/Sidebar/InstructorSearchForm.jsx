@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './InstructorSearchForm.scss';
 import {InputGroup, FormControl, Button, Modal, Form} from "react-bootstrap";
 import { Search } from 'react-bootstrap-icons';
 import Lottie from "lottie-react";
 import sortLoadingAnimation from '../../../assets/triangle-loading.json';
+import InstructorFiltersModal from "../../../components/InstructorFiltersModal";
 
 const InstructorSearchForm = ({
         setIsLoading,
@@ -14,36 +15,12 @@ const InstructorSearchForm = ({
         instructorData,
         lockedInstructors
     }) => {
+    const initialCheckedItems = { car: [], availability: [], preference: [], year: [], asl: [] };
     const [showAutoAssignConfirmation, setShowAutoAssignConfirmation] = useState();
-    const [checkedItems, setCheckedItems] = useState();
+    const [filters, setFilters] = useState(Object.assign({}, initialCheckedItems));
     const [showFilter, setShowFilter] = useState(false);
     const [sortAnimation, setSortAnimation] = React.useState(false);
     const [searchText, setSearchText] = React.useState("");
-    const [selectedFilters, setSelectedFilters] = React.useState("");
-
-    const availabilityOptions = [
-        {value: "Monday", name: "day:1"},
-        {value: "Tuesday", name: "day:2"},
-        {value: "Wednesday", name: "day:3"},
-        {value: "Thursday", name: "day:4"},
-        {value: "Friday", name: "day:5"},
-    ]
-
-    const preferenceOptions = [
-        {value: "AppJam", name: "pref:Mobile App Development (AppJam+)"},
-        {value: "WebJam", name: "pref:Website Development"},
-        {value: "LESTEM", name: "pref:Let's Explore STEM"},
-        {value: "Scratch", name: "pref:Coding Games with Scratch"},
-        {value: "Engineering Inventors", name: "pref:Engineering Inventors"}
-    ]
-
-    const yearOptions = [
-        {value: "1st", name: "year:1st"},
-        {value: "2nd", name: "year:2nd"},
-        {value: "3rd", name: "year:3rd"},
-        {value: "4th+", name: "year:4th+"},
-        {value: "Graduate", name: "year:Graduate"},
-    ]
 
     const onSearchSubmit = async (e) => {
         let formattedText = searchText.trim().toLowerCase();
@@ -67,104 +44,69 @@ const InstructorSearchForm = ({
         }
     }
 
-    const handleShowFilter = () => {
-        setSelectedFilters("");
-        setShowFilter(true);
-    }
+    const handleShowFilter = () => setShowFilter(true);
     const handleCloseFilter = () => setShowFilter(false);
 
     const handleShowAutoAssignConfirmation = () => setShowAutoAssignConfirmation(true);
     const handleCloseAutoAssignConfirmation = () => setShowAutoAssignConfirmation(false);
 
-    const handleApplyFilters = () => {
-
-        let allFilters = selectedFilters.toLowerCase().split(",");
-        let unassignedInstructors = Object.values(instructorData).filter(instructor => {
-            return (
-                !lockedInstructors.includes(instructor.instructorId)
-            );
+    const handleApplyFilters = (checkedItems) => {
+        const { car, availability, preference, year, asl } = checkedItems;
+        setFilters({
+            name: filters.name,
+            car: [...car],
+            availability: [...availability],
+            preference: [...preference],
+            year: [...year],
+            asl: [...asl],
         });
-
-        if (!allFilters || allFilters[0] === "") {
-            handleSearch(unassignedInstructors);
-            setShowFilter(false);
-        } else {
-            const filteredInstructors = unassignedInstructors.filter(instructor => {
-
-                let queryResults = [];
-
-                for (const aFilter of allFilters) {
-                    let data = aFilter.split(":");
-                    if (data[0].includes("car")) {
-                        queryResults.push(instructor.hasCar.toString().includes(data[1]));
-
-                    } else if (data[0].includes("year")) {
-                        queryResults.push(instructor.schoolYear.includes(data[1]));
-
-                    } else if (data[0].includes("asl")) {
-                        queryResults.push(instructor.isASL.toString().includes(data[1]));
-
-                    } else if (data[0].includes("day")) {
-                        let days = instructor.availability.map(a => a.weekday);
-                        if (days.toString().includes(data[1])) {
-                            queryResults.push(true);
-                        } else {
-                            queryResults.push(false);
-                        }
-                    } else if (data[0].includes("pref")) {
-                        let preferences = [instructor.firstPref.toLowerCase(), instructor.secondPref.toLowerCase(), instructor.thirdPref.toLowerCase(), instructor.fourthPref.toLowerCase()];
-                        if (preferences.includes(data[1])) {
-                            queryResults.push(true);
-                        } else {
-                            queryResults.push(false);
-                        }
-                    }
-                }
-
-                let result
-                if (queryResults.length === 0) {
-                    result = false;
-                } else {
-                    let checker = arr => arr.every(Boolean);
-                    result = checker(queryResults);
-                }
-
-                setSelectedFilters("");
-                return (
-                    result
-                );
-            });
-            handleSearch(filteredInstructors);
-            handleCloseFilter();
-        }
-    }
-
-    const resetFilters = () => {
-        setSelectedFilters("");
-        let unassignedInstructors = Object.values(instructorData).filter(instructor => {
-            return (
-                !lockedInstructors.includes(instructor.instructorId)
-            );
-        });
-
-        handleSearch(unassignedInstructors);
-
         handleCloseFilter();
     }
+
+    useEffect(() => {
+        const unassignedInstructors = Object.values(instructorData).filter(instructor => {
+            return (
+              !lockedInstructors.includes(instructor.instructorId)
+            );
+        });
+
+        const filterInstructors = unassignedInstructors.filter(instructor => {
+
+            if (filters.car.length > 0 && !filters.car.includes(instructor.hasCar)) {
+                return false;
+            }
+
+            const weekdays = instructor.availability.map(ability => ability.weekday);
+            if (filters.availability.length > 0 &&
+              !filters.availability.some(ability => weekdays.includes(ability))) {
+                return false;
+            }
+
+            let preferences = [instructor.firstPref, instructor.secondPref,instructor.thirdPref, instructor.fourthPref];
+            if (filters.preference.length > 0 &&
+              !filters.preference.some(pref => preferences.includes(pref))) {
+                return false;
+            }
+
+            if (filters.year.length > 0 && !filters.year.includes(instructor.schoolYear)) {
+                return false;
+            }
+
+            if (filters.asl.length > 0 && !filters.asl.includes(instructor.isASL)) {
+                return false;
+            }
+
+            return true;
+        });
+
+        handleSearch(filterInstructors);
+    }, [filters])
 
     const handleSearchChange = e => {
         if (e.key === 'Enter') {
             onSearchSubmit();
         }
         setSearchText(e.target.value);
-    }
-
-    const handleCheckboxChange = e => {
-        if (e.target.checked === true && selectedFilters !== "") {
-            setSelectedFilters(selectedFilters + ',' + e.target.id);
-        } else {
-            setSelectedFilters(e.target.id);
-        }
     }
 
     const handleConfirmAutoAssign = async () => {
@@ -192,98 +134,13 @@ const InstructorSearchForm = ({
             <Button className="filter-btn" onClick={handleShowFilter}>Filter</Button>
             <Button className="auto-assign-btn" onClick={handleShowAutoAssignConfirmation}>Auto-assign</Button>
 
-            <Modal dialogClassName="filter" show={showFilter} onHide={handleCloseFilter} onExited={handleCloseFilter}>
-                <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
-                    <Modal.Title style={{fontSize: '36px', fontWeight: 'bold'}}>Filters</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{padding: '1rem 3rem'}}>
-                    {/*<h5>Returnee</h5>*/}
-                    {/*<Form.Group className="filter-group">*/}
-                    {/*    <Form.Check type="checkbox" label="Yes"/>*/}
-                    {/*    <Form.Check type="checkbox" label="No"/>*/}
-                    {/*</Form.Group>*/}
-                    <h5>Owns a car</h5>
-                    <Form.Group className="filter-group">
-                        <Form.Check
-                            type="checkbox"
-                            label="Yes"
-                            id="car:1"
-                            onChange={handleCheckboxChange}
-                            checked={checkedItems}
-                        />
-                        <Form.Check
-                            type="checkbox"
-                            label="No"
-                            id="car:0"
-                            onChange={handleCheckboxChange}
-                            checked={checkedItems}
-                        />
-                    </Form.Group>
-                    <h5>Availability</h5>
-                    <Form.Group className="filter-group">
-                        {availabilityOptions.map(day =>
-                            <Form.Check
-                                key={day.value}
-                                type="checkbox"
-                                label={day.value}
-                                id={day.name}
-                                onChange={handleCheckboxChange}
-                                checked={checkedItems}
-                            />
-                        )}
-                    </Form.Group>
-                    <h5>Preference</h5>
-                    <Form.Group className="filter-group">
-                        {preferenceOptions.map(pref =>
-                            <Form.Check
-                                key={pref.value}
-                                type="checkbox"
-                                label={pref.value}
-                                id={pref.name}
-                                onChange={handleCheckboxChange}
-                                checked={checkedItems}
-                            />
-                        )}
-                    </Form.Group>
-                    <h5>Year</h5>
-                    <Form.Group className="filter-group">
-                        {yearOptions.map(year =>
-                            <Form.Check
-                                key={year.value}
-                                type="checkbox"
-                                label={year.value}
-                                id={year.name}
-                                onChange={handleCheckboxChange}
-                                checked={checkedItems}
-                            />
-                        )}
-                    </Form.Group>
-                    <h5>ASL</h5>
-                    <Form.Group className="filter-group">
-                        <Form.Check
-                            type="checkbox"
-                            label="Yes"
-                            id="asl:1"
-                            onChange={handleCheckboxChange}
-                            checked={checkedItems}
-                        />
-                        <Form.Check
-                            type="checkbox"
-                            label="No"
-                            id="asl:0"
-                            onChange={handleCheckboxChange}
-                            checked={checkedItems}
-                        />
-                    </Form.Group>
-                    <div style={{height: "30px"}}>
-
-                    </div>
-                    <div className="filter-btns">
-                        <Button className="apply-btn" onClick={handleApplyFilters}>Apply Filters</Button>
-                        <Button className="reset-btn" onClick={resetFilters}>Reset Filters</Button>
-                    </div>
-                </Modal.Body>
-            </Modal>
+            <InstructorFiltersModal
+              filters={filters}
+              show={showFilter}
+              onHide={handleCloseFilter}
+              onExited={handleCloseFilter}
+              handleApplyFilters={handleApplyFilters}
+            />
 
             <Modal centered show={showAutoAssignConfirmation} onHide={handleCloseAutoAssignConfirmation}
                    onExited={handleCloseAutoAssignConfirmation} backdrop={'static'}>

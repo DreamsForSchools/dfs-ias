@@ -36,3 +36,14 @@ export const deletePartner = async (partnerId) => {
         toast(`❌ ${e}`);
     }
 }
+
+export const updatePartner = async (partnerData) => {
+    try {
+        const header = await createToken();
+        await axios.put(`/api/partner/${partnerData.partnerId}`, partnerData, header);
+        toast(`👍 ${partnerData.name} updated successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
+}

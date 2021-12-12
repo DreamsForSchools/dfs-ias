@@ -73,9 +73,7 @@ Instructor.createSingle = async function (newInstructor, result) {
         await db.rollback();
 
         console.log(err);
-        if (result) {
-            result(null, err);
-        }
+        result(err, null);
     }
 
 }

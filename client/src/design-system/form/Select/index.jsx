@@ -2,7 +2,7 @@ import React from "react";
 import {Form} from "react-bootstrap";
 import {Wrapper} from "./Styled";
 
-export const Select = ({options, label, handler, modal, state }) => {
+export const Select = ({options, label, handler, modal, state, required }) => {
     const handleChange = (field, e) => {
         handler(e.target.value, field);
     }
@@ -11,7 +11,7 @@ export const Select = ({options, label, handler, modal, state }) => {
         <Wrapper modal={modal}>
             <label htmlFor="basic-url">{label}</label>
             <Form.Group controlId="exampleForm.SelectCustomSizeSm">
-                <Form.Control as="select" value={state} custom onChange={(event) => handleChange(label, event)}>
+                <Form.Control as="select" value={state} required={required} custom onChange={(event) => handleChange(label, event)}>
                     {modal && <option value={null}></option>}
                     {options.map((e, idx) => (
                         <option value={e} key={idx}>{e}</option>

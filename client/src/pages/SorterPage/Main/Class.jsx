@@ -42,10 +42,10 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     <div className="class">
       <div className="header">
         <h1 className="partner-name">{partner}</h1>
-        <div className="lock" onClick={() => { setLock(!lock) }}>
-            {lock ? <LockFill onClick={handleUnlock} className="icon" size={18}/> :
-                <UnlockFill onClick={handleLock} className="icon" size={18}/>}
-        </div>
+        {/*<div className="lock" onClick={() => { setLock(!lock) }}>*/}
+        {/*    {lock ? <LockFill onClick={handleUnlock} className="icon" size={18}/> :*/}
+        {/*        <UnlockFill onClick={handleLock} className="icon" size={18}/>}*/}
+        {/*</div>*/}
       </div>
       <div className="class-info">
         <div><CalendarWeek /> {formatAvailability(time)} </div>
@@ -64,15 +64,14 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                     key={instructor.instructorId}
                     draggableId={instructor.instructorId.toString()}
                     index={index}
-                    // isDragDisabled={state["lockedInstructors"].includes(instructor.instructorId)}
-                    isDragDisabled={false}
+                    isDragDisabled={state["lockedInstructors"].includes(instructor.instructorId)}
                   >
                     {(provided) => {
                       return (
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}                        
+                          {...provided.dragHandleProps}
                         >
                           <Instructor
                             key={instructor.instructorId}

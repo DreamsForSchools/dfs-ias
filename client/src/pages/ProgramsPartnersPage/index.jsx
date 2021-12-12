@@ -6,8 +6,8 @@ import { Page, SideInfoWrapper, Wrapper, GalleryWrapper } from '../../design-sys
 import AddNewProgramModal from '../../components/AddNewProgramModal';
 import AddNewPartnerModal from '../../components/AddNewPartnerModal';
 import AddClassToProgramModal from "../../components/AddClassToProgramModal";
-import {saveProgram, savePartner, deleteProgram, deletePartner} from '../../api';
-import {saveClass} from "../../api/class";
+import {saveProgram, savePartner, deleteProgram, deletePartner, updatePartner} from '../../api';
+import {saveClass, updateClass, deleteClass} from "../../api/class";
 import { PartnerCard, ProgramCard } from '../../design-system/components/Cards';
 import {GlobalContext} from "../../context/GlobalContextProvider";
 import Lottie from 'lottie-react';
@@ -15,7 +15,7 @@ import emptyAnimation from '../../assets/empty-animation.json';
 //dummy data: to be removed once connect to backend
 import PartnerSideInfo from "./PartnerSideInfo";
 import ProgramSideInfo from "./ProgramSideInfo";
-import {Button, FormControl, InputGroup, Modal} from "react-bootstrap";
+import {Button, FormControl, InputGroup, Modal, OverlayTrigger, Popover, PopoverTitle, PopoverContent, Form} from "react-bootstrap";
 import {Filter, PlusCircle, Search} from "react-bootstrap-icons";
 import AddClassToPartnerModal from "../../components/AddClassToPartnerModal";
 
@@ -23,6 +23,7 @@ let ProgramsPartners;
 export default ProgramsPartners = () => {
     const {
         setToastText,
+        seasonSelected,
         programData,
         partnerData,
         fetchProgramsAggregatedForCurrentSeason,
@@ -33,15 +34,22 @@ export default ProgramsPartners = () => {
     const [filterType, setFilterType] = useState("All");
     const [dataIdFocus, setDataIdFocus] = useState(null);
     const [showInputModal, setShowInputModal] = useState(false);
+    const [currentData, setCurrentData] = useState(null);
+    const [programName, setProgramName] = useState('');
+    const [partnerName, setPartnerName] = useState('');
 
     const handleCloseInputModal = () => {
         console.log('hey you');
         setModalType(null);
         setShowInputModal(false);
+        setCurrentData(null);
     }
 
-    const handleOpenInputModal = (type) => {
+    const handleOpenInputModal = (type, curData) => {
         setModalType(type);
+        if (curData) {
+            setCurrentData(curData);
+        }
     }
 
     useEffect(() => {
@@ -49,12 +57,26 @@ export default ProgramsPartners = () => {
     }, [modalType])
 
     const getViewType = (type) => {
+        if (type === 'Programs') {
+            setPartnerName('');
+        } else {
+            setProgramName('');
+        }
         setViewType(type);
         setDataIdFocus(null);
     }
 
     const handleCardClick = (data) => {
         setDataIdFocus(data);
+    }
+
+    const handleFilterInput = (e) => {
+        const value = e.target.value;
+        if (viewType === 'Programs') {
+            setProgramName(value);
+        } else {
+            setPartnerName(value);
+        }
     }
 
     const renderSideInfo = () => {
@@ -86,10 +108,19 @@ export default ProgramsPartners = () => {
                 await saveProgram(data);
                 break;
             case 'PARTNER':
-                await savePartner(data);
+                console.log(data);
+                if (data.partnerId && !data.duplicate) {
+                    await updatePartner(data);
+                } else {
+                    await savePartner(data);
+                }
                 break;
             case 'CLASS':
-                await saveClass(data);
+                if (data.classId && !data.duplicate) {
+                    await updateClass(data);
+                } else {
+                    await saveClass(data);
+                }
                 break;
         }
 
@@ -100,7 +131,10 @@ export default ProgramsPartners = () => {
 
     const renderPrograms = () => {
         // TODO: implement rendering by filter here
-        const programList = programData !== null && Object.values(programData);
+        let programList = programData !== null && Object.values(programData);
+        if (programName.trim()) {
+            programList = programList.filter(program => program.name.toLowerCase().indexOf(programName.toLowerCase()) !== -1);
+        }
 
         if (programData === null || programList.length === 0) {
             return (
@@ -112,13 +146,16 @@ export default ProgramsPartners = () => {
         }
 
         return programList.map((e, index) => {
-            return <ProgramCard item={e} key={index} onClick={handleCardClick}/>
+            return <ProgramCard item={e} key={e.programId} onClick={handleCardClick}/>
         })
     }
 
     const renderPartners = () => {
         // TODO: implement rendering by filter here
-        const partnersList = partnerData !== null && Object.values(partnerData);
+        let partnersList = partnerData !== null && Object.values(partnerData);
+        if (partnerName.trim()) {
+            partnersList = partnersList.filter(partner => partner.name.toLowerCase().indexOf(partnerName.toLowerCase()) !== -1);
+        }
 
         if (partnerData === null || partnersList.length === 0) {
             return (
@@ -129,8 +166,8 @@ export default ProgramsPartners = () => {
             )
         }
 
-        return partnersList.map((e, index) => {
-            return <PartnerCard item={e} key={index} onClick={handleCardClick}/>
+        return partnersList.sort((a, b) => a.name.localeCompare(b.name)).map((e, index) => {
+            return <PartnerCard item={e} key={e.partnerId} onClick={handleCardClick}/>
         })
 
     }
@@ -142,21 +179,43 @@ export default ProgramsPartners = () => {
         } else if (type === "PARTNER") {
             await deletePartner(id);
             fetchPartnersAggregatedForCurrentSeason();
+        } else if (type === "CLASS") {
+            await deleteClass(id)
+            fetchProgramsAggregatedForCurrentSeason();
         }
     }
 
     return (
         <Page>
             <Wrapper>
-                <div style={{padding: '2rem 3rem', display: 'flex'}}>
-                    <InputGroup>
+                <div style={{padding: '2rem 3rem', display: 'flex', justifyContent: 'space-between'}}>
+                    <InputGroup style={{ width: 'auto' }}>
                         <Select label={'View By: '} options={['Programs', 'Partners']} handler={getViewType} modal={false} state={viewType}/>
                     </InputGroup>
-                    <InputGroup>
-                        <Button variant="outline-primary" style={{marginLeft: 'auto'}}>
-                            <Filter style={{marginRight: '0.5rem'}}/>Filter</Button>
-                        <Button variant="primary" style={{marginLeft: '2rem'}} onClick={() => handleOpenInputModal(viewType)}>
+                    <InputGroup style={{ width: 'auto' }}>
+                        <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={
+                            <Popover id="popover-basic">
+                                <Form.Control style={{ border: 'none' }}
+                                              type="text"
+                                              placeholder={viewType === "Programs" ? "Program name" : "Partner name"}
+                                              value={viewType === "Programs" ? programName : partnerName}
+                                              onChange={handleFilterInput}
+                                />
+                            </Popover>
+                        }>
+                            <Button variant="outline-primary" style={{marginLeft: 'auto'}} data-testid="filter">
+                                <Filter style={{marginRight: '0.5rem'}}/>Filter</Button>
+                        </OverlayTrigger>
+                        <Button variant="primary" style={{marginLeft: '2rem'}} onClick={() => handleOpenInputModal(viewType)} data-testid="addBtn">
                             <PlusCircle style={{marginRight: '0.5rem'}}/><span>Add {viewType.slice(0, -1)}</span></Button>
+                        {
+                            viewType === 'Programs' &&
+                            <Button variant="primary"
+                                    style={{marginLeft: '2rem', marginRight: '1rem'}}
+                                    onClick={() => handleOpenInputModal('Partners')}
+                                    data-testid="addPartnerBtn">
+                                <PlusCircle style={{marginRight: '0.5rem'}}/><span>Add Partner</span></Button>
+                        }
                     </InputGroup>
                 </div>
 
@@ -171,8 +230,8 @@ export default ProgramsPartners = () => {
 
             <Modal size="lg" show={showInputModal && modalType !== null} onHide={handleCloseInputModal}>
                 { modalType === "Programs" && <AddNewProgramModal handleSubmit={handleSubmit}/>}
-                { modalType === "Partners" && <AddNewPartnerModal handleSubmit={handleSubmit}/>}
-                { modalType === "ClassToProgram" && <AddClassToProgramModal handleSubmit={handleSubmit} programContext={programData[dataIdFocus]}/>}
+                { modalType === "Partners" && <AddNewPartnerModal handleSubmit={handleSubmit} partnerList={partnerData} partnerData={currentData}/>}
+                { modalType === "ClassToProgram" && <AddClassToProgramModal handleSubmit={handleSubmit} programContext={programData[dataIdFocus]} classData={currentData}/>}
                 { modalType === "ClassToPartner" && <AddClassToPartnerModal handleSubmit={handleSubmit} partnerContext={partnerData[dataIdFocus]}/>}
             </Modal>
         </Page>

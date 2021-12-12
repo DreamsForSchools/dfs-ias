@@ -42,7 +42,7 @@ const InstructorsRow = (props) => {
                                 <Popover.Content>
                                     {
                                         [firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
-                                            <h6 key={idx}>
+                                            programsColorKey[el] && <h6 key={idx}>
                                                 <Dot color={programsColorKey[el]} />
                                                 <span style={{
                                                     paddingLeft: 8
@@ -56,7 +56,7 @@ const InstructorsRow = (props) => {
                     >
                         <div style={{padding: "0 1rem"}}>
                             {[firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
-                                <Dot color={programsColorKey[el]} key={idx}/>
+                                programsColorKey[el] && <Dot color={programsColorKey[el]} key={idx}/>
                             )}
                         </div>
                     </OverlayTrigger>

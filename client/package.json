@@ -57,5 +57,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "jest-canvas-mock": "^2.3.1"
+  }
 }

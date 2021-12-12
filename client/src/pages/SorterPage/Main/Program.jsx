@@ -20,15 +20,15 @@ const Program = ({ id, name, color, classes, state }) => {
         <Accordion.Toggle className="program-header" onClick={() => { setShowContent(!showContent) }} as={Card.Header} eventKey="0">
           {showContent ? <CaretRightFill className="caret-down" size={20} /> : <CaretRightFill className="caret-right" size={20} />}
           <div className="program-name">{name}</div>
-          <div className="lock" onClick={() => { setLock(!lock) }}>
-            {lock ? <LockFill onClick={handleUnlock} className="icon" size={20}/> :
-                <UnlockFill onClick={handleLock} className="icon" size={20}/>}
-          </div>
+          {/*<div className="lock" onClick={() => { setLock(!lock) }}>*/}
+          {/*  {lock ? <LockFill onClick={handleUnlock} className="icon" size={20}/> :*/}
+          {/*      <UnlockFill onClick={handleLock} className="icon" size={20}/>}*/}
+          {/*</div>*/}
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body className="classes-container">
             <Row>
-              { classes.length > 0 ? classes.map(c => {             
+              { classes.length > 0 ? classes.map(c => {
                   return (
                     <Class
                       className="class"
@@ -47,7 +47,7 @@ const Program = ({ id, name, color, classes, state }) => {
               : null }
             </Row>
           </Card.Body>
-        </Accordion.Collapse> 
+        </Accordion.Collapse>
       </Card>
     </Accordion>
   );
