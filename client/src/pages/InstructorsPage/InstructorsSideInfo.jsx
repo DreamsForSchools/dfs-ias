@@ -668,11 +668,11 @@ const InstructorsSideInfo = (props) => {
                             </Badge>
                         }
                         {formInput.isASL
-                            ? <Badge pill onClick={handleASLChange} variant={isASLValue ? "success" : "danger"}>
-                                {isASLValue ? <div><Check /> ASL </div> : <div><X /> ASL</div>}
+                            ? <Badge pill onClick={handleASLChange} variant={"success" }>
+                                {formInput.isASL ? <div><Check /> ASL </div> : <div><X /> ASL</div>}
                             </Badge>
-                            : <Badge pill onClick={handleASLChange} variant={isASLValue ? "success" : "danger"}>
-                                {isASLValue ? <div><Check /> ASL </div> : <div><X /> ASL</div>}
+                            : <Badge pill onClick={handleASLChange} variant={ "danger"}>
+                                {formInput.isASL ? <div><Check /> ASL </div> : <div><X /> ASL</div>}
                             </Badge>
                         }
                     </div>
