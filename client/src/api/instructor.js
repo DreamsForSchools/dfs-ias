@@ -14,6 +14,20 @@ export const loadAllInstructorsAggregated = async (seasonId) => {
     }
 }
 
+//Edit an Instructor
+/*
+export const updateInstructor = async (instructorData) => {
+    try {
+        const header = await createToken();
+        await axios.put(`/api/instructor/${instructorData.instructorId}`, instructorData, header);
+        toast(`👍 Instructor updated successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    }
+}
+*/
+
 export const saveInstructor = async (instructorData) => {
     try {
         const header = await createToken();

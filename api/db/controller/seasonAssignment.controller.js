@@ -20,7 +20,7 @@ exports.lock = function (req, res) {
     } else {
         res.status(403).send({error: true, message: "Not authorized.", data: null});
     }
-};
+}; 
 
 exports.unlock = function (req, res) {
     const auth = req.currentUser;
@@ -64,6 +64,11 @@ exports.getLockedInstructors = function (req, res) {
     }
 };
 
+/**
+ * 
+ * @param {req} req - 
+ * @param {res} res - 
+ */
 exports.sort = function (req, res) {
     const auth = req.currentUser;
     if (auth) {

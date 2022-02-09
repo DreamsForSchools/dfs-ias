@@ -5,6 +5,12 @@ const axios = require('axios');
 // USAGE:
 // node /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/csvParse.js /Users/arjuntyagi/Documents/GitProjects/dfs-ias-demo/api/util/instructorData.csv
 
+new webpack.DefinePlugin({
+    "process.env": {
+        NODE_ENV: JSON.stringify("production")
+    }
+});
+
 const filePath = process.argv.slice(2)[0];
 const weekdays = {
     mondays: 1,
