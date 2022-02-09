@@ -25,6 +25,19 @@ export const saveInstructor = async (instructorData) => {
     }
 }
 
+// for updating in sideinfo
+export const updateInstructor = async (instructorData) => {
+    try{
+        const header = await createToken();
+        // need to get instructorID for the axios put request.
+        await axios.put(`/api/instructor/${instructorData.instructorId}`, instructorData, header);
+        toast(`👍 Instructor ${instructorData.firstName} ${instructorData.lastName} updated successfully!`)
+    } catch (e) {
+        console.log(e);
+        toast(`❌ ${e}`);
+    } 
+}
+
 export const deleteInstructor = async (instructorId) => {
     try {
         const header = await createToken();

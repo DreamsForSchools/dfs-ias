@@ -8,7 +8,8 @@ import {
     Check,
     GeoAltFill,
     PeopleFill,
-    Trash
+    Trash,
+    Globe
 } from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
@@ -75,6 +76,9 @@ const PartnerSideInfo = (props) => {
                                 </Text>
                         </PartnerProgramSection>
                     )}
+                    <Subtitle>
+                        <Globe/><span style={{marginLeft: '1rem'}}>{partner.langRequest}</span>
+                    </Subtitle>
                 </div>
             </Fade>
         </Wrapper>
