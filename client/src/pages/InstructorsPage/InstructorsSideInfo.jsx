@@ -608,9 +608,9 @@ const InstructorsSideInfo = (props) => {
                     </h1>
 
                     {/* On Click intends to send data (updateToggle) to the database */}
-                    <Button size="md" style={{marginRight: '0.5rem'}}
+                    <Button size="md"  variant="warning" style={{marginRight: '0.5rem'}}
                                         onClick={updateToggle}   data-testid="updateClass">Update
-                                    <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
+                                    <span style={{marginLeft: '0.5rem'} }><PencilSquare/></span>
                     </Button>
 
                     <Button variant="danger" onClick={() => setDeleteShow(true)}>Delete Instructor
@@ -675,6 +675,10 @@ const InstructorsSideInfo = (props) => {
                                 {formInput.isASL ? <div><Check /> ASL </div> : <div><X /> ASL</div>}
                             </Badge>
                         }
+                    </div>
+                    
+                    <div className={"button-description"}>
+                        Click to toggle the tags on and off! 
                     </div>
 
                     <div className={"grouped-info_container"}>
