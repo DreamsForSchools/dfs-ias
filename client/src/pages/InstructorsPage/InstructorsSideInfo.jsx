@@ -93,7 +93,7 @@ const InstructorsSideInfo = (props) => {
                 }
             }
         })
-        // console.log("FUCK");
+        
         // console.log(parsed);
         // index for going through parsed
         //  advance both parsed and 
