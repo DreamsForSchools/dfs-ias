@@ -11,6 +11,7 @@ const config = {
     debug: false
 }
 
+
 function makeDb() {
     const connection = mysql.createConnection(config);
     return {

@@ -1,0 +1,56 @@
+@import '../../DesignSystem';
+
+.instructor_table {
+  padding: 0 5rem;
+
+  table {
+    text-align: center;
+    border-spacing: 0 0.5rem;
+    border-collapse: separate;
+
+    .instructor_row {
+      &:hover {
+        background: #f5f5f5;
+        transition: background 0.2s;
+        cursor: pointer;
+      }
+
+      border-radius: 10px;
+      background: white;
+      td:first-child {
+        border-radius: 10px 0 0 10px;
+      }
+      td:last-child {
+        border-radius: 0 10px 10px 0;
+      }
+    }
+  }
+}
+
+.badge {
+  margin: 0.2rem;
+  font-weight: 400;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+}
+.grouped-info_container {
+  display: flex;
+  margin: 1rem;
+}
+.info {
+  background: #F5F7FB;
+  padding: 1rem;
+  margin: 0 0.5rem;
+  border-radius: 10px;
+}
+
+.info-transparent {
+  padding: 0.5rem;
+  margin: 0 0.5rem;
+  border-radius: 10px;
+}
+
+h6 {
+  color: #676C72;
+}
+

@@ -13,7 +13,7 @@
     "faker": "^5.4.0",
     "firebase": "^8.4.2",
     "http-status-codes": "^2.1.4",
-    "immer": "^9.0.12",
+    "immer": "^8.0.1",
     "lodash": "^4.17.21",
     "lottie-react": "^2.1.0",
     "moment": "^2.29.1",
@@ -59,15 +59,6 @@
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
-    "jest-canvas-mock": "^2.3.1",
-    "react-error-overlay": "^6.0.9"
-  },
-  "overrides": {
-    "react-error-overlay": "^6.0.9"
-  },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "jest-canvas-mock": "^2.3.1"
+  }
 }
