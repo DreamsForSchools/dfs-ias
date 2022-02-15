@@ -2,6 +2,7 @@
 var axios = require('axios');
 
 var db = require('../promiseDb.config.js');
+var knex = require('../knexDb.config.js');
 
 var SeasonAssignment = function (assignment) {
     this.seasonId = assignment.seasonId;
@@ -11,7 +12,7 @@ var SeasonAssignment = function (assignment) {
 
 SeasonAssignment.lock = async function (newAssignment, result) {
     try {
-        await db.query("INSERT INTO seasonAssignments set ?", newAssignment);
+        await knex('seasonAssignments').insert({'set': newAssignment});
         return result(null, newAssignment);
     } catch (err) {
         return result(err, null);
@@ -166,23 +167,6 @@ async function executeSort(sortData) {
     return assignC2I;
 }
 
-// getSortData() returns the following structure
-// {classId: {"classObj": classObj, "availableInstructors": sortResult}}
-// returns a mapping of each classId (that still needs assignments) with it available instructor array.
-// {
-//     "36": {
-//         "classObj": {
-//             "classId": 36,
-//                 "instructorRemaining": 3,
-//                 "instructorsNeeded": 4,
-//                 "timings": [{"endTime": "11:00:00", "weekday": 1, "startTime": "10:00:00"}, {"endTime": "11:00:00", "weekday": 3, "startTime": "10:00:00"}],
-//                 "partnerId": 1,
-//                 "programId": 1,
-//                 "seasonId": 1
-//         },
-//         "availableInstructors": [{"instructorId": 447, "university": "California State University, Long Beach", "distance": 19127, "prefArray": [5,1,2,3], "assignmentCount": 0}
-//     }
-// }
 async function getSortData(currentSeasonId) {
     let sortData = {};
     let classObj;
@@ -377,13 +361,13 @@ async function populateDistanceCache() {
 }
 
 async function getUniversityPlaceId(universityName) {
-    let universityPlaceId = await db.query("SELECT placeId from locationCache where name = ?", universityName);
-    return universityPlaceId[0].placeId;
+    let universityPlaceID = await knex('locationCache').select('placeId').where('name', universityName);
+    return universityPlaceID[0].placeId;
 }
 
 async function getPartnerPlaceId(partnerId) {
-    let partnerPlaceId = await db.query("SELECT placeId from locationCache where partnerId = ?", partnerId);
-    return partnerPlaceId[0].placeId;
+    let partnerPlaceID = await knex('locationCache').select('placeId').where('partnerId', partnerId);
+    return partnerPlaceID[0].placeId;
 }
 
 async function calculateDistance(universityPlaceId, partnerPlaceId) {

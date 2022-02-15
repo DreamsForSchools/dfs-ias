@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "knex": "^1.0.3"
+  }
+}
