@@ -1,10 +1,12 @@
 import React from "react";
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import './SearchResult.scss';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Instructor from '../Instructor.jsx';
 
 const SearchResult = ({ isLoading, state }) => {
   const searchedInstructors = state["search"];
+  
 
   let resultList;
   let searchResultMessage;
@@ -26,24 +28,32 @@ const SearchResult = ({ isLoading, state }) => {
   } else if (Array.isArray(searchedInstructors) && searchedInstructors.length !== 0) {
     // instructors found
     resultList = searchedInstructors.map((instructor, index) => {
+
+      
       return (
         <Draggable
           key={instructor.instructorId}
           draggableId={instructor.instructorId?.toString()}
           index={index}
         >
-          {(provided) => (
+          {(provided, snapshot) => (
             <div
               {...provided.draggableProps}
               {...provided.dragHandleProps}
               ref={provided.innerRef}
             >
-              <Instructor
+            <div> 
+              <> <Instructor key={instructor.instructorId}
+                instructor={instructor}/>  {snapshot.isDragging ? ( <Instructor className={`dnd-copy`} key={instructor.instructorId}
+                instructor={instructor}/> ) : null} </>
+              {/* <Instructor
                 key={instructor.instructorId}
                 instructor={instructor}
-              />
+              /> */}
+              </div>
             </div>
-          )}
+          )} 
+          
         </Draggable>
       )
     });
@@ -59,7 +69,7 @@ const SearchResult = ({ isLoading, state }) => {
             {...provided.droppableProps}
           >
             {resultList}
-            {provided.placeholder}
+            {/* {provided.placeholder} */}
           </div>
         )}
       </Droppable>
