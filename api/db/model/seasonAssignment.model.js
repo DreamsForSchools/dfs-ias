@@ -168,10 +168,21 @@ async function executeSort(sortData) {
 }
 
 async function getSortData(currentSeasonId) {
+
     let sortData = {};
+
+    // What's this for?
     let classObj;
 
     // Will get all classes that still need instructor assignments
+    // await knex('locationCache').select('placeId').where('name', universityName);
+    let seasonAssignmentCount = knex('seasonAssignments')
+                                        .select('classes\.classId', 'count(*)')
+                                        .where('seasonAssignments.classId', 'classes.classId')
+                                        .as('instructorRemaining', 'instructorsNeeded', 'timings', 'partnerId', 'programId', 'classes\.seasonId')
+                                        .toSQL();
+    console.log('🟢 ');
+    console.log(seasonAssignmentCount);
     let unassignedClasses = await db.query("select classes.classId,(classes.instructorsNeeded - (select count(*) from seasonAssignments where seasonAssignments.classId = classes.classId)) as instructorRemaining, instructorsNeeded, timings, partnerId, programId, classes.seasonId\n" +
         "from classes\n" +
         "         left join seasonAssignments on classes.classId = seasonAssignments.classId\n" +

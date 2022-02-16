@@ -127,6 +127,9 @@ const Sorter = () => {
     fetchLocked();
   }, [programData, instructorData]);
 
+  /**
+   * Fetches locked instructors
+   */
   const fetchLocked = async () => {
     const header = await createToken();
     axios.get('/api/lock/' + seasonSelected.seasonId, header).then((response) => {
@@ -143,6 +146,9 @@ const Sorter = () => {
     });
   }
 
+  /**
+   * Runs sorter algorithm to assign instructors to classes
+   */
   const handleAutoAssign = async () => {
     try {
       const header = await createToken();
@@ -163,6 +169,11 @@ const Sorter = () => {
     }
   }
 
+  /**
+   * What does this do?
+   * 
+   * @param {[Instructor]} instructors 
+   */
   const handleFilter = (instructors) => {
     dispatch({
       type: "FILTER",
@@ -170,6 +181,11 @@ const Sorter = () => {
     });
   }
 
+  /**
+   * What does this do?
+   * 
+   * @param {[Instructor]} instructors 
+   */
   const handleSearch = (instructors) => {
     dispatch({
       type: "FILTER",
@@ -177,11 +193,18 @@ const Sorter = () => {
     });
   }
 
+  /**
+   * Everything that happens when the mouse is released on a draggable item.
+   */
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
+
+      // Dropped on an invalid location
       if (!result.destination) {
         return;
       }
+
+      // This is a switch statement?????? Actually, 'dispatch' calls the switch statement in 'dragReducer'
       dispatch({
         type: "MOVE",
         from: result.source.droppableId,
@@ -191,8 +214,10 @@ const Sorter = () => {
         state: state,
       });
     }
+
   }, [state]);
 
+  // HTML code
   return (
     <div className="sorter">
       <DragDropContext
