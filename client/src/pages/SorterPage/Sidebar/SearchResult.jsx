@@ -1,13 +1,12 @@
 import React from "react";
-import './SearchResult.scss';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import './SearchResult.scss'
 
 import Instructor from '../Instructor.jsx';
 
 const SearchResult = ({ isLoading, state }) => {
   const searchedInstructors = state["search"];
   
-
   let resultList;
   let searchResultMessage;
 
@@ -37,23 +36,41 @@ const SearchResult = ({ isLoading, state }) => {
           index={index}
         >
           {(provided, snapshot) => (
+            <>
             <div
+              ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
-              ref={provided.innerRef}
+         
+       
+              style={{
+                ...provided.draggableProps.style,
+                transform: snapshot.isDragging ? provided.draggableProps.style.transform : 'translate(100px, 100px)',
+              }}
             >
-            <div> 
-              <> <Instructor key={instructor.instructorId}
-                instructor={instructor}/>  {snapshot.isDragging ? ( <Instructor className={`dnd-copy`} key={instructor.instructorId}
-                instructor={instructor}/> ) : null} </>
-              {/* <Instructor
+               <Instructor
                 key={instructor.instructorId}
                 instructor={instructor}
-              /> */}
-              </div>
-            </div>
-          )} 
           
+                
+              />
+ 
+            
+             
+
+            </div>
+            {snapshot.isDragging &&
+              <div style={{ ...provided.draggableProps.style,
+                position: "absolute",
+              
+                transform: 'none !important',
+                 }}>
+                
+              </div> ? <Instructor key={instructor.instructorId}
+                instructor={instructor} className={'dnd-copy'}/> : null}
+              
+          </>
+          )}
         </Draggable>
       )
     });
@@ -62,8 +79,9 @@ const SearchResult = ({ isLoading, state }) => {
   return (
     <div className="search-result">
       {searchResultMessage}
-      <Droppable droppableId="search" type="INSTRUCTOR">
+      <Droppable droppableId="search" type="INSTRUCTOR" >
         {(provided) => (
+
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
