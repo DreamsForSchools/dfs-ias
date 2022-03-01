@@ -6,6 +6,8 @@ import { CalendarWeek, People, LockFill, UnlockFill, PencilSquare } from 'react-
 import { formatAvailability } from "../../../util/formatData";
 import { Button, Modal  } from 'react-bootstrap';
 
+import AssignInstructorsTable from './AssignInstructorsTable';
+
 const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus}) => {
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
@@ -73,6 +75,8 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
+
+              {/* This is the assignment of instructors to program space. */}
               { instructors?.map((instructor, index) => {
                 return (
                   <Draggable
@@ -106,6 +110,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
           );
         }}
       </Droppable>
+
         <Modal sz="lg" show={assignPopup}
         onHide={() => setAssignPopup(false)}
         aria-labelledby="contained-modal-title-vcenter"                            
@@ -117,6 +122,8 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
             
             
             DUMMY TEXT?
+            <AssignInstructorsTable filteredInstructors={instructors} />
+
 
             
           
