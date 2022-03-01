@@ -12,7 +12,7 @@ import {GlobalContext} from "../../context/GlobalContextProvider";
 import {toast} from 'react-toastify';
 import Lottie from "lottie-react";
 import csvLoadingAnimation from '../../assets/idea-into-book-machine.json';
-import {saveInstructor, deleteInstructor} from "../../api";
+import {saveInstructor, updateInstructor, deleteInstructor} from "../../api";
 import InstructorFiltersModal from "../../components/InstructorFiltersModal";
 
 
@@ -34,6 +34,33 @@ function Instructors() {
     const [searchText, setSearchText] = useState('');
     const [showFilter, setShowFilter] = useState(false);
     const [filteredInstructors, setFilteredInstructors] = useState([...Object.values(instructorData)]);
+    // UseState to show edit modal , when True edit modal is displayed.  Passed down to InstructorsSideinfoprop
+    const [ editShowModal, setEditShowModal] = React.useState(false);
+    const [formInput, setFormInput] = React.useState({
+        firstName: null,
+        lastName: null,
+        email: null,
+        phoneNumber: null,
+        gender: null,
+        ethnicity: null,
+        university: null,
+        major: null,
+        schoolYear: null,
+        graduationDate: null,
+        firstPref: null,
+        secondPref: null,
+        thirdPref: null,
+        fourthPref: null,
+        hasCar: false,
+        otherLanguages: null,
+        isASL: false,
+        shirtSize: null,
+        availability: null,
+        programmingLanguages: null,
+        }
+    );
+
+
 
     useEffect(() => {
         setFilteredInstructors([...Object.values(instructorData)]);
@@ -49,7 +76,11 @@ function Instructors() {
     const handleAddInstructorReset = () => setAddInstructorMethod(null);
 
     const handleInstructorRowClicked = (instructor) => {
-        setInstructorFocus(instructor);
+        if(!editShowModal)
+        {
+            setInstructorFocus(instructor);
+            setFormInput({...formInput, availability : instructor.availability});
+        }
     }
 
     const handleAddNewInstructorManually = async (instructor) => {
@@ -70,6 +101,18 @@ function Instructors() {
         setInstructorFocus(null);
         await deleteInstructor(id);
         fetchAllInstructorAggregatedData();
+    }
+
+    
+    const handleEditInstructorManually = async (instructorId,instructor) => {
+        // setInstructorData([instructor, ...instructorData])
+        // // await saveInstructor({...instructor, approve: true, seasonId: seasonSelected.seasonId});
+        // handleCloseInputModal();
+        // fetchAllInstructorAggregatedData();
+        // setInstructorFocus(null);
+        await updateInstructor(instructorId,instructor);
+        fetchAllInstructorAggregatedData();
+        // return;
     }
 
     const handleSearchChange = e => {
@@ -323,6 +366,12 @@ function Instructors() {
                         instructor={instructorFocus}
                         programsColorKey={programColorMap}
                         onDeletePress={onDeletePress}
+                        formInput={formInput}
+                        setFormInput ={setFormInput}
+                        editShowModal ={editShowModal}
+                        setEditShowModal = {setEditShowModal}
+                        handleEditInstructorManually = {handleEditInstructorManually}
+                        seasonId = {seasonSelected.seasonId}
                     />
                 </SideInfoWrapper>
 
