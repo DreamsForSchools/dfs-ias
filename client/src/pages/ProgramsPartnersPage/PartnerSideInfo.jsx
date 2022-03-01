@@ -8,7 +8,9 @@ import {
     Check,
     GeoAltFill,
     PeopleFill,
-    Trash, Clipboard
+    Trash,
+    Clipboard,
+    Globe
 } from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge, Modal } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
@@ -78,6 +80,17 @@ const PartnerSideInfo = (props) => {
                     <Subtitle>
                         <GeoAltFill/><span style={{marginLeft: '1rem'}}>{partner.street}, {partner.city}, {partner.state} {partner.zip}</span>
                     </Subtitle>
+                   
+                    <div className={"grouped-info_container"}>
+                        <div className={"info-transparent"} style={{width: "100%", textAlign: "left"}}>
+                            <Subtitle>
+                                <Globe/><span style={{marginLeft: '1rem'}}>Languages Requested</span>
+                            </Subtitle>
+                            <h6>
+                                {partner.langRequest}
+                            </h6>
+                        </div>
+                    </div>
                     <Button variant="info" onClick={() => props.openModal('ClassToPartner')}>Add Classes
                         <span style={{marginLeft: '0.5rem'}}><PencilSquare/></span>
                     </Button>
