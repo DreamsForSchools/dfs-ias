@@ -95,8 +95,8 @@ const AssignInstructorsTable = (props) => {
     } = props;
 
     return (
-        <div >
-            
+        <div className="assn-table" >
+            {/* <Badge pill variant="success"></Badge> */}
             <Table borderless>
                 <thead className="assn-table-heading">
                 <tr>
