@@ -219,7 +219,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                     height: '110px',
                     textAlign: 'center'
                 }}>
-                    <div style={{height: '70%', display: 'flex'}}>
+                    <div style={{height: '70%', display: 'flex', paddingLeft: '30px' }}>
                         <Lottie animationData={aslAnimation}/>
                     </div>
                     <h6>Skilled in (ASL)</h6>

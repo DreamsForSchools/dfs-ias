@@ -481,14 +481,14 @@ const InstructorsSideInfo = (props) => {
                             </h5>
                         </div>
 
-                        {/*<div className={"info"} style={{width: "75%"}}>*/}
+                        {/* <div className={"info"} style={{width: "75%"}}>*/}
                         {/*    <h6>*/}
                         {/*        Previously Taught*/}
                         {/*    </h6>*/}
                         {/*    <h5>*/}
                         {/*        {instructor.previouslyTaught}*/}
                         {/*    </h5>*/}
-                        {/*</div>*/}
+                        {/*</div> */}
                     </div>
 
                     <div className={"grouped-info_container"}>
