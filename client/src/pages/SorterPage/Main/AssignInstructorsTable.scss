@@ -1,0 +1,42 @@
+.assn-instructor-row{
+    
+    border-radius: 10px;
+    background-color: #F5F5F5;
+
+    &:hover {
+      background: #f5f5f5;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    
+    td{
+      border-collapse:  separate;
+      border-spacing: 10px;
+    }
+      
+    td:first-child {
+      border-radius: 10px 0 0 10px;
+      
+    }
+    td:last-child {
+      border-radius: 0 10px 10px 0;
+      
+    }
+
+      
+}
+
+.row-spacer{
+  height:10px;
+}
+
+
+.info-stacks ul{
+   display: block;
+   list-style-type: none;
+   
+}
+
+.assn-table-heading{
+    color: #999999;
+}
