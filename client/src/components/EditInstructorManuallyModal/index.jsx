@@ -11,7 +11,7 @@ import {timeSlots, gender, ethnicity, shirtSize, schoolYear} from '../../constan
 import {PROGRAMS} from "../../data/PROGRAMS";
 import {GlobalContext} from "../../context/GlobalContextProvider";
 
-export default function AddInstructorManuallyModal({handleSubmit}) {
+export default function EditInstructorManuallyModal({handleSubmit}) {
     const [step, setStep] = useState(0);
     const [programPreference, setProgramPreference] = useState([]);
     const [timeAvailability, setTimeAvailability] = useState([]);
@@ -145,8 +145,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 }
             }
         })
-        // testing if we need availability id in the object
-        console.log(parsed);
+
         setFormInput({...formInput, availability: parsed})
     };
 
@@ -219,7 +218,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                     height: '110px',
                     textAlign: 'center'
                 }}>
-                    <div style={{height: '70%', display: 'flex', paddingLeft: '30px' }}>
+                    <div style={{height: '70%', display: 'flex'}}>
                         <Lottie animationData={aslAnimation}/>
                     </div>
                     <h6>Skilled in (ASL)</h6>
