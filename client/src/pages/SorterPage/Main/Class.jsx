@@ -111,14 +111,14 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
         }}
       </Droppable>
 
-        <Modal sz="lg" show={assignPopup}
+        <Modal  size="xl" show={assignPopup}
         onHide={() => setAssignPopup(false)}
         aria-labelledby="contained-modal-title-vcenter"                            
         centered>
         <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
           <Modal.Title>Assign Instructors</Modal.Title>
         </Modal.Header>
-          <Modal.Body style={{padding: '1rem 3rem'}}>
+          <Modal.Body >
             
             
             DUMMY TEXT?
