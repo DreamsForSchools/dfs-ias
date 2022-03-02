@@ -84,7 +84,7 @@ const InstructorPopUp = ({ instructor }) => {
                 <h5>{instructor.schoolYear}</h5>
               </div>
               <div className={"info"} style={{width: "30%"}}>
-                <h6>Gender</h6>
+                <h6>Sex</h6>
                 <h5>{instructor.gender}</h5>
               </div>
               <div className={"info"} style={{width: "40%"}}>
