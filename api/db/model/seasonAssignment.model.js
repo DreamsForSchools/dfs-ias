@@ -3,6 +3,7 @@ var axios = require('axios');
 
 var db = require('../promiseDb.config.js');
 var knex = require('../knexDb.config.js');
+var fluent = require('../fluentSQLDb.config.js');
 
 var SeasonAssignment = function (assignment) {
     this.seasonId = assignment.seasonId;
@@ -175,15 +176,16 @@ async function getSortData(currentSeasonId) {
     let classObj;
 
     // Will get all classes that still need instructor assignments
-    // await knex('locationCache').select('placeId').where('name', universityName);
-    let seasonAssignmentCount = knex('seasonAssignments')
-                                        .select('classes\.classId', 'count(*)')
-                                        .where('seasonAssignments.classId', 'classes.classId')
-                                        .as('instructorRemaining', 'instructorsNeeded', 'timings', 'partnerId', 'programId', 'classes\.seasonId')
-                                        .toSQL();
-    console.log('🟢 ');
-    console.log(seasonAssignmentCount);
-    let unassignedClasses = await db.query("select classes.classId,(classes.instructorsNeeded - (select count(*) from seasonAssignments where seasonAssignments.classId = classes.classId)) as instructorRemaining, instructorsNeeded, timings, partnerId, programId, classes.seasonId\n" +
+    // let seasonAssignmentCount = knex('seasonAssignments')
+    //                             .select('classes.classId', 'count(*)')
+    //                             .where('seasonAssignments.classId', 'classes.classId')
+    //                             .as('instructorRemaining', 'instructorsNeeded', 'timings', 'partnerId', 'programId', 'classes.seasonId')
+    //                             .toSQL();
+    // console.log('🟢 ');
+    // console.log(seasonAssignmentCount);
+    let seasonAssignmentCount = fluent.table('seasonAssignments').select('count(*)').where('seasonAssignments.classId', '=', 'classes.classId');
+    // let seasonAssignmentCount = "(classes.instructorsNeeded - (select count(*) from seasonAssignments where seasonAssignments.classId = classes.classId))"
+    let unassignedClasses = await db.query("select classes.classId, classes.instructorsNeeded" + seasonAssignmentCount + " as instructorRemaining, instructorsNeeded, timings, partnerId, programId, classes.seasonId\n" +
         "from classes\n" +
         "         left join seasonAssignments on classes.classId = seasonAssignments.classId\n" +
         "where classes.seasonId = ?\n" +
@@ -372,13 +374,17 @@ async function populateDistanceCache() {
 }
 
 async function getUniversityPlaceId(universityName) {
-    let universityPlaceID = await knex('locationCache').select('placeId').where('name', universityName);
-    return universityPlaceID[0].placeId;
+    // let universityPlaceID = await knex('locationCache').select('placeId').where('name', universityName);
+    await fluent.table('locationCache').select('placeId').where('name', '=', universityName).get().then(result => {
+        return result[0].placeId;
+    });
 }
 
 async function getPartnerPlaceId(partnerId) {
-    let partnerPlaceID = await knex('locationCache').select('placeId').where('partnerId', partnerId);
-    return partnerPlaceID[0].placeId;
+    // let partnerPlaceID = await knex('locationCache').select('placeId').where('partnerId', partnerId);
+    await fluent.table('locationCache').select('placeId').where('partnerId', '=', partnerId).get().then(result => {
+        return result[0].placeId;
+    });
 }
 
 async function calculateDistance(universityPlaceId, partnerPlaceId) {

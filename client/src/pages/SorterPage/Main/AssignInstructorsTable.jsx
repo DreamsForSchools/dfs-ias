@@ -77,7 +77,6 @@ const AssignInstructorsTable = (props) => {
 
     return (
         <div >
-            
             <Table >
                 <thead>
                 <tr>
@@ -89,9 +88,20 @@ const AssignInstructorsTable = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                     {/* {
-                        console.log(filteredInstructors)
-                    } */}
+                    <tr>
+                        <td>Name name name name</td>
+                        <td>School</td>
+                        <td>Other Languages</td>
+                        <td>Schedule</td>
+                        <td>Tags</td>
+                    </tr>
+                    <tr>
+                        <td>Name name name name</td>
+                        <td>School</td>
+                        <td>Other Languages</td>
+                        <td>Schedule</td>
+                        <td>Tags</td>
+                    </tr>
                     {props.filteredInstructors.map((el, idx) =>
                         // <InstructorsRow
                         //     instructor={el}
@@ -99,7 +109,9 @@ const AssignInstructorsTable = (props) => {
                         //     programsColorKey={props.programsColorKey}
                             
                         // />
-                        <p>{el.firstName} </p>
+                        <tr>
+                            <td>{el.firstName} Test test test</td> 
+                        </tr>
                         
                     )} 
                 </tbody>

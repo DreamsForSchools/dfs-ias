@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "fluent-mysql": "^1.2.1",
     "knex": "^1.0.3"
   }
 }

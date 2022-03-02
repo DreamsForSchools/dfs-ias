@@ -133,7 +133,11 @@ const Sorter = () => {
   const fetchLocked = async () => {
     const header = await createToken();
     axios.get('/api/lock/' + seasonSelected.seasonId, header).then((response) => {
+
+      // Identify which instructors have been locked so they can't be moved out of their assigned program
       setLockedInstructors(Array.prototype.concat(...Object.values(response.data.data)))
+
+      // Update data so it can be used by other components
       dispatch({
         type: "POPULATE_LOCKED",
         assignments: Object.entries(response.data.data),
