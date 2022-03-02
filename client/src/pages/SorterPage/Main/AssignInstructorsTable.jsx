@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
+import { TelephoneFill, CalendarWeek, X, Check } from 'react-bootstrap-icons';
 import Dot from '../../../design-system/dots';
 import './AssignInstructorsTable.scss';
 
@@ -25,7 +26,8 @@ const InstructorsRow = (props) => {
         thirdPref,
         fourthPref,
         schoolYear,
-        
+        hasCar,
+        isASL
     } = instructor;
 
 
@@ -49,6 +51,21 @@ const InstructorsRow = (props) => {
             </td>
             <td>{otherLanguages}</td>
             <td>{programmingLanguages}</td>
+            <td>Schedule goes here!!!!</td>
+            <td>
+            <div style={{ fontSize: "1.5rem" }}>
+                {
+                    hasCar ? 
+                    <Badge pill variant="success"> <Check /> Car </Badge> : 
+                    <Badge pill variant="danger"> <X /> Car </Badge>
+                }
+                {
+                    isASL ? 
+                    <Badge pill variant="success"> <Check /> ASL </Badge> : 
+                    <Badge pill variant="danger"> <X /> ASL </Badge>
+                }
+              </div>
+            </td>
             <td>
                 <div style={{display: "inline-block"}}>
                     {/* <OverlayTrigger
@@ -112,13 +129,20 @@ const AssignInstructorsTable = (props) => {
                      {/* {
                         console.log(filteredInstructors)
                     } */}
-                    
+                    {/* <tr>
+                        <td>Test</td>
+                        <td>Test</td>
+                        <td>Test</td>
+                        <td>Test</td>
+                        <td>Test</td>
+                        <td>Test</td>
+                    </tr> */}
+                    {/* Loops over 'filteredInstructors' and creates a row for each one */}
                     {props.filteredInstructors.map((el, idx) =>
                         <InstructorsRow
                             instructor={el}
                             key={idx}
                             programsColorKey={props.programsColorKey}
-                            
                         />                     
                         
         
