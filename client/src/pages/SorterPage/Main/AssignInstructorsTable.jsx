@@ -6,7 +6,7 @@ import './AssignInstructorsTable.scss';
 
 const InstructorsRow = (props) => {
     const {
-        // programsColorKey,
+        programsColorKey,
         onClick,
         instructor
     } = props;
@@ -38,8 +38,9 @@ const InstructorsRow = (props) => {
             <td className={"info-stacks"}>
                 <ul>
                 <li>{firstName + " " + lastName}</li>
-                <li></li>
-                <li></li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
                 </ul>
             </td>
             <td className={"info-stacks"}>

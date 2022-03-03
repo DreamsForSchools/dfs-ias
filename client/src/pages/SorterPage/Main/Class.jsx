@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Class.scss';
 import Instructor from '../Instructor.jsx';
 import { CalendarWeek, People, LockFill, UnlockFill, PencilSquare } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 import { Button, Modal  } from 'react-bootstrap';
+import {GlobalContext} from "../../../context/GlobalContextProvider";
 
 import AssignInstructorsTable from './AssignInstructorsTable';
 
 const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus}) => {
+  const {   
+    programColorMap,    
+} = useContext(GlobalContext);
+
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
   const [assignPopup, setAssignPopup] = useState(false);
@@ -111,7 +116,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
         }}
       </Droppable>
 
-        <Modal  size="xl" show={assignPopup}
+        <Modal  size="xl" show={assignPopup} 
         onHide={() => setAssignPopup(false)}
         aria-labelledby="contained-modal-title-vcenter"                            
         centered>
@@ -122,7 +127,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
             
             
             DUMMY TEXT?
-            <AssignInstructorsTable filteredInstructors={instructors} />
+            <AssignInstructorsTable filteredInstructors={instructors}  programsColorKey = {programColorMap} />
 
 
             
