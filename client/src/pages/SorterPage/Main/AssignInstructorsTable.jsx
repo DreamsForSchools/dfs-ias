@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import { TelephoneFill, CalendarWeek, X, Check } from 'react-bootstrap-icons';
+import { formatAvailability, formatPhoneNumber } from "../../../util/formatData";
 import Dot from '../../../design-system/dots';
 import './AssignInstructorsTable.scss';
 
@@ -33,6 +34,7 @@ const InstructorsRow = (props) => {
 
     return (
         // put onclick funct for the tr
+         
        
         <tr className={"assn-instructor-row"} >
             <td className={"info-stacks"}>
@@ -52,9 +54,12 @@ const InstructorsRow = (props) => {
             </td>
             <td>{otherLanguages}</td>
             <td>{programmingLanguages}</td>
-            <td>Schedule goes here!!!!</td>
+            <td >                
+                {formatAvailability(instructor.availability).map((e) =>
+                    <p key={e}>{e}</p>
+                )}</td>
             <td>
-            <div style={{ fontSize: "1.5rem" }}>
+            <div style={{ fontSize: "0.875 rem" }}>
                 {
                     hasCar ? 
                     <Badge pill variant="success"> <Check /> Car </Badge> : 
@@ -68,8 +73,8 @@ const InstructorsRow = (props) => {
               </div>
             </td>
             <td>
-                <div style={{display: "inline-block"}}>
-                    {/* <OverlayTrigger
+                {/* <div style={{display: "inline-block"}}>
+                    <OverlayTrigger
                         placement="right"
                         delay={{ show: 250, hide: 400 }}
                         overlay={
@@ -89,14 +94,14 @@ const InstructorsRow = (props) => {
                                 </Popover.Content>
                             </Popover>
                         }
-                    > */}
-                        {/* <div style={{padding: "0 1rem"}}>
+                    >
+                        <div style={{padding: "0 1rem"}}>
                             {[firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
                                 programsColorKey[el] && <Dot color={programsColorKey[el]} key={idx}/>
                             )}
                         </div>
-                    </OverlayTrigger> */}
-                </div>
+                    </OverlayTrigger>
+                </div> */}
             </td>
         </tr>
         
@@ -116,13 +121,15 @@ const AssignInstructorsTable = (props) => {
         <div className="assn-table" >
             {/* <Badge pill variant="success"></Badge> */}
             <Table borderless>
+                
+        
                 <thead className="assn-table-heading">
                 <tr>
                     <th>Name</th>
                     <th>School</th>
                     <th>Other Languages</th>
                     <th>Programming Languages</th>
-                    <th>Schedule</th>
+                    <th className="sched">Schedule</th>
                     <th>Tags</th>
                 </tr>
                 </thead>
