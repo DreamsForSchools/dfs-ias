@@ -1,0 +1,66 @@
+@import '../../../DesignSystem';
+
+.assn-instructor-row{
+ 
+    background: #f5f5f5;
+    text-align: center;
+    border-spacing: 0 0.5rem;
+    border-collapse: separate;
+
+    &:hover {
+      background: #f5f5f5;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    
+
+      
+    td:first-child {
+      border-radius: 10px 0 0 10px;
+      
+    }
+    td:last-child {
+      border-radius: 0 10px 10px 0;
+      
+    }
+  
+      
+}
+
+
+.assn-table {
+  padding: 0 5rem;
+
+  table {
+    text-align: center;
+    border-spacing: 0 0.5rem;
+    border-collapse: separate;
+
+    
+  }
+}
+
+
+
+
+
+
+.row-spacer{
+  height:10px;
+}
+
+
+.info-stacks ul{
+   display: block;
+   list-style-type: none;
+   
+}
+
+.assn-table-heading{
+    color: #999999;
+}
+
+.nameColumn
+{
+  width: 200px;
+}
