@@ -16,6 +16,8 @@ const InstructorsRow = (props) => {
     const {
         firstName,
         lastName,
+        gender,
+        ethnicity,
         isActive,
         year,
         major,
@@ -41,8 +43,38 @@ const InstructorsRow = (props) => {
                 <ul>
                 <li>{firstName + " " + lastName}</li>
                 <li> </li>
-                <li> </li>
-                <li> </li>
+                <li> {gender.charAt(0) + ", " + ethnicity} </li>
+                <li>
+                    <div style={{display: "inline-block"}}>
+                    <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={
+                            <Popover>
+                                <Popover.Title as="h3">{`Program Preferences`}</Popover.Title>
+                                <Popover.Content>
+                                    {
+                                        [firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
+                                            programsColorKey[el] && <h6 key={idx}>
+                                                <Dot color={programsColorKey[el]} />
+                                                <span style={{
+                                                    paddingLeft: 8
+                                                }}>{el}</span>
+                                            </h6>
+                                        )
+                                    }
+                                </Popover.Content>
+                            </Popover>
+                        }
+                        >
+                         <div style={{padding: "0 1rem"}}>
+                            {[firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
+                                programsColorKey[el] && <Dot color={programsColorKey[el]} key={idx}/>
+                            )}
+                        </div>
+                    </OverlayTrigger> 
+                    </div>
+                </li>
                 </ul>
             </td>
             <td className={"info-stacks"}>
@@ -71,38 +103,7 @@ const InstructorsRow = (props) => {
                     <Badge pill variant="danger"> <X /> ASL </Badge>
                 }
               </div>
-            </td>
-            <td>
-                {/* <div style={{display: "inline-block"}}>
-                    <OverlayTrigger
-                        placement="right"
-                        delay={{ show: 250, hide: 400 }}
-                        overlay={
-                            <Popover>
-                                <Popover.Title as="h3">{`Program Preferences`}</Popover.Title>
-                                <Popover.Content>
-                                    {
-                                        [firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
-                                            programsColorKey[el] && <h6 key={idx}>
-                                                <Dot color={programsColorKey[el]} />
-                                                <span style={{
-                                                    paddingLeft: 8
-                                                }}>{el}</span>
-                                            </h6>
-                                        )
-                                    }
-                                </Popover.Content>
-                            </Popover>
-                        }
-                    >
-                        <div style={{padding: "0 1rem"}}>
-                            {[firstPref, secondPref, thirdPref, fourthPref].map((el, idx) =>
-                                programsColorKey[el] && <Dot color={programsColorKey[el]} key={idx}/>
-                            )}
-                        </div>
-                    </OverlayTrigger>
-                </div> */}
-            </td>
+            </td>            
         </tr>
         
         
@@ -125,7 +126,7 @@ const AssignInstructorsTable = (props) => {
         
                 <thead className="assn-table-heading">
                 <tr>
-                    <th>Name</th>
+                    <th className = "nameColumn">Name</th>
                     <th>School</th>
                     <th>Other Languages</th>
                     <th>Programming Languages</th>
