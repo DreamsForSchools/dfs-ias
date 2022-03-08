@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import { TelephoneFill, CalendarWeek, X, Check } from 'react-bootstrap-icons';
 import { formatAvailability, formatPhoneNumber } from "../../../util/formatData";
@@ -9,8 +9,13 @@ const InstructorsRow = (props) => {
     const {
         programsColorKey,
         onClick,
-        instructor
+        instructor        
     } = props;
+
+    const [ activeState, setActiveState] = useState(false);
+
+    // row highlighting
+    
 
 
     const {
@@ -33,12 +38,21 @@ const InstructorsRow = (props) => {
         isASL
     } = instructor;
 
+    const toggleRowClicked = () => {
+        onClick(instructor);
+        // setActiveState(true);
+        setActiveState(activeState => !activeState);
+
+    }
+    
+   
+
 
     return (
         // put onclick funct for the tr
          
        
-        <tr className={"assn-instructor-row"} >
+        <tr className={`assn-instructor-row${activeState ? '-active' : ''} `}  onClick={toggleRowClicked}>
             <td className={"info-stacks"}>
                 <ul>
                 <li>{firstName + " " + lastName}</li>
@@ -117,6 +131,14 @@ const AssignInstructorsTable = (props) => {
     const {
         filteredInstructors
     } = props;
+        
+    
+
+    const clickRow = () => {
+        console.log("Row clicked");
+        // this.setStyle("clicked");
+        
+    }
 
     return (
         <div className="assn-table" >
@@ -152,6 +174,7 @@ const AssignInstructorsTable = (props) => {
                             instructor={el}
                             key={idx}
                             programsColorKey={props.programsColorKey}
+                            onClick = {clickRow}                            
                         />                     
                         
         
