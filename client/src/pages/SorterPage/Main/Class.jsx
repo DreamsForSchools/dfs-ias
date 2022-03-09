@@ -147,7 +147,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
           );
         }}
       </Droppable>
-        <Modal dialogClassName="my-modal" show={assignPopup}
+        <Modal size="xl" show={assignPopup}
         onHide={() => setAssignPopup(false)}
         aria-labelledby="contained-modal-title-vcenter"
         centered>
