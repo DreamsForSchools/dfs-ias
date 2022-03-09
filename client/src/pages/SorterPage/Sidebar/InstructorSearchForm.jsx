@@ -29,7 +29,6 @@ const InstructorSearchForm = ({
                 !lockedInstructors.includes(instructor.instructorId)
             );
         });
-
         if (!formattedText || formattedText === "") {
             handleSearch(unassignedInstructors);
         } else {
