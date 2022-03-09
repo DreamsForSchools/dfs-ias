@@ -17,7 +17,7 @@ import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 
 
 
-const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus}) => {
+const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus ,instructorData, handleSearch, lockedInstructors}) => {
   const {
     programColorMap,
 } = useContext(GlobalContext);
@@ -25,6 +25,12 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
   const [assignPopup, setAssignPopup] = useState(false);
+  const initialCheckedItems = { car: [], availability: [], preference: [], year: [], asl: [] };
+  const [filters, setFilters] = useState(Object.assign({}, initialCheckedItems));
+  const [showFilter, setShowFilter] = useState(false);
+
+  const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
+
   const availabilityOptions = [
     {value: 1, label: "Monday"},
     {value: 2, label: "Tuesday"},
@@ -49,6 +55,15 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     {value: "Graduate", label: "Graduate"},
   ]
 
+  const car = [
+    {value: 0, label: "No Car"},
+    {value: 1, label: "Car"},
+  ]
+
+  const asl = [
+    {value:0, label: "Does not know ASL"},
+    {value:1, label: "Knows ASL"},
+  ]
 
 
     const handleLock = () => {
@@ -58,6 +73,138 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
         setLock(false);
     }
 
+    const handleCloseFilter = () => setShowFilter(false);
+    /*
+    const handleApplyFilters = (checkedItems) => {
+      const { car, availability, preference, year, asl } = checkedItems;
+      console.log(checkedItems);
+      setFilters({
+          name: filters.name,
+          car: [...car],
+          availability: [...availability],
+          preference: [...preference],
+          year: [...year],
+          asl: [...asl],
+      });
+      handleCloseFilter();
+  }
+
+    //useEffect is for filtering /
+
+    useEffect(() => {
+      const unassignedInstructors = Object.values(instructorData).filter(instructor => {
+          return (
+            !lockedInstructors.includes(instructor.instructorId)
+          );
+      });
+
+      const filterInstructors = unassignedInstructors.filter(instructor => {
+
+          if (filters.car.length > 0 && !filters.car.includes(instructor.hasCar)) {
+              return false;
+          }
+
+          const weekdays = instructor.availability.map(ability => ability.weekday);
+          if (filters.availability.length > 0 &&
+            !filters.availability.some(ability => weekdays.includes(ability))) {
+              return false;
+          }
+
+          let preferences = [instructor.firstPref, instructor.secondPref,instructor.thirdPref, instructor.fourthPref];
+          if (filters.preference.length > 0 &&
+            !filters.preference.some(pref => preferences.includes(pref))) {
+              return false;
+          }
+
+          if (filters.year.length > 0 && !filters.year.includes(instructor.schoolYear)) {
+              return false;
+          }
+
+          if (filters.asl.length > 0 && !filters.asl.includes(instructor.isASL)) {
+              return false;
+          }
+
+          return true;
+      });
+
+      handleSearch(filterInstructors);
+  }, [filters])
+  */
+  const handleCheckboxChange = (e) => {
+    //const label = e.target.label;
+    
+    const label = e[e.length-1].label;
+    const value = e[e.length-1].value;
+    console.log("label: " + label);
+    console.log("value: " + value);
+    let category;
+    for (let obj in availabilityOptions)
+    {
+      if (availabilityOptions[obj].label === label)
+      {
+        category = "availability";
+      }
+    }
+    for (let obj in preferenceOptions)
+    {
+      if (preferenceOptions[obj].label === label)
+      {
+        category = "preference";
+      }
+    }
+    for (let obj in yearOptions)
+    {
+      if (yearOptions[obj].label === label)
+      {
+        category = "year";
+      }
+    }
+    for (let obj in car)
+    {
+      if (car[obj].label === label)
+      {
+        category = "car";
+      }
+    }
+    for (let obj in asl)
+    {
+      if (asl[obj].label === label)
+      {
+        category = "asl";
+      }
+    }
+    let checkedValue;
+    checkedValue = [...checkedItems[category], value];
+    console.log(checkedValue);
+    setCheckedItems({ ...checkedItems, [category]: checkedValue});
+  }
+    // { car: [], availability: [], preference: [], year: [], asl: [] };
+    /*
+    const valIndex = checkedItems[label].indexOf(value);
+    if (valIndex >= 0) {
+      checkedItems[name].splice(valIndex, 1);
+      checkedValue = checkedItems[name];
+    } else {
+      checkedValue = [...checkedItems[name], value];
+    }
+    //setCheckedItems({ ...checkedItems, [label]: checkedValue });
+    
+  
+    
+  }
+  /*
+    useEffect(() => {
+      const { car, availability, preference, year, asl } = filters;
+      setCheckedItems({
+        name: filters.name,
+        car: [...car],
+        availability: [...availability],
+        preference: [...preference],
+        year: [...year],
+        asl: [...asl],
+      });
+    }, [e]);
+    */
   useEffect(() => {
       let val = true;
       if(instructors){
@@ -188,30 +335,22 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                       Sort By
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
+
+
                       <Dropdown.Item href="#">
                         Owns Car
                       </Dropdown.Item>
                       <Dropdown.Item href="#">
-                        Distance
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#">
                         Knows ASL
                       </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        Is Returner
-                      </Dropdown.Item>
+                      
                       <Dropdown.Item href="#">
                         Preference
                       </Dropdown.Item>
                       <Dropdown.Item href="#">
                         Year
                       </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        Alphabetical
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        Unassigned
-                      </Dropdown.Item>
+                      
                     </Dropdown.Menu>
                   </Dropdown>
 
@@ -221,9 +360,16 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
 
 
                   <div style={{padding: 5, justifyContent: 'flex-end'}}>
-                  <ReactMultiSelectCheckboxes options={[...availabilityOptions, ...yearOptions, ...preferenceOptions]} placeholderButtonLabel="Filter By" variant="outline"
-
-
+                  <ReactMultiSelectCheckboxes 
+                  options={[...car, ...availabilityOptions, ...yearOptions, ...preferenceOptions, ...asl]} 
+                  placeholderButtonLabel="Filter By" 
+                  variant="outline"
+                  //handleApplyFilters={handleApplyFilters}
+                  onExited={handleCloseFilter}
+                  filters = {filters}
+                  onChange={(e) => {handleCheckboxChange(e); console.log(checkedItems);}}
+                  //value={selectedOptions}
+                  //onChange={onChange}
                   />
 
 

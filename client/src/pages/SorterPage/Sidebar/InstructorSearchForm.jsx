@@ -52,6 +52,7 @@ const InstructorSearchForm = ({
 
     const handleApplyFilters = (checkedItems) => {
         const { car, availability, preference, year, asl } = checkedItems;
+        
         console.log(checkedItems);
         setFilters({
             name: filters.name,
