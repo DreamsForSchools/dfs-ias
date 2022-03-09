@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Class.scss';
 import Instructor from '../Instructor.jsx';
 import { CalendarWeek, People, LockFill, UnlockFill, PencilSquare } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 import { Button, Modal  } from 'react-bootstrap';
+import {GlobalContext} from "../../../context/GlobalContextProvider";
+import AssignInstructorsTable from './AssignInstructorsTable';
 import '../../ProgramsPartnersPage/OptionsBar.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -16,6 +18,10 @@ import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 
 
 const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus}) => {
+  const {
+    programColorMap,
+} = useContext(GlobalContext);
+
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
   const [assignPopup, setAssignPopup] = useState(false);
@@ -106,6 +112,8 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
+
+              {/* This is the assignment of instructors to program space. */}
               { instructors?.map((instructor, index) => {
                 return (
                   <Draggable
@@ -139,9 +147,9 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
           );
         }}
       </Droppable>
-        <Modal dialogClassName="my-modal" show={assignPopup}
+        <Modal size="xl" show={assignPopup}
         onHide={() => setAssignPopup(false)}
-        aria-labelledby="contained-modal-title-vcenter"                            
+        aria-labelledby="contained-modal-title-vcenter"
         centered>
         <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
           <Modal.Title>Assign Instructors</Modal.Title>
@@ -153,15 +161,15 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
           <h11 style={{float: 'right'}}><People /> {numInstructors}/{instructorsNeeded} </h11>
           </div>
           <div style={{
-               
-                
+
+
                   display: 'flex',
                   padding: 0,
-               
+
                   justifyContent: 'flex-end'
-                
+
                   }}>
-                  
+
                   <div style={{padding: 5}}>
 
 
@@ -173,7 +181,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                     </div>
 
                   <div style={{padding: 5, justifyContent:'flex-end'}}>
-     
+
 
                   <Dropdown placement="bottomStart">
                     <Dropdown.Toggle variant="outline">
@@ -211,35 +219,35 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
 
 
 
-                  
+
                   <div style={{padding: 5, justifyContent: 'flex-end'}}>
-                  <ReactMultiSelectCheckboxes options={[...availabilityOptions, ...yearOptions, ...preferenceOptions]} placeholderButtonLabel="Filter By" variant="outline" 
-            
+                  <ReactMultiSelectCheckboxes options={[...availabilityOptions, ...yearOptions, ...preferenceOptions]} placeholderButtonLabel="Filter By" variant="outline"
+
 
                   />
 
-                  
-                  </div>
-                  </div>
 
+                  </div>
+                  </div>
+                  <AssignInstructorsTable filteredInstructors={instructors}  programsColorKey = {programColorMap} />
 
           </Modal.Body>
           <Modal.Footer style={{border: '0'}}>
         <Button variant="light" onClick={() => setAssignPopup(false)}>
             Close
         </Button>
-        <Button variant="light"> 
+        <Button variant="light">
         {/* needs onclick */}
-                
+
             Confirm
         </Button>
         </Modal.Footer>
-        </Modal>      
+        </Modal>
     </div>
 
 
 
-    
+
 
 
   );
