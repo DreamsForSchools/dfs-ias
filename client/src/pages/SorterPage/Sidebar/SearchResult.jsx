@@ -44,7 +44,7 @@ const SearchResult = ({ isLoading, state }) => {
        
               style={{
                 ...provided.draggableProps.style,
-                transform: snapshot.isDragging ? provided.draggableProps.style.transform : 'translate(100px, 100px)',
+                transform: snapshot.isDragging ? provided.draggableProps.style.transform : 'translate(0px, 0px)',
               }}
             >
                <Instructor

@@ -5,11 +5,44 @@ import Instructor from '../Instructor.jsx';
 import { CalendarWeek, People, LockFill, UnlockFill, PencilSquare } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
 import { Button, Modal  } from 'react-bootstrap';
+import '../../ProgramsPartnersPage/OptionsBar.scss';
+import 'bootstrap/dist/css/bootstrap.css';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { MDBCol } from "mdbreact";
+import ReactDOM from "react-dom";
+import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+
+
+
 
 const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus}) => {
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
   const [assignPopup, setAssignPopup] = useState(false);
+  const availabilityOptions = [
+    {value: 1, label: "Monday"},
+    {value: 2, label: "Tuesday"},
+    {value: 3, label: "Wednesday"},
+    {value: 4, label: "Thursday"},
+    {value: 5, label: "Friday"},
+  ]
+
+  const preferenceOptions = [
+    {value: "Mobile App Development (AppJam+)", label: "AppJam"},
+    {value: "Website Development", label: "WebJam"},
+    {value: "Let's Explore STEM", label: "LESTEM"},
+    {value: "Coding Games with Scratch", label: "Scratch"},
+    {value: "Engineering Inventors", label: "Engineering Inventors"}
+  ]
+
+  const yearOptions = [
+    {value: "1st", label: "1st"},
+    {value: "2nd", label: "2nd"},
+    {value: "3rd", label: "3rd"},
+    {value: "4th+", label: "4th+"},
+    {value: "Graduate", label: "Graduate"},
+  ]
+
 
 
     const handleLock = () => {
@@ -106,7 +139,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
           );
         }}
       </Droppable>
-        <Modal sz="lg" show={assignPopup}
+        <Modal dialogClassName="my-modal" show={assignPopup}
         onHide={() => setAssignPopup(false)}
         aria-labelledby="contained-modal-title-vcenter"                            
         centered>
@@ -114,14 +147,82 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
           <Modal.Title>Assign Instructors</Modal.Title>
         </Modal.Header>
           <Modal.Body style={{padding: '1rem 3rem'}}>
-            
-            
-            DUMMY TEXT?
+          <div style={{padding: 5, justifyContent: 'flex-end'}}>
+          <h5>{partner}</h5>
+          <h10><CalendarWeek /> {formatAvailability(time)} </h10>
+          <h11 style={{float: 'right'}}><People /> {numInstructors}/{instructorsNeeded} </h11>
+          </div>
+          <div style={{
+               
+                
+                  display: 'flex',
+                  padding: 0,
+               
+                  justifyContent: 'flex-end'
+                
+                  }}>
+                  
+                  <div style={{padding: 5}}>
 
+
+                              <MDBCol md="40">
+                                 <div className="active-pink-3 active-pink-4 mb-4">
+                                    <input className="form-control" type="text" placeholder="Search Instructors..." aria-label="Search" />
+                                </div>
+                              </MDBCol>
+                    </div>
+
+                  <div style={{padding: 5, justifyContent:'flex-end'}}>
+     
+
+                  <Dropdown placement="bottomStart">
+                    <Dropdown.Toggle variant="outline">
+                      Sort By
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="#">
+                        Owns Car
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#">
+                        Distance
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#">
+                        Knows ASL
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#">
+                        Is Returner
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#">
+                        Preference
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#">
+                        Year
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#">
+                        Alphabetical
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#">
+                        Unassigned
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  </div>
+
+
+
+                  
+                  <div style={{padding: 5, justifyContent: 'flex-end'}}>
+                  <ReactMultiSelectCheckboxes options={[...availabilityOptions, ...yearOptions, ...preferenceOptions]} placeholderButtonLabel="Filter By" variant="outline" 
             
-          
-          
-          
+
+                  />
+
+                  
+                  </div>
+                  </div>
+
+
           </Modal.Body>
           <Modal.Footer style={{border: '0'}}>
         <Button variant="light" onClick={() => setAssignPopup(false)}>

@@ -56,7 +56,7 @@ const InstructorFiltersModal = ({ show, onHide, onExited, filters, handleApplyFi
 
   const resetFilters = () => {
     setCheckedItems(Object.assign({}, initialCheckedItems));
-    handleApplyFilters(Object.assign({}, initialCheckedItems))
+    handleApplyFilters(Object.assign({}, initialCheckedItems));
   }
 
   return (
