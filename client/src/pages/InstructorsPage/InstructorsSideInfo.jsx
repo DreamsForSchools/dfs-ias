@@ -1,7 +1,7 @@
 import React from "react";
 import Fade from 'react-reveal/Fade';
 import { Trash, CalendarWeek, TelephoneFill, X, Check, PencilSquare } from 'react-bootstrap-icons';
-import { Button, OverlayTrigger, Popover, Badge, Modal, Table } from 'react-bootstrap';
+import { Button, OverlayTrigger, Popover, Badge, Modal, Table, CloseButton } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
@@ -416,6 +416,8 @@ const InstructorsSideInfo = (props) => {
                     <Button variant="danger" onClick={() => setDeleteShow(true)}>Delete Instructor
                         <span style={{marginLeft: '0.5rem'}}><Trash/></span>
                     </Button>
+
+                   
                    
 
                     <div style={{margin: "2rem 0"}}>
@@ -613,9 +615,11 @@ const InstructorsSideInfo = (props) => {
             {editShowModal  && (
                 <Fade right duration={200}>
                 <div>
+                    <CloseButton style={{paddingRight: '0.5rem', paddingTop: '0.5rem'}} onClick = {()=> setEditShowModal(false)}  />
                     <h1 style={{fontWeight: "bold", textAlign: "center"}}>
-                        {formInput.firstName + " " + instructor.lastName}
+                        {formInput.firstName + " " + instructor.lastName} 
                     </h1>
+                    
 
                     {/* On Click intends to send data (updateToggle) to the database */}
                     <Button size="md"  variant="warning" style={{marginRight: '0.5rem'}}
@@ -626,6 +630,7 @@ const InstructorsSideInfo = (props) => {
                     <Button variant="danger" onClick={() => setDeleteShow(true)}>Delete Instructor
                         <span style={{marginLeft: '0.5rem'}}><Trash/></span>
                     </Button>
+                    
                     
 
                     <div style={{margin: "2rem 0"}}>
