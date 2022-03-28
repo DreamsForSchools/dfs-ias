@@ -14,8 +14,21 @@ import {GlobalContext} from "../../context/GlobalContextProvider";
 export default function AddInstructorManuallyModal({handleSubmit}) {
     const [step, setStep] = useState(0);
     const [programPreference, setProgramPreference] = useState([]);
-    const [timeAvailability, setTimeAvailability] = useState([]);
+    const [timeAvailability, setTimeAvailability] = useState([]);  
+
+
     const { programData } = useContext(GlobalContext);
+
+    // step 0 1 2 3
+    // If all good, move on, else itll be flagged false
+    const [ stepZeroState, setStepZeroState ] = useState(true);
+    const [ stepOneState, setStepOneState ] = useState(true);
+    const [ stepTwoState, setStepTwoState ] = useState(true);
+    const [ stepThreeState, setStepThreeState ] = useState(true);
+
+    const [phoneValidState, setPhoneValidState] = useState(true);
+
+    
 
     const [formInput, setFormInput] = useState(
         {
@@ -54,7 +67,19 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 setFormInput({...formInput, email: input})
                 break;
             case "Phone Number":
-                setFormInput({...formInput, phoneNumber: input})
+                const re = /^[0-9\b]+$/;
+                console.log(re.test(input));
+                if (!re.test(input))
+                {
+                    // for the singular box
+                    setPhoneValidState(false);
+                    // for going to next state
+                    setStepOneState(false);
+                }
+                else{
+                    setPhoneValidState(true);
+                }
+                setFormInput({...formInput, phoneNumber: input})               
                 break;
             case "Sex":
                 setFormInput({...formInput, gender: input})
@@ -102,9 +127,36 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         color: color.neutral.MIDGRAY,
     };
 
-    const handleNextStep = () => setStep(step + 1);
+    //can use handleNextStep and the "global step" variable to validate form data to prevent users from going on to the next step with incorrect data.
+    const handleNextStep = () => 
+    {
+        if(step === 0 && stepZeroState === false)
+        {
+            // do something else
+        }
 
-    const handlePrevStep = () => setStep(step - 1);
+        if(step === 1 && stepOneState === false)
+        {
+            // do something else
+        }
+
+        if(step === 2 && stepTwoState === false)
+        {
+            // do something else
+        }
+
+        if(step === 3 && stepThreeState === false)
+        {
+            // do something else
+        }
+        setStep(step + 1);
+    }
+    
+
+    const handlePrevStep = () => 
+    {
+        setStep(step - 1);
+    };
 
     const handleTimeSlotInput = (e) => {
         if (timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify(e))) {
@@ -182,14 +234,14 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             <div style={{width: '50%', marginRight: '1.5rem'}}>
                 <div style={{display: 'flex'}}>
                     <div style={{width: '50%', marginRight: '1.5rem'}}>
-                        <Input label={'First Name'} handler={handleFormInput} state={formInput.firstName} modal/>
+                        <Input label={'First Name'} handler={handleFormInput} state={formInput.firstName} modal required={true} />
                     </div>
                     <div style={{width: '50%'}}>
                         <Input label={'Last Name'} handler={handleFormInput} state={formInput.lastName} modal/>
                     </div>
                 </div>
                 <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal/>
-                <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal/>
+                <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal valid={phoneValidState}/>
             </div>
             <div style={{width: '25%', marginRight: '1.5rem'}}>
                 <Select options={gender} label={'Sex'} handler={handleFormInput} state={formInput.gender} modal/>
