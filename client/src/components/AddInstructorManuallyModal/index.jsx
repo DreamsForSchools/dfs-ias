@@ -127,6 +127,25 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         color: color.neutral.MIDGRAY,
     };
 
+    // needs to be updated / checked
+    const validateEmail = (email) =>
+    {
+        if (!email.includes("@"))
+        {
+            return false;
+        }
+        //is this a valid check?
+        if ( !email.includes("."))
+        {
+            return false;
+        }
+        
+        return true;
+
+    }
+
+    
+
     //can use handleNextStep and the "global step" variable to validate form data to prevent users from going on to the next step with incorrect data.
     const handleNextStep = () => 
     {
