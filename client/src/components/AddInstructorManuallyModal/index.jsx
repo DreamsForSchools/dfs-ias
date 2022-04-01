@@ -10,6 +10,8 @@ import aslAnimation from '../../assets/asl-animation.json';
 import {timeSlots, gender, ethnicity, shirtSize, schoolYear} from '../../constant';
 import {PROGRAMS} from "../../data/PROGRAMS";
 import {GlobalContext} from "../../context/GlobalContextProvider";
+import { toast } from "react-toastify";
+
 
 export default function AddInstructorManuallyModal({handleSubmit}) {
     const [step, setStep] = useState(0);
@@ -27,7 +29,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     const [ stepThreeState, setStepThreeState ] = useState(true);
 
     const [phoneValidState, setPhoneValidState] = useState(true);
-
+    const [emailValidState, setEmailValidState] = useState(true);
     
 
     const [formInput, setFormInput] = useState(
@@ -64,6 +66,18 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 setFormInput({...formInput, lastName: input})
                 break;
             case "E-mail Address":
+                if (!validateEmail(input))
+                {
+                    console.log('invalid email');
+                    setEmailValidState(false);
+                    setStepZeroState(false);
+                    
+                }
+                else
+                {
+                    console.log('valid email')
+                    setEmailValidState(true);
+                }
                 setFormInput({...formInput, email: input})
                 break;
             case "Phone Number":
@@ -74,7 +88,8 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                     // for the singular box
                     setPhoneValidState(false);
                     // for going to next state
-                    setStepOneState(false);
+                    setStepZeroState(false);                   
+
                 }
                 else{
                     setPhoneValidState(true);
@@ -148,27 +163,50 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
     //can use handleNextStep and the "global step" variable to validate form data to prevent users from going on to the next step with incorrect data.
     const handleNextStep = () => 
-    {
+    {   
+        //Step Zero only checks these to be valid! 
+        if(phoneValidState && emailValidState)
+        {
+            setStepZeroState(true);
+        }
         if(step === 0 && stepZeroState === false)
         {
             // do something else
+            console.log("Error in step 0");
+            
+            if( !phoneValidState)
+            {
+                toast.warn('Invalid phonenumber, use only numbers!');                
+            }
+
+            if (!emailValidState)
+            {
+                toast.warn('Invalid email, ex: "student@gmail.com"');
+            }        
+
+            
+            
         }
 
-        if(step === 1 && stepOneState === false)
+        else if(step === 1 && stepOneState === false)
         {
             // do something else
         }
 
-        if(step === 2 && stepTwoState === false)
+        else if(step === 2 && stepTwoState === false)
         {
             // do something else
         }
 
-        if(step === 3 && stepThreeState === false)
+        else if(step === 3 && stepThreeState === false)
         {
             // do something else
         }
-        setStep(step + 1);
+        else
+        {
+            setStep(step + 1);
+        }
+        
     }
     
 
@@ -259,7 +297,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                         <Input label={'Last Name'} handler={handleFormInput} state={formInput.lastName} modal/>
                     </div>
                 </div>
-                <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal/>
+                <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal valid={emailValidState} />
                 <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal valid={phoneValidState}/>
             </div>
             <div style={{width: '25%', marginRight: '1.5rem'}}>

@@ -11,7 +11,7 @@ export const Input = ({label, handler, modal, state, disabled = false, required 
         <Wrapper modal valid={valid}>
             <label>{label} {required && <span style={{color: 'red'}}>*</span>}</label>
             <InputGroup className="mb-3">
-                <FormControl disabled={disabled} value={state} onChange={(event) => handleChange(label, event)} required={required}/>
+                <FormControl  disabled={disabled} value={state} onChange={(event) => handleChange(label, event)} required={required} />
             </InputGroup>
         </Wrapper>
     );
