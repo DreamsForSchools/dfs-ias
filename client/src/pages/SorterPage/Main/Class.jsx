@@ -64,8 +64,13 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     {value:0, label: "Does not know ASL"},
     {value:1, label: "Knows ASL"},
   ]
-  const initialCheckedItems = { car: [], availability: [], preference: [], year: [], asl: [] };
-  const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
+  const initialCheckedItems = { 
+    car: [0, 1], 
+    availability: [], 
+    preference: ["Mobile App Development (AppJam+)", "Website Development", "Let's Explore STEM", "Coding Games with Scratch","Engineering Inventors"], 
+    year: ["1st","2nd","3rd", "4th+","Graduate"], 
+    asl: [0, 1] };
+    const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
   const [filters, setFilters] = useState(Object.assign({}, initialCheckedItems));
     const handleLock = () => {
         setLock(true);
@@ -340,52 +345,38 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                               </MDBCol>
                     </div>
 
-                  <div style={{padding: 5, justifyContent:'flex-end'}}>
 
-
-                  <Dropdown placement="bottomStart">
-                    <Dropdown.Toggle variant="outline">
-                      Sort By
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-
-
-                      <Dropdown.Item href="#">
-                        Owns Car
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        Knows ASL
-                      </Dropdown.Item>
-                      
-                      <Dropdown.Item href="#">
-                        Preference
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        Year
-                      </Dropdown.Item>
-                      
-                    </Dropdown.Menu>
-                  </Dropdown>
-
-                  </div>
-
-
-
-
-                  <div style={{padding: 5, justifyContent: 'flex-end'}}>
+                  <div style={{padding: 5, justifyContent: 'flex-end', border: '5px solid red'}}>
                   <ReactMultiSelectCheckboxes 
-                  options={[...car, ...availability, ...year, ...preference, ...asl]} 
-                  placeholderButtonLabel="Filter By" 
+                  style = {{display:'flex-end'}}
+                  options={year} 
+                  placeholderButtonLabel="All Years" 
                   variant="outline"
                   //handleApplyFilters={handleApplyFilters}
                   onExited={handleCloseFilter}
                   filters = {filters}
-                  onChange={(e) => {handleCheckboxChange(e);}}
+                  onChange={(e) => {handleCheckboxChange(e, "year");}}
                   //value={selectedOptions}
                   //onChange={onChange}
                   />
-
-
+                  </div>
+                  <div style={{padding: 5, justifyContent: 'flex-end', border: '5px solid red'}}>
+                  <ReactMultiSelectCheckboxes 
+                  style = {{display:'flex-end'}}
+                  options={preference} 
+                  placeholderButtonLabel="All Preferences" 
+                  variant="outline"
+                  //handleApplyFilters={handleApplyFilters}
+                  onExited={handleCloseFilter}
+                  filters = {filters}
+                  onChange={(e) => {handleCheckboxChange(e, "preference");}}
+                  //value={selectedOptions}
+                  //onChange={onChange}
+                  />
+                  
+                  </div>
+                  <div style={{padding: 5, justifyContent: 'flex-end', border: '5px solid red'}}> 
+                  <Button variant="outline-primary"> Reset Filters</Button>
                   </div>
                   </div>
                   <AssignInstructorsTable filteredInstructors={instructors}  programsColorKey = {programColorMap} />
