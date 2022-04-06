@@ -9,22 +9,22 @@ import {GlobalContext} from "../../../context/GlobalContextProvider";
 
 import AssignInstructorsTable from './AssignInstructorsTable';
 
-const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus}) => {
+const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus, seasonSelected }) => {
   const {   
     programColorMap,    
-} = useContext(GlobalContext);
+  } = useContext(GlobalContext);
 
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
   const [assignPopup, setAssignPopup] = useState(false);
 
 
-    const handleLock = () => {
-        setLock(true);
-    }
-    const handleUnlock = () => {
-        setLock(false);
-    }
+  const handleLock = () => {
+      setLock(true);
+  }
+  const handleUnlock = () => {
+      setLock(false);
+  }
 
   useEffect(() => {
       let val = true;
@@ -127,11 +127,12 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
             
             
             DUMMY TEXT?
-            <AssignInstructorsTable filteredInstructors={instructors}  programsColorKey = {programColorMap} />
-
-
-            
-          
+            <AssignInstructorsTable
+              show={assignPopup} 
+              time={time[0]}
+              programsColorKey = {programColorMap}
+              seasonSelected={seasonSelected}
+            />          
           
           
           </Modal.Body>
@@ -147,11 +148,6 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
         </Modal.Footer>
         </Modal>      
     </div>
-
-
-
-    
-
 
   );
 }

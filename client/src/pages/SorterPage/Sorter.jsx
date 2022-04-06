@@ -125,6 +125,7 @@ const Sorter = () => {
       instructors: Object.values(instructorData),
     });
     fetchLocked();
+    console.log(Object.values(instructorData));
   }, [programData, instructorData]);
 
   const fetchLocked = async () => {
@@ -203,7 +204,7 @@ const Sorter = () => {
             <div style={{textAlign: 'center'}}>
               <Lottie animationData={emptyAnimation} style={{width: 400, height: 400, margin: 'auto'}} />
             </div>
-          : <MainPanel state={state} /> }
+          : <MainPanel state={state} seasonSelected={seasonSelected}/> }
         </div>
         <div className="sidebar-wrapper">
           <Sidebar

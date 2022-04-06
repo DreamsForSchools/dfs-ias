@@ -1,6 +1,7 @@
 'use strict';
 var axios = require('axios');
 var db = require('../promiseDb.config.js');
+var knex = require('../knexDb.config.js');
 
 var Instructor = function (instructor) {
     this.firstName = instructor.firstName;
@@ -335,23 +336,45 @@ Instructor.findAll = function (result) {
     });
 };
 
-Instructor.findById = function (id, result) {
-    let rtn = {};
-    db.query("SELECT * FROM instructors JOIN locationCache ON instructors.instructorId = locationCache.instructorId JOIN seasonInstructors on instructors.instructorId = seasonInstructors.instructorId WHERE instructors.instructorId  = ?", id, function (err, res) {
-        if (err) result(err, null);
-        else if (res.length >= 1) {
-            rtn = res[0];
-            db.query("SELECT * FROM instructorAvailability WHERE instructorId = ?", id, function (err, res) {
-                if (err) result(err, null);
-                else {
-                    rtn['availability'] = res;
-                    result(null, rtn);
-                }
-            });
-        }
-    });
+Instructor.findById = async function (id, result) {
+    // let rtn = {};
+    // "SELECT * FROM instructors\
+    // JOIN locationCache ON instructors.instructorId = locationCache.instructorId\
+    // JOIN seasonInstructors on instructors.instructorId = seasonInstructors.instructorId\
+    // WHERE instructors.instructorId  = ?"
+    console.log("jaksdjfladsjlfjklasjd");
+    try { 
+        let instructorData = await knex('instructors').select('*').where({'instructorId': id});
+        console.log("❗️ Instructor data: ");
+        console.log(instructorData);
+        return result(null, instructorData);
+    } catch (err) { 
+        console.log('Error fetching by ID ajlks;djflkadjsflk');
+        return result(err, null); 
+    }
+    // db.query("SELECT * FROM instructors\
+    //         WHERE instructors.instructorId  = ?", 
+    //         id, function (err, res) {
+    //     if (err) result(err, null);
+    //     else if (res.length >= 1) {
+    //         rtn = res[0];
+    //         result(null, rtn);
+            // db.query("SELECT * FROM instructorAvailability WHERE instructorId = ?", id, function (err, res) {
+            //     if (err) result(err, null);
+            //     else {
+            //         rtn['availability'] = res;
+            //         result(null, rtn);
+            //     }
+            // });
+        // }
+    // });
 }
 
+/**
+ * Deletes an instructor using their id.
+ * @param {000} id 
+ * @param {*} result 
+ */
 Instructor.deleteById = async function (id, result) {
     try {
         let data = await db.query("DELETE FROM instructors WHERE instructorId = ?", id);
@@ -362,6 +385,12 @@ Instructor.deleteById = async function (id, result) {
     }
 }
 
+/**
+ * Updates an instructor using their id. Data should be updated locally by changing data in the `instructor` parameter. When ready to update, simply pass that instructor in with their id.
+ * @param {*} id 
+ * @param {*} instructor 
+ * @param {*} result 
+ */
 Instructor.updateById = async function (id, instructor, result) {
 
     console.log("updating", id, "\n", instructor);

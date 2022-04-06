@@ -10,6 +10,47 @@ var SeasonAssignment = function (assignment) {
     this.classId = assignment.classId;
 };
 
+/**
+ * Fetches distances for instructors to specific school locations. Returns a dictionary, where keys are InstructorIDs and values are distances to the given school
+ * @param {*} instructors A list of instructors
+ * @param {*} universityPlaceID University Place ID
+ * @param {*} partnerPlaceID partner Place ID
+ * @returns 
+ */
+SeasonAssignment.fetchDistancesForInstructors = async function (instructors, universityPlaceID, partnerPlaceID) { 
+    try { 
+        let universityPartnerSet = await db.query("select distinct university, partnerId from instructors cross join partners");
+        console.log("\n LOOK HERE LOOK HERE");
+        console.log(universityPartnerSet);
+        // 'data' is in the format:
+        // {
+        //     InstructorID: distanceToSchool,
+        //     InstructorID2: distanceToSchool2,
+        // }
+        let data = {};
+
+    } catch (err) { return result(err, null); }
+}
+
+/**
+ * Fetches all instructorIDs that are availability before the startTime AND after the endTime values that are passed in 
+ * @param {*} starTime The time when a class begins. Represented as a String in the database ("14:00:00").
+ * @param {*} endTime The time when a class ends. Represented as a String in the database ("14:00:00").
+ * @returns 
+ */
+
+// TODO: Make a check for the specific season so we're not fetching ALL instructors
+SeasonAssignment.fetchAvailableInstructorsDuringTime = async function (time, result) { 
+    try { 
+        // let instructorIDs = await db.query("SELECT instructorId FROM instructorAvailability WHERE startTime <= ? AND endTime <= ? AND weekday = ?", [time.startTime, time.endTime, time.weekday]);
+        let instructorIDs = await knex('instructorAvailability').select('instructorId', 'startTime', 'endTime', 'weekday').where({'weekday': time.weekday}).where('startTime', '<=', time.startTime).where('endTime', '>=', time.endTime);
+        // console.log("❗️ Instructor IDs: ");
+        // console.log(instructorIDs);
+        return result(null, instructorIDs);
+
+    } catch (err) {  return result(err, null); }
+}
+
 SeasonAssignment.lock = async function (newAssignment, result) {
     try {
         await knex('seasonAssignments').insert({'set': newAssignment});
@@ -245,6 +286,9 @@ async function getSortData(currentSeasonId) {
         // Will get available instructors in order of distance for a given class
         // Query is dynamically built with the current seasonId, each class timings, and its partnerId for distance
         let sortResult = await db.query(fullQuery, queryArray);
+        // console.log("❗️ Sort result for class:");
+        // console.log(classObj);
+        // console.log(sortResult);
 
         // Perform secondary sort on preference. All instructors for a given distance should be sorted in order of
         // preference for the program being taught
@@ -354,6 +398,14 @@ async function populateDistanceCache() {
 
         distance = await calculateDistance(universityPlaceId, partnerPlaceId);
 
+        console.log("-----------------------------------------------------------")
+        console.log("-----------------------------------------------------------")
+        console.log("-----------------------------------------------------------")
+        console.log(distance, universityPartnerSet[pairIndex].university, universityPartnerSet[pairIndex].partnerId);
+        console.log("-----------------------------------------------------------")
+        console.log("-----------------------------------------------------------")
+        console.log("-----------------------------------------------------------")
+
         // Insert distance into table
         await insertDistance(distance, universityPartnerSet[pairIndex].university, universityPartnerSet[pairIndex].partnerId);
     }
@@ -369,7 +421,12 @@ async function getPartnerPlaceId(partnerId) {
     let partnerPlaceID = await knex('locationCache').select('placeId').where('partnerId', partnerId);
     return partnerPlaceID[0].placeId;
 }
-
+/**
+ * Returns the distance from a university to the defined partner
+ * @param {*} universityPlaceId 
+ * @param {*} partnerPlaceId 
+ * @returns 
+ */
 async function calculateDistance(universityPlaceId, partnerPlaceId) {
     let response = await axios.get(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:${universityPlaceId}&destinations=place_id:${partnerPlaceId}&key=${process.env.GMAP_API_KEY}`);
     return response.data.rows[0].elements[0].distance.value;

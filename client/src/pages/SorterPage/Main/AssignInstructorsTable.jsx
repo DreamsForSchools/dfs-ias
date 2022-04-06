@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import { TelephoneFill, CalendarWeek, X, Check } from 'react-bootstrap-icons';
 import { formatAvailability, formatPhoneNumber } from "../../../util/formatData";
 import Dot from '../../../design-system/dots';
 import './AssignInstructorsTable.scss';
+import { createToken } from "../../../fire";
+
+import { GlobalContext}  from "../../../context/GlobalContextProvider";
 
 const InstructorsRow = (props) => {
+
     const {
         programsColorKey,
         onClick,
@@ -16,8 +20,7 @@ const InstructorsRow = (props) => {
 
     // row highlighting
     
-
-
+    
     const {
         firstName,
         lastName,
@@ -44,9 +47,6 @@ const InstructorsRow = (props) => {
         setActiveState(activeState => !activeState);
 
     }
-    
-   
-
 
     return (
         // put onclick funct for the tr
@@ -128,17 +128,86 @@ const InstructorsRow = (props) => {
 
 const AssignInstructorsTable = (props) => {
 
+    // Fetch all instructors that have an availibility for this class
+    // Iterate through each instructor to calculate distance from the university to the partnerPlaceId (classes don't store location of where they're taught)
+    // The 'time' prop is an array of JSON values, where each has 'endTime', 'weekday', and 'startTime' keys
+
     const {
-        filteredInstructors
+        show,
+        time,
     } = props;
-        
-    
+
+    const {   
+        seasonSelected,    
+      } = useContext(GlobalContext);
+
+    useEffect(() => { 
+        console.log("SEASON SELECTED:");
+        console.log(seasonSelected);
+    })
 
     const clickRow = () => {
         console.log("Row clicked");
-        // this.setStyle("clicked");
-        
     }
+
+    const [availableInstructors, setAvailableInstructors] = useState([]);
+
+    async function fetchInstructorById(id) { 
+        try { 
+            const header = await createToken();
+            console.log(header);
+            // const request = await axios.get(`/api/instructor/find/${id}`, { 
+            //     'id': id
+            // }, header);
+            const request = await axios.post(`/api/instructor/find/${id}`, {}, header);
+            return (request.data);
+        } catch (e) { 
+            // toast(`❌ Error fetching instructor data: ${e}`);
+            // console.log(e);
+            return (e);
+        }
+    }
+
+    /**
+    * Fetches the available instructors on a specified weekday between start and end times. Should be called when presenting the 
+    * AssingmentInstructorsTable component.
+    * @param {*} dayOfTheWeek Day of the week, represented as a number. 0 - 6 starting with 'Sunday'
+    * @param {*} startTime Time, as a string, in the format "HOUR:MINUTES:SECONDS" i.e. 6:00pm is written as "18:00:00"
+    * @param {*} endTime Time, as a string, in the format "HOUR:MINUTES:SECONDS" i.e. 6:00pm is written as "18:00:00"
+    */
+    async function fetchAvailableInstructors(time) { 
+        try { 
+            const header = await createToken();
+            let response = await axios.post('/api/availableInstructors', {
+                'startTime': time.startTime,
+                'endTime': time.endTime,
+                'weekday': time.weekday
+            }, header);
+
+            // Looks like: {instructorId: 365, startTime: "14:00:00", endTime: "17:00:00", weekday: 1}
+            let instructors = response['data']['data'];
+
+            // Iterate through every item in the `instructors` array and return just the IDs
+            const availInstructors = instructors.map(i => { return i.instructorId; });
+
+            let instructorId = availInstructors[0];
+            console.log("InstructorID:");
+            console.log(instructorId);
+            fetchInstructorById(instructorId);
+
+            // TODO: Fetch instructors using their IDs
+        } catch (err) { 
+            console.log("Error in fetch: ");
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        // Fetch available instructors only once the modal appears
+        if (show) {  fetchAvailableInstructors(time); }
+      }, [show]);
+
+    const axios = require('axios');
 
     return (
         <div className="assn-table" >
@@ -157,30 +226,19 @@ const AssignInstructorsTable = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                     {/* {
-                        console.log(filteredInstructors)
-                    } */}
-                    {/* <tr>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                    </tr> */}
                     {/* Loops over 'filteredInstructors' and creates a row for each one */}
-                    {props.filteredInstructors.map((el, idx) =>
+                    {/* {props.filteredInstructors.map((el, idx) =>
                         <InstructorsRow
                             instructor={el}
                             key={idx}
                             programsColorKey={props.programsColorKey}
-                            onClick = {clickRow}                            
+                            onClick = {clickRow}                      
                         />                     
                         
         
                         // <p>{el.firstName} </p>
                         
-                    )} 
+                    )}  */}
                 </tbody>
             </Table>
         </div>
