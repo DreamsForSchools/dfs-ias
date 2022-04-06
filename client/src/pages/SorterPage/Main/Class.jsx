@@ -25,13 +25,13 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
   const [assignPopup, setAssignPopup] = useState(false);
-  const initialCheckedItems = { car: [], availability: [], preference: [], year: [], asl: [] };
-  const [filters, setFilters] = useState(Object.assign({}, initialCheckedItems));
+  
+  
   const [showFilter, setShowFilter] = useState(false);
 
-  const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
+  
 
-  const availabilityOptions = [
+  const availability = [
     {value: 1, label: "Monday"},
     {value: 2, label: "Tuesday"},
     {value: 3, label: "Wednesday"},
@@ -39,7 +39,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     {value: 5, label: "Friday"},
   ]
 
-  const preferenceOptions = [
+  const preference = [
     {value: "Mobile App Development (AppJam+)", label: "AppJam"},
     {value: "Website Development", label: "WebJam"},
     {value: "Let's Explore STEM", label: "LESTEM"},
@@ -47,7 +47,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     {value: "Engineering Inventors", label: "Engineering Inventors"}
   ]
 
-  const yearOptions = [
+  const year = [
     {value: "1st", label: "1st"},
     {value: "2nd", label: "2nd"},
     {value: "3rd", label: "3rd"},
@@ -64,8 +64,14 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     {value:0, label: "Does not know ASL"},
     {value:1, label: "Knows ASL"},
   ]
-
-
+  const initialCheckedItems = { 
+    car: [0, 1], 
+    availability: [], 
+    preference: ["Mobile App Development (AppJam+)", "Website Development", "Let's Explore STEM", "Coding Games with Scratch","Engineering Inventors"], 
+    year: ["1st","2nd","3rd", "4th+","Graduate"], 
+    asl: [0, 1] };
+    const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
+  const [filters, setFilters] = useState(Object.assign({}, initialCheckedItems));
     const handleLock = () => {
         setLock(true);
     }
@@ -88,48 +94,71 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
       });
       handleCloseFilter();
   }
-
+  */
     //useEffect is for filtering /
 
     useEffect(() => {
-      const unassignedInstructors = Object.values(instructorData).filter(instructor => {
-          return (
-            !lockedInstructors.includes(instructor.instructorId)
-          );
-      });
+      //{ car: [], availability: [], preference: [], year: [], asl: [] };
+      for (const i in instructors)
+      {
+        let preferences = [instructors[i].firstPref, instructors[i].secondPref,instructors[i].thirdPref,instructors[i].fourthPref];
+        if (checkedItems.car.includes(instructors[i].hasCar))
+        {
+          //they dont have a car
+          console.log(instructors[i].firstName + " matches car criteria");
+        }
+        else if (checkedItems.asl.includes(instructors[i].isASL))
+        {
+          console.log(instructors[i].firstName + " matches ASL criteria");
+        }
+        else  if (checkedItems.preference.some(pref => preferences.includes(pref))) 
+        {
+          console.log(instructors[i].firstName + " matches Preference criteria");
+          
+        }
+        else if (checkedItems.year.includes(instructors[i].schoolYear))
+        {
+          console.log(instructors[i].firstName + " matches school year criteria");
+          
+        }
+        else{
+          console.log(instructors[i].firstName + " does NOT match Filtered Criteria");
+        }
+      
+      }
+      
+        
+        /*
+        if (filters.car.length > 0 && !filters.car.includes(instructor.hasCar)) {
+            return false;
+        }
 
-      const filterInstructors = unassignedInstructors.filter(instructor => {
+        const weekdays = instructor.availability.map(ability => ability.weekday);
+        if (filters.availability.length > 0 &&
+          !filters.availability.some(ability => weekdays.includes(ability))) {
+            return false;
+        }
 
-          if (filters.car.length > 0 && !filters.car.includes(instructor.hasCar)) {
-              return false;
-          }
+        let preferences = [instructor.firstPref, instructor.secondPref,instructor.thirdPref, instructor.fourthPref];
+        if (filters.preference.length > 0 &&
+          !filters.preference.some(pref => preferences.includes(pref))) {
+            return false;
+        }
 
-          const weekdays = instructor.availability.map(ability => ability.weekday);
-          if (filters.availability.length > 0 &&
-            !filters.availability.some(ability => weekdays.includes(ability))) {
-              return false;
-          }
+        if (filters.year.length > 0 && !filters.year.includes(instructor.schoolYear)) {
+            return false;
+        }
 
-          let preferences = [instructor.firstPref, instructor.secondPref,instructor.thirdPref, instructor.fourthPref];
-          if (filters.preference.length > 0 &&
-            !filters.preference.some(pref => preferences.includes(pref))) {
-              return false;
-          }
+        if (filters.asl.length > 0 && !filters.asl.includes(instructor.isASL)) {
+            return false;
+        }
+        */
+        
 
-          if (filters.year.length > 0 && !filters.year.includes(instructor.schoolYear)) {
-              return false;
-          }
-
-          if (filters.asl.length > 0 && !filters.asl.includes(instructor.isASL)) {
-              return false;
-          }
-
-          return true;
-      });
-
-      handleSearch(filterInstructors);
-  }, [filters])
-  */
+      
+      
+  }, [checkedItems])
+  
   const handleCheckboxChange = (e) => {
     //const label = e.target.label;
     
@@ -138,23 +167,23 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     console.log("label: " + label);
     console.log("value: " + value);
     let category;
-    for (let obj in availabilityOptions)
+    for (let obj in availability)
     {
-      if (availabilityOptions[obj].label === label)
+      if (availability[obj].label === label)
       {
         category = "availability";
       }
     }
-    for (let obj in preferenceOptions)
+    for (let obj in preference)
     {
-      if (preferenceOptions[obj].label === label)
+      if (preference[obj].label === label)
       {
         category = "preference";
       }
     }
-    for (let obj in yearOptions)
+    for (let obj in year)
     {
-      if (yearOptions[obj].label === label)
+      if (year[obj].label === label)
       {
         category = "year";
       }
@@ -175,23 +204,12 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     }
     let checkedValue;
     checkedValue = [...checkedItems[category], value];
+    console.log(checkedItems);
     console.log(checkedValue);
-    setCheckedItems({ ...checkedItems, [category]: checkedValue});
+    setCheckedItems({ ...checkedItems, [category]: checkedValue });
+    checkedItems[category] = checkedValue;
   }
-    // { car: [], availability: [], preference: [], year: [], asl: [] };
-    /*
-    const valIndex = checkedItems[label].indexOf(value);
-    if (valIndex >= 0) {
-      checkedItems[name].splice(valIndex, 1);
-      checkedValue = checkedItems[name];
-    } else {
-      checkedValue = [...checkedItems[name], value];
-    }
-    //setCheckedItems({ ...checkedItems, [label]: checkedValue });
-    
-  
-    
-  }
+
   /*
     useEffect(() => {
       const { car, availability, preference, year, asl } = filters;
@@ -327,52 +345,53 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                               </MDBCol>
                     </div>
 
-                  <div style={{padding: 5, justifyContent:'flex-end'}}>
 
-
-                  <Dropdown placement="bottomStart">
-                    <Dropdown.Toggle variant="outline">
-                      Sort By
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-
-
-                      <Dropdown.Item href="#">
-                        Owns Car
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        Knows ASL
-                      </Dropdown.Item>
-                      
-                      <Dropdown.Item href="#">
-                        Preference
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#">
-                        Year
-                      </Dropdown.Item>
-                      
-                    </Dropdown.Menu>
-                  </Dropdown>
-
-                  </div>
-
-
-
-
-                  <div style={{padding: 5, justifyContent: 'flex-end'}}>
+                  <div style={{padding: 5, justifyContent: 'flex-end', border: '5px'}}>
                   <ReactMultiSelectCheckboxes 
-                  options={[...car, ...availabilityOptions, ...yearOptions, ...preferenceOptions, ...asl]} 
-                  placeholderButtonLabel="Filter By" 
+                  style = {{display:'flex-end'}}
+                  options={year} 
+                  placeholderButtonLabel="All Years" 
                   variant="outline"
                   //handleApplyFilters={handleApplyFilters}
                   onExited={handleCloseFilter}
                   filters = {filters}
-                  onChange={(e) => {handleCheckboxChange(e); console.log(checkedItems);}}
+                  onChange={(e) => {handleCheckboxChange(e, "year");}}
                   //value={selectedOptions}
                   //onChange={onChange}
                   />
+                  </div>
+                  <div style={{padding: 5, justifyContent: 'flex-end', border: '5px'}}>
+                  <ReactMultiSelectCheckboxes 
+                  style = {{display:'flex-end'}}
+                  options={preference} 
+                  placeholderButtonLabel="All Preferences" 
+                  variant="outline"
+                  //handleApplyFilters={handleApplyFilters}
+                  onExited={handleCloseFilter}
+                  filters = {filters}
+                  onChange={(e) => {handleCheckboxChange(e, "preference");}}
+                  //value={selectedOptions}
+                  //onChange={onChange}
+                  />
+                  
+                  </div>
+                  <div style={{padding: 2, justifyContent: 'center', border: 'solid white 12px'}}>
+                    <div className="App">
+                      <div className="filter">
+                        <input type="checkbox" /> Car
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{padding: 2, justifyContent: 'center',  border: 'solid white 12px'}}>
+                    <div className="App">
+                      <div className="filter">
+                        <input type="checkbox" /> ASL
+                      </div>
+                    </div>
+                  </div>
 
-
+                  <div style={{padding: 5, justifyContent: 'flex-end', border: '5px'}}> 
+                  <Button variant="outline-primary"> Reset Filters</Button>
                   </div>
                   </div>
                   <AssignInstructorsTable filteredInstructors={instructors}  programsColorKey = {programColorMap} />
