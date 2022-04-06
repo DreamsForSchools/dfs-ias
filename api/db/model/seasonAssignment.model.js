@@ -40,15 +40,22 @@ SeasonAssignment.fetchDistancesForInstructors = async function (instructors, uni
  */
 
 // TODO: Make a check for the specific season so we're not fetching ALL instructors
-SeasonAssignment.fetchAvailableInstructorsDuringTime = async function (time, result) { 
+SeasonAssignment.fetchAvailableInstructorsDuringTime = async function (data, result) { 
     try { 
-        // let instructorIDs = await db.query("SELECT instructorId FROM instructorAvailability WHERE startTime <= ? AND endTime <= ? AND weekday = ?", [time.startTime, time.endTime, time.weekday]);
-        let instructorIDs = await knex('instructorAvailability').select('instructorId', 'startTime', 'endTime', 'weekday').where({'weekday': time.weekday}).where('startTime', '<=', time.startTime).where('endTime', '>=', time.endTime);
-        // console.log("❗️ Instructor IDs: ");
-        // console.log(instructorIDs);
+        let instructorIDs = await knex('instructorAvailability')
+                                .join('seasonInstructors', 'seasonInstructors.instructorId', '=',  'instructorAvailability.instructorId')
+                                .select('instructorAvailability.instructorId', 'instructorAvailability.startTime', 'instructorAvailability.endTime', 'instructorAvailability.weekday')
+                                .where({'weekday': data.weekday})
+                                .where('startTime', '<=', data.startTime)
+                                .where('endTime', '>=', data.endTime)
+                                .where({'seasonId': data.seasonSelected.seasonId});
+        // let instructorIDs = await knex('seasonInstructors')
+        //                         .select('instructorId')
+        //                         .where({'seasonId': data.seasonSelected.seasonId});
+
         return result(null, instructorIDs);
 
-    } catch (err) {  return result(err, null); }
+    } catch (err) { return result(err, null); }
 }
 
 SeasonAssignment.lock = async function (newAssignment, result) {

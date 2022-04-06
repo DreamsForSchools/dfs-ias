@@ -342,16 +342,10 @@ Instructor.findById = async function (id, result) {
     // JOIN locationCache ON instructors.instructorId = locationCache.instructorId\
     // JOIN seasonInstructors on instructors.instructorId = seasonInstructors.instructorId\
     // WHERE instructors.instructorId  = ?"
-    console.log("jaksdjfladsjlfjklasjd");
     try { 
         let instructorData = await knex('instructors').select('*').where({'instructorId': id});
-        console.log("❗️ Instructor data: ");
-        console.log(instructorData);
         return result(null, instructorData);
-    } catch (err) { 
-        console.log('Error fetching by ID ajlks;djflkadjsflk');
-        return result(err, null); 
-    }
+    } catch (err) { return result(err, null); }
     // db.query("SELECT * FROM instructors\
     //         WHERE instructors.instructorId  = ?", 
     //         id, function (err, res) {

@@ -19,8 +19,6 @@ const InstructorsRow = (props) => {
     const [ activeState, setActiveState] = useState(false);
 
     // row highlighting
-    
-    
     const {
         firstName,
         lastName,
@@ -41,23 +39,26 @@ const InstructorsRow = (props) => {
         isASL
     } = instructor;
 
+    useEffect(() => { 
+        console.log("Instructor: ");
+        console.log(instructor);
+    }, [instructor])
+
     const toggleRowClicked = () => {
         onClick(instructor);
         // setActiveState(true);
         setActiveState(activeState => !activeState);
-
     }
 
     return (
         // put onclick funct for the tr
-         
        
         <tr className={`assn-instructor-row${activeState ? '-active' : ''} `}  onClick={toggleRowClicked}>
             <td className={"info-stacks"}>
                 <ul>
                 <li>{firstName + " " + lastName}</li>
                 <li> </li>
-                <li> {gender.charAt(0) + ", " + ethnicity} </li>
+                {/* <li> {gender.charAt(0) + ", " + ethnicity} </li> */}
                 <li>
                     <div style={{display: "inline-block"}}>
                     <OverlayTrigger
@@ -100,10 +101,11 @@ const InstructorsRow = (props) => {
             </td>
             <td>{otherLanguages}</td>
             <td>{programmingLanguages}</td>
-            <td >                
+            {/* <td >                
                 {formatAvailability(instructor.availability).map((e) =>
                     <p key={e}>{e}</p>
-                )}</td>
+                )}
+            </td> */}
             <td>
             <div style={{ fontSize: "0.875 rem" }}>
                 {
@@ -141,10 +143,7 @@ const AssignInstructorsTable = (props) => {
         seasonSelected,    
       } = useContext(GlobalContext);
 
-    useEffect(() => { 
-        console.log("SEASON SELECTED:");
-        console.log(seasonSelected);
-    })
+    useEffect(() => { }, [])
 
     const clickRow = () => {
         console.log("Row clicked");
@@ -155,17 +154,9 @@ const AssignInstructorsTable = (props) => {
     async function fetchInstructorById(id) { 
         try { 
             const header = await createToken();
-            console.log(header);
-            // const request = await axios.get(`/api/instructor/find/${id}`, { 
-            //     'id': id
-            // }, header);
             const request = await axios.post(`/api/instructor/find/${id}`, {}, header);
             return (request.data);
-        } catch (e) { 
-            // toast(`❌ Error fetching instructor data: ${e}`);
-            // console.log(e);
-            return (e);
-        }
+        } catch (e) { return (e); }
     }
 
     /**
@@ -179,6 +170,7 @@ const AssignInstructorsTable = (props) => {
         try { 
             const header = await createToken();
             let response = await axios.post('/api/availableInstructors', {
+                'seasonSelected': seasonSelected,
                 'startTime': time.startTime,
                 'endTime': time.endTime,
                 'weekday': time.weekday
@@ -186,16 +178,19 @@ const AssignInstructorsTable = (props) => {
 
             // Looks like: {instructorId: 365, startTime: "14:00:00", endTime: "17:00:00", weekday: 1}
             let instructors = response['data']['data'];
+            console.log(instructors);
 
             // Iterate through every item in the `instructors` array and return just the IDs
             const availInstructors = instructors.map(i => { return i.instructorId; });
 
-            let instructorId = availInstructors[0];
-            console.log("InstructorID:");
-            console.log(instructorId);
-            fetchInstructorById(instructorId);
+            let availableInstructorsForTheSelectedSeason = [];
+            for (let i = 0; i < availInstructors.length; i++) { 
+                availableInstructorsForTheSelectedSeason[i] = await fetchInstructorById(availInstructors[i]);
+            }
 
-            // TODO: Fetch instructors using their IDs
+            setAvailableInstructors(availableInstructorsForTheSelectedSeason);
+            console.log("available instructors for the selected season");
+            console.log(availableInstructorsForTheSelectedSeason);
         } catch (err) { 
             console.log("Error in fetch: ");
             console.log(err);
@@ -227,18 +222,12 @@ const AssignInstructorsTable = (props) => {
                 </thead>
                 <tbody>
                     {/* Loops over 'filteredInstructors' and creates a row for each one */}
-                    {/* {props.filteredInstructors.map((el, idx) =>
-                        <InstructorsRow
-                            instructor={el}
-                            key={idx}
-                            programsColorKey={props.programsColorKey}
-                            onClick = {clickRow}                      
-                        />                     
-                        
-        
-                        // <p>{el.firstName} </p>
-                        
-                    )}  */}
+                    {availableInstructors.map((el, idx) =>
+                    <InstructorsRow programsColorKey={props.programsColorKey} onClick = {clickRow} instructor={el}/>
+                    )} 
+                    {/* <InstructorsRow
+                            key={idx}    
+                        /> */}
                 </tbody>
             </Table>
         </div>
