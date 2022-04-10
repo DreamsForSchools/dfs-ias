@@ -81,6 +81,11 @@ function Instructors() {
             setInstructorFocus(instructor);
             setFormInput({...formInput, availability : instructor.availability});
         }
+        //  instructor side panel disappears on duplicate click AND when not in update screen (error prevent)
+        if( instructorFocus === instructor && !editShowModal)
+        {
+            setInstructorFocus(null);
+        }
     }
 
     const handleAddNewInstructorManually = async (instructor) => {
