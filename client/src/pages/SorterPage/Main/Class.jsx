@@ -29,8 +29,6 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
   
   const [showFilter, setShowFilter] = useState(false);
 
-  
-
   const availability = [
     {value: 1, label: "Monday"},
     {value: 2, label: "Tuesday"},
@@ -47,14 +45,6 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     {value: "Engineering Inventors", label: "Engineering Inventors"}
   ]
 
-<<<<<<< HEAD
-  const handleLock = () => {
-      setLock(true);
-  }
-  const handleUnlock = () => {
-      setLock(false);
-  }
-=======
   const year = [
     {value: "1st", label: "1st"},
     {value: "2nd", label: "2nd"},
@@ -86,7 +76,6 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     const handleUnlock = () => {
         setLock(false);
     }
->>>>>>> origin/becky-dfs
 
     const handleCloseFilter = () => setShowFilter(false);
     /*
@@ -328,20 +317,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
         <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
           <Modal.Title>Assign Instructors</Modal.Title>
         </Modal.Header>
-<<<<<<< HEAD
-          <Modal.Body >
-            
-            
-            DUMMY TEXT?
-            <AssignInstructorsTable
-              show={assignPopup} 
-              time={time[0]}
-              programsColorKey = {programColorMap}
-              seasonSelected={seasonSelected}
-            />          
           
-          
-=======
           <Modal.Body style={{padding: '1rem 3rem'}}>
           <div style={{padding: 5, justifyContent: 'flex-end'}}>
           <h5>{partner}</h5>
@@ -417,9 +393,14 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                   <Button variant="outline-primary"> Reset Filters</Button>
                   </div>
                   </div>
-                  <AssignInstructorsTable filteredInstructors={instructors}  programsColorKey = {programColorMap} />
+                  DUMMY TEXT?
+                  <AssignInstructorsTable
+                    show={assignPopup} 
+                    time={time[0]}
+                    programsColorKey = {programColorMap}
+                    seasonSelected={seasonSelected}
+                  />     
 
->>>>>>> origin/becky-dfs
           </Modal.Body>
           <Modal.Footer style={{border: '0'}}>
         <Button variant="light" onClick={() => setAssignPopup(false)}>
@@ -434,14 +415,6 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
         </Modal>
     </div>
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> origin/becky-dfs
   );
 }
 
