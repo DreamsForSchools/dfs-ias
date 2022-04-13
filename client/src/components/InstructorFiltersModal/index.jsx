@@ -39,8 +39,9 @@ const InstructorFiltersModal = ({ show, onHide, onExited, filters, handleApplyFi
       year: [...year],
       asl: [...asl],
     });
-  }, [show]);
 
+  }, [show]);
+  // { name: '', car: [], availability: [], preference: [], year: [], asl: [] };
   const handleCheckboxChange = (e, value) => {
     const name = e.target.name;
     let checkedValue;
@@ -56,7 +57,7 @@ const InstructorFiltersModal = ({ show, onHide, onExited, filters, handleApplyFi
 
   const resetFilters = () => {
     setCheckedItems(Object.assign({}, initialCheckedItems));
-    handleApplyFilters(Object.assign({}, initialCheckedItems))
+    handleApplyFilters(Object.assign({}, initialCheckedItems));
   }
 
   return (
