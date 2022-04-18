@@ -23,14 +23,14 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
     // step 0 1 2 3
     // If all good, move on, else itll be flagged false
-    const [ stepZeroState, setStepZeroState ] = useState(true);
-    const [ stepOneState, setStepOneState ] = useState(true);
+    const [ stepZeroState, setStepZeroState ] = useState(false);
+    const [ stepOneState, setStepOneState ] = useState(false);
     const [ stepTwoState, setStepTwoState ] = useState(true);
     const [ stepThreeState, setStepThreeState ] = useState(true);
 
-    const [phoneValidState, setPhoneValidState] = useState(true);
-    const [emailValidState, setEmailValidState] = useState(true);
-    
+    const [phoneValidState, setPhoneValidState] = useState(false);
+    const [emailValidState, setEmailValidState] = useState(false);
+    const [graduationValidState, setGraduationValidState] = useState(false);
 
     const [formInput, setFormInput] = useState(
         {
@@ -43,7 +43,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             university: null,
             major: null,
             schoolYear: null,
-            graduationDate: null,
+            graduationDate: 'MM/YYYY',
             firstPref: null,
             secondPref: null,
             thirdPref: null,
@@ -55,7 +55,9 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             availability: null,
             programmingLanguages: null,
         }
-    );
+    );  
+
+    
 
     const handleFormInput = (input = null, field) => {
         switch (field) {
@@ -81,7 +83,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 setFormInput({...formInput, email: input})
                 break;
             case "Phone Number":
-                const re = /^[0-9\b]+$/;
+                const re = /^[0-9\b]{10}$/;
                 console.log(re.test(input));
                 if (!re.test(input))
                 {
@@ -123,7 +125,20 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             case "School Year":
                 setFormInput({...formInput, schoolYear: input});
                 break;
-            case "Graduation Date":
+            case "Graduation Date":                
+
+                if (!validateGraduationDate(input))
+                {
+                    console.log('invalid graduation date');
+                    setGraduationValidState(false);
+                    setStepOneState(false);
+                    
+                }
+                else
+                {
+                    console.log('valid graduation date')
+                    setGraduationValidState(true);
+                }
                 setFormInput({...formInput, graduationDate: input});
                 break;
             case "Programming Languages":
@@ -159,6 +174,14 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
     }
 
+    // used in handleForm to validate that graduation dates are in mm/yyyy formatting; doesn't actually check for 1-12 and valid year; just checks digits. 
+    const validateGraduationDate = (gradDate) =>
+    {
+        const re = /^[0-9\b]{2}\/[0-9\b]{4}$/;
+        return re.test(gradDate);
+
+    }
+
     
 
     //can use handleNextStep and the "global step" variable to validate form data to prevent users from going on to the next step with incorrect data.
@@ -167,7 +190,11 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         //Step Zero only checks these to be valid! 
         if(phoneValidState && emailValidState)
         {
-            setStepZeroState(true);
+            setStepZeroState(true);            
+        }
+        if(graduationValidState)
+        {
+            setStepOneState(true);            
         }
         if(step === 0 && stepZeroState === false)
         {
@@ -176,7 +203,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             
             if( !phoneValidState)
             {
-                toast.warn('Invalid phonenumber, use only numbers!');                
+                toast.warn('Invalid phonenumber, use only numbers and 10 digits!');                
             }
 
             if (!emailValidState)
@@ -190,7 +217,14 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
         else if(step === 1 && stepOneState === false)
         {
-            // do something else
+            console.log("Error in step 1");
+            
+            if( !graduationValidState)
+            {
+                toast.warn('Invalid graduation date, use only numbers and a "/" , ex: "06/2019"!');                
+            }
+
+            
         }
 
         else if(step === 2 && stepTwoState === false)
@@ -291,7 +325,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             <div style={{width: '50%', marginRight: '1.5rem'}}>
                 <div style={{display: 'flex'}}>
                     <div style={{width: '50%', marginRight: '1.5rem'}}>
-                        <Input label={'First Name'} handler={handleFormInput} state={formInput.firstName} modal required={true} />
+                        <Input label={'First Name'} handler={handleFormInput} state={formInput.firstName} modal/>
                     </div>
                     <div style={{width: '50%'}}>
                         <Input label={'Last Name'} handler={handleFormInput} state={formInput.lastName} modal/>
@@ -348,7 +382,10 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             <div style={{width: '50%'}}>
                 <Select options={schoolYear} label={'School Year'} handler={handleFormInput}
                         state={formInput.schoolYear} modal/>
-                <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal/>
+                <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal valid={graduationValidState}/>
+                
+               
+
                 <Input label={'Programming Languages'} handler={handleFormInput} state={formInput.programmingLanguages}
                        modal/>
             </div>
