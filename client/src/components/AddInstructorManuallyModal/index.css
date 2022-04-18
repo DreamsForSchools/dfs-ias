@@ -1,0 +1,13 @@
+.check-container input {
+    position: absolute;
+    
+    
+    cursor: pointer;
+    height: 48px;
+    width: 50px;
+    margin-left:-1.5em;
+    margin-top:-0.725em;
+    
+}
+
+

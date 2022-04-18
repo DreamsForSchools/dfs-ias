@@ -11,7 +11,7 @@ import {timeSlots, gender, ethnicity, shirtSize, schoolYear} from '../../constan
 import {PROGRAMS} from "../../data/PROGRAMS";
 import {GlobalContext} from "../../context/GlobalContextProvider";
 import { toast } from "react-toastify";
-
+import './index.css';
 
 export default function AddInstructorManuallyModal({handleSubmit}) {
     const [step, setStep] = useState(0);
@@ -22,15 +22,20 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     const { programData } = useContext(GlobalContext);
 
     // step 0 1 2 3
-    // If all good, move on, else itll be flagged false
+    // If all bad, move on, else itll be flagged true
     const [ stepZeroState, setStepZeroState ] = useState(false);
     const [ stepOneState, setStepOneState ] = useState(false);
+    // const [ stepZeroState, setStepZeroState ] = useState(true);
+    // const [ stepOneState, setStepOneState ] = useState(true);
     const [ stepTwoState, setStepTwoState ] = useState(true);
     const [ stepThreeState, setStepThreeState ] = useState(true);
-
+// TESTING GO BACK AND MAKE THEM ALL FALSE AGAIN BEFORE GOING BACK
     const [phoneValidState, setPhoneValidState] = useState(false);
     const [emailValidState, setEmailValidState] = useState(false);
     const [graduationValidState, setGraduationValidState] = useState(false);
+    // const [phoneValidState, setPhoneValidState] = useState(true);
+    // const [emailValidState, setEmailValidState] = useState(true);
+    // const [graduationValidState, setGraduationValidState] = useState(true);
 
     const [formInput, setFormInput] = useState(
         {
@@ -298,22 +303,28 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
         for (let i = 0; i < 5; i++) {
             element.push(
+                
                 <td key={i} style={{textAlign: 'center'}}>
+                    <div class="check-container">
                     <input
                         onChange={() => handleTimeSlotInput({
                             weekday: i + 1,
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
                         })}
-                        type={'checkbox'}
+                        type='checkbox'
                         aria-label="Checkbox for following text input"
                         checked={timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify({
                             weekday: i + 1,
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
-                        }))}
-                    />
+                        })) }
+                        class ="checkbox" />
+                    {/* <span class="checkbox"></span> */}
+                    </div>
                 </td>
+               
+
             )
         }
 
