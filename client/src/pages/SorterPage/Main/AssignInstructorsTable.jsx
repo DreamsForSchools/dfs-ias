@@ -141,7 +141,7 @@ const AssignInstructorsTable = (props) => {
 
     const {   
         seasonSelected,    
-      } = useContext(GlobalContext);
+    } = useContext(GlobalContext);
 
     useEffect(() => { }, [])
 
@@ -176,7 +176,8 @@ const AssignInstructorsTable = (props) => {
                 'weekday': time.weekday
             }, header);
 
-            // Looks like: {instructorId: 365, startTime: "14:00:00", endTime: "17:00:00", weekday: 1}
+            // Filters 'response' to just the instructors array
+            // Each individual instructor looks like: [{instructorId: 365, startTime: "14:00:00", endTime: "17:00:00", weekday: 1}]
             let instructors = response['data']['data'];
             console.log(instructors);
 
@@ -209,7 +210,6 @@ const AssignInstructorsTable = (props) => {
             {/* <Badge pill variant="success"></Badge> */}
             <Table borderless>
                 
-        
                 <thead className="assn-table-heading">
                 <tr>
                     <th className = "nameColumn">Name</th>
@@ -222,12 +222,10 @@ const AssignInstructorsTable = (props) => {
                 </thead>
                 <tbody>
                     {/* Loops over 'filteredInstructors' and creates a row for each one */}
-                    {availableInstructors.map((el, idx) =>
-                    <InstructorsRow programsColorKey={props.programsColorKey} onClick = {clickRow} instructor={el}/>
+                    {
+                    availableInstructors.map((el, idx) =>
+                        <InstructorsRow programsColorKey={props.programsColorKey} onClick ={clickRow} instructor={el}/>
                     )} 
-                    {/* <InstructorsRow
-                            key={idx}    
-                        /> */}
                 </tbody>
             </Table>
         </div>

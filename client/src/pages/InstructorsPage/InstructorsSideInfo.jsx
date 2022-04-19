@@ -1,5 +1,5 @@
 import React from "react";
-import Fade from 'react-reveal/Fade';
+// import Fade from 'react-reveal/Fade';
 import { Trash, CalendarWeek, TelephoneFill, X, Check, PencilSquare } from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge, Modal, Table } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
@@ -392,7 +392,8 @@ const InstructorsSideInfo = (props) => {
 
     return (
         <div className={'instructor-side-info'}>
-            {(!editShowModal||(changeInstructorFocus != instructor)) && (<Fade right duration={200}>
+            {(!editShowModal||(changeInstructorFocus != instructor)) && (
+            // <Fade right duration={200}>
                 <div>
                     <h1 style={{fontWeight: "bold", textAlign: "center"}}>
                         {instructor.firstName + " " + instructor.lastName}
@@ -598,10 +599,11 @@ const InstructorsSideInfo = (props) => {
                         </Modal.Footer>
                     </Modal>
                 </div>
-            </Fade>)}
+            // </Fade>
+            )}
             {/* EDITABLE UPDATE TOGGLED MODAL*************************************************************************** */}
             {editShowModal  && (
-                <Fade right duration={200}>
+                // <Fade right duration={200}>
                 <div>
                     <h1 style={{fontWeight: "bold", textAlign: "center"}}>
                         {formInput.firstName + " " + instructor.lastName}
@@ -898,7 +900,7 @@ const InstructorsSideInfo = (props) => {
                         </Modal.Footer>
                     </Modal>
                 </div>
-            </Fade>
+            // </Fade>
             )
             }
 

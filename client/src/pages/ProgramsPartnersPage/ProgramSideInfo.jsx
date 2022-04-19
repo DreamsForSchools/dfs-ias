@@ -1,5 +1,5 @@
 import React from "react";
-import Fade from 'react-reveal/Fade';
+// import Fade from 'react-reveal/Fade';
 import {CalendarWeek, GeoAltFill, PencilSquare, PeopleFill, Trash, Clipboard} from 'react-bootstrap-icons';
 import { Button, Badge, Modal } from 'react-bootstrap';
 import { formatAvailability } from "../../util/formatData";
@@ -60,7 +60,7 @@ const ProgramSideInfo = (props) => {
 
     return (
         <Wrapper>
-            <Fade right duration={200}>
+            {/* <Fade right duration={200}> */}
                 <div>
                     <Title>
                         {program.name}
@@ -136,7 +136,7 @@ const ProgramSideInfo = (props) => {
                         </Modal.Footer>
                     </Modal>
                 </div>
-            </Fade>
+            {/* </Fade> */}
         </Wrapper>
     )
 }

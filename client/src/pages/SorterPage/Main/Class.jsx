@@ -17,10 +17,11 @@ import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 
 
 
-const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus ,instructorData, handleSearch, lockedInstructors}) => {
+const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus, instructorData, handleSearch, lockedInstructors}) => {
   const {
     programColorMap,
-} = useContext(GlobalContext);
+    seasonSelected
+  } = useContext(GlobalContext);
 
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
@@ -393,12 +394,10 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
                   <Button variant="outline-primary"> Reset Filters</Button>
                   </div>
                   </div>
-                  DUMMY TEXT?
                   <AssignInstructorsTable
                     show={assignPopup} 
                     time={time[0]}
                     programsColorKey = {programColorMap}
-                    seasonSelected={seasonSelected}
                   />     
 
           </Modal.Body>

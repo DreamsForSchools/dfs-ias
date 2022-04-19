@@ -1,14 +1,5 @@
 {
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/lab": "^4.0.0-alpha.60",
-    "knex": "^1.0.3",
-    "mdb-react-ui-kit": "^2.4.0",
-    "mdbreact": "^5.2.0",
-    "mysql": "^2.18.1",
-    "react-bootstrap-multiselect": "^2.4.1",
-    "react-multiple-select-dropdown-lite": "^2.0.5",
-    "react-multiselect-checkboxes": "^0.1.1",
-    "react-select": "^5.2.2"
+    "react-multiselect-checkboxes": "^0.1.1"
   }
 }

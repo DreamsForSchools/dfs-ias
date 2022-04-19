@@ -18,8 +18,18 @@ const dragReducer = produce((draft, action) => {
     }
     case "POPULATE_LOCKED": {
       action.state["programs"].forEach(program => {
+        console.log(`draft`);
+        console.log(program);
         program.classes.forEach(c1 => {
-          draft["programs"][action.state["programs"].indexOf(program)]["classes"].find(c2 => c1.classId === c2.classId)["instructors"] = [];
+
+          // Get the index of the program in 'action'
+          const programIndex = action.state["programs"].indexOf(program);
+
+          // Find the class that has the same id as 'c1'
+          const programClass = draft["programs"][programIndex]["classes"].find(c2 => c1.classId === c2.classId);
+
+          // If 'programClass' is undefined, clear the instructors array
+          if (programClass) { programClass.instructors = [] }
         })
       })
       draft["lockedInstructors"] = action.lockedInstructors;
@@ -204,7 +214,7 @@ const Sorter = () => {
             <div style={{textAlign: 'center'}}>
               <Lottie animationData={emptyAnimation} style={{width: 400, height: 400, margin: 'auto'}} />
             </div>
-          : <MainPanel state={state} seasonSelected={seasonSelected}/> }
+          : <MainPanel state={state}/> }
         </div>
         <div className="sidebar-wrapper">
           <Sidebar

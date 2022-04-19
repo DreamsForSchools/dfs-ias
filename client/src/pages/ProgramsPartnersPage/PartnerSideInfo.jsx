@@ -1,5 +1,5 @@
 import React from "react";
-import Fade from 'react-reveal/Fade';
+// import Fade from 'react-reveal/Fade';
 import {
     PencilSquare,
     CalendarWeek,
@@ -50,7 +50,7 @@ const PartnerSideInfo = (props) => {
 
     return (
         <Wrapper>
-            <Fade right duration={200}>
+            {/* <Fade right duration={200}> */}
                 <div>
                     <Badge style={{marginTop: '1rem', display: 'block'}} variant="secondary">{partner.district}</Badge>
                     <Title>
@@ -128,7 +128,7 @@ const PartnerSideInfo = (props) => {
                         </Modal.Footer>
                     </Modal>
                 </div>
-            </Fade>
+            {/* </Fade> */}
         </Wrapper>
     )
 }
