@@ -404,14 +404,14 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     const availability = (
         <div style={{padding: '2rem', display: 'flex', flexDirection: 'row'}}>
             <Table borderless style={{borderSpacing: '0 0.4rem', borderCollapse: 'separate'}}>
-                <thead>
+                <thead align = "center">
                 <tr>
                     <th></th>
-                    <th>Mondays</th>
-                    <th>Tuesdays</th>
-                    <th>Wednesdays</th>
-                    <th>Thursdays</th>
-                    <th>Fridays</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
                 </tr>
                 </thead>
                 <tbody>
