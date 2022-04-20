@@ -254,7 +254,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         setStep(step - 1);
     };
 
-    const handleTimeSlotInput = (e) => {
+    const handleTimeSlotInput = (e) => {                
         if (timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify(e))) {
             setTimeAvailability(timeAvailability.filter(function (ele) {
                 return JSON.stringify(ele) != JSON.stringify(e);
@@ -305,7 +305,6 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             element.push(
                 
                 <td key={i} style={{textAlign: 'center'}}>
-                    <div class="check-container">
                     <input
                         onChange={() => handleTimeSlotInput({
                             weekday: i + 1,
@@ -319,9 +318,8 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
                         })) }
-                        class ="checkbox" />
-                    {/* <span class="checkbox"></span> */}
-                    </div>
+                    />                    
+                    
                 </td>
                
 

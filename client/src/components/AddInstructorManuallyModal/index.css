@@ -1,13 +1,28 @@
-.check-container input {
-    position: absolute;
-    
-    
-    cursor: pointer;
-    height: 48px;
-    width: 50px;
-    margin-left:-1.5em;
-    margin-top:-0.725em;
+/* essentially changes the appearance of the checkbox to look more like a generic bar */
+input[type=checkbox] {
+    /* this clears all "native" appearances for checkboxes */
+    all: unset; 
+    height: 4em;
+    width: 4em;
+    margin-top: -0.675em;
+    margin-bottom: -1.05em;
+    display: inline-block;
+    background: white;
+    border-radius:10%;
+    outline: 0.05em solid #3e404648;
+}
+
+
+input[type=checkbox]:checked {
+    background: #28A745;
     
 }
+
+/*  might wanna do something here.
+input[type=checkbox]:focus-visible {
+    
+} */
+
+
 
 
