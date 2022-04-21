@@ -1,5 +1,5 @@
 /* essentially changes the appearance of the checkbox to look more like a generic bar */
-input[type=checkbox] {
+input[type=checkbox].checkbox {
     /* this clears all "native" appearances for checkboxes */
     all: unset; 
     height: 4em;
@@ -13,7 +13,7 @@ input[type=checkbox] {
 }
 
 
-input[type=checkbox]:checked {
+input[type=checkbox]:checked.checkbox {
     background: #28A745;
     
 }

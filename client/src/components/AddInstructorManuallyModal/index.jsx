@@ -318,7 +318,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
                         })) }
-                    />                    
+                    class = "checkbox"/>                    
                     
                 </td>
                
