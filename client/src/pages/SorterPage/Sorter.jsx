@@ -9,6 +9,7 @@ import Lottie from 'lottie-react';
 import emptyAnimation from '../../assets/empty-animation.json';
 import {createToken} from "../../fire";
 
+// Jules - Not entirely sure what this is/does & why it's named 'dragReducer'
 const dragReducer = produce((draft, action) => {
   switch (action.type) {
     case "POPULATE": {
@@ -108,7 +109,7 @@ const dragReducer = produce((draft, action) => {
 
 const Sorter = () => {
   let savedState = JSON.parse(localStorage.getItem("sorter-state"));
-  let defaultState = savedState;
+  let defaultState;
   if (savedState !== null) {
     defaultState = savedState;
   } else {

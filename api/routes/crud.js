@@ -59,7 +59,7 @@ router.get('/season/class/:id', classController.allSeasonClasses);
 router.post('/class', classController.create);
 router.get('/class', classController.findAll);
 router.get('/class/:id', classController.findById);
- router.put('/class/:id', classController.updateById)
+router.put('/class/:id', classController.updateById);
 
 router.get('/lock/:seasonId', seasonAssignmentController.getLockedInstructors);
 router.post('/lock', seasonAssignmentController.lock);
