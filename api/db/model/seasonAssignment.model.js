@@ -49,9 +49,6 @@ SeasonAssignment.fetchAvailableInstructorsDuringTime = async function (data, res
                                 .where('startTime', '<=', data.startTime)
                                 .where('endTime', '>=', data.endTime)
                                 .where({'seasonId': data.seasonSelected.seasonId});
-        // let instructorIDs = await knex('seasonInstructors')
-        //                         .select('instructorId')
-        //                         .where({'seasonId': data.seasonSelected.seasonId});
 
         return result(null, instructorIDs);
 
