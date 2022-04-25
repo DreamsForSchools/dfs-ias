@@ -8,6 +8,8 @@ import { createToken } from "../../../fire";
 
 import { GlobalContext}  from "../../../context/GlobalContextProvider";
 
+export let availableInstructorsForTheSelectedSeason = [];
+
 const InstructorsRow = (props) => {
 
     const {
@@ -183,7 +185,7 @@ const AssignInstructorsTable = (props) => {
             // Iterate through every item in the `instructors` array and return just the IDs
             const availInstructors = instructors.map(i => { return i.instructorId; });
 
-            let availableInstructorsForTheSelectedSeason = [];
+            
             for (let i = 0; i < availInstructors.length; i++) { 
                 availableInstructorsForTheSelectedSeason[i] = await fetchInstructorById(availInstructors[i]);
             }
