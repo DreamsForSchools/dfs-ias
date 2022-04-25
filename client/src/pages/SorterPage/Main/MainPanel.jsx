@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Program from './Program.jsx';
 import './MainPanel.css';
 
-const MainPanel = ({ state }) => {
+const MainPanel = ({ state, seasonSelected }) => {
 
   return (
     <div className="main-panel">

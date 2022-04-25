@@ -3,6 +3,7 @@
 const Instructor = require('../model/instructor.model');
 
 exports.findAll = function (req, res) {
+    console.log("🧞‍♂️ Finding all instructors...");
     const auth = req.currentUser;
     if (auth) {
         Instructor.findAll(function (err, instructor) {
@@ -15,6 +16,7 @@ exports.findAll = function (req, res) {
 };
 
 exports.createSingle = function (req, res) {
+    console.log("🧞‍♂️ Creating an instructor...");
     const auth = req.currentUser;
     if (auth) {
         const new_instructor = new Instructor(req.body);
@@ -33,6 +35,7 @@ exports.createSingle = function (req, res) {
 };
 
 exports.createCSV = function (req, res) {
+    console.log("🧞‍♂️ Creating CSV...");
     const auth = req.currentUser;
     if (auth) {
         //handles null error
@@ -50,6 +53,7 @@ exports.createCSV = function (req, res) {
 };
 
 exports.allSeasonInstructors = function (req, res) {
+    console.log("🧞‍♂️ Fetching all season instructors...");
     const auth = req.currentUser;
     if (auth) {
         if (!req.params.seasonId) {
@@ -70,18 +74,20 @@ exports.allSeasonInstructors = function (req, res) {
 
 
 exports.findById = function (req, res) {
+    console.log("🧞‍♂️ Finding instructor by Id");
     const auth = req.currentUser;
-    if (auth) {
+    if (!auth) {
+        res.status(403).send({error: true, message: "Not authorized.", data: null});
+    } else { 
         Instructor.findById(req.params.id, function (err, instructor) {
             if (err) res.status(400).send({error: true, message: 'Failed find by id'});
-            else res.send(instructor);
+            else res.send(instructor[0]);
         })
-    } else {
-        res.status(403).send({error: true, message: "Not authorized.", data: null});
     }
 }
 
 exports.deleteById = function (req, res) {
+    console.log("🧞‍♂️ Deleting instructor by Id");
     const auth = req.currentUser;
     if (auth) {
         Instructor.deleteById(req.params.id, function (err, instructor) {
@@ -98,6 +104,7 @@ exports.deleteById = function (req, res) {
 }
 
 exports.updateById = function (req, res) {
+    console.log("🧞‍♂️ Updating instructor by Id");
     const auth = req.currentUser;
     if (auth) {
         Instructor.updateById(req.params.id, new Instructor(req.body), function (err, instructor) {
