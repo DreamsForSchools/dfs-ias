@@ -24,9 +24,8 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     // step 0 1 2 3
     // If all bad, move on, else itll be flagged true
     const [ stepZeroState, setStepZeroState ] = useState(false);
-    const [ stepOneState, setStepOneState ] = useState(false);
-    // const [ stepZeroState, setStepZeroState ] = useState(true);
-    // const [ stepOneState, setStepOneState ] = useState(true);
+    const [ stepOneState, setStepOneState ] = useState(true);
+    // const [ stepZeroState, setStepZeroState ] = useState(true);    
     const [ stepTwoState, setStepTwoState ] = useState(true);
     const [ stepThreeState, setStepThreeState ] = useState(true);
 // TESTING GO BACK AND MAKE THEM ALL FALSE AGAIN BEFORE GOING BACK
@@ -36,6 +35,8 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     // const [phoneValidState, setPhoneValidState] = useState(true);
     // const [emailValidState, setEmailValidState] = useState(true);
     // const [graduationValidState, setGraduationValidState] = useState(true);
+    const [stepZeroCounter, setStepZeroCounterState] = useState(0);
+    const [stepOneCounter, setStepOneCounterState] = useState(0);
 
     const [formInput, setFormInput] = useState(
         {
@@ -77,14 +78,16 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 {
                     console.log('invalid email');
                     setEmailValidState(false);
-                    setStepZeroState(false);
-                    
+                    setStepZeroState(false);                    
                 }
                 else
                 {
                     console.log('valid email')
                     setEmailValidState(true);
+                    
+                  
                 }
+                // checkStepZero();
                 setFormInput({...formInput, email: input})
                 break;
             case "Phone Number":
@@ -100,7 +103,9 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 }
                 else{
                     setPhoneValidState(true);
+                    
                 }
+                checkStepZero();
                 setFormInput({...formInput, phoneNumber: input})               
                 break;
             case "Sex":
@@ -144,6 +149,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                     console.log('valid graduation date')
                     setGraduationValidState(true);
                 }
+                checkStepOne();
                 setFormInput({...formInput, graduationDate: input});
                 break;
             case "Programming Languages":
@@ -185,23 +191,63 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         const re = /^[0-9\b]{2}\/[0-9\b]{4}$/;
         return re.test(gradDate);
 
+
+        
     }
 
+
+    const checkStepZero = () =>
+    {
+        if(phoneValidState && emailValidState)
+        {
+            setStepZeroState(true);            
+        }
+        else
+        {
+            setStepZeroState(false);
+        }
+    }
+
+    const checkStepOne = () =>
+    {
+        if(graduationValidState)
+        {
+            setStepOneState(true);
+        }
+        else
+        {
+            setStepOneState(false);
+        }
+    }
     
 
     //can use handleNextStep and the "global step" variable to validate form data to prevent users from going on to the next step with incorrect data.
     const handleNextStep = () => 
     {   
         //Step Zero only checks these to be valid! 
-        if(phoneValidState && emailValidState)
+        
+        // if(!phoneValidState || !emailValidState)
+        // {
+        //     setStepZeroState(false);               
+        // }
+        // else
+        // {
+        //     setStepZeroState(true);
+        // }
+        if(step === 0 )
         {
-            setStepZeroState(true);            
+            checkStepZero();
+            setStepZeroCounterState(1);
         }
-        if(graduationValidState)
+
+        if(step === 1)
         {
-            setStepOneState(true);            
+            checkStepOne();
+            setStepOneCounterState(1);
         }
-        if(step === 0 && stepZeroState === false)
+
+      
+        if(step === 0 && !stepZeroState)
         {
             // do something else
             console.log("Error in step 0");
@@ -220,7 +266,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             
         }
 
-        else if(step === 1 && stepOneState === false)
+        else if(step === 1 && !stepOneState)
         {
             console.log("Error in step 1");
             
@@ -340,8 +386,9 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                         <Input label={'Last Name'} handler={handleFormInput} state={formInput.lastName} modal/>
                     </div>
                 </div>
-                <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal valid={emailValidState} />
-                <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal valid={phoneValidState}/>
+                {/* ternarys for display is just so the 'bad' outline doesnt appear immediately */}
+                { stepZeroCounter < 1 ? <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal/>  : <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal valid={emailValidState} />}
+                { stepZeroCounter < 1 ? <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal/> : <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal valid={phoneValidState}/>   }
             </div>
             <div style={{width: '25%', marginRight: '1.5rem'}}>
                 <Select options={gender} label={'Sex'} handler={handleFormInput} state={formInput.gender} modal/>
@@ -391,7 +438,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             <div style={{width: '50%'}}>
                 <Select options={schoolYear} label={'School Year'} handler={handleFormInput}
                         state={formInput.schoolYear} modal/>
-                <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal valid={graduationValidState}/>
+                { stepOneCounter < 1 ? <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal/> : <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal valid={graduationValidState}/> }
                 
                
 
@@ -510,7 +557,9 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 </div>
             </Modal.Body>
             <Modal.Footer style={{border: '0', padding: '0 3rem 2rem 3rem'}}>
-                <Button variant="outline-primary" onClick={handlePrevStep} style={{marginRight: 'auto'}} disabled={step === 0}><ChevronLeft/>Back</Button>
+                {/* hiding back button from first page */}
+                {step != 0 ? (<Button variant="outline-primary" onClick={handlePrevStep} style={{marginRight: 'auto'}} disabled={step === 0}><ChevronLeft/>Back</Button>) : <br></br>}
+                    
                 {step != 3 ? (<Button variant="primary" onClick={handleNextStep}>Next<ChevronRight/></Button>) : (
                     <Button variant="primary" onClick={() => handleSubmit(formInput)}>Submit</Button>)}
             </Modal.Footer>
