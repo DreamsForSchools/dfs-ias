@@ -224,8 +224,13 @@ const AssignInstructorsTable = (props) => {
                 </thead>
                 <tbody>
                     {/* Loops over 'filteredInstructors' and creates a row for each one */}
-                    {availableInstructors.map((el, idx) =>
-                    <InstructorsRow programsColorKey={props.programsColorKey} onClick = {clickRow} instructor={el}/>
+                    {props.data.map((el, idx) =>
+                    <InstructorsRow 
+                        instructor={el}
+                        key={idx}
+                        programsColorKey={props.programsColorKey} 
+                        onClick = {clickRow} 
+                    />
                     )} 
                     {/* <InstructorsRow
                             key={idx}    

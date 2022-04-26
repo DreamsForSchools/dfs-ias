@@ -552,6 +552,7 @@ const handleCheckboxChange = (e, value) => {
                     time={time[0]}
                     programsColorKey = {programColorMap}
                     seasonSelected={seasonSelected}
+                    data={filteredInstructors.reverse()}
                   />     
 
           </Modal.Body>
