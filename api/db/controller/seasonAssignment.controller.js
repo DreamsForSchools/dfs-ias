@@ -82,3 +82,28 @@ exports.sort = function (req, res) {
         res.status(403).send({error: true, message: "Not authorized.", data: null});
     }
 };
+
+exports.fetchInstructorDistances = function (req, res) { 
+    const auth = req.currentUser;
+    if (!auth) 
+        res.status(403).send({error: true, message: "Not authorized.", data: null});
+
+    SeasonAssignment.fetchDistancesForInstructors(req.body.instructors, req.body.universityPlaceID, req.body.partnerPlaceID, function (err, data) { 
+        if (err)
+            res.status(500).send({error: true, err});
+        else
+            res.send({error: false, message: "Fetched instructor distances!", data: data});
+    })
+};
+
+exports.fetchAvailableInstructors = function(req, res) { 
+    const auth = req.currentUser;
+    if (!auth) 
+        res.status(403).send({error: true, message: "Not authorized.", data: null});
+    SeasonAssignment.fetchAvailableInstructorsDuringTime(req.body, function (err, data) { 
+        if (err)
+            res.status(500).send({error: true, err});
+        else
+            res.send({error: false, message: "Fetched available instructors!", data: data});
+    }) ;
+}

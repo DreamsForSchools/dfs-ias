@@ -33,12 +33,12 @@ router.get('/season/:id', seasonController.findById);
 router.put('/season/:id', seasonController.updateById)
 
 router.get('/instructor/aggregated/:seasonId', instructorController.allSeasonInstructors)
-router.post('/instructor', instructorController.createSingle);
+router.post('/instructor/create', instructorController.createSingle);
 router.post('/instructor/CSV', instructorController.createCSV);
-router.get('/instructor', instructorController.findAll);
-router.get('/instructor/:id', instructorController.findById);
-router.delete('/instructor/:id', instructorController.deleteById);
-router.put('/instructor/:id', instructorController.updateById);
+router.get('/instructor/findAll', instructorController.findAll);
+router.post('/instructor/find/:id', instructorController.findById);
+router.delete('/instructor/delete/:id', instructorController.deleteById);
+router.put('/instructor/update/:id', instructorController.updateById);
 
 // router.post('/instructor/availability', instructorAvailabilityController.create);
 // router.get('/instructor/availability', instructorAvailabilityController.findAll);
@@ -59,12 +59,13 @@ router.get('/season/class/:id', classController.allSeasonClasses);
 router.post('/class', classController.create);
 router.get('/class', classController.findAll);
 router.get('/class/:id', classController.findById);
-router.delete('/class/:id', classController.deleteById);
-router.put('/class/:id', classController.updateById)
+ router.put('/class/:id', classController.updateById)
 
 router.get('/lock/:seasonId', seasonAssignmentController.getLockedInstructors);
 router.post('/lock', seasonAssignmentController.lock);
 router.put('/unlock', seasonAssignmentController.unlock);
 router.post('/sort', seasonAssignmentController.sort);
+
+router.post('/availableInstructors', seasonAssignmentController.fetchAvailableInstructors);
 
 module.exports = router;

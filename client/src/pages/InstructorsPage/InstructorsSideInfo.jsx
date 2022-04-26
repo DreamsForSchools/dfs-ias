@@ -474,7 +474,7 @@ const InstructorsSideInfo = (props) => {
 
                         <div className={"info"} style={{width: "50%"}}>
                             <h6>
-                                Gender
+                                Sex
                             </h6>
                             <h5>
                                 {instructor.gender}
