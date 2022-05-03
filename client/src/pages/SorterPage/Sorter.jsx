@@ -136,7 +136,6 @@ const Sorter = () => {
       instructors: Object.values(instructorData),
     });
     fetchLocked();
-    console.log(Object.values(instructorData));
   }, [programData, instructorData]);
 
   const fetchLocked = async () => {

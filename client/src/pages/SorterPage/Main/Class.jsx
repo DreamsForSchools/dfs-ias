@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Class.scss';
 import Instructor from '../Instructor.jsx';
@@ -11,14 +11,15 @@ import {
 } from 'react-bootstrap-icons';
 import { formatAvailability } from '../../../util/formatData';
 import { Button, Modal } from 'react-bootstrap';
-import { GlobalContext } from '../../../context/GlobalContextProvider';
-import AssignInstructorsTable from './AssignInstructorsTable';
+
+import AssignInstructorsTable from '../AssignInstructorsModal/AssignInstructorsTable';
 import '../../ProgramsPartnersPage/OptionsBar.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { MDBCol } from 'mdbreact';
 import ReactDOM from 'react-dom';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import { GlobalContext } from '../../../context/GlobalContextProvider';
 
 const Class = ({
     id,
@@ -29,16 +30,12 @@ const Class = ({
     programId,
     state,
     parentLockStatus,
-    instructorData,
     handleSearch,
     lockedInstructors,
 }) => {
-    const { programColorMap, seasonSelected } = useContext(GlobalContext);
-
     const [numInstructors, setNumInstructors] = useState(0);
     const [lock, setLock] = useState(false);
     const [assignPopup, setAssignPopup] = useState(false);
-
     const [showFilter, setShowFilter] = useState(false);
 
     const availability = [
@@ -48,6 +45,8 @@ const Class = ({
         { value: 4, label: 'Thursday' },
         { value: 5, label: 'Friday' },
     ];
+
+    const { programColorMap } = useContext(GlobalContext);
 
     const preference = [
         {
@@ -95,6 +94,7 @@ const Class = ({
         },
         { value: 1, label: 'Knows ASL' },
     ];
+
     const initialCheckedItems = {
         car: [0, 1],
         availability: [],
@@ -285,6 +285,11 @@ const Class = ({
         setAssignPopup(true);
     };
 
+    /**
+     * Saves instructors assignments to the database.
+     */
+    async function saveChanges() {}
+
     return (
         <div className="class">
             <div className="header">
@@ -311,14 +316,12 @@ const Class = ({
                         marginRight: '0.5rem',
                     }}
                     onClick={assignToggle}
-                    data-testid="assignToProgram"
-                >
+                    data-testid="assignToProgram">
                     Assign Instructors
                     <span
                         style={{
                             marginLeft: '0.5rem',
-                        }}
-                    >
+                        }}>
                         <PencilSquare />
                     </span>
                 </Button>
@@ -326,15 +329,13 @@ const Class = ({
 
             <Droppable
                 droppableId={programId + '-' + partner + '-' + id}
-                type="INSTRUCTOR"
-            >
+                type="INSTRUCTOR">
                 {(provided) => {
                     return (
                         <div
                             className={'spacer'}
                             ref={provided.innerRef}
-                            {...provided.droppableProps}
-                        >
+                            {...provided.droppableProps}>
                             {/* This is the assignment of instructors to program space. */}
                             {instructors?.map((instructor, index) => {
                                 return (
@@ -344,15 +345,13 @@ const Class = ({
                                         index={index}
                                         isDragDisabled={state[
                                             'lockedInstructors'
-                                        ].includes(instructor.instructorId)}
-                                    >
+                                        ].includes(instructor.instructorId)}>
                                         {(provided) => {
                                             return (
                                                 <div
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                >
+                                                    {...provided.dragHandleProps}>
                                                     <Instructor
                                                         key={
                                                             instructor.instructorId
@@ -378,38 +377,24 @@ const Class = ({
                 show={assignPopup}
                 onHide={() => setAssignPopup(false)}
                 aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
+                centered>
                 <Modal.Header
                     closeButton
                     style={{
                         padding: '2rem 3rem 0 3rem',
                         border: '0',
-                    }}
-                >
+                    }}>
                     <Modal.Title>Assign Instructors</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body
-                    style={{
-                        padding: '1rem 3rem',
-                    }}
-                >
-                    <div
-                        style={{
-                            padding: 5,
-                            justifyContent: 'flex-end',
-                        }}
-                    >
+                <Modal.Body style={{ padding: '1rem 3rem' }}>
+                    <div style={{ padding: 5, justifyContent: 'flex-end' }}>
                         <h5>{partner}</h5>
                         <h10>
+                            {' '}
                             <CalendarWeek /> {formatAvailability(time)}{' '}
                         </h10>
-                        <h11
-                            style={{
-                                float: 'right',
-                            }}
-                        >
+                        <h11 style={{ float: 'right' }}>
                             <People /> {numInstructors}/{instructorsNeeded}{' '}
                         </h11>
                     </div>
@@ -417,15 +402,9 @@ const Class = ({
                         style={{
                             display: 'flex',
                             padding: 0,
-
                             justifyContent: 'flex-end',
-                        }}
-                    >
-                        <div
-                            style={{
-                                padding: 5,
-                            }}
-                        >
+                        }}>
+                        <div style={{ padding: 5 }}>
                             <MDBCol md="40">
                                 <div className="active-pink-3 active-pink-4 mb-4">
                                     <input
@@ -443,16 +422,12 @@ const Class = ({
                                 padding: 5,
                                 justifyContent: 'flex-end',
                                 border: '5px',
-                            }}
-                        >
+                            }}>
                             <ReactMultiSelectCheckboxes
-                                style={{
-                                    display: 'flex-end',
-                                }}
+                                style={{ display: 'flex-end' }}
                                 options={year}
                                 placeholderButtonLabel="All Years"
                                 variant="outline"
-                                //handleApplyFilters={handleApplyFilters}
                                 onExited={handleCloseFilter}
                                 filters={filters}
                                 onChange={(e) => {
@@ -467,16 +442,12 @@ const Class = ({
                                 padding: 5,
                                 justifyContent: 'flex-end',
                                 border: '5px',
-                            }}
-                        >
+                            }}>
                             <ReactMultiSelectCheckboxes
-                                style={{
-                                    display: 'flex-end',
-                                }}
+                                style={{ display: 'flex-end' }}
                                 options={preference}
                                 placeholderButtonLabel="All Preferences"
                                 variant="outline"
-                                //handleApplyFilters={handleApplyFilters}
                                 onExited={handleCloseFilter}
                                 filters={filters}
                                 onChange={(e) => {
@@ -491,8 +462,7 @@ const Class = ({
                                 padding: 2,
                                 justifyContent: 'center',
                                 border: 'solid white 12px',
-                            }}
-                        >
+                            }}>
                             <div className="App">
                                 <div className="filter">
                                     <input type="checkbox" /> Car
@@ -504,8 +474,7 @@ const Class = ({
                                 padding: 2,
                                 justifyContent: 'center',
                                 border: 'solid white 12px',
-                            }}
-                        >
+                            }}>
                             <div className="App">
                                 <div className="filter">
                                     <input type="checkbox" /> ASL
@@ -518,8 +487,7 @@ const Class = ({
                                 padding: 5,
                                 justifyContent: 'flex-end',
                                 border: '5px',
-                            }}
-                        >
+                            }}>
                             <Button variant="outline-primary">
                                 {' '}
                                 Reset Filters
@@ -535,12 +503,10 @@ const Class = ({
                 <Modal.Footer
                     style={{
                         border: '0',
-                    }}
-                >
+                    }}>
                     <Button
                         variant="light"
-                        onClick={() => setAssignPopup(false)}
-                    >
+                        onClick={() => setAssignPopup(false)}>
                         Close
                     </Button>
                     <Button variant="light" onClick={saveChanges}>
