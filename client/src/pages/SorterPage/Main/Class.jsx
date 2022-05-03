@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Class.scss';
 import Instructor from '../Instructor.jsx';
-import { CalendarWeek, People, LockFill, UnlockFill, PencilSquare } from 'react-bootstrap-icons';
+import { CalendarWeek, Search, People, LockFill, UnlockFill, PencilSquare, FileSpreadsheet } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
-import { Button, Modal, Form  } from 'react-bootstrap';
+import { Button, Modal, Form, FormControl, InputGroup  } from 'react-bootstrap';
 import {GlobalContext} from "../../../context/GlobalContextProvider";
 import AssignInstructorsTable from './AssignInstructorsTable';
 import {availableInstructorsForTheSelectedSeason} from './AssignInstructorsTable';
@@ -65,6 +65,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     // preference: ["Mobile App Development (AppJam+)", "Website Development", "Let's Explore STEM", "Coding Games with Scratch","Engineering Inventors"], 
     // year: ["1st","2nd","3rd", "4th+","Graduate"], 
     // isASL: [0, 1]
+    name: '',
     hasCar: [], 
     preference: [], 
     year: [], 
@@ -74,12 +75,15 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
   const [showFilter, setShowFilter] = useState(false);
   const [filteredInstructors, setFilteredInstructors] = useState([...Object.values(availableInstructorsForTheSelectedSeason)]);
   const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
+  const [searchText, setSearchText] = useState(''); 
   const handleLock = () => {
         setLock(true);
     }
     const handleUnlock = () => {
         setLock(false);
     }
+
+
 
     const handleCloseFilter = () => setShowFilter(false);
     /*
@@ -167,6 +171,13 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
 
   useEffect(() => {
     const instructors = Object.values(availableInstructorsForTheSelectedSeason).filter(instructor => {
+      if (filters.name) {
+        const formattedText = filters.name.toLowerCase();
+                const fullName = instructor.firstName + " " + instructor.lastName;
+                if (!fullName.toLowerCase().includes(formattedText)) {
+                    return false;
+                }
+      }
       // return false if does not meet filter requirements for 'hasCar'
       if(checkedItems.hasCar.length > 0 && !checkedItems.hasCar.includes(instructor.hasCar)) {
         return false;
@@ -323,6 +334,16 @@ const resetFilters = () => {
   handleApplyFilters(Object.assign({}, initialCheckedItems));
 }
 
+const handleSearchChange = e => {
+  if (e.key === 'Enter') {
+      onSearchSubmit();
+  }
+  setSearchText(e.target.value.trim());
+}
+const onSearchSubmit = () => {
+  setFilters({ ...filters, name: searchText });
+}
+
 const handleCheckboxChange = (e, value) => {
   const name = e.target.name;
   let checkedValue;
@@ -446,9 +467,25 @@ const handleCheckboxChange = (e, value) => {
                   }}>
 
                   <div style={{padding: 5, justifyContent: 'flex-end', border: '5px', width:'40%'}}>
+                  
                   <MDBCol md="40">
-                        <input className="form-control" type="text" placeholder="Search Instructors..." aria-label="Search" />
-                  </MDBCol>
+                    <InputGroup> 
+                        {/* <input className="form-control" type="text" 
+                        placeholder="Search Instructors..." aria-label="Search" /> */}
+                        <FormControl
+                                placeholder="Search HERE"
+                                aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default"
+                                value={searchText}
+                                onChange={handleSearchChange}
+                                onKeyPress={handleSearchChange}
+                            />
+                          <InputGroup.Append>
+                                <Button variant="primary" onClick={onSearchSubmit}><Search/></Button>
+                            </InputGroup.Append>
+                    </InputGroup>
+                  </MDBCol> 
+                  
                   </div>
 
                   
