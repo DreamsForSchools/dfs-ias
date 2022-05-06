@@ -124,7 +124,8 @@ function Instructors() {
         if (e.key === 'Enter') {
             onSearchSubmit();
         }
-        setSearchText(e.target.value.trim());
+        // setSearchText(e.target.value.trim());
+        setSearchText(e.target.value);
     }
 
     const handleApplyFilters = (checkedItems) => {
@@ -141,7 +142,9 @@ function Instructors() {
     }
 
     const onSearchSubmit = () => {
-        setFilters({ ...filters, name: searchText });
+        // previously was handled onChange, causing trailing spaces to be removed while typing
+        let searchTextTrimmed = searchText.trim();
+        setFilters({ ...filters, name: searchTextTrimmed });
     }
 
     useEffect(() => {

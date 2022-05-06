@@ -11,7 +11,7 @@ import {timeSlots, gender, ethnicity, shirtSize, schoolYear} from '../../constan
 import {PROGRAMS} from "../../data/PROGRAMS";
 import {GlobalContext} from "../../context/GlobalContextProvider";
 import { toast } from "react-toastify";
-
+import './index.css';
 
 export default function AddInstructorManuallyModal({handleSubmit}) {
     const [step, setStep] = useState(0);
@@ -22,15 +22,21 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     const { programData } = useContext(GlobalContext);
 
     // step 0 1 2 3
-    // If all good, move on, else itll be flagged false
-    const [ stepZeroState, setStepZeroState ] = useState(true);
+    // If all bad, move on, else itll be flagged true
+    const [ stepZeroState, setStepZeroState ] = useState(false);
     const [ stepOneState, setStepOneState ] = useState(true);
+    // const [ stepZeroState, setStepZeroState ] = useState(true);    
     const [ stepTwoState, setStepTwoState ] = useState(true);
     const [ stepThreeState, setStepThreeState ] = useState(true);
-
-    const [phoneValidState, setPhoneValidState] = useState(true);
-    const [emailValidState, setEmailValidState] = useState(true);
-    
+// TESTING GO BACK AND MAKE THEM ALL FALSE AGAIN BEFORE GOING BACK
+    const [phoneValidState, setPhoneValidState] = useState(false);
+    const [emailValidState, setEmailValidState] = useState(false);
+    const [graduationValidState, setGraduationValidState] = useState(false);
+    // const [phoneValidState, setPhoneValidState] = useState(true);
+    // const [emailValidState, setEmailValidState] = useState(true);
+    // const [graduationValidState, setGraduationValidState] = useState(true);
+    const [stepZeroCounter, setStepZeroCounterState] = useState(0);
+    const [stepOneCounter, setStepOneCounterState] = useState(0);
 
     const [formInput, setFormInput] = useState(
         {
@@ -43,7 +49,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             university: null,
             major: null,
             schoolYear: null,
-            graduationDate: null,
+            graduationDate: 'MM/YYYY',
             firstPref: null,
             secondPref: null,
             thirdPref: null,
@@ -55,7 +61,9 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             availability: null,
             programmingLanguages: null,
         }
-    );
+    );  
+
+    
 
     const handleFormInput = (input = null, field) => {
         switch (field) {
@@ -70,18 +78,20 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 {
                     console.log('invalid email');
                     setEmailValidState(false);
-                    setStepZeroState(false);
-                    
+                    setStepZeroState(false);                    
                 }
                 else
                 {
                     console.log('valid email')
                     setEmailValidState(true);
+                    
+                  
                 }
+                // checkStepZero();
                 setFormInput({...formInput, email: input})
                 break;
             case "Phone Number":
-                const re = /^[0-9\b]+$/;
+                const re = /^[0-9\b]{10}$/;
                 console.log(re.test(input));
                 if (!re.test(input))
                 {
@@ -93,7 +103,9 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 }
                 else{
                     setPhoneValidState(true);
+                    
                 }
+                checkStepZero();
                 setFormInput({...formInput, phoneNumber: input})               
                 break;
             case "Sex":
@@ -123,7 +135,21 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             case "School Year":
                 setFormInput({...formInput, schoolYear: input});
                 break;
-            case "Graduation Date":
+            case "Graduation Date":                
+
+                if (!validateGraduationDate(input))
+                {
+                    console.log('invalid graduation date');
+                    setGraduationValidState(false);
+                    setStepOneState(false);
+                    
+                }
+                else
+                {
+                    console.log('valid graduation date')
+                    setGraduationValidState(true);
+                }
+                checkStepOne();
                 setFormInput({...formInput, graduationDate: input});
                 break;
             case "Programming Languages":
@@ -159,33 +185,76 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
     }
 
+    // used in handleForm to validate that graduation dates are in mm/yyyy formatting; doesn't actually check for 1-12 and valid year; just checks digits. 
+    const validateGraduationDate = (gradDate) =>
+    {
+        const re = /^[0-9\b]{2}\/[0-9\b]{4}$/;
+        return re.test(gradDate);
+
+
+        
+    }
+
+
+    const checkStepZero = () =>
+    {
+        if(phoneValidState && emailValidState)
+        {
+            setStepZeroState(true);            
+        }
+        else
+        {
+            setStepZeroState(false);
+        }
+    }
+
+    const checkStepOne = () =>
+    {
+        if(graduationValidState)
+        {
+            setStepOneState(true);
+        }
+        else
+        {
+            setStepOneState(false);
+        }
+    }
     
 
     //can use handleNextStep and the "global step" variable to validate form data to prevent users from going on to the next step with incorrect data.
     const handleNextStep = () => 
     {   
         //Step Zero only checks these to be valid! 
-        if(phoneValidState && emailValidState)
+        
+        // if(!phoneValidState || !emailValidState)
+        // {
+        //     setStepZeroState(false);               
+        // }
+        // else
+        // {
+        //     setStepZeroState(true);
+        // }
+        if(step === 0 )
         {
-            setStepZeroState(true);
+            checkStepZero();
+            setStepZeroCounterState(1);
         }
 
-        
-        //step 0 : firstName ,lastName , email  , phoneNumber, gender, ethnicity, hasCar , isASL, shirtSize
-        
-        for ( var obj_name in formInput)
+        if(step === 1)
         {
-            console.log(obj_name + formInput[obj_name]);
+            checkStepOne();
+            setStepOneCounterState(1);
         }
-        
-        if(step === 0 && stepZeroState === false)
+
+      
+        if(step === 0 && !stepZeroState)
         {
             // do something else
             console.log("Error in step 0");
             
             if( !phoneValidState)
             {
-                toast.warn('Invalid phonenumber, use only numbers!');                
+                toast.warn('Invalid phonenumber, use only numbers and 10 digits!');                
             }
 
             if (!emailValidState)
@@ -199,12 +268,16 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             // should we check if spots are empty... ? 
         }
 
-
-        //step1 university, major, schoolYear, graduationDate, otherLanguages, programmingLanguages
-        
-        else if(step === 1 && stepOneState === false)
+        else if(step === 1 && !stepOneState)
         {
-            // do something else
+            console.log("Error in step 1");
+            
+            if( !graduationValidState)
+            {
+                toast.warn('Invalid graduation date, use only numbers and a "/" , ex: "06/2019"!');                
+            }
+
+            
         }
 
         else if(step === 2 && stepTwoState === false)
@@ -230,7 +303,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         setStep(step - 1);
     };
 
-    const handleTimeSlotInput = (e) => {
+    const handleTimeSlotInput = (e) => {                
         if (timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify(e))) {
             setTimeAvailability(timeAvailability.filter(function (ele) {
                 return JSON.stringify(ele) != JSON.stringify(e);
@@ -279,6 +352,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
         for (let i = 0; i < 5; i++) {
             element.push(
+                
                 <td key={i} style={{textAlign: 'center'}}>
                     <input
                         onChange={() => handleTimeSlotInput({
@@ -286,15 +360,18 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
                         })}
-                        type={'checkbox'}
+                        type='checkbox'
                         aria-label="Checkbox for following text input"
                         checked={timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify({
                             weekday: i + 1,
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
-                        }))}
-                    />
+                        })) }
+                    class = "checkbox"/>                    
+                    
                 </td>
+               
+
             )
         }
 
@@ -306,14 +383,15 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             <div style={{width: '50%', marginRight: '1.5rem'}}>
                 <div style={{display: 'flex'}}>
                     <div style={{width: '50%', marginRight: '1.5rem'}}>
-                        <Input label={'First Name'} handler={handleFormInput} state={formInput.firstName} modal required={true} />
+                        <Input label={'First Name'} handler={handleFormInput} state={formInput.firstName} modal/>
                     </div>
                     <div style={{width: '50%'}}>
                         <Input label={'Last Name'} handler={handleFormInput} state={formInput.lastName} modal/>
                     </div>
                 </div>
-                <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal valid={emailValidState} />
-                <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal valid={phoneValidState}/>
+                {/* ternarys for display is just so the 'bad' outline doesnt appear immediately */}
+                { stepZeroCounter < 1 ? <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal/>  : <Input label={'E-mail Address'} handler={handleFormInput} state={formInput.email} modal valid={emailValidState} />}
+                { stepZeroCounter < 1 ? <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal/> : <Input label={'Phone Number'} handler={handleFormInput} state={formInput.phoneNumber} modal valid={phoneValidState}/>   }
             </div>
             <div style={{width: '25%', marginRight: '1.5rem'}}>
                 <Select options={gender} label={'Sex'} handler={handleFormInput} state={formInput.gender} modal/>
@@ -363,7 +441,10 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             <div style={{width: '50%'}}>
                 <Select options={schoolYear} label={'School Year'} handler={handleFormInput}
                         state={formInput.schoolYear} modal/>
-                <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal/>
+                { stepOneCounter < 1 ? <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal/> : <Input label={'Graduation Date'} handler={handleFormInput} state={formInput.graduationDate} modal valid={graduationValidState}/> }
+                
+               
+
                 <Input label={'Programming Languages'} handler={handleFormInput} state={formInput.programmingLanguages}
                        modal/>
             </div>
@@ -373,14 +454,14 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     const availability = (
         <div style={{padding: '2rem', display: 'flex', flexDirection: 'row'}}>
             <Table borderless style={{borderSpacing: '0 0.4rem', borderCollapse: 'separate'}}>
-                <thead>
+                <thead align = "center">
                 <tr>
                     <th></th>
-                    <th>Mondays</th>
-                    <th>Tuesdays</th>
-                    <th>Wednesdays</th>
-                    <th>Thursdays</th>
-                    <th>Fridays</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -479,7 +560,9 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                 </div>
             </Modal.Body>
             <Modal.Footer style={{border: '0', padding: '0 3rem 2rem 3rem'}}>
-                <Button variant="outline-primary" onClick={handlePrevStep} style={{marginRight: 'auto'}} disabled={step === 0}><ChevronLeft/>Back</Button>
+                {/* hiding back button from first page */}
+                {step != 0 ? (<Button variant="outline-primary" onClick={handlePrevStep} style={{marginRight: 'auto'}} disabled={step === 0}><ChevronLeft/>Back</Button>) : <br></br>}
+                    
                 {step != 3 ? (<Button variant="primary" onClick={handleNextStep}>Next<ChevronRight/></Button>) : (
                     <Button variant="primary" onClick={() => handleSubmit(formInput)}>Submit</Button>)}
             </Modal.Footer>
