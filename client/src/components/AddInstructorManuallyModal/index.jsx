@@ -169,6 +169,15 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         {
             setStepZeroState(true);
         }
+
+        
+        //step 0 : firstName ,lastName , email  , phoneNumber, gender, ethnicity, hasCar , isASL, shirtSize
+        
+        for ( var obj_name in formInput)
+        {
+            console.log(obj_name + formInput[obj_name]);
+        }
+        
         if(step === 0 && stepZeroState === false)
         {
             // do something else
@@ -182,12 +191,17 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             if (!emailValidState)
             {
                 toast.warn('Invalid email, ex: "student@gmail.com"');
-            }        
+            }
 
             
+
             
+            // should we check if spots are empty... ? 
         }
 
+
+        //step1 university, major, schoolYear, graduationDate, otherLanguages, programmingLanguages
+        
         else if(step === 1 && stepOneState === false)
         {
             // do something else
@@ -204,6 +218,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         }
         else
         {
+            console.log(JSON.stringify(formInput) + `at step ${step}`);
             setStep(step + 1);
         }
         
