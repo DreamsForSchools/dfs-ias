@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
     ${props => props.modal && `background: ${color.neutral.LIGHTGRAY}`};
     ${props => props.modal && `border-color: ${color.neutral.LIGHTGRAY}`};
     ${props => !props.valid && `border-color: ${color.solid.RED}`};  
-    ${props => !props.valid && `background: ${color.solid.RED}`};  
+    ${props => !props.valid && `background: #F6E4E8`};  
     
   }
 
