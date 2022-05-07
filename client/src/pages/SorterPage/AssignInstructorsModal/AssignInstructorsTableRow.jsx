@@ -8,8 +8,6 @@ import {
 import Dot from '../../../design-system/dots';
 
 import './AssignInstructorsTable.scss';
-import { createToken } from '../../../fire';
-import { GlobalContext } from '../../../context/GlobalContextProvider';
 
 export const InstructorsRow = (props) => {
     // TODO: Pagination
