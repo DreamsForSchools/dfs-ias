@@ -113,7 +113,7 @@ const ProgramSideInfo = (props) => {
                         <Text>
                             <PeopleFill />
                             <span style={{ marginLeft: '1rem' }}>
-                                formatInstructorsNeededString(e.instructorsNeeded)
+                                { formatInstructorsNeededString(e.instructorsNeeded) } 
                             </span>
                         </Text>
                         <Text>

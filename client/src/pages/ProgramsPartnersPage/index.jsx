@@ -19,6 +19,7 @@ import {Button, FormControl, InputGroup, Modal, OverlayTrigger, Popover, Popover
 import {Filter, PlusCircle, Search} from "react-bootstrap-icons";
 import AddClassToPartnerModal from "../../components/AddClassToPartnerModal";
 
+// TODO: To be renamed 'Classes'
 let ProgramsPartners;
 export default ProgramsPartners = () => {
     const {

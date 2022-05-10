@@ -22,6 +22,7 @@ import { MDBCol } from 'mdbreact';
 import ReactDOM from 'react-dom';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
+// TODO: NEEDS TO BE RENAMED TO `SECTION`
 const Class = ({
     id,
     partner,
