@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Class.scss';
 import Instructor from '../Instructor.jsx';
-import { CalendarWeek, People, LockFill, UnlockFill, PencilSquare } from 'react-bootstrap-icons';
+import { CalendarWeek, Search, People, LockFill, UnlockFill, PencilSquare, FileSpreadsheet } from 'react-bootstrap-icons';
 import { formatAvailability } from "../../../util/formatData";
-import { Button, Modal, Form  } from 'react-bootstrap';
+import { Button, Modal, Form, FormControl, InputGroup  } from 'react-bootstrap';
 import {GlobalContext} from "../../../context/GlobalContextProvider";
 import AssignInstructorsTable from './AssignInstructorsTable';
 import {availableInstructorsForTheSelectedSeason} from './AssignInstructorsTable';
@@ -26,7 +26,6 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
   const [numInstructors, setNumInstructors] = useState(0);
   const [lock, setLock] = useState(false);
   const [assignPopup, setAssignPopup] = useState(false);
-
   const availability = [
     {value: 1, label: "Monday"},
     {value: 2, label: "Tuesday"},
@@ -66,6 +65,7 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
     // preference: ["Mobile App Development (AppJam+)", "Website Development", "Let's Explore STEM", "Coding Games with Scratch","Engineering Inventors"], 
     // year: ["1st","2nd","3rd", "4th+","Graduate"], 
     // isASL: [0, 1]
+    name: '',
     hasCar: [], 
     preference: [], 
     year: [], 
@@ -75,12 +75,15 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
   const [showFilter, setShowFilter] = useState(false);
   const [filteredInstructors, setFilteredInstructors] = useState([...Object.values(availableInstructorsForTheSelectedSeason)]);
   const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
+  const [searchText, setSearchText] = useState(''); 
   const handleLock = () => {
         setLock(true);
     }
     const handleUnlock = () => {
         setLock(false);
     }
+
+
 
     const handleCloseFilter = () => setShowFilter(false);
     /*
@@ -168,6 +171,13 @@ const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, s
 
   useEffect(() => {
     const instructors = Object.values(availableInstructorsForTheSelectedSeason).filter(instructor => {
+      if (filters.name) {
+        const formattedText = filters.name.toLowerCase();
+                const fullName = instructor.firstName + " " + instructor.lastName;
+                if (!fullName.toLowerCase().includes(formattedText)) {
+                    return false;
+                }
+      }
       // return false if does not meet filter requirements for 'hasCar'
       if(checkedItems.hasCar.length > 0 && !checkedItems.hasCar.includes(instructor.hasCar)) {
         return false;
@@ -324,6 +334,15 @@ const resetFilters = () => {
   handleApplyFilters(Object.assign({}, initialCheckedItems));
 }
 
+const handleSearchChange = e => {
+  const value = e.target.value;
+  setSearchText(value);
+  setFilters({ ...filters, name: value });
+}
+const onSearchSubmit = () => {
+  setFilters({ ...filters, name: searchText });
+}
+
 const handleCheckboxChange = (e, value) => {
   const name = e.target.name;
   let checkedValue;
@@ -355,7 +374,7 @@ const handleCheckboxChange = (e, value) => {
 }
 
   const assignToggle = () => {
-      setAssignPopup(true);
+    setAssignPopup(true);
   }
 
   return (
@@ -374,8 +393,8 @@ const handleCheckboxChange = (e, value) => {
 
     {/* implementing for the modal pop up */}
     <div className="assign-modal-btns">
-      <Button size="md"   style={{marginRight: '0.5rem'}}
-                                          onClick={assignToggle}   data-testid="assignToProgram">Assign Instructors
+      <Button size="md"   style={{marginRight: '0.5rem'}} 
+                                          onClick={assignToggle} data-testid="assignToProgram">Assign Instructors 
                                       <span style={{marginLeft: '0.5rem'} }><PencilSquare/></span>
       </Button>
     </div>
@@ -418,12 +437,13 @@ const handleCheckboxChange = (e, value) => {
                 );
               })}
               {provided.placeholder}
+           
             </div>
           );
         }}
       </Droppable>
-        <Modal size="xl" show={assignPopup}
-        onHide={() => setAssignPopup(false)}
+        <Modal size="xl" show={assignPopup} 
+        onHide={() => { setAssignPopup(false); setSearchText(""); resetFilters(); }}
         aria-labelledby="contained-modal-title-vcenter"
         centered>
         <Modal.Header closeButton style={{padding: '2rem 3rem 0 3rem', border: '0'}}>
@@ -447,9 +467,22 @@ const handleCheckboxChange = (e, value) => {
                   }}>
 
                   <div style={{padding: 5, justifyContent: 'flex-end', border: '5px', width:'40%'}}>
+                  
                   <MDBCol md="40">
-                        <input className="form-control" type="text" placeholder="Search Instructors..." aria-label="Search" />
-                  </MDBCol>
+                    <InputGroup> 
+                        {/* <input className="form-control" type="text" 
+                        placeholder="Search Instructors..." aria-label="Search" /> */}
+                        <FormControl
+                                placeholder="Search..."
+                                aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default"
+                                value={searchText}
+                                onChange={handleSearchChange}
+                            />
+                          
+                    </InputGroup>
+                  </MDBCol> 
+                  
                   </div>
 
                   
@@ -537,7 +570,7 @@ const handleCheckboxChange = (e, value) => {
                   
                   
                   <div style={{padding: 5, justifyContent: 'flex-end', border: '5px'}}> 
-                  <Button variant="outline-primary"onClick={resetFilters}>Reset Filters</Button>
+                  <Button variant="outline-primary" onClick={resetFilters}>Reset Filters</Button>
                   </div>
                   <div style={{padding: 5, justifyContent: 'flex-end', border: '5px'}}> 
                   <Button variant="primary" onClick={() => handleApplyFilters(checkedItems)}> Apply Filters</Button>
@@ -553,14 +586,14 @@ const handleCheckboxChange = (e, value) => {
                     programsColorKey = {programColorMap}
                     seasonSelected={seasonSelected}
                     data={filteredInstructors.reverse()}
-                  />     
-
+                  /> 
+                  
           </Modal.Body>
           <Modal.Footer style={{border: '0'}}>
-        <Button variant="outline-danger" onClick={() => setAssignPopup(false)}>
+        <Button variant="outline-primary" onClick={() => { setAssignPopup(false); setSearchText(""); resetFilters(); }}>
             Cancel
         </Button>
-        <Button variant="success">
+        <Button variant="primary">
         {/* needs onclick */}
 
             Confirm Instructor Selections
