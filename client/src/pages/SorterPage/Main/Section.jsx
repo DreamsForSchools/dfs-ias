@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import './Class.scss';
+import './Section.scss';
 import Instructor from '../Instructor.jsx';
 import {
     CalendarWeek,
@@ -15,7 +15,7 @@ import { GlobalContext } from '../../../context/GlobalContextProvider';
 import AssignInstructorsTable, {
     availableInstructorsForTheSelectedSeason,
 } from '../AssignInstructorsModal/AssignInstructorsTable';
-import '../../ProgramsPartnersPage/OptionsBar.scss';
+import '../../ClassesPartnersPage/OptionsBar.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { MDBCol } from 'mdbreact';
@@ -23,7 +23,7 @@ import ReactDOM from 'react-dom';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 // TODO: NEEDS TO BE RENAMED TO `SECTION`
-const Class = ({
+const Section = ({
     id,
     partner,
     time,
@@ -401,15 +401,15 @@ const Class = ({
     };
 
     return (
-        <div className="class">
-            <div className="header">
-                <h1 className="partner-name">{partner}</h1>
-                {/*<div className="lock" onClick={() => { setLock(!lock) }}>*/}
-                {/*    {lock ? <LockFill onClick={handleUnlock} className="icon" size={18}/> :*/}
-                {/*        <UnlockFill onClick={handleLock} className="icon" size={18}/>}*/}
+        <div sectionName="section">
+            <div sectionName="header">
+                <h1 sectionName="partner-name">{partner}</h1>
+                {/*<div sectionName="lock" onClick={() => { setLock(!lock) }}>*/}
+                {/*    {lock ? <LockFill onClick={handleUnlock} sectionName="icon" size={18}/> :*/}
+                {/*        <UnlockFill onClick={handleLock} sectionName="icon" size={18}/>}*/}
                 {/*</div>*/}
             </div>
-            <div className="class-info">
+            <div sectionName="section-info">
                 <div>
                     <CalendarWeek /> {formatAvailability(time)}{' '}
                 </div>
@@ -419,7 +419,7 @@ const Class = ({
             </div>
 
             {/* implementing for the modal pop up */}
-            <div className="assign-modal-btns">
+            <div sectionName="assign-modal-btns">
                 <Button
                     size="md"
                     style={{ marginRight: '0.5rem' }}
@@ -438,7 +438,7 @@ const Class = ({
                 {(provided) => {
                     return (
                         <div
-                            className={'spacer'}
+                            sectionName={'spacer'}
                             ref={provided.innerRef}
                             {...provided.droppableProps}>
                             {/* This is the assignment of instructors to program space. */}
@@ -462,7 +462,7 @@ const Class = ({
                                                             instructor.instructorId
                                                         }
                                                         instructor={instructor}
-                                                        classId={id}
+                                                        sectionId={id}
                                                         state={state}
                                                         parentLockStatus={lock}
                                                     />
@@ -514,7 +514,7 @@ const Class = ({
                             }}>
                             <MDBCol md="40">
                                 <input
-                                    className="form-control"
+                                    sectionName="form-control"
                                     type="text"
                                     placeholder="Search Instructors..."
                                     aria-label="Search"
@@ -528,12 +528,12 @@ const Class = ({
                                 justifyContent: 'flex-end',
                                 border: '5px ',
                             }}>
-                            <div class="dropdown">
-                                <Button variant="light" class="dropbtn">
+                            <div section="dropdown">
+                                <Button variant="light" section="dropbtn">
                                     {' '}
                                     Car
                                 </Button>
-                                <div class="dropdown-content">
+                                <div section="dropdown-content">
                                     <Form.Check
                                         type="checkbox"
                                         label=" Owns a Car"
@@ -551,12 +551,12 @@ const Class = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div class="dropdown">
-                                <Button variant="light" class="dropbtn">
+                            <div section="dropdown">
+                                <Button variant="light" section="dropbtn">
                                     {' '}
                                     ASL
                                 </Button>
-                                <div class="dropdown-content">
+                                <div section="dropdown-content">
                                     <Form.Check
                                         type="checkbox"
                                         label=" Knows ASL"
@@ -575,13 +575,13 @@ const Class = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div class="dropdown">
-                                <Button variant="light" class="dropbtn">
+                            <div section="dropdown">
+                                <Button variant="light" section="dropbtn">
                                     {' '}
                                     Year
                                 </Button>
-                                <div class="dropdown-content">
-                                    <Form.Group className="filter-group">
+                                <div section="dropdown-content">
+                                    <Form.Group sectionName="filter-group">
                                         {year.map((year) => (
                                             <Form.Check
                                                 key={year.value}
@@ -609,13 +609,13 @@ const Class = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div class="dropdown">
-                                <Button variant="light" class="dropbtn">
+                            <div section="dropdown">
+                                <Button variant="light" section="dropbtn">
                                     {' '}
                                     Preference
                                 </Button>
-                                <div class="dropdown-content">
-                                    <Form.Group className="filter-group">
+                                <div section="dropdown-content">
+                                    <Form.Group sectionName="filter-group">
                                         {preference.map((pref) => (
                                             <Form.Check
                                                 key={pref.value}
@@ -692,4 +692,4 @@ const Class = ({
     );
 };
 
-export default Class;
+export default Section;
