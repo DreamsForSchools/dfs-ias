@@ -42,7 +42,7 @@ const Program = ({ id, name, color, classes, state, seasonSelected }) => {
                                 ? classes.map((c) => {
                                       return (
                                           <Section
-                                              className="class"
+                                              className="section"
                                               key={c.classId}
                                               id={c.classId}
                                               partner={c.partner?.name}

@@ -32,10 +32,7 @@ const Section = ({
     programId,
     state,
     parentLockStatus,
-    instructorData,
-    handleSearch,
-    lockedInstructors,
-    seasonSelected,
+    seasonSelected
 }) => {
     const { programColorMap } = useContext(GlobalContext);
 
@@ -401,15 +398,15 @@ const Section = ({
     };
 
     return (
-        <div sectionName="section">
-            <div sectionName="header">
-                <h1 sectionName="partner-name">{partner}</h1>
-                {/*<div sectionName="lock" onClick={() => { setLock(!lock) }}>*/}
-                {/*    {lock ? <LockFill onClick={handleUnlock} sectionName="icon" size={18}/> :*/}
-                {/*        <UnlockFill onClick={handleLock} sectionName="icon" size={18}/>}*/}
+        <div className="section">
+            <div className="header">
+                <h1 className="partner-name">{partner}</h1>
+                {/*<div className="lock" onClick={() => { setLock(!lock) }}>*/}
+                {/*    {lock ? <LockFill onClick={handleUnlock} className="icon" size={18}/> :*/}
+                {/*        <UnlockFill onClick={handleLock} className="icon" size={18}/>}*/}
                 {/*</div>*/}
             </div>
-            <div sectionName="section-info">
+            <div className="section-info">
                 <div>
                     <CalendarWeek /> {formatAvailability(time)}{' '}
                 </div>
@@ -419,7 +416,7 @@ const Section = ({
             </div>
 
             {/* implementing for the modal pop up */}
-            <div sectionName="assign-modal-btns">
+            <div className="assign-modal-btns">
                 <Button
                     size="md"
                     style={{ marginRight: '0.5rem' }}
@@ -438,7 +435,7 @@ const Section = ({
                 {(provided) => {
                     return (
                         <div
-                            sectionName={'spacer'}
+                            className={'spacer'}
                             ref={provided.innerRef}
                             {...provided.droppableProps}>
                             {/* This is the assignment of instructors to program space. */}
@@ -514,7 +511,7 @@ const Section = ({
                             }}>
                             <MDBCol md="40">
                                 <input
-                                    sectionName="form-control"
+                                    className="form-control"
                                     type="text"
                                     placeholder="Search Instructors..."
                                     aria-label="Search"
@@ -581,7 +578,7 @@ const Section = ({
                                     Year
                                 </Button>
                                 <div section="dropdown-content">
-                                    <Form.Group sectionName="filter-group">
+                                    <Form.Group className="filter-group">
                                         {year.map((year) => (
                                             <Form.Check
                                                 key={year.value}
@@ -615,7 +612,7 @@ const Section = ({
                                     Preference
                                 </Button>
                                 <div section="dropdown-content">
-                                    <Form.Group sectionName="filter-group">
+                                    <Form.Group className="filter-group">
                                         {preference.map((pref) => (
                                             <Form.Check
                                                 key={pref.value}
