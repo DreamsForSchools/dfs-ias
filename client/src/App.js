@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 import {GlobalContext} from "./context/GlobalContextProvider";
 
 import NavigationBar from './components/NavBar';
-import ProgramsPartners from "./pages/ClassesPartnersPage";
+import ClassesPartners from "./pages/ClassesPartnersPage";
 import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";
 import InstructorOnboardingPage from "./pages/InstructorOnboardingPage";
@@ -45,7 +45,7 @@ function App() {
                     <Redirect to="/programs"/>
                 </Route>
                 <Route path="/programs">
-                    <ProgramsPartners/>
+                    <ClassesPartners/>
                 </Route>
                 <Route path="/instructors">
                     <Instructors/>

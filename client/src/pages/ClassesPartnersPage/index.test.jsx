@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import ProgramsPartners from './index';
+import ClassesPartners from './index';
 import { GlobalContext } from "../../context/GlobalContextProvider";
 import { fireEvent } from "@testing-library/react";
 const axios = require('axios');
@@ -106,7 +106,7 @@ describe('render ProggramsPartnerPage', () => {
     test('render program list', () => {
       act(() => {
         render(<GlobalContext.Provider value={{programData}}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
       const programNames = container.querySelectorAll('h2');
@@ -121,7 +121,7 @@ describe('render ProggramsPartnerPage', () => {
     test('render program list filter', async () => {
       act(() => {
         render(<GlobalContext.Provider value={{programData}}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -161,7 +161,7 @@ describe('render ProggramsPartnerPage', () => {
             fetchPartnersAggregatedForCurrentSeason: getPartnersAfterAdd
           }}
         >
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -212,7 +212,7 @@ describe('render ProggramsPartnerPage', () => {
             fetchPartnersAggregatedForCurrentSeason: getPartnersAfterAdd
           }}
         >
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -294,7 +294,7 @@ describe('render ProggramsPartnerPage', () => {
     test('render class list', async () => {
       act(() => {
         render(<GlobalContext.Provider value={{programData}}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -328,7 +328,7 @@ describe('render ProggramsPartnerPage', () => {
           fetchProgramsAggregatedForCurrentSeason: getProgramsAfterAdd,
           fetchPartnersAggregatedForCurrentSeason: getPartnersAfterAdd
         }}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -389,7 +389,7 @@ describe('render ProggramsPartnerPage', () => {
           fetchProgramsAggregatedForCurrentSeason: getProgramsAfterAdd,
           fetchPartnersAggregatedForCurrentSeason: getPartnersAfterAdd
         }}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -439,7 +439,7 @@ describe('render ProggramsPartnerPage', () => {
           fetchProgramsAggregatedForCurrentSeason: getProgramsAfterAdd,
           fetchPartnersAggregatedForCurrentSeason: getPartnersAfterAdd
         }}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -473,7 +473,7 @@ describe('render ProggramsPartnerPage', () => {
           programData,
           partnerData
         }}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -504,7 +504,7 @@ describe('render ProggramsPartnerPage', () => {
           fetchProgramsAggregatedForCurrentSeason: getProgramsAfterEdit,
           fetchPartnersAggregatedForCurrentSeason: getPartnersAfterEdit
         }}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -554,7 +554,7 @@ describe('render ProggramsPartnerPage', () => {
           fetchProgramsAggregatedForCurrentSeason: getProgramsAfterEdit,
           fetchPartnersAggregatedForCurrentSeason: getPartnersAfterEdit
         }}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 
@@ -615,7 +615,7 @@ describe('render ProggramsPartnerPage', () => {
           fetchProgramsAggregatedForCurrentSeason: getProgramsAfterEdit,
           fetchPartnersAggregatedForCurrentSeason: getPartnersAfterEdit
         }}>
-          <ProgramsPartners/>
+          <ClassesPartners/>
         </GlobalContext.Provider>, container);
       });
 

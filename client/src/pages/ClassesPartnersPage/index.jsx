@@ -44,7 +44,7 @@ const ClassesPartners = () => {
     const {
         setToastText,
         seasonSelected,
-        classData,
+        programData,
         partnerData,
         fetchClassesAggregatedForCurrentSeason,
         fetchPartnersAggregatedForCurrentSeason,
@@ -111,7 +111,7 @@ const ClassesPartners = () => {
             } else if (viewType === 'Classes') {
                 return (
                     <ProgramSideInfo
-                        program={classData[dataIdFocus]}
+                        program={programData[dataIdFocus]}
                         openModal={handleOpenInputModal}
                         onDeletePress={onDeletePress}
                     />
@@ -150,7 +150,7 @@ const ClassesPartners = () => {
 
     const renderClasses = () => {
         // TODO: implement rendering by filter here
-        let classList = classData !== null && Object.values(classData);
+        let classList = programData !== null && Object.values(programData);
         if (className.trim()) {
             classList = classList.filter(
                 (program) =>
@@ -160,7 +160,7 @@ const ClassesPartners = () => {
             );
         }
 
-        if (classData === null || classList.length === 0) {
+        if (programData === null || classList.length === 0) {
             return (
                 <div
                     style={{
@@ -175,7 +175,7 @@ const ClassesPartners = () => {
                         animationData={emptyAnimation}
                         style={{ width: 200, height: 200 }}
                     />
-                    {classData === null ? (
+                    {programData === null ? (
                         <h5>Looking for classes</h5>
                     ) : (
                         <h5>No class found. Let's add some!</h5>
@@ -355,7 +355,7 @@ const ClassesPartners = () => {
                 {modalType === 'ClassToProgram' && (
                     <AddClassToProgramModal
                         handleSubmit={handleSubmit}
-                        programContext={classData[dataIdFocus]}
+                        programContext={programData[dataIdFocus]}
                         classData={currentData}
                     />
                 )}

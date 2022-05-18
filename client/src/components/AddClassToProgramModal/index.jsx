@@ -43,6 +43,7 @@ const AddClassToProgramModal = ({ handleSubmit, programContext, classData }) => 
 
     const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
         if (programContext) setImageBase64(new Buffer.from(programContext.logo.data).toString("ascii"));
 
