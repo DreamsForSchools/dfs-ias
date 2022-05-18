@@ -14,6 +14,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { MDBCol } from "mdbreact";
 import ReactDOM from "react-dom";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+import Pagination from 'react-bootstrap/Pagination';
 
 
 
@@ -442,7 +443,7 @@ const handleCheckboxChange = (e, value) => {
           );
         }}
       </Droppable>
-        <Modal size="xl" show={assignPopup} 
+        <Modal  show={assignPopup} size = "xl"
         onHide={() => { setAssignPopup(false); setSearchText(""); resetFilters(); }}
         aria-labelledby="contained-modal-title-vcenter"
         centered>
@@ -473,7 +474,7 @@ const handleCheckboxChange = (e, value) => {
                         {/* <input className="form-control" type="text" 
                         placeholder="Search Instructors..." aria-label="Search" /> */}
                         <FormControl
-                                placeholder="Search..."
+                                placeholder="🔍 Search Instructors..."
                                 aria-label="Default"
                                 aria-describedby="inputGroup-sizing-default"
                                 value={searchText}
@@ -590,6 +591,16 @@ const handleCheckboxChange = (e, value) => {
                   
           </Modal.Body>
           <Modal.Footer style={{border: '0'}}>
+    <div style={{padding: 5, justifyContent: 'flex-end', border: '5px', width:'65%'}}>
+      <Pagination>
+        <Pagination.Prev />
+        <Pagination.Item>{1}</Pagination.Item>
+        <Pagination.Item>{2}</Pagination.Item>
+        <Pagination.Item>{3}</Pagination.Item>
+        <Pagination.Ellipsis />
+        <Pagination.Next />
+      </Pagination>
+      </div>
         <Button variant="outline-primary" onClick={() => { setAssignPopup(false); setSearchText(""); resetFilters(); }}>
             Cancel
         </Button>
