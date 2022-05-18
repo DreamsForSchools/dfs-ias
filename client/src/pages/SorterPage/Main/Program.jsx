@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Program.scss';
-import Class from './Section.jsx';
+import Section from './Section.jsx';
 import { Accordion, Card, Row } from 'react-bootstrap';
 import { CaretRightFill, LockFill, UnlockFill } from 'react-bootstrap-icons';
 
@@ -41,7 +41,7 @@ const Program = ({ id, name, color, classes, state, seasonSelected }) => {
                             {classes.length > 0
                                 ? classes.map((c) => {
                                       return (
-                                          <Class
+                                          <Section
                                               className="class"
                                               key={c.classId}
                                               id={c.classId}
