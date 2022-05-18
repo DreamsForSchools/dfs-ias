@@ -1,7 +1,7 @@
 import React from "react";
 // import Fade from 'react-reveal/Fade';
 import { Trash, CalendarWeek, TelephoneFill, X, Check, PencilSquare } from 'react-bootstrap-icons';
-import { Button, OverlayTrigger, Popover, Badge, Modal, Table } from 'react-bootstrap';
+import { Button, OverlayTrigger, Popover, Badge, Modal, Table, CloseButton } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
 import avatar from '../../assets/avatar.png';
 import { formatAvailability, formatPhoneNumber } from "../../util/formatData";
@@ -52,7 +52,7 @@ const InstructorsSideInfo = (props) => {
     // );
     
     //For Availability Modal
-    const handleTimeSlotInput = (e) => {
+    const handleTimeSlotInput = (e) => {                
         if (timeAvailability.some(slot => JSON.stringify(slot) === JSON.stringify(e))) {
             setTimeAvailability(timeAvailability.filter(function (ele) {
                 return JSON.stringify(ele) != JSON.stringify(e);
@@ -60,10 +60,18 @@ const InstructorsSideInfo = (props) => {
         } else {
             setTimeAvailability([...timeAvailability, e]);
         };
+        // console.log(timeAvailability);
+        //currently availability default shows Once, but once clicked on modal causes "wipe" losing defaults,
+        // but allowing new availability to push/update. 3/21
+        formInput.availability = timeAvailability;
+        
+        
     };
     
     React.useEffect(() => {
+        console.log("....");
         parseAvailability(timeAvailability);
+        
     }, [timeAvailability])
 
         
@@ -176,7 +184,9 @@ const InstructorsSideInfo = (props) => {
         //data WITH AVAILABILITY ID
         // setFormInput({...formInput, availability: merged_time});
         // data WITHOUT AVAILABILITY ID FOR THE API
-        setFormInput({...formInput, availability: merged_finale});
+        
+        setFormInput({...formInput, availability: merged_finale});        
+        // setFormInput({...formInput, availability: parsed});
         
 
         
@@ -208,7 +218,7 @@ const InstructorsSideInfo = (props) => {
                         onChange={() => handleTimeSlotInput({
                             weekday: i + 1,
                             startTime: timeSlots[time].startTime,
-                            endTime: timeSlots[time].endTime
+                            endTime: timeSlots[time].endTime                            
                         })}
                         type={'checkbox'}
                         
@@ -217,7 +227,7 @@ const InstructorsSideInfo = (props) => {
                             weekday: i + 1,
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
-                        })) || default_boxes[i] }
+                        }))|| default_boxes[i]  }
                     />
                     
 
@@ -343,10 +353,10 @@ const InstructorsSideInfo = (props) => {
 
     }
 
-    // change to actually process the data/into api  2/4 
+    
     const updateToggle = () => {
         console.log(formInput);
-        // console.log("why");
+        
         console.log(instructor.instructorId);
         handleEditInstructorManually(instructor.instructorId, {...formInput, approve: true, seasonId: seasonId});
         setEditShowModal(false);
@@ -354,7 +364,7 @@ const InstructorsSideInfo = (props) => {
         
 
    
-    // currently bugs on first click, and doesnt change icon?
+  
     const handleCarChange = () => {
         console.log("x"+hasCarValue)
         handleFormInput(null, "Owns a car");
@@ -365,7 +375,7 @@ const InstructorsSideInfo = (props) => {
         
     }
 
-    // currently bugs on first click, and doesnt change icon?
+   
     const handleASLChange = () => {
         console.log("x"+isASLValue)
         handleFormInput(null, "Skilled in (ASL)");
@@ -407,6 +417,8 @@ const InstructorsSideInfo = (props) => {
                     <Button variant="danger" onClick={() => setDeleteShow(true)}>Delete Instructor
                         <span style={{marginLeft: '0.5rem'}}><Trash/></span>
                     </Button>
+
+                   
                    
 
                     <div style={{margin: "2rem 0"}}>
@@ -605,9 +617,11 @@ const InstructorsSideInfo = (props) => {
             {editShowModal  && (
                 // <Fade right duration={200}>
                 <div>
+                    <CloseButton style={{paddingRight: '0.5rem', paddingTop: '0.5rem'}} onClick = {()=> setEditShowModal(false)}  />
                     <h1 style={{fontWeight: "bold", textAlign: "center"}}>
-                        {formInput.firstName + " " + instructor.lastName}
+                        {formInput.firstName + " " + instructor.lastName} 
                     </h1>
+                    
 
                     {/* On Click intends to send data (updateToggle) to the database */}
                     <Button size="md"  variant="warning" style={{marginRight: '0.5rem'}}
@@ -618,6 +632,7 @@ const InstructorsSideInfo = (props) => {
                     <Button variant="danger" onClick={() => setDeleteShow(true)}>Delete Instructor
                         <span style={{marginLeft: '0.5rem'}}><Trash/></span>
                     </Button>
+                    
                     
 
                     <div style={{margin: "2rem 0"}}>
@@ -877,7 +892,7 @@ const InstructorsSideInfo = (props) => {
                                 {timeSlots.map((e, idx) => (
                                     <tr key={idx} style={{borderRadius: '10px', background: color.neutral.LIGHTGRAY}}>
                                         <td>
-                                            {formatMilitaryTime(e.startTime)} - {formatMilitaryTime(e.endTime)}
+                                            {formatMilitaryTime(e.startTime)} - {formatMilitaryTime(e.endTime)}                                            
                                         </td>
                                         {renderTimeSlotCheckboxes(idx)}
                                     </tr>
