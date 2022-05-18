@@ -153,8 +153,8 @@ const ClassesPartners = () => {
         let classList = classData !== null && Object.values(classData);
         if (className.trim()) {
             classList = classList.filter(
-                (class) =>
-                    class.name
+                (program) =>
+                    program.name
                         .toLowerCase()
                         .indexOf(className.toLowerCase()) !== -1
             );

@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 import {GlobalContext} from "./context/GlobalContextProvider";
 
 import NavigationBar from './components/NavBar';
-import ProgramsPartners from "./pages/ProgramsPartnersPage";
+import ProgramsPartners from "./pages/ClassesPartnersPage";
 import Instructors from "./pages/InstructorsPage/Instructors";
 import Sorter from "./pages/SorterPage/Sorter";
 import InstructorOnboardingPage from "./pages/InstructorOnboardingPage";
