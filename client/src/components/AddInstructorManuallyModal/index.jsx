@@ -24,7 +24,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
     // step 0 1 2 3
     // If all bad, move on, else itll be flagged true
     const [ stepZeroState, setStepZeroState ] = useState(false);
-    const [ stepOneState, setStepOneState ] = useState(true);
+    const [ stepOneState, setStepOneState ] = useState(false);
     // const [ stepZeroState, setStepZeroState ] = useState(true);    
     const [ stepTwoState, setStepTwoState ] = useState(true);
     const [ stepThreeState, setStepThreeState ] = useState(true);
@@ -260,10 +260,12 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
             if (!emailValidState)
             {
                 toast.warn('Invalid email, ex: "student@gmail.com"');
-            }        
+            }
 
             
+
             
+            // should we check if spots are empty... ? 
         }
 
         else if(step === 1 && !stepOneState)
@@ -289,6 +291,7 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         }
         else
         {
+            console.log(JSON.stringify(formInput) + `at step ${step}`);
             setStep(step + 1);
         }
         
