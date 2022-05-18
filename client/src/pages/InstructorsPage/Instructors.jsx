@@ -121,12 +121,10 @@ function Instructors() {
     }
 
     const handleSearchChange = e => {
-        if (e.key === 'Enter') {
-            onSearchSubmit();
-        }
-        // setSearchText(e.target.value.trim());
-        setSearchText(e.target.value);
-    }
+        const value = e.target.value;
+        setSearchText(value);
+        setFilters({ ...filters, name: value });
+      }
 
     const handleApplyFilters = (checkedItems) => {
         const { car, availability, preference, year, asl } = checkedItems;
@@ -321,16 +319,12 @@ function Instructors() {
                     <div style={{padding: '2rem 5rem', display: 'flex'}}>
                         <InputGroup>
                             <FormControl
-                                placeholder="Search"
+                                placeholder= "🔍 Search..."
                                 aria-label="Default"
                                 aria-describedby="inputGroup-sizing-default"
                                 value={searchText}
                                 onChange={handleSearchChange}
-                                onKeyPress={handleSearchChange}
                             />
-                            <InputGroup.Append>
-                                <Button variant="primary" onClick={onSearchSubmit}><Search/></Button>
-                            </InputGroup.Append>
                         </InputGroup>
 
                         <InputGroup>
@@ -350,7 +344,7 @@ function Instructors() {
                             {/*                    for the <strong>{seasonSelected.name}</strong> season.</p>*/}
                             {/*                <FormControl*/}
                             {/*                    aria-label="Default"*/}
-                            {/*                    aria-describedby="inputGroup-sizing-default"*/}
+                            {/*              ''      aria-describedby="inputGroup-sizing-default"*/}
                             {/*                    value={`localhost:3000/onboarding/${seasonSelected.seasonId}/${encodeURI(seasonSelected.name)}`}*/}
                             {/*                />*/}
                             {/*            </Popover.Content>*/}
