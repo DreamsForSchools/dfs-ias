@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import Dot from '../../design-system/dots';
-
+import {color} from '../../design-system/style';
 const InstructorsRow = (props) => {
     const {
         programsColorKey,
@@ -227,10 +227,14 @@ const InstructorsTable = (props) => {
             <Table borderless>
                 <thead>
                 <tr>
-                    <th onClick = {onNameClick} >Instructor's Name</th>
-                    <th onClick = {onYearClick}>Year</th>
-                    <th onClick = {onMajorClick}>Major</th>
-                    <th onClick = {onUniClick}>University</th>
+                    <th onClick = {onNameClick} 
+                    style={nameFlag ?  {color: color.solid.MIDGRAY} : {color:color.solid.BLUE} } >Instructor's Name</th>
+                    <th onClick = {onYearClick}
+                     style={yearFlag ?  {color: color.solid.MIDGRAY} : {color:color.solid.BLUE} }>Year</th>
+                    <th onClick = {onMajorClick}
+                     style={majorFlag ?  {color: color.solid.MIDGRAY} : {color:color.solid.BLUE}} >Major</th>
+                    <th onClick = {onUniClick}
+                     style={uniFlag ?  {color: color.solid.MIDGRAY} : {color:color.solid.BLUE} }>University</th>
                     <th>Preferences</th>
                 </tr>
                 </thead>

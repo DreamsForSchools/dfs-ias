@@ -1,4 +1,5 @@
 import React from "react";
+import './Instructors.scss';
 import Fade from 'react-reveal/Fade';
 import { Trash, CalendarWeek, TelephoneFill, X, Check, PencilSquare } from 'react-bootstrap-icons';
 import { Button, OverlayTrigger, Popover, Badge, Modal, Table, CloseButton } from 'react-bootstrap';
@@ -228,9 +229,8 @@ const InstructorsSideInfo = (props) => {
                             startTime: timeSlots[time].startTime,
                             endTime: timeSlots[time].endTime
                         }))|| default_boxes[i]  }
-                    />
-                    
-
+                    class = "checkbox"/>
+                
                 </td>
             )
         }
