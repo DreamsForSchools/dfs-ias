@@ -87,13 +87,14 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
                     
                   
                 }
-                // checkStepZero();
+                
                 setFormInput({...formInput, email: input})
                 break;
             case "Phone Number":
-                const re = /^[0-9\b]{10}$/;
-                console.log(re.test(input));
-                if (!re.test(input))
+                //moved to its own function
+                // const re = /^[0-9\b]{10}$/;
+                // console.log(re.test(input));
+                if (!validatePhoneNumber(input))
                 {
                     // for the singular box
                     setPhoneValidState(false);
@@ -102,10 +103,11 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
 
                 }
                 else{
+                    console.log('valid phonenumber ')
                     setPhoneValidState(true);
                     
                 }
-                checkStepZero();
+                
                 setFormInput({...formInput, phoneNumber: input})               
                 break;
             case "Sex":
@@ -183,6 +185,13 @@ export default function AddInstructorManuallyModal({handleSubmit}) {
         
         return true;
 
+    }
+
+    const validatePhoneNumber = (number) =>
+    {
+        const re = /^[0-9\b]{10}$/;
+        
+        return re.test(number);
     }
 
     // used in handleForm to validate that graduation dates are in mm/yyyy formatting; doesn't actually check for 1-12 and valid year; just checks digits. 
