@@ -60,7 +60,7 @@ export const InstructorsRow = (props) => {
                 <ul>
                     <li>{firstName + ' ' + lastName}</li>
                     <li> </li>
-                    {/* <li> {gender.charAt(0) + ", " + ethnicity} </li> */}
+                    <li> {gender.charAt(0) + ', ' + ethnicity} </li>
                     <li>
                         <div style={{ display: 'inline-block' }}>
                             <OverlayTrigger
@@ -128,11 +128,11 @@ export const InstructorsRow = (props) => {
             </td>
             <td>{otherLanguages}</td>
             <td>{programmingLanguages}</td>
-            {/* <td >                
-                 {formatAvailability(instructor.availability).map((e) =>
-                     <p key={e}>{e}</p>
-                 )}
-             </td> */}
+            <td>
+                {formatAvailability(instructor.availability).map((e) => (
+                    <p key={e}>{e}</p>
+                ))}
+            </td>
             <td>
                 <div style={{ fontSize: '0.875 rem' }}>
                     {hasCar ? (

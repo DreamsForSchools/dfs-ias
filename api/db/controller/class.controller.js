@@ -11,6 +11,7 @@ exports.create = function (req, res) {
         if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
             res.status(400).send({error: true, message: 'Please provide all required fields'});
         } else {
+            console.log(new_class)
             Class.create(new_class, function (err, mClass) {
                 if (err) res.status(400).send({error: true, message: 'Failed to create class'});
                 else res.json({error: false, message: "class added successfully!", data: mClass});

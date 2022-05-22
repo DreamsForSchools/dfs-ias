@@ -5,8 +5,6 @@ import Instructor from '../Instructor.jsx';
 import {
     CalendarWeek,
     People,
-    LockFill,
-    UnlockFill,
     PencilSquare,
 } from 'react-bootstrap-icons';
 import { formatAvailability } from '../../../util/formatData';
@@ -22,7 +20,6 @@ import { MDBCol } from 'mdbreact';
 import ReactDOM from 'react-dom';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
-// TODO: NEEDS TO BE RENAMED TO `SECTION`
 const Section = ({
     id,
     partner,
@@ -478,7 +475,8 @@ const Section = ({
                 size="xl"
                 show={assignPopup}
                 onHide={() => setAssignPopup(false)}
-                aria-labelledby="contained-modal-title-vcenter"
+                // aria-labelledby="contained-modal-title-vcenter"
+                dialogClassName="modal-90w"
                 centered>
                 <Modal.Header
                     closeButton

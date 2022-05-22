@@ -1,14 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
-import { TelephoneFill, CalendarWeek, X, Check } from 'react-bootstrap-icons';
-import {
-    formatAvailability,
-    formatPhoneNumber,
-} from '../../../util/formatData';
 
 import './AssignInstructorsTable.scss';
 import { InstructorsRow } from './AssignInstructorsTableRow';
-import { createToken } from '../../../fire';
 import { GlobalContext } from '../../../context/GlobalContextProvider';
 
 /**
@@ -33,11 +27,14 @@ const AssignInstructorsTable = (props) => {
     };
 
     function instructorIsAvailable(startTime, endTime, weekday, instructorAvailabilityArray) {
+        var isAvailable = false;
         instructorAvailabilityArray.forEach((availability) => {
-            if (availability.weekday == weekday && availability.startTime <= startTime &&availability.endTime >= endTime)
-                return true;
+            if (availability.weekday === weekday && availability.startTime <= startTime && availability.endTime >= endTime)
+                console.log('true true true')
+                isAvailable = true;
+                return isAvailable;
         });
-        return false;
+        return isAvailable;
     }
 
     function applyUserSelectedFilters(instructors) {
@@ -86,7 +83,6 @@ const AssignInstructorsTable = (props) => {
 
     function filterAvailableInstructors() {
         let tempInstructors = Object.values(instructorData);
-        
         const availableInstructors = tempInstructors.filter(function (i) {
             return instructorIsAvailable(
                 time.startTime,
@@ -115,8 +111,6 @@ const AssignInstructorsTable = (props) => {
         }
     }, [show, instructorData, props.filters]);
 
-    const axios = require('axios');
-
     return (
         <div className="assn-table">
             {/* <Badge pill variant="success"></Badge> */}
@@ -132,7 +126,7 @@ const AssignInstructorsTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {instructors.map((el, idx) => (
+                    {availableInstructorsForTheSelectedSeason.map((el, idx) => (
                         <InstructorsRow
                             programsColorKey={props.programsColorKey}
                             onClick={clickRow}
