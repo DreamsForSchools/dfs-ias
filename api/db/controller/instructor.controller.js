@@ -81,7 +81,10 @@ exports.findById = function (req, res) {
     } else { 
         Instructor.findById(req.params.id, function (err, instructor) {
             if (err) res.status(400).send({error: true, message: 'Failed find by id'});
-            else res.send(instructor[0]);
+            else 
+            {
+                res.send(instructor[0]);                
+            }
         })
     }
 }

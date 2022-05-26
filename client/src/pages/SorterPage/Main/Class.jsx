@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { MDBCol } from "mdbreact";
 import ReactDOM from "react-dom";
-import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+// import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import Pagination from 'react-bootstrap/Pagination';
 
 
