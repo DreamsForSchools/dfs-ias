@@ -29,8 +29,12 @@ export const saveInstructor = async (instructorData) => {
 export const updateInstructor = async (instructorId , instructorData) => {
     try{
         const header = await createToken();
-        // need to get instructorID for the axios put request.
-        await axios.put(`/api/instructor/${instructorId}`, instructorData, header);
+              // need to get instructorID for the axios put request.
+        // await axios.put(`/api/instructor/${instructorId}`, instructorData, header);
+        //artifact; routes changed
+        // router.put('/instructor/update/:id', instructorController.updateById);
+
+        await axios.put(`/api/instructor/update/${instructorId}`, instructorData, header);
         toast(`👍 Instructor ${instructorData.firstName} ${instructorData.lastName} updated successfully!`)
     } catch (e) {
         console.log(e);
