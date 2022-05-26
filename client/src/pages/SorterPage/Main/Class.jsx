@@ -16,9 +16,6 @@ import ReactDOM from "react-dom";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import Pagination from 'react-bootstrap/Pagination';
 
-
-
-
 const Class = ({ id, partner, time, instructorsNeeded, instructors, programId, state, parentLockStatus ,instructorData, handleSearch, lockedInstructors, seasonSelected}) => {
   const {
     programColorMap,

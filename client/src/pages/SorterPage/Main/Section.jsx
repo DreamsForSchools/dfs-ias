@@ -475,7 +475,7 @@ const Section = ({
                 size="xl"
                 show={assignPopup}
                 onHide={() => setAssignPopup(false)}
-                // aria-labelledby="contained-modal-title-vcenter"
+                aria-labelledby="contained-modal-title-vcenter"
                 dialogClassName="modal-90w"
                 centered>
                 <Modal.Header

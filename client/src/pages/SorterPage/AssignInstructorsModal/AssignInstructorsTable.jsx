@@ -30,7 +30,6 @@ const AssignInstructorsTable = (props) => {
         var isAvailable = false;
         instructorAvailabilityArray.forEach((availability) => {
             if (availability.weekday === weekday && availability.startTime <= startTime && availability.endTime >= endTime)
-                console.log('true true true')
                 isAvailable = true;
                 return isAvailable;
         });
