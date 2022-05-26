@@ -36,6 +36,14 @@ function Instructors() {
     const [filteredInstructors, setFilteredInstructors] = useState([...Object.values(instructorData)]);
     // UseState to show edit modal , when True edit modal is displayed.  Passed down to InstructorsSideinfoprop
     const [ editShowModal, setEditShowModal] = React.useState(false);
+    // const [searchFlag, setSearchFlag] = React.useState({});
+
+
+    const [nameFlag,setNameFlag] = React.useState(true);
+    const [yearFlag,setYearFlag] = React.useState(true);
+    const [majorFlag, setMajorFlag] = React.useState(true);
+    const [uniFlag, setUniFlag] = React.useState(true);
+
     const [formInput, setFormInput] = React.useState({
         firstName: null,
         lastName: null,
@@ -60,12 +68,12 @@ function Instructors() {
         }
     );
 
-
+    
 
     useEffect(() => {
         setFilteredInstructors([...Object.values(instructorData)]);
     }, [instructorData]);
-
+    
     const handleCloseInputModal = () => {
         setShowInputModal(false);
     }
@@ -122,10 +130,13 @@ function Instructors() {
 
     const handleSearchChange = e => {
         const value = e.target.value;
+        
+        // console.log(searchFlag);
         setSearchText(value);
         setFilters({ ...filters, name: value });
-      }
+    }
 
+  
     const handleApplyFilters = (checkedItems) => {
         const { car, availability, preference, year, asl } = checkedItems;
         setFilters({
@@ -142,8 +153,157 @@ function Instructors() {
     const onSearchSubmit = () => {
         // previously was handled onChange, causing trailing spaces to be removed while typing
         let searchTextTrimmed = searchText.trim();
-        setFilters({ ...filters, name: searchTextTrimmed });
+        setFilters({ ...filters, name: searchTextTrimmed });       
     }
+
+
+    const onNameClick = () => {
+        // console.log(props.data);
+        // setInstructors(props.data);
+        
+        // console.log(props.search["flag"]);
+        console.log("instructor name clicked");
+        const sort_instructors = filteredInstructors.sort((a, b) => a.firstName.localeCompare(b.firstName));
+        if(nameFlag)
+        {
+            // setInstructors(sort_instructors);
+            setFilteredInstructors(sort_instructors);
+            setNameFlag(false);
+        }
+        else
+        {
+            // setInstructors(sort_instructors.reverse());
+            setFilteredInstructors(sort_instructors.reverse());
+            setNameFlag(true);
+        }
+        
+    };
+
+    const onYearClick = () => {
+        
+        console.log("year clicked");
+        const first = 1;
+        const second = 2;
+        const third = 3;
+        const fourth_plus = 4;
+        const graduate = 5;
+        const graduated = 6;
+
+        // export const schoolYear = 
+    // '1st',
+    // '2nd',
+    // '3rd',
+    // '4th+',
+    // 'Graduate',
+    // 'Graduated'
+    // 
+        
+        //  hardcoded; 
+        const sort_instructors = filteredInstructors.sort((a, b) =>
+        {
+            
+            let a_val = 0;
+            let b_val = 0;
+            switch(a.schoolYear) {
+                case '1st':
+                  a_val = first;
+                  break;
+                case '2nd':
+                  a_val = second;
+                  break;
+                case '3rd':
+                  a_val = third;
+                  break;
+                case '4th+':
+                  a_val = fourth_plus;
+                  break;
+                case 'Graduate':
+                  a_val = graduate;
+                  break;
+                case 'Graduated':
+                  a_val = graduated;
+                  break;
+                default:
+                  break;
+              }
+
+              switch(b.schoolYear) {
+                case '1st':
+                  b_val = first;
+                  break;
+                case '2nd':
+                  b_val = second;
+                  break;
+                case '3rd':
+                  b_val = third;
+                  break;
+                case '4th+':
+                  b_val = fourth_plus;
+                  break;
+                case 'Graduate':
+                  b_val = graduate;
+                  break;
+                case 'Graduated':
+                  b_val = graduated;
+                  break;
+                default:
+                  break;
+              }
+              
+              return a_val - b_val;
+        }
+        );
+
+        if(yearFlag)
+        {
+            setFilteredInstructors(sort_instructors);
+            setYearFlag(false);
+        }
+        else
+        {
+            setFilteredInstructors(sort_instructors.reverse());
+            setYearFlag(true);
+        }
+        
+    };
+
+    const onMajorClick = () => {
+        
+        console.log("major clicked");
+        
+        const sort_instructors = filteredInstructors.sort((a, b) => a.major.localeCompare(b.major));
+        if(majorFlag)
+        {
+            setFilteredInstructors(sort_instructors);
+            setMajorFlag(false);
+        }
+        else
+        {
+            setFilteredInstructors(sort_instructors.reverse());
+            setMajorFlag(true);
+        }
+    };
+
+    const onUniClick = () => {
+        
+        console.log("University clicked");
+        
+        const sort_instructors = filteredInstructors.sort((a, b) => a.university.localeCompare(b.university));
+        if(uniFlag)
+        {
+            setFilteredInstructors(sort_instructors);
+            setUniFlag(false);
+        }
+        else
+        {
+            setFilteredInstructors(sort_instructors.reverse());
+            setUniFlag(true);
+        }
+        
+    };
+
+
+
 
     useEffect(() => {
         const instructors = Object.values(instructorData).filter(instructor => {
@@ -356,12 +516,25 @@ function Instructors() {
                             {/*</OverlayTrigger>*/}
                         </InputGroup>
                     </div>
+                    {
+                        
+                   
 
                     <InstructorsTable
                         handleInstructorRowClicked={handleInstructorRowClicked}
                         data={filteredInstructors.reverse()}
                         programsColorKey={programColorMap}
+                        onNameClick = {onNameClick}
+                        nameFlag = {nameFlag}
+                        onYearClick = {onYearClick}
+                        yearFlag = {yearFlag}
+                        majorFlag = {majorFlag}
+                        onMajorClick = {onMajorClick}
+                        uniFlag = {uniFlag}
+                        onUniClick = {onUniClick}
+
                     />
+                    }
                 </Wrapper>
                 <SideInfoWrapper>
                     <InstructorsSideInfo
