@@ -90,7 +90,6 @@ const AssignInstructorsTable = (props) => {
                 i.availability
             );
         });
-        // TODO: Fix -- 'availableInstructors' is coming out empty after being filtered.
         console.log('available intructors');
         console.log(availableInstructors);
         availableInstructorsForTheSelectedSeason = availableInstructors;
