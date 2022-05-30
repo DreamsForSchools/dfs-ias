@@ -218,8 +218,6 @@ const Section = ({
             return true;
         });
         setFilteredInstructors(instructors);
-        console.log('filtered instructors:');
-        console.log(instructors);
     }, [filters]);
 
     useEffect(() => {
@@ -233,8 +231,12 @@ const Section = ({
     }, [showFilter]);
 
     useEffect(() => { 
-        console.log('instructorsasldkjflasdj')
-        console.log(instructors);
+        if (!instructors) { return; }
+        const instructorIds = instructors.map((i) => { 
+            return i.instructorId
+        })
+        setSelectedInstructors(instructorIds);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [instructors])
 
     const handleApplyFilters = (checkedItems) => {
@@ -369,7 +371,7 @@ const Section = ({
         const name = e.target.name;
         let checkedValue;
         // if 'hasCar' or 'isASL'
-        if (name == 'hasCar' || name == 'isASL') {
+        if (name === 'hasCar' || name === 'isASL') {
             let boxValue = e.target.checked;
             // if checkbox is checked
             if (boxValue) {
@@ -399,25 +401,46 @@ const Section = ({
         setAssignPopup(true);
     };
 
-    const [ selectedInstructors, setSelectedInstructors ] = useState([]);
+    // A queue of operations that need to be executed when the confirm button is pressed.
+    const [ operationQueue, setOperationQueue] = useState([]);
 
+    const [selectedInstructors, setSelectedInstructors] = useState([]);
     /**
      * Saves selected instructors from the `AssignInstructorsTable` component to the `seasonAssignments` table.
      */
     async function saveInstructorAssignments() {
-        console.log(seasonSelected.seasonId);
-        console.log(id);
-        console.log(selectedInstructors);
-        for (const i of selectedInstructors) { 
+        for (const o of operationQueue) { 
             try {
                 const header = await createToken();
-                await axios.post('/api/assign', {seasonId: seasonSelected.seasonId, instructorId: i.instructorId, classId: id}, header);
-                toast(`👍 ${i.instructorId} added successfully!`)
+                if (o.route === 'assign') { 
+                    await axios.post(
+                        '/api/assign',
+                        {
+                            seasonId: seasonSelected.seasonId,
+                            instructorId: o.instructorId,
+                            classId: id,
+                        },
+                        header
+                    );
+                } else if (o.route === 'unassign') { 
+                    await axios.post(
+                        '/api/unassign',
+                        {
+                            seasonId: seasonSelected.seasonId,
+                            instructorId: o.instructorId,
+                            classId: id,
+                        },
+                        header
+                    );
+                } else { 
+                    console.log(`Unknown operation: ${o}`)
+                }
             } catch (e) {
                 console.log(e);
                 toast(`❌ ${e}`);
             }
         }
+        toast(`👍 Instructor assignments successfully updated.`);
     }
 
     return (
@@ -502,7 +525,6 @@ const Section = ({
                 show={assignPopup}
                 onHide={() => {
                     setAssignPopup(false);
-                    setSelectedInstructors([]);
                 }}
                 aria-labelledby="contained-modal-title-vcenter"
                 dialogClassName="modal-90w"
@@ -695,6 +717,7 @@ const Section = ({
                         show={assignPopup}
                         time={time[0]}
                         programsColorKey={programColorMap}
+                        operationQueue={operationQueue}
                         selectedInstructors={selectedInstructors}
                     />
                 </Modal.Body>

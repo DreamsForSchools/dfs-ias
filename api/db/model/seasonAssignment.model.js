@@ -67,9 +67,20 @@ SeasonAssignment.assignInstructor = async function (data, result) {
     // Schema: assignmentId, seasonId, instructorId, classId
     const { seasonId, instructorId, classId } = data;
     try { 
-        await db.query('INSERT INTO seasonAssignments(seasonId, instructorId, classId) VALUES (?, ?, ?)', [seasonId, instructorId, classId]);
-        return result(null, assignmentId);
+        await db.query('INSERT INTO seasonAssignments(seasonId, instructorId, classId) VALUES (?, ?, ?);', [seasonId, instructorId, classId]);
+        return result(null, instructorId);
     } catch (err) { return result(err, null); }
+}
+
+SeasonAssignment.unassignInstructor = async function (data, result) { 
+    const { seasonId, instructorId, classId } = data;
+    console.log(data);
+	try {
+		await db.query('DELETE FROM seasonAssignments WHERE seasonId = ? AND instructorId = ? AND classId = ?;', [seasonId, instructorId, classId]);
+		return result(null, instructorId);
+	} catch (err) {
+		return result(err, null);
+	}
 }
 
 SeasonAssignment.lock = async function (newAssignment, result) {

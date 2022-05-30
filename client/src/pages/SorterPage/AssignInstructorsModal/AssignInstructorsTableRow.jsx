@@ -14,7 +14,7 @@ export const InstructorsRow = (props) => {
     // TODO: UI loading indicator
     // TODO: Write changes to the database
 
-    const { programsColorKey, onClick, instructor } = props;
+    const { programsColorKey, onClick, isSelected, instructor } = props;
 
     const [activeState, setActiveState] = useState(false);
 
@@ -43,6 +43,10 @@ export const InstructorsRow = (props) => {
         onClick(instructor);
         setActiveState((activeState) => !activeState);
     };
+
+    useEffect(() => { 
+        setActiveState(isSelected);
+    }, [isSelected])
 
     return (
         // put onclick funct for the tr

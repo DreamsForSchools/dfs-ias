@@ -13,6 +13,23 @@ exports.assign = function (req, res) {
     })
 }
 
+exports.unassign = function (req, res) {
+	const auth = req.currentUser;
+	if (!auth) {
+		res.status(403).send({ error: true, message: 'Not authorized.', data: null });
+		return;
+	}
+	const data = req.body;
+	SeasonAssignment.unassignInstructor(data, function (err, data) {
+		if (err) {
+			res.send(err);
+			return;
+		}
+		res.send({ error: false, message: `Succesfully unassigned ${data.assignmentId}!`, data: data });
+		console.log(data);
+	});
+};
+
 exports.lock = function (req, res) {
     const auth = req.currentUser;
     if (auth) {

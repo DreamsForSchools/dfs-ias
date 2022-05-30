@@ -14,6 +14,10 @@ const Program = ({ id, name, color, classes, state, seasonSelected }) => {
         setLock(false);
     };
 
+    useEffect(() => { 
+        console.log(classes)
+    }, [classes])
+
     return (
         <Accordion className="program">
             <Card className="program-module" style={{ backgroundColor: color }}>
