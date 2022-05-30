@@ -46,7 +46,7 @@ const ClassesPartners = () => {
         seasonSelected,
         programData,
         partnerData,
-        fetchClassesAggregatedForCurrentSeason,
+        fetchProgramsAggregatedForCurrentSeason,
         fetchPartnersAggregatedForCurrentSeason,
     } = useContext(GlobalContext);
     const [viewType, setViewType] = useState('Classes');
@@ -145,7 +145,7 @@ const ClassesPartners = () => {
 
         handleCloseInputModal();
         fetchPartnersAggregatedForCurrentSeason();
-        fetchClassesAggregatedForCurrentSeason();
+        fetchProgramsAggregatedForCurrentSeason();
     };
 
     const renderClasses = () => {
@@ -247,13 +247,13 @@ const ClassesPartners = () => {
     const onDeletePress = async (type, id) => {
         if (type === 'PROGRAM') {
             await deleteProgram(id);
-            fetchClassesAggregatedForCurrentSeason();
+            fetchProgramsAggregatedForCurrentSeason();
         } else if (type === 'PARTNER') {
             await deletePartner(id);
             fetchPartnersAggregatedForCurrentSeason();
         } else if (type === 'CLASS') {
             await deleteClass(id);
-            fetchClassesAggregatedForCurrentSeason();
+            fetchProgramsAggregatedForCurrentSeason();
         }
     };
 
