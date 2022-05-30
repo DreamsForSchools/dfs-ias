@@ -11,6 +11,7 @@ var SeasonAssignment = function (assignment) {
 };
 
 /**
+ * @deprecated
  * Fetches distances for instructors to specific school locations. Returns a dictionary, where keys are InstructorIDs and values are distances to the given school
  * @param {*} instructors A list of instructors
  * @param {*} universityPlaceID University Place ID
@@ -33,6 +34,7 @@ SeasonAssignment.fetchDistancesForInstructors = async function (instructors, uni
 }
 
 /**
+ * @deprecated
  * Fetches all instructorIDs that are availability before the startTime AND after the endTime values that are passed in 
  * @param {*} starTime The time when a class begins. Represented as a String in the database ("14:00:00").
  * @param {*} endTime The time when a class ends. Represented as a String in the database ("14:00:00").
@@ -52,6 +54,21 @@ SeasonAssignment.fetchAvailableInstructorsDuringTime = async function (data, res
 
         return result(null, instructorIDs);
 
+    } catch (err) { return result(err, null); }
+}
+
+/**
+ * Adds an individual instructor to the 'seasonAssignment' table
+ * @param {*} data 
+ * @param {*} result 
+ * @returns 
+ */
+SeasonAssignment.assignInstructor = async function (data, result) { 
+    // Schema: assignmentId, seasonId, instructorId, classId
+    const { seasonId, instructorId, classId } = data;
+    try { 
+        await db.query('INSERT INTO seasonAssignments(seasonId, instructorId, classId) VALUES (?, ?, ?)', [seasonId, instructorId, classId]);
+        return result(null, assignmentId);
     } catch (err) { return result(err, null); }
 }
 

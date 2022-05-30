@@ -15,9 +15,10 @@ import AssignInstructorsTable, {
 } from '../AssignInstructorsModal/AssignInstructorsTable';
 import '../../ClassesPartnersPage/OptionsBar.scss';
 import 'bootstrap/dist/css/bootstrap.css';
-import Dropdown from 'react-bootstrap/Dropdown';
 import { MDBCol } from 'mdbreact';
-import ReactDOM from 'react-dom';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { createToken } from '../../../fire';
 // import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 const Section = ({
@@ -29,10 +30,9 @@ const Section = ({
     programId,
     state,
     parentLockStatus,
-    seasonSelected
 }) => {
-    const { programColorMap } = useContext(GlobalContext);
 
+    const { seasonSelected, programColorMap } = useContext(GlobalContext);
     const [numInstructors, setNumInstructors] = useState(0);
     const [lock, setLock] = useState(false);
     const [assignPopup, setAssignPopup] = useState(false);
@@ -232,6 +232,11 @@ const Section = ({
         });
     }, [showFilter]);
 
+    useEffect(() => { 
+        console.log('instructorsasldkjflasdj')
+        console.log(instructors);
+    }, [instructors])
+
     const handleApplyFilters = (checkedItems) => {
         const { hasCar, preference, year, isASL } = checkedItems;
         setFilters({
@@ -394,6 +399,27 @@ const Section = ({
         setAssignPopup(true);
     };
 
+    const [ selectedInstructors, setSelectedInstructors ] = useState([]);
+
+    /**
+     * Saves selected instructors from the `AssignInstructorsTable` component to the `seasonAssignments` table.
+     */
+    async function saveInstructorAssignments() {
+        console.log(seasonSelected.seasonId);
+        console.log(id);
+        console.log(selectedInstructors);
+        for (const i of selectedInstructors) { 
+            try {
+                const header = await createToken();
+                await axios.post('/api/assign', {seasonId: seasonSelected.seasonId, instructorId: i.instructorId, classId: id}, header);
+                toast(`👍 ${i.instructorId} added successfully!`)
+            } catch (e) {
+                console.log(e);
+                toast(`❌ ${e}`);
+            }
+        }
+    }
+
     return (
         <div className="section">
             <div className="header">
@@ -474,7 +500,10 @@ const Section = ({
             <Modal
                 size="xl"
                 show={assignPopup}
-                onHide={() => setAssignPopup(false)}
+                onHide={() => {
+                    setAssignPopup(false);
+                    setSelectedInstructors([]);
+                }}
                 aria-labelledby="contained-modal-title-vcenter"
                 dialogClassName="modal-90w"
                 centered>
@@ -666,9 +695,7 @@ const Section = ({
                         show={assignPopup}
                         time={time[0]}
                         programsColorKey={programColorMap}
-                        seasonSelected={seasonSelected}
-                        filters={checkedItems}
-                        data={filteredInstructors.reverse()}
+                        selectedInstructors={selectedInstructors}
                     />
                 </Modal.Body>
                 <Modal.Footer style={{ border: '0' }}>
@@ -677,7 +704,9 @@ const Section = ({
                         onClick={() => setAssignPopup(false)}>
                         Cancel
                     </Button>
-                    <Button variant="success">
+                    <Button
+                        variant="success"
+                        onClick={saveInstructorAssignments}>
                         {/* needs onclick */}
                         Confirm Instructor Selections
                     </Button>

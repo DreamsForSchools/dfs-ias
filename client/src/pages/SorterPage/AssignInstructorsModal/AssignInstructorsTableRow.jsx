@@ -39,14 +39,8 @@ export const InstructorsRow = (props) => {
         isASL,
     } = instructor;
 
-    useEffect(() => {
-        console.log('Instructor: ');
-        console.log(instructor);
-    }, [instructor]);
-
     const toggleRowClicked = () => {
         onClick(instructor);
-        // setActiveState(true);
         setActiveState((activeState) => !activeState);
     };
 

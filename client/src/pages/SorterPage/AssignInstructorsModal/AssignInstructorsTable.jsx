@@ -17,14 +17,10 @@ const AssignInstructorsTable = (props) => {
 
     // TODO: Enable pagination
 
-    const { show, time } = props;
+    const { show, time, programsColorKey, selectedInstructors } = props;
 
     const { seasonSelected, instructorData } = useContext(GlobalContext);
-    const [instructors, setInstructors] = useState([]);
-
-    const clickRow = () => {
-        console.log('Row clicked');
-    };
+    const [ instructors, setInstructors ] = useState([]);
 
     function instructorIsAvailable(startTime, endTime, weekday, instructorAvailabilityArray) {
         var isAvailable = false;
@@ -90,24 +86,29 @@ const AssignInstructorsTable = (props) => {
                 i.availability
             );
         });
-        console.log('available intructors');
-        console.log(availableInstructors);
-        availableInstructorsForTheSelectedSeason = availableInstructors;
-
-        const filteredInstructors =
-            applyUserSelectedFilters(availableInstructors);
-        setInstructors(filteredInstructors);
+        setInstructors(availableInstructors);
     }
 
-    // console.log('About to print instructor data');
-    // console.log(props.instructorData);
+    /**
+     * Adds or removes an instructor depending on whether they've already been selected
+     * @param {*} e The instructor being added / removed
+     */
+    const toggleSelectedInstructor = (e) => {
+        if (selectedInstructors.includes(e)) {
+            const index = selectedInstructors.indexOf(e);
+            selectedInstructors.splice(index, 1)
+        } else { 
+            selectedInstructors.push(e);
+        }
+    };
 
     useEffect(() => {
         if (show) {
             // Fetch available instructors only once the modal appears
             filterAvailableInstructors();
         }
-    }, [show, instructorData, props.filters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [show]);
 
     return (
         <div className="assn-table">
@@ -124,10 +125,10 @@ const AssignInstructorsTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {availableInstructorsForTheSelectedSeason.map((el, idx) => (
+                    {instructors.map((el, idx) => (
                         <InstructorsRow
-                            programsColorKey={props.programsColorKey}
-                            onClick={clickRow}
+                            programsColorKey={programsColorKey}
+                            onClick={toggleSelectedInstructor}
                             instructor={el}
                         />
                     ))}
