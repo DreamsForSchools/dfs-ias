@@ -11,6 +11,9 @@ import '../../ClassesPartnersPage/OptionsBar.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { MDBCol } from 'mdbreact';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { createToken } from '../../../fire';
 import ReactDOM from 'react-dom';
 // import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
@@ -23,10 +26,8 @@ const Section = ({
     programId,
     state,
     parentLockStatus,
-    seasonSelected
 }) => {
-    const { programColorMap } = useContext(GlobalContext);
-
+    const { seasonSelected, programColorMap } = useContext(GlobalContext);
     const [numInstructors, setNumInstructors] = useState(0);
     const [lock, setLock] = useState(false);
     const [assignPopup, setAssignPopup] = useState(false);
@@ -37,7 +38,6 @@ const Section = ({
         { value: 4, label: 'Thursday' },
         { value: 5, label: 'Friday' },
     ];
-
     const preference = [
         { value: 'Mobile App Development (AppJam+)', label: 'AppJam' },
         { value: 'Website Development', label: 'WebJam' },
@@ -45,7 +45,6 @@ const Section = ({
         { value: 'Coding Games with Scratch', label: 'Scratch' },
         { value: 'Engineering Inventors', label: 'Engineering Inventors' },
     ];
-
     const year = [
         { value: '1st', label: '1st' },
         { value: '2nd', label: '2nd' },
@@ -53,12 +52,10 @@ const Section = ({
         { value: '4th+', label: '4th+' },
         { value: 'Graduate', label: 'Graduate' },
     ];
-
     const hasCar = [
         { value: 0, label: 'No Car' },
         { value: 1, label: 'Car' },
     ];
-
     const isASL = [
         { value: 0, label: 'Does not know ASL' },
         { value: 1, label: 'Knows ASL' },
@@ -87,7 +84,6 @@ const Section = ({
     };
 
     const handleCloseFilter = () => setShowFilter(false);
-
     useEffect(() => {
         const { name, hasCar, preference, year, isASL } = filters;
         setCheckedItems({
@@ -98,6 +94,15 @@ const Section = ({
             isASL: [...isASL],
         });
     }, [showFilter]);
+
+    useEffect(() => { 
+        if (!instructors) { return; }
+        const instructorIds = instructors.map((i) => { 
+            return i.instructorId
+        })
+        setSelectedInstructors(instructorIds);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [instructors])
 
     const handleApplyFilters = (checkedItems) => {
         const { name, hasCar, preference, year, isASL } = checkedItems;
@@ -177,10 +182,51 @@ const Section = ({
         }
         setCheckedItems({ ...checkedItems, [name]: checkedValue });
     };
-
     const assignToggle = () => {
         setAssignPopup(true);
     };
+
+    // A queue of operations that need to be executed when the confirm button is pressed.
+    const [ operationQueue, setOperationQueue] = useState([]);
+
+    const [selectedInstructors, setSelectedInstructors] = useState([]);
+    /**
+     * Saves selected instructors from the `AssignInstructorsTable` component to the `seasonAssignments` table.
+     */
+    async function saveInstructorAssignments() {
+        for (const o of operationQueue) { 
+            try {
+                const header = await createToken();
+                if (o.route === 'assign') { 
+                    await axios.post(
+                        '/api/assign',
+                        {
+                            seasonId: seasonSelected.seasonId,
+                            instructorId: o.instructorId,
+                            classId: id,
+                        },
+                        header
+                    );
+                } else if (o.route === 'unassign') { 
+                    await axios.post(
+                        '/api/unassign',
+                        {
+                            seasonId: seasonSelected.seasonId,
+                            instructorId: o.instructorId,
+                            classId: id,
+                        },
+                        header
+                    );
+                } else { 
+                    console.log(`Unknown operation: ${o}`)
+                }
+            } catch (e) {
+                console.log(e);
+                toast(`❌ ${e}`);
+            }
+        }
+        toast(`👍 Instructor assignments successfully updated.`);
+    }
 
     return (
         <div className="section">
@@ -199,7 +245,6 @@ const Section = ({
                     <People /> {numInstructors}/{instructorsNeeded}
                 </div>
             </div>
-
             {/* implementing for the modal pop up */}
             <div className="assign-modal-btns">
                 <Button
@@ -213,7 +258,6 @@ const Section = ({
                     </span>
                 </Button>
             </div>
-
             <Droppable
                 droppableId={programId + '-' + partner + '-' + id}
                 type="INSTRUCTOR">
@@ -271,7 +315,6 @@ const Section = ({
                     style={{ padding: '2rem 3rem 0 3rem', border: '0' }}>
                     <Modal.Title>Assign Instructors</Modal.Title>
                 </Modal.Header>
-
                 <Modal.Body style={{ padding: '1rem 3rem' }}>
                     <div style={{ padding: 5, justifyContent: 'flex-end' }}>
                         <h5>{partner}</h5>
@@ -296,7 +339,7 @@ const Section = ({
                                 width: '40%',
                             }}>
                             <MDBCol md="40">
-                                <InputGroup>
+                            <InputGroup>
                                     <FormControl
                                         placeholder="🔍 Search Instructors..."
                                         aria-label="Default"
@@ -314,7 +357,7 @@ const Section = ({
                                 justifyContent: 'flex-end',
                                 border: '5px ',
                             }}>
-                            <div class="dropdown">
+                                <div class="dropdown">
                                 <Button variant="light" class="dropbtn">
                                     {' '}
                                     Car
@@ -338,7 +381,7 @@ const Section = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div class="dropdown">
+                                <div class="dropdown">
                                 <Button variant="light" class="dropbtn">
                                     {' '}
                                     ASL
@@ -356,14 +399,13 @@ const Section = ({
                                 </div>
                             </div>
                         </div>
-
                         <div
                             style={{
                                 padding: 5,
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div class="dropdown">
+                                <div class="dropdown">
                                 <Button variant="light" class="dropbtn">
                                     {' '}
                                     Year
@@ -397,7 +439,7 @@ const Section = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div class="dropdown">
+                                <div class="dropdown">
                                 <Button variant="light" class="dropbtn">
                                     {' '}
                                     Preference
@@ -425,7 +467,6 @@ const Section = ({
                                 </div>
                             </div>
                         </div>
-
                         <div
                             style={{
                                 padding: 5,
@@ -438,13 +479,15 @@ const Section = ({
                                 Reset Filters
                             </Button>
                         </div>
-                    </div>
+                        </div>
 
                     <AssignInstructorsTable
                         show={assignPopup}
                         time={time[0]}
                         programsColorKey={programColorMap}
-                        seasonSelected={seasonSelected}
+                        operationQueue={operationQueue}
+                        selectedInstructors={selectedInstructors}
+                        // seasonSelected={seasonSelected}
                         filters={checkedItems}
                     />
                 </Modal.Body>
@@ -454,14 +497,14 @@ const Section = ({
                         onClick={() => { setAssignPopup(false); resetFilters();}}>
                         Cancel
                     </Button>
-                    <Button variant="success">
-                        {/* needs onclick */}
-                        Confirm Instructor Selections
+                    <Button
+                        variant="success"
+                        onClick={saveInstructorAssignments}>
+                            Confirm Instructor Selections
                     </Button>
                 </Modal.Footer>
             </Modal>
         </div>
     );
 };
-
 export default Section;
