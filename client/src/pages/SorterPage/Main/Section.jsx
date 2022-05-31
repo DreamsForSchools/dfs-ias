@@ -499,7 +499,7 @@ const Section = ({
                     </Button>
                     <Button
                         variant="success"
-                        onClick={saveInstructorAssignments}>
+                        onClick={() => { saveInstructorAssignments(); setAssignPopup(false); resetFilters();}}>
                             Confirm Instructor Selections
                     </Button>
                 </Modal.Footer>

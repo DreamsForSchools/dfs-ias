@@ -3,6 +3,7 @@ import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import './AssignInstructorsTable.scss';
 import { InstructorsRow } from './AssignInstructorsTableRow';
 import { GlobalContext } from '../../../context/GlobalContextProvider';
+import { PaginationItem } from '@material-ui/lab';
 
 const AssignInstructorsTable = (props) => {
     /**
@@ -27,6 +28,8 @@ const AssignInstructorsTable = (props) => {
 
     const { seasonSelected, instructorData } = useContext(GlobalContext);
     const [instructors, setInstructors] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(4);
 
     function instructorIsAvailable(startTime, endTime, weekday, instructorAvailabilityArray) {
         var isAvailable = false;
@@ -117,6 +120,19 @@ const AssignInstructorsTable = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [show, instructorData, props.filters]);
 
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    // gets N number of instructors per page
+    const currentPosts = instructors.slice(indexOfFirstPost, indexOfLastPost);
+    
+    const pages = [];
+    //if index is less than or equal to total post/post per page (round up ceiling)
+    for(let i = 1; i <= Math.ceil(instructors.length / postsPerPage); i++) {
+       pages.push(i);
+    }
+    
+    const paginate = (page) => setCurrentPage(page)
+    
     return (
         <div className="assn-table">
             {/* <Badge pill variant="success"></Badge> */}
@@ -132,17 +148,30 @@ const AssignInstructorsTable = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {instructors.map((el, idx) => (
+                    {currentPosts.map((el, idx) => (
                         <InstructorsRow
                             programsColorKey={programsColorKey}
                             onClick={toggleSelectedInstructor}
                             isSelected={isSelected(el.instructorId)}
                             instructor={el}
-                            key={idx}
+                            key={idx} 
                         />
                     ))}
                 </tbody>
             </Table>
+            <div>
+                <nav>
+                    <ul className = "pagination">
+                        {pages.map(number => (
+                            <li key={number} className = "page-item">
+                                <a onClick={() => paginate(number)} className="page-link">
+                                    {number}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            </div>
         </div>
     );
 };
