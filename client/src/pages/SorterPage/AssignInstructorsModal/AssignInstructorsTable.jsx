@@ -8,42 +8,30 @@ import { GlobalContext } from '../../../context/GlobalContextProvider';
 /**
  * Export this so that 'Class.jsx' can access it to filter instructors.
  */
-export let availableInstructorsForTheSelectedSeason = [];
+// export let availableInstructorsForTheSelectedSeason = [];
 
 const AssignInstructorsTable = (props) => {
-    /**
-     * @param {*} show Boolean value that tracks whether this modal is shown or not
-     * @param {*} time The time the section takes place
-     * @param {*} programsColorKey Check GlobalContext
-     * @param {*} operationQueue A queue of database queries that will be executed once the confirm button is pressed.
-     * @param {*} selectedInstructors Instructors that are already set in the database. This shouldn't be edited here.
-     */
-    const {
-        show,
-        time,
-        programsColorKey,
-        operationQueue,
-        selectedInstructors,
-    } = props;
+    // Fetch all instructors that have an availibility for this class
+    // Iterate through each instructor to calculate distance from the university to the partnerPlaceId (classes don't store location of where they're taught)
+    // The 'time' prop is an array of JSON values, where each has 'endTime', 'weekday', and 'startTime' keys
+
+    // TODO: Enable pagination
+
+    const { show, time } = props;
 
     const { seasonSelected, instructorData } = useContext(GlobalContext);
     const [instructors, setInstructors] = useState([]);
 
-    function instructorIsAvailable(
-        startTime,
-        endTime,
-        weekday,
-        instructorAvailabilityArray
-    ) {
+    const clickRow = () => {
+        console.log('Row clicked');
+    };
+
+    function instructorIsAvailable(startTime, endTime, weekday, instructorAvailabilityArray) {
         var isAvailable = false;
         instructorAvailabilityArray.forEach((availability) => {
-            if (
-                availability.weekday === weekday &&
-                availability.startTime <= startTime &&
-                availability.endTime >= endTime
-            )
+            if (availability.weekday === weekday && availability.startTime <= startTime && availability.endTime >= endTime)
                 isAvailable = true;
-            return isAvailable;
+                return isAvailable;
         });
         return isAvailable;
     }
@@ -52,42 +40,32 @@ const AssignInstructorsTable = (props) => {
         console.log(props.filters);
 
         return instructors.filter((instructor) => {
-            if (
-                props.filters.hasCar.length > 0 &&
-                !props.filters.hasCar.includes(instructor.hasCar)
-            ) {
+            if (props.filters.name) {
+                const formattedText = props.filters.name.toLowerCase();
+                const fullName = instructor.firstName + " " + instructor.lastName;
+                if (!fullName.toLowerCase().includes(formattedText)) {
+                    return false;
+                }
+            }
+            if (props.filters.hasCar.length > 0 && !props.filters.hasCar.includes(instructor.hasCar)) {
                 return false;
             }
             // return false if does not meet filter requirements for 'isASL'
-            if (
-                props.filters.isASL.length > 0 &&
-                !props.filters.isASL.includes(instructor.isASL)
-            ) {
+            if (props.filters.isASL.length > 0 && !props.filters.isASL.includes(instructor.isASL)) {
                 return false;
             }
-
+            
             // return false if does not meet filter requirements for 'preference'
-            let preferences = [
-                instructor.firstPref,
-                instructor.secondPref,
-                instructor.thirdPref,
-                instructor.fourthPref,
-            ];
+            let preferences = [instructor.firstPref, instructor.secondPref, instructor.thirdPref, instructor.fourthPref];
             if (
-                props.filters.preference.length > 0 &&
-                !props.filters.preference.some((pref) =>
-                    preferences.includes(pref)
-                )
-            ) {
+                props.filters.preference.length > 0 && !props.filters.preference.some((pref) => preferences.includes(pref))) {
                 return false;
             }
             // return false if does not meet filter requirements for 'year'
-            if (
-                props.filters.year.length > 0 &&
-                !props.filters.year.includes(instructor.schoolYear)
-            ) {
+            if (props.filters.year.length > 0 && !props.filters.year.includes(instructor.schoolYear)) {
                 return false;
             }
+            return true;
         });
     }
 
@@ -101,33 +79,24 @@ const AssignInstructorsTable = (props) => {
                 i.availability
             );
         });
-        setInstructors(availableInstructors);
+        // TODO: Fix -- 'availableInstructors' is coming out empty after being filtered.
+        console.log('available intructors');
+        console.log(availableInstructors);
+        // availableInstructorsForTheSelectedSeason = availableInstructors;
+
+        const filteredInstructors = applyUserSelectedFilters(availableInstructors);
+        setInstructors(filteredInstructors);
     }
 
-    /**
-     * Adds an assign / unassign query operation to the `operationQueue`. Operations will be called in `Section.jsx`
-     * @param {*} e The instructor being added / removed
-     */
-    const toggleSelectedInstructor = (e) => {
-        const instructorId = e.instructorId;
-        if (selectedInstructors.includes(instructorId)) { 
-            operationQueue.push({route: 'unassign', instructorId: instructorId})
-        } else { 
-            operationQueue.push({route: 'assign', instructorId: instructorId})
-        }
-    };
-
-    function isSelected(instructorId) { 
-        return selectedInstructors.includes(instructorId);
-    }
+    // console.log('About to print instructor data');
+    // console.log(props.instructorData);
 
     useEffect(() => {
         if (show) {
             // Fetch available instructors only once the modal appears
             filterAvailableInstructors();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [show]);
+    }, [show, instructorData, props.filters]);
 
     return (
         <div className="assn-table">
@@ -146,10 +115,10 @@ const AssignInstructorsTable = (props) => {
                 <tbody>
                     {instructors.map((el, idx) => (
                         <InstructorsRow
-                            programsColorKey={programsColorKey}
-                            onClick={toggleSelectedInstructor}
-                            isSelected={isSelected(el.instructorId)}
+                            programsColorKey={props.programsColorKey}
+                            onClick={clickRow}
                             instructor={el}
+                            key={idx}
                         />
                     ))}
                 </tbody>

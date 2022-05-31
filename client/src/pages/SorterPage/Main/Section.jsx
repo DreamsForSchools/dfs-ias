@@ -2,23 +2,16 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './Section.scss';
 import Instructor from '../Instructor.jsx';
-import {
-    CalendarWeek,
-    People,
-    PencilSquare,
-} from 'react-bootstrap-icons';
+import { CalendarWeek, People, PencilSquare } from 'react-bootstrap-icons';
 import { formatAvailability } from '../../../util/formatData';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { GlobalContext } from '../../../context/GlobalContextProvider';
-import AssignInstructorsTable, {
-    availableInstructorsForTheSelectedSeason,
-} from '../AssignInstructorsModal/AssignInstructorsTable';
+import AssignInstructorsTable from '../AssignInstructorsModal/AssignInstructorsTable';
 import '../../ClassesPartnersPage/OptionsBar.scss';
 import 'bootstrap/dist/css/bootstrap.css';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { MDBCol } from 'mdbreact';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { createToken } from '../../../fire';
+import ReactDOM from 'react-dom';
 // import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 const Section = ({
@@ -30,9 +23,10 @@ const Section = ({
     programId,
     state,
     parentLockStatus,
+    seasonSelected
 }) => {
+    const { programColorMap } = useContext(GlobalContext);
 
-    const { seasonSelected, programColorMap } = useContext(GlobalContext);
     const [numInstructors, setNumInstructors] = useState(0);
     const [lock, setLock] = useState(false);
     const [assignPopup, setAssignPopup] = useState(false);
@@ -75,21 +69,16 @@ const Section = ({
         // preference: ["Mobile App Development (AppJam+)", "Website Development", "Let's Explore STEM", "Coding Games with Scratch","Engineering Inventors"],
         // year: ["1st","2nd","3rd", "4th+","Graduate"],
         // isASL: [0, 1]
-        hasCar: [],
+        name: '',
+        hasCar: [0, 1],
         preference: [],
         year: [],
-        isASL: [],
+        isASL: [0, 1],
     };
-    const [filters, setFilters] = useState(
-        Object.assign({}, initialCheckedItems)
-    );
+    const [filters, setFilters] = useState(Object.assign({}, initialCheckedItems));
     const [showFilter, setShowFilter] = useState(false);
-    const [filteredInstructors, setFilteredInstructors] = useState([
-        ...Object.values(availableInstructorsForTheSelectedSeason),
-    ]);
-    const [checkedItems, setCheckedItems] = useState(
-        Object.assign({}, initialCheckedItems)
-    );
+    const [checkedItems, setCheckedItems] = useState(Object.assign({}, initialCheckedItems));
+    const [searchText, setSearchText] = useState("");
     const handleLock = () => {
         setLock(true);
     };
@@ -98,131 +87,11 @@ const Section = ({
     };
 
     const handleCloseFilter = () => setShowFilter(false);
-    /*
-    const handleApplyFilters = (checkedItems) => {
-      const { car, availability, preference, year, asl } = checkedItems;
-      console.log(checkedItems);
-      setFilters({
-          name: filters.name,
-          car: [...car],
-          availability: [...availability],
-          preference: [...preference],
-          year: [...year],
-          asl: [...asl],
-      });
-      handleCloseFilter();
-  }
-  */
-    //useEffect is for filtering /
-
-    // useEffect(() => {
-    //   //{ car: [], availability: [], preference: [], year: [], asl: [] };
-    //   for (const i in instructors)
-    //   {
-    //     let preferences = [instructors[i].firstPref, instructors[i].secondPref,instructors[i].thirdPref,instructors[i].fourthPref];
-    //     if (checkedItems.car.includes(instructors[i].hasCar))
-    //     {
-    //       //they dont have a car
-    //       console.log(instructors[i].firstName + " matches car criteria");
-    //     }
-    //     else if (checkedItems.asl.includes(instructors[i].isASL))
-    //     {
-    //       console.log(instructors[i].firstName + " matches ASL criteria");
-    //     }
-    //     else  if (checkedItems.preference.some(pref => preferences.includes(pref)))
-    //     {
-    //       console.log(instructors[i].firstName + " matches Preference criteria");
-
-    //     }
-    //     else if (checkedItems.year.includes(instructors[i].schoolYear))
-    //     {
-    //       console.log(instructors[i].firstName + " matches school year criteria");
-
-    //     }
-    //     else{
-    //       console.log(instructors[i].firstName + " does NOT match Filtered Criteria");
-    //     }
-
-    //   }
-
-    /*
-        if (filters.car.length > 0 && !filters.car.includes(instructor.hasCar)) {
-            return false;
-        }
-        const weekdays = instructor.availability.map(ability => ability.weekday);
-        if (filters.availability.length > 0 &&
-          !filters.availability.some(ability => weekdays.includes(ability))) {
-            return false;
-        }
-        let preferences = [instructor.firstPref, instructor.secondPref,instructor.thirdPref, instructor.fourthPref];
-        if (filters.preference.length > 0 &&
-          !filters.preference.some(pref => preferences.includes(pref))) {
-            return false;
-        }
-        if (filters.year.length > 0 && !filters.year.includes(instructor.schoolYear)) {
-            return false;
-        }
-        if (filters.asl.length > 0 && !filters.asl.includes(instructor.isASL)) {
-            return false;
-        }
-        */
-
-    // }, [checkedItems])
 
     useEffect(() => {
-        setFilteredInstructors([
-            ...Object.values(availableInstructorsForTheSelectedSeason),
-        ]);
-    }, [availableInstructorsForTheSelectedSeason]);
-
-    useEffect(() => {
-        const instructors = Object.values(
-            availableInstructorsForTheSelectedSeason
-        ).filter((instructor) => {
-            // return false if does not meet filter requirements for 'hasCar'
-            if (
-                checkedItems.hasCar.length > 0 &&
-                !checkedItems.hasCar.includes(instructor.hasCar)
-            ) {
-                return false;
-            }
-            // return false if does not meet filter requirements for 'isASL'
-            if (
-                checkedItems.isASL.length > 0 &&
-                !checkedItems.isASL.includes(instructor.isASL)
-            ) {
-                return false;
-            }
-            // return false if does not meet filter requirements for 'preference'
-            let preferences = [
-                instructor.firstPref,
-                instructor.secondPref,
-                instructor.thirdPref,
-                instructor.fourthPref,
-            ];
-            if (
-                checkedItems.preference.length > 0 &&
-                !checkedItems.preference.some((pref) =>
-                    preferences.includes(pref)
-                )
-            ) {
-                return false;
-            }
-            // return false if does not meet filter requirements for 'year'
-            if (
-                checkedItems.year.length > 0 &&
-                !checkedItems.year.includes(instructor.schoolYear)
-            ) {
-                return false;
-            }
-            return true;
-        });
-        setFilteredInstructors(instructors);
-    }, [filters]);
-
-    useEffect(() => {
-        const { hasCar, preference, year, isASL } = filters;
+        const { name, hasCar, preference, year, isASL } = filters;
         setCheckedItems({
+            name: name,
             hasCar: [...hasCar],
             preference: [...preference],
             year: [...year],
@@ -230,18 +99,10 @@ const Section = ({
         });
     }, [showFilter]);
 
-    useEffect(() => { 
-        if (!instructors) { return; }
-        const instructorIds = instructors.map((i) => { 
-            return i.instructorId
-        })
-        setSelectedInstructors(instructorIds);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [instructors])
-
     const handleApplyFilters = (checkedItems) => {
-        const { hasCar, preference, year, isASL } = checkedItems;
+        const { name, hasCar, preference, year, isASL } = checkedItems;
         setFilters({
+            name: name,
             hasCar: [...hasCar],
             preference: [...preference],
             year: [...year],
@@ -250,98 +111,11 @@ const Section = ({
         setShowFilter(false);
     };
 
-    const changedBox = (e, category) => {
-        // const value = e[e.length-1].value;
-        // const label = e[e.length-1].label;
-
-        // console.log("label: ", label, "value: ", value);
-        // console.log("this box is checked with " + e);
-        //if target is clicked
-        // let boxValue = e.target.checked;
-        // console.log(boxValue,'HERE')
-        //box value is boolean, true for checked, false for unchecked
-
-        // if button is clicked and category is unchecked
-        if (checkedItems[category].length == 2) {
-            // change category to checked
-            checkedItems[category] = [1];
-        }
-        // if button is clicked and category is checked
-        else {
-            // change category to unchecked
-            checkedItems[category] = [0, 1];
-        }
-
-        // console.log(checkedItems[category] + "checked");
-        // console.log(availableInstructorsForTheSelectedSeason);
-
-        // console.log("start");
-        // console.log(checkedItems);
-        // print instructors that satify this category
-        // for( const i in availableInstructorsForTheSelectedSeason)
-        // {
-        //   const instructor = availableInstructorsForTheSelectedSeason[i];
-        //   // car && asl checked
-        //   if(checkedItems.hasCar.includes(instructor.hasCar) && checkedItems.isASL.includes(instructor.isASL)) {
-        //     console.log(instructor);
-        //   }
-        //   // car checked
-        //   else if(checkedItems.hasCar.includes(instructor.hasCar)) {
-        //     console.log(instructor);
-        //   }
-        //   // asl checked
-        //   else if(checkedItems.isASL.includes(instructor.isASL)) {
-        //     console.log(instructor);
-        //   }
-        //   // none checked
-        //   else {
-        //     console.log(instructor);
-        //   }
-        // }
-    };
-
-    // const handleCheckboxChange = (e, value) => {
-    //   const name = e.target.name;
-    //   let checkedValue;
-    //   const valIndex = checkedItems[name].indexOf(value);
-    //   if (valIndex >= 0) {
-    //     checkedItems[name].splice(valIndex, 1);
-    //     checkedValue = checkedItems[name];
-    //   } else {
-    //     checkedValue = [...checkedItems[name], value];
-    //   }
-    //   setCheckedItems({ ...checkedItems, [name]: checkedValue });
-    //   console.log(availableInstructorsForTheSelectedSeason, 'HERE')
-
-    // }
-
-    // const resetFilters = () => {
-    //   setCheckedItems(Object.assign({}, initialCheckedItems));
-    //   handleApplyFilters(Object.assign({}, initialCheckedItems));
-    // }
-
-    /*
-    useEffect(() => {
-      const { car, availability, preference, year, asl } = filters;
-      setCheckedItems({
-        name: filters.name,
-        car: [...car],
-        availability: [...availability],
-        preference: [...preference],
-        year: [...year],
-        asl: [...asl],
-      });
-    }, [e]);
-    */
     useEffect(() => {
         let val = true;
         if (instructors) {
             for (const instructor of instructors) {
-                if (
-                    !state['lockedInstructors'].includes(
-                        instructor.instructorId
-                    )
-                ) {
+                if (!state['lockedInstructors'].includes(instructor.instructorId)) {
                     val = false;
                 }
             }
@@ -355,12 +129,19 @@ const Section = ({
         } else {
             setLock(false);
         }
+        resetFilters();
     }, [parentLockStatus, setNumInstructors, instructors]);
 
     const resetFilters = () => {
         setCheckedItems(Object.assign({}, initialCheckedItems));
         handleApplyFilters(Object.assign({}, initialCheckedItems));
     };
+
+    const handleSearchChange = e => {
+        const value = e.target.value;
+        setSearchText(value);
+        setCheckedItems({...filters, name: value});
+    }
 
     /**
      * 
@@ -371,7 +152,7 @@ const Section = ({
         const name = e.target.name;
         let checkedValue;
         // if 'hasCar' or 'isASL'
-        if (name === 'hasCar' || name === 'isASL') {
+        if (name == 'hasCar' || name == 'isASL') {
             let boxValue = e.target.checked;
             // if checkbox is checked
             if (boxValue) {
@@ -400,48 +181,6 @@ const Section = ({
     const assignToggle = () => {
         setAssignPopup(true);
     };
-
-    // A queue of operations that need to be executed when the confirm button is pressed.
-    const [ operationQueue, setOperationQueue] = useState([]);
-
-    const [selectedInstructors, setSelectedInstructors] = useState([]);
-    /**
-     * Saves selected instructors from the `AssignInstructorsTable` component to the `seasonAssignments` table.
-     */
-    async function saveInstructorAssignments() {
-        for (const o of operationQueue) { 
-            try {
-                const header = await createToken();
-                if (o.route === 'assign') { 
-                    await axios.post(
-                        '/api/assign',
-                        {
-                            seasonId: seasonSelected.seasonId,
-                            instructorId: o.instructorId,
-                            classId: id,
-                        },
-                        header
-                    );
-                } else if (o.route === 'unassign') { 
-                    await axios.post(
-                        '/api/unassign',
-                        {
-                            seasonId: seasonSelected.seasonId,
-                            instructorId: o.instructorId,
-                            classId: id,
-                        },
-                        header
-                    );
-                } else { 
-                    console.log(`Unknown operation: ${o}`)
-                }
-            } catch (e) {
-                console.log(e);
-                toast(`❌ ${e}`);
-            }
-        }
-        toast(`👍 Instructor assignments successfully updated.`);
-    }
 
     return (
         <div className="section">
@@ -523,9 +262,7 @@ const Section = ({
             <Modal
                 size="xl"
                 show={assignPopup}
-                onHide={() => {
-                    setAssignPopup(false);
-                }}
+                onHide={() => { setAssignPopup(false); setSearchText(""); resetFilters();}}
                 aria-labelledby="contained-modal-title-vcenter"
                 dialogClassName="modal-90w"
                 centered>
@@ -559,12 +296,15 @@ const Section = ({
                                 width: '40%',
                             }}>
                             <MDBCol md="40">
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    placeholder="Search Instructors..."
-                                    aria-label="Search"
-                                />
+                                <InputGroup>
+                                    <FormControl
+                                        placeholder="🔍 Search Instructors..."
+                                        aria-label="Default"
+                                        aria-describedby="inputGroup-sizing-default"
+                                        value={searchText}
+                                        onChange={handleSearchChange}
+                                        />
+                                </InputGroup>
                             </MDBCol>
                         </div>
 
@@ -574,12 +314,12 @@ const Section = ({
                                 justifyContent: 'flex-end',
                                 border: '5px ',
                             }}>
-                            <div section="dropdown">
-                                <Button variant="light" section="dropbtn">
+                            <div class="dropdown">
+                                <Button variant="light" class="dropbtn">
                                     {' '}
                                     Car
                                 </Button>
-                                <div section="dropdown-content">
+                                <div class="dropdown-content">
                                     <Form.Check
                                         type="checkbox"
                                         label=" Owns a Car"
@@ -587,6 +327,7 @@ const Section = ({
                                         onChange={(e) => {
                                             handleCheckboxChange(e, 'hasCar');
                                         }}
+                                        checked={checkedItems.hasCar.length == 1}
                                     />
                                 </div>
                             </div>
@@ -597,12 +338,12 @@ const Section = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div section="dropdown">
-                                <Button variant="light" section="dropbtn">
+                            <div class="dropdown">
+                                <Button variant="light" class="dropbtn">
                                     {' '}
                                     ASL
                                 </Button>
-                                <div section="dropdown-content">
+                                <div class="dropdown-content">
                                     <Form.Check
                                         type="checkbox"
                                         label=" Knows ASL"
@@ -610,6 +351,7 @@ const Section = ({
                                         onChange={(e) => {
                                             handleCheckboxChange(e, 'isASL');
                                         }}
+                                        checked={checkedItems.isASL.length == 1}
                                     />
                                 </div>
                             </div>
@@ -621,12 +363,12 @@ const Section = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div section="dropdown">
-                                <Button variant="light" section="dropbtn">
+                            <div class="dropdown">
+                                <Button variant="light" class="dropbtn">
                                     {' '}
                                     Year
                                 </Button>
-                                <div section="dropdown-content">
+                                <div class="dropdown-content">
                                     <Form.Group className="filter-group">
                                         {year.map((year) => (
                                             <Form.Check
@@ -655,12 +397,12 @@ const Section = ({
                                 justifyContent: 'flex-end',
                                 border: '5px',
                             }}>
-                            <div section="dropdown">
-                                <Button variant="light" section="dropbtn">
+                            <div class="dropdown">
+                                <Button variant="light" class="dropbtn">
                                     {' '}
                                     Preference
                                 </Button>
-                                <div section="dropdown-content">
+                                <div class="dropdown-content">
                                     <Form.Group className="filter-group">
                                         {preference.map((pref) => (
                                             <Form.Check
@@ -696,40 +438,23 @@ const Section = ({
                                 Reset Filters
                             </Button>
                         </div>
-                        <div
-                            style={{
-                                padding: 5,
-                                justifyContent: 'flex-end',
-                                border: '5px',
-                            }}>
-                            <Button
-                                variant="primary"
-                                onClick={() =>
-                                    handleApplyFilters(checkedItems)
-                                }>
-                                {' '}
-                                Apply Filters
-                            </Button>
-                        </div>
                     </div>
 
                     <AssignInstructorsTable
                         show={assignPopup}
                         time={time[0]}
                         programsColorKey={programColorMap}
-                        operationQueue={operationQueue}
-                        selectedInstructors={selectedInstructors}
+                        seasonSelected={seasonSelected}
+                        filters={checkedItems}
                     />
                 </Modal.Body>
                 <Modal.Footer style={{ border: '0' }}>
                     <Button
                         variant="outline-danger"
-                        onClick={() => setAssignPopup(false)}>
+                        onClick={() => { setAssignPopup(false); resetFilters();}}>
                         Cancel
                     </Button>
-                    <Button
-                        variant="success"
-                        onClick={saveInstructorAssignments}>
+                    <Button variant="success">
                         {/* needs onclick */}
                         Confirm Instructor Selections
                     </Button>
