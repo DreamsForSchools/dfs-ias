@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -16,6 +17,7 @@
     "immer": "^9.0.12",
     "lodash": "^4.17.21",
     "lottie-react": "^2.1.0",
+    "mdbreact": "^5.2.0",
     "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
