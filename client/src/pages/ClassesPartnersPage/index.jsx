@@ -313,7 +313,7 @@ const ClassesPartners = () => {
                             onClick={() => handleOpenInputModal(viewType)}
                             data-testid="addBtn">
                             <PlusCircle style={{ marginRight: '0.5rem' }} />
-                            <span>Add {viewType.slice(0, -1)}</span>
+                            <span>Add Program</span> 
                         </Button>
                         {viewType === 'Classes' && (
                             <Button

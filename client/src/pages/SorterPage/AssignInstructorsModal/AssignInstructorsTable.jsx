@@ -3,7 +3,6 @@ import { Table, Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import './AssignInstructorsTable.scss';
 import { InstructorsRow } from './AssignInstructorsTableRow';
 import { GlobalContext } from '../../../context/GlobalContextProvider';
-import { PaginationItem } from '@material-ui/lab';
 
 const AssignInstructorsTable = (props) => {
     /**
@@ -24,7 +23,6 @@ const AssignInstructorsTable = (props) => {
     // Iterate through each instructor to calculate distance from the university to the partnerPlaceId (classes don't store location of where they're taught)
     // The 'time' prop is an array of JSON values, where each has 'endTime', 'weekday', and 'startTime' keys
 
-    // TODO: Enable pagination
 
     const { seasonSelected, instructorData } = useContext(GlobalContext);
     const [instructors, setInstructors] = useState([]);
@@ -40,6 +38,7 @@ const AssignInstructorsTable = (props) => {
         });
         return isAvailable;
     }
+    
     
     function applyUserSelectedFilters(instructors) {
         console.log("FILTER")
