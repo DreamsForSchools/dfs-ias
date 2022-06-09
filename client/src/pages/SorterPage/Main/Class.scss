@@ -1,0 +1,33 @@
+.class {
+  background-color: #FFFFFF;
+  margin: 1rem;
+  border-radius: 10px;
+  padding-bottom: 1rem;
+  width: 20rem;
+
+  .header {
+    display: inline-flex;
+  }
+
+  .partner-name {
+    color: #202E47;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 2rem 2rem 0rem;
+  }
+
+  .lock {
+    float: right;
+    padding: 1rem;
+    z-index: 2;
+  }
+
+  .class-info {
+    padding-bottom: 1rem;
+    margin-left: 2rem;
+  }
+
+  .spacer{
+    min-height: 1px;
+  }
+}

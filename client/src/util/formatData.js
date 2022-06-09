@@ -20,7 +20,11 @@ export const formatAvailability = (availability) => {
         if (!bucket.hasOwnProperty(timeAvailable)) {
             bucket[timeAvailable] = [slot.weekday];
         } else {
-            bucket[timeAvailable].push(slot.weekday);
+            if (!bucket[timeAvailable].includes(slot.weekday))
+            {
+                bucket[timeAvailable].push(slot.weekday);
+            }
+          
         }
     })
 

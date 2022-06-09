@@ -249,7 +249,8 @@ const Section = ({
             <div className="assign-modal-btns">
                 <Button
                     size="md"
-                    style={{ marginRight: '0.5rem' }}
+                    style={{ marginRight: '0.5rem',
+                             marginBottom: '1rem'}}
                     onClick={assignToggle}
                     data-testid="assignToProgram">
                     Assign Instructors
