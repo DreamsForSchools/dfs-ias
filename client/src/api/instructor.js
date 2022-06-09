@@ -47,7 +47,9 @@ export const updateInstructor = async (instructorId , instructorData) => {
 export const deleteInstructor = async (instructorId) => {
     try {
         const header = await createToken();
-        await axios.delete(`/api/instructor/${instructorId}`, header);
+        // await axios.delete(`/api/instructor/${instructorId}`, header);
+        await axios.delete(`api/instructor/delete/${instructorId}`, header);
+
         toast(`👍 Instructor deleted successfully!`)
     } catch (e) {
         console.log(e);
