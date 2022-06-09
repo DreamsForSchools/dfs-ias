@@ -17,7 +17,9 @@ export const loadAllInstructorsAggregated = async (seasonId) => {
 export const saveInstructor = async (instructorData) => {
     try {
         const header = await createToken();
-        await axios.post('/api/instructor', instructorData, header);
+        // await axios.post('/api/instructor', instructorData, header);
+        await axios.post(`/api/instructor/create`, instructorData, header);
+
         toast(`👍 Instructor ${instructorData.firstName} ${instructorData.lastName} added successfully!`)
     } catch (e) {
         console.log(e);
