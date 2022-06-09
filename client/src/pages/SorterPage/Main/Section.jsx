@@ -27,7 +27,7 @@ const Section = ({
     state,
     parentLockStatus,
 }) => {
-    const { seasonSelected, programColorMap } = useContext(GlobalContext);
+    const { seasonSelected, programColorMap, fetchProgramsAggregatedForCurrentSeason } = useContext(GlobalContext);
     const [numInstructors, setNumInstructors] = useState(0);
     const [lock, setLock] = useState(false);
     const [assignPopup, setAssignPopup] = useState(false);
@@ -225,6 +225,7 @@ const Section = ({
                 toast(`❌ ${e}`);
             }
         }
+        fetchProgramsAggregatedForCurrentSeason();
         toast(`👍 Instructor assignments successfully updated.`);
     }
 
