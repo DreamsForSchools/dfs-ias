@@ -26,6 +26,7 @@ const AssignInstructorsTable = (props) => {
 
     const { seasonSelected, instructorData } = useContext(GlobalContext);
     const [instructors, setInstructors] = useState([]);
+    const [tempSelectedInstructors, setTempSelectedInstructors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(4);
 
@@ -102,6 +103,25 @@ const AssignInstructorsTable = (props) => {
         else { 
             operationQueue.push({route: 'assign', instructorId: instructorId})
         }
+        // let selected_idx = tempSelectedInstructors.indexOf(instructorId);
+
+        // if (selected_idx > -1) {
+        if(tempSelectedInstructors.includes(instructorId)){
+            console.log("removing " + instructorId)
+            let selected_idx = tempSelectedInstructors.indexOf(instructorId);
+            
+            tempSelectedInstructors.splice(selected_idx, 1); // 2nd parameter means remove one item only
+            setTempSelectedInstructors(tempSelectedInstructors);
+            console.log("new state: "+ tempSelectedInstructors);
+        }       
+        else { 
+            console.log("adding " + instructorId)
+            // using splice to add
+            tempSelectedInstructors.push(instructorId);
+            setTempSelectedInstructors(tempSelectedInstructors);
+
+            console.log("new state: "+ tempSelectedInstructors);
+        }
     };
 
     function isSelected(instructorId) { 
@@ -154,6 +174,7 @@ const AssignInstructorsTable = (props) => {
                             isSelected={isSelected(el.instructorId)}
                             instructor={el}
                             key={idx} 
+                            tempSelectedInstructors = {tempSelectedInstructors}
                         />
                     ))}
                 </tbody>

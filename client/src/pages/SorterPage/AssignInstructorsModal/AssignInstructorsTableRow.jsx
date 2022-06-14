@@ -14,8 +14,8 @@ export const InstructorsRow = (props) => {
     // TODO: UI loading indicator
     // TODO: Write changes to the database
 
-    const { programsColorKey, onClick, isSelected, instructor } = props;
-
+    const { programsColorKey, onClick, isSelected, instructor, tempSelectedInstructors } = props;
+    
     const [activeState, setActiveState] = useState(false);
 
     // row highlighting
@@ -42,6 +42,8 @@ export const InstructorsRow = (props) => {
     const toggleRowClicked = () => {
         onClick(instructor);
         setActiveState((activeState) => !activeState);
+        console.log(tempSelectedInstructors.includes(instructor.instructorId) +`${instructor.instructorId}`);
+        
     };
 
     useEffect(() => { 
@@ -52,7 +54,7 @@ export const InstructorsRow = (props) => {
         // put onclick funct for the tr
 
         <tr
-            className={`assn-instructor-row${activeState ? '-active' : ''} `}
+            className={`assn-instructor-row${tempSelectedInstructors.includes(instructor.instructorId)|| isSelected ? '-active' : ''} `}
             onClick={toggleRowClicked}>
             <td className={'info-stacks'}>
                 <ul>
