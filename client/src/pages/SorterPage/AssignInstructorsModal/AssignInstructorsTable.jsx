@@ -124,9 +124,9 @@ const AssignInstructorsTable = (props) => {
         }
     };
 
-    function isSelected(instructorId) { 
-        return selectedInstructors.includes(instructorId);
-    }
+    // function isSelected(instructorId) { 
+    //     return selectedInstructors.includes(instructorId);
+    // }
 
     // console.log('About to print instructor data');
     // console.log(props.instructorData);

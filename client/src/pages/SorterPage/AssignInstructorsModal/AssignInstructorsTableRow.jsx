@@ -48,13 +48,19 @@ export const InstructorsRow = (props) => {
 
     useEffect(() => { 
         setActiveState(isSelected);
+        if(isSelected)       
+        {
+            tempSelectedInstructors.push(instructor.instructorId);
+        }
     }, [isSelected])
 
+    // isSelected not used anymore?
+    // inFavor of tempSelected (pagination bug)
     return (
         // put onclick funct for the tr
 
         <tr
-            className={`assn-instructor-row${tempSelectedInstructors.includes(instructor.instructorId)|| isSelected ? '-active' : ''} `}
+            className={`assn-instructor-row${ tempSelectedInstructors.includes(instructor.instructorId) ? '-active' : ''} `}
             onClick={toggleRowClicked}>
             <td className={'info-stacks'}>
                 <ul>
