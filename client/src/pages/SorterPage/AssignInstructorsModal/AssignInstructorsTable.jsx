@@ -128,8 +128,6 @@ const AssignInstructorsTable = (props) => {
     //     return selectedInstructors.includes(instructorId);
     // }
 
-    // console.log('About to print instructor data');
-    // console.log(props.instructorData);
 
     useEffect(() => {
         if (show) {
@@ -183,8 +181,8 @@ const AssignInstructorsTable = (props) => {
                 <nav>
                     <ul className = "pagination">
                         {pages.map(number => (
-                            <li key={number} className = "page-item">
-                                <a onClick={() => paginate(number)} className="page-link">
+                            <li key={number} className = "page-item ">
+                                <a onClick={() => paginate(number) } className="page-link">
                                     {number}
                                 </a>
                             </li>

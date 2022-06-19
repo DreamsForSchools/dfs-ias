@@ -31,13 +31,6 @@ const Section = ({
     const [numInstructors, setNumInstructors] = useState(0);
     const [lock, setLock] = useState(false);
     const [assignPopup, setAssignPopup] = useState(false);
-    const availability = [
-        { value: 1, label: 'Monday' },
-        { value: 2, label: 'Tuesday' },
-        { value: 3, label: 'Wednesday' },
-        { value: 4, label: 'Thursday' },
-        { value: 5, label: 'Friday' },
-    ];
     const preference = [
         { value: 'Mobile App Development (AppJam+)', label: 'AppJam' },
         { value: 'Website Development', label: 'WebJam' },
@@ -62,11 +55,10 @@ const Section = ({
     ];
     const initialCheckedItems = {
         // hasCar: [0, 1],
-        // availability: [],
         // preference: ["Mobile App Development (AppJam+)", "Website Development", "Let's Explore STEM", "Coding Games with Scratch","Engineering Inventors"],
         // year: ["1st","2nd","3rd", "4th+","Graduate"],
         // isASL: [0, 1]
-        name: '',
+        name: '', //used for searching
         hasCar: [0, 1],
         preference: [],
         year: [],
@@ -482,7 +474,7 @@ const Section = ({
                             </Button>
                         </div>
                         </div>
-
+                    
                     <AssignInstructorsTable
                         show={assignPopup}
                         time={time[0]}
@@ -495,12 +487,12 @@ const Section = ({
                 </Modal.Body>
                 <Modal.Footer style={{ border: '0' }}>
                     <Button
-                        variant="outline-danger"
+                        variant="outline-primary"
                         onClick={() => { setAssignPopup(false); resetFilters();}}>
                         Cancel
                     </Button>
                     <Button
-                        variant="success"
+                        
                         onClick={() => { saveInstructorAssignments(); setAssignPopup(false); resetFilters();}}>
                             Confirm Instructor Selections
                     </Button>

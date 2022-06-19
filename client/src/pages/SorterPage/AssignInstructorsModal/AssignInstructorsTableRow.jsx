@@ -10,9 +10,6 @@ import Dot from '../../../design-system/dots';
 import './AssignInstructorsTable.scss';
 
 export const InstructorsRow = (props) => {
-    // TODO: Pagination
-    // TODO: UI loading indicator
-    // TODO: Write changes to the database
 
     const { programsColorKey, onClick, isSelected, instructor, tempSelectedInstructors } = props;
     
